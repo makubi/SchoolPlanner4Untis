@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="viewTypes">
+		<item>@string/classes</item>
+		<item>@string/rooms</item>
+		<item>@string/teacher</item>
+		<item>@string/subjects</item>
+	</string-array>
+	<string-array name="views">
+		<item>@string/view_day</item>
+		<item>@string/view_week</item>
+		<item>@string/view_month</item>
+		<item>@string/view_list</item>
+	</string-array>
+	<string-array name="views_values">
+		<item>edu.htl3r.schoolplanner.gui.timetableviews.DayView</item>
+		<item>edu.htl3r.schoolplanner.gui.timetableviews.WeekView</item>
+		<item>edu.htl3r.schoolplanner.gui.timetableviews.MonthView</item>
+		<item>edu.htl3r.schoolplanner.gui.timetableviews.DateListView</item>
+	</string-array>
+	
+</resources>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:id="@+id/add_date_scrollview"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<RelativeLayout android:id="@+id/add_date_rellayout"
+		android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+		<TextView android:id="@+id/add_date_label_type"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/testtype" android:layout_centerHorizontal="true"
+			android:textSize="@dimen/subheaderFontSize"></TextView>
+		<Spinner android:id="@+id/add_date_type" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:layout_centerHorizontal="true" android:layout_below="@id/add_date_label_type">
+		</Spinner>
+
+		<TextView android:id="@+id/add_date_label_class"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/classes" android:layout_centerHorizontal="true"
+			android:textSize="@dimen/subheaderFontSize" android:layout_below="@id/add_date_type"></TextView>
+		<Spinner android:id="@+id/add_date_class"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:layout_below="@id/add_date_label_class"
+			android:layout_centerHorizontal="true">
+		</Spinner>
+
+		<TextView android:id="@+id/add_date_label_subject"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/subjects" android:layout_centerHorizontal="true"
+			android:textSize="@dimen/subheaderFontSize" android:layout_below="@id/add_date_class"></TextView>
+		<Spinner android:id="@+id/add_date_subject"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:layout_below="@id/add_date_label_subject"
+			android:layout_centerHorizontal="true">
+		</Spinner>
+
+		<TextView android:id="@+id/add_date_label_teacher"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/teacher" android:layout_centerHorizontal="true"
+			android:textSize="@dimen/subheaderFontSize" android:layout_below="@id/add_date_subject"></TextView>
+		<Spinner android:id="@+id/add_date_teacher"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:layout_below="@id/add_date_label_teacher"
+			android:layout_centerHorizontal="true">
+		</Spinner>
+
+		<TextView android:id="@+id/add_date_label_room"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/rooms" android:layout_centerHorizontal="true"
+			android:textSize="@dimen/subheaderFontSize" android:layout_below="@id/add_date_teacher"></TextView>
+		<Spinner android:id="@+id/add_date_room" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:layout_below="@id/add_date_label_room"
+			android:layout_centerHorizontal="true">
+		</Spinner>
+
+		<TextView android:id="@+id/add_date_label_title"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/title" android:layout_centerHorizontal="true"
+			android:textSize="@dimen/subheaderFontSize" android:layout_below="@id/add_date_room"></TextView>
+		<EditText android:id="@+id/add_date_title"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:text="" android:textSize="18sp" android:layout_below="@id/add_date_label_title"
+			android:layout_centerHorizontal="true" android:singleLine="true">
+		</EditText>
+
+		<TextView android:id="@+id/add_date_label_text"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/desc" android:layout_centerHorizontal="true"
+			android:textSize="@dimen/subheaderFontSize" android:layout_below="@id/add_date_title"></TextView>
+		<EditText android:id="@+id/add_date_text"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:text="" android:textSize="18sp" android:layout_below="@id/add_date_label_text"
+			android:layout_centerHorizontal="true">
+		</EditText>
+
+		<TextView android:id="@+id/add_date_label_date"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/date" android:layout_centerHorizontal="true"
+			android:textSize="@dimen/subheaderFontSize" android:layout_below="@id/add_date_text"></TextView>
+		<DatePicker android:id="@+id/add_date_date"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_below="@id/add_date_label_date"
+			android:layout_centerHorizontal="true">
+		</DatePicker>
+
+		<TextView android:id="@+id/add_date_label_starttime"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/starttime" android:layout_centerHorizontal="true"
+			android:textSize="@dimen/subheaderFontSize" android:layout_below="@id/add_date_date"></TextView>
+		<TimePicker android:id="@+id/add_date_starttime"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_below="@id/add_date_label_starttime"
+			android:layout_centerHorizontal="true">
+		</TimePicker>
+
+		<TextView android:id="@+id/add_date_label_endtime"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/endtime" android:layout_centerHorizontal="true"
+			android:textSize="@dimen/subheaderFontSize" android:layout_below="@id/add_date_starttime"></TextView>
+		<TimePicker android:id="@+id/add_date_endtime"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:layout_below="@id/add_date_label_endtime"
+			android:layout_centerHorizontal="true">
+		</TimePicker>
+		<Button android:id="@+id/add_date_save" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="@string/save"
+			android:layout_below="@id/add_date_endtime"
+			android:layout_centerHorizontal="true"
+			>
+		</Button>
+	</RelativeLayout>
+</ScrollView>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	package="edu.htl3r.schoolplanner" android:versionCode="6" android:versionName="Beta 3 Update 1">
+	<application android:icon="@drawable/schoolplanner_logo"
+		android:label="@string/app_name" android:name=".SchoolPlannerApp">
+		<activity android:name=".SchoolPlanner" android:label="@string/app_name"
+			android:noHistory="true">
+		</activity>
+		<activity android:name=".gui.LoginScreen" android:noHistory="true" android:configChanges="orientation">
+		<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity android:name=".gui.SelectScreen" android:configChanges="orientation"></activity>
+		<activity android:name=".gui.PrefScreen" android:configChanges="orientation"></activity>
+		<activity android:name=".gui.AboutScreen" android:configChanges="orientation"></activity>
+		<activity android:name=".gui.HelpScreen" android:configChanges="orientation"></activity>
+		<activity android:name=".gui.LoginPresetScreen" android:configChanges="orientation"></activity>
+		<activity android:name=".gui.timetableviews.DayView" android:theme="@android:style/Theme.NoTitleBar" android:configChanges="orientation"></activity>
+		<activity android:name=".gui.timetableviews.WeekView" android:theme="@android:style/Theme.NoTitleBar" android:configChanges="orientation"></activity>
+		<activity android:name=".gui.timetableviews.MonthView" android:theme="@android:style/Theme.NoTitleBar" android:configChanges="orientation"></activity>
+		<activity android:name=".gui.timetableviews.LessonView" android:theme="@android:style/Theme.NoTitleBar" android:configChanges="orientation"></activity>
+		<activity android:name=".gui.timetableviews.DateListView" android:theme="@android:style/Theme.NoTitleBar" android:configChanges="orientation"></activity>
+		<activity android:name=".gui.TestView" android:configChanges="orientation"></activity>
+		
+	</application>
+
+
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+	<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="7"></uses-sdk>
+</manifest> 

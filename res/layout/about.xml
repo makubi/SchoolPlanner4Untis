@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+	<RelativeLayout android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<ImageView android:id="@+id/about_img" android:layout_width="175dp"
+			android:layout_height="200dp" android:layout_marginTop="4dip"
+			android:background="@drawable/schoolplanner_logo_big"
+			android:layout_centerHorizontal="true" android:layout_alignParentTop="true">
+		</ImageView>
+		<TextView android:id="@+id/about_text" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="@string/about_text"
+			android:layout_centerHorizontal="true" android:textSize="20sp"
+			android:textColor="#FFFFFFFF" android:layout_below="@id/about_img"
+			android:gravity="center">
+		</TextView>
+	</RelativeLayout>
+</ScrollView>

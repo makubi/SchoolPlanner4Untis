@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="hello">Hello World, SchoolPlanner!</string>
+	<string name="app_name">SchoolPlanner4Untis Beta</string>
+	<string name="teacher">Teacher</string>
+	<string name="classes">Classes</string>
+	<string name="rooms">Rooms</string>
+	<string name="subjects">Subjects</string>
+	<string name="user">User</string>
+	<string name="password">Password</string>
+	<string name="school">School</string>
+	<string name="login">Login</string>
+	
+	<string name="select">Select</string>
+	<string name="settings">Settings</string>
+	<string name="help">Help</string>
+	<string name="info">Info</string>
+	
+	<string name="button_ok">OK</string>
+	<string name="button_cancel">Cancel</string>
+	<string name="button_yes">Yes</string>
+	<string name="button_no">No</string>
+	
+	<string name="preferredSelection">Preferred Selection</string>
+	<string name="preferredView">Preferred View</string>
+	
+	<string name="save">Save</string>
+	<string name="lessonview_error">Error: No lesson set!</string>
+	<string name="error_laoddata">Error while loading data!</string>
+	<string name="no_lessons">There are no lessons for this day!\n\<b>Be Happy! :D</b></string>
+	<string name="no_lessons_part1">There are no lessons on </string>
+	<string name="no_lessons_part2">!\n\<b>Be Happy! :D</b></string>
+	
+	<string name="view_day">Dayview</string>
+	<string name="view_week">Weekview</string>
+	<string name="view_list">Exam list (local only)</string>
+	<string name="view_month">Monthview</string>
+	
+	<string name="progress_login_title">Please wait!</string>
+	<string name="progress_login_text">Login is in progress!</string>
+	<string name="progress_schoolObjectList_title">Please wait!</string>
+	<string name="progress_schoolObjectList_text">Data is being loaded!</string>
+	<string name="progress_createLayout_title">Please wait!</string>
+	<string name="progress_createLayout_text">The display is being set up!</string>
+	<string name="progress_resync_title">Please wait!</string>
+	<string name="progress_resync_text">The basedata is being downloaded!</string>
+	
+	<string name="menu_add_test">Test</string>
+	<string name="newtest">New</string>
+	<string name="newtest_title">Test</string>
+	
+	<string name="testtype">Type of Test</string>
+	
+	<string name="title">Title</string>
+	<string name="desc">Description</string>
+	<string name="date">Date</string>
+	<string name="starttime">Start-Time</string>
+	<string name="endtime">End-Time</string>
+	
+	<string name="addtest_success">Added new test!</string>
+	<string name="addtest_failed">Failed to add new test!</string>
+	
+	<string name="no_network_message">Sorry, there is no network connection available!</string>
+	
+	<string name="login_failure">Unable to log in! Please check your login data!</string>
+	<string name="login_no_network">No network connection available, using local data!</string>
+	<string name="login_network_error">An unexpected error occurred! Please check your network connectivity and your login data!</string>
+	
+	<string name="prefs_saved">Preferences has been saved!</string>
+	<string name="prefs_cat_login">Login Data</string>
+	<string name="prefs_cat_login_msg">Enter the login data.</string>
+	<string name="prefs_autologin">Auto-Login</string>
+	<string name="prefs_autologin_msg">Automatically log into the App.</string>
+	<string name="prefs_cat_viewstuff">View Settings</string>
+	<string name="prefs_cat_viewstuff_msg">Choose which view to show on startup.</string>
+	<string name="prefs_autochoose">Auto-Selection</string>
+	<string name="prefs_autochoose_msg">Automatically show selected view.</string>
+	<string name="prefs_views">Default View</string>
+	<string name="prefs_views_msg">e.g.: Day-View, Week-View, etc.</string>
+	<string name="prefs_viewtypes">View Type</string>
+	<string name="prefs_viewtypes_msg">What kind of Timetable should be shown?</string>
+	<string name="prefs_viewvalues">View Value</string>
+	<string name="prefs_viewvalues_msg">The value of the View Type (e.g.: 1AI, 263, etc.).</string>
+	<string name="prefs_show_saturday">Show Saturday</string>
+	<string name="prefs_show_saturday_msg_on">Saturday will be shown.</string>
+	<string name="prefs_show_saturday_msg_off">Saturday won\'t be shown.</string>
+	<string name="prefs_show_daynames">Show names of days in weekview</string>
+	<string name="prefs_show_daynames_msg_on">Show names of the days in the weekheader.</string>
+	<string name="prefs_show_daynames_msg_off">Hide names of the days in the weekheader.</string>
+	<string name="prefs_show_dates">Show dates in weekview</string>
+	<string name="prefs_show_dates_msg_on">Show the dates in the weekheader.</string>
+	<string name="prefs_show_dates_msg_off">Hide the dates in the weekheader.</string>
+	<string name="prefs_show_timegrid">Show timegrid in dayview.</string>
+	<string name="prefs_show_timegrid_msg_on">Show the timegrid in dayview.</string>
+	<string name="prefs_show_timegrid_msg_off">Hide the timegrid in dayview.</string>
+	<string name="prefs_show_zerohour">Show zeroth hour.</string>
+	<string name="prefs_show_zerohour_msg_on">Show the zeroth hour.</string>
+	<string name="prefs_show_zerohour_msg_off">Hide the zeroth hour.</string>
+	<string name="prefs_cat_colorstuff">Colors</string>
+	<string name="prefs_cat_colorstuff_msg">Choose background and touch colors.</string>
+	<string name="prefs_color_bg">Background color</string>
+	<string name="prefs_color_touch">Touch color</string>
+	<string name="prefs_color_border">Border color</string>
+	<string name="prefs_color_header">Header color</string>
+	<string name="prefs_color_reset">Reset All colors!</string>
+	<string name="prefs_color_reset_msg">All colors have been reset!</string>
+	<string name="prefs_reset_colors_title">Reset colors</string>
+	<string name="prefs_reset_colors_message">Really reset the colors?</string>
+	
+	<string name="prefs_color_set">Color has been set!</string>
+	<string name="prefs_resync">Resync basedata</string>
+	<string name="prefs_resync_msg">Download the basedata from the network.</string>
+	<string name="prefs_resync_popup_okay">New basedata has been downloaded!</string>
+	<string name="prefs_resync_popup_failed">Error while downloading new basedata!</string>
+	<string name="prefs_resync_question">Are you sure you want to refresh the basedata?</string>
+	<string name="prefs_resync_question_title">Refresh basedata</string>
+	<string name="prefs_presets">@string/presets</string>
+	<string name="prefs_presets_msg">You can use the login-presets to manage login-data for multiple schools.</string>
+	
+	
+	<string name="menu_refresh">Refresh</string>
+	<string name="menu_today">Today</string>
+	<string name="menu_change_view">View</string>
+	<string name="change_view_title">Choose new view</string>
+	<string name="view_changed">Changed the view!</string>
+	
+	<string name="pref_key_serverurl">serverURL</string>
+	<string name="pref_key_school">school</string>
+	<string name="pref_key_username">username</string>
+	<string name="pref_key_password">password</string>
+	<string name="pref_key_autologin">autologin</string>
+	<string name="pref_key_presets">presets</string>
+	<string name="pref_key_autochoose">autochoose</string>
+	<string name="pref_key_viewtype">viewType</string>
+	<string name="pref_key_show_saturday">showSaturday</string>
+	<string name="pref_key_show_header_daynames">showHeaderDayNames</string>
+	<string name="pref_key_show_header_dates">showHeaderDates</string>
+	<string name="pref_key_show_timegrid">showTimegrid</string>
+	<string name="pref_key_show_zerohour">showZerohour</string>
+	<string name="pref_key_color_bg">bgColor</string>
+	<string name="pref_key_color_touch">touchColor</string>
+	<string name="pref_key_color_border">borderColor</string>
+	<string name="pref_key_color_header">headerColor</string>
+	<string name="pref_key_color_reset">resetColor</string>
+	<string name="pref_key_selection">selection</string>
+	<string name="pref_key_schoolview">schoolView</string>
+	<string name="pref_key_resync">resync</string>
+		
+	<string name="about_text" type="text/html">
+		<b>SchoolPlanner4Untis</b>\n
+		<small>Version Beta</small>\n\n
+		Diplomarbeit 2010/11\n
+		5AN\n
+		\n
+		Mathias Kub\n
+		Gerald Schreiber\n
+		Philip Wölfel\n
+		\n
+		HTL Rennweg\n
+		Rennweg 89b\n
+		A-1030 Wien\n
+		\n
+		team@schoolplanner.at\n
+		www.schoolplanner.at\n
+		\n
+		Color-Picker-Dialog android-color-picker\n
+		code.google.com/p/android-color-picker/
+		</string>
+		
+	
+	<string name="lessonview_button">New Test</string>
+	<string name="lessonview_date">Date:</string>
+	<string name="lessonview_begin">Begin:</string>
+	<string name="lessonview_end">End:</string>
+	<string name="lessonview_class">Classes:</string>
+	<string name="lessonview_teacher">Teachers:</string>
+	<string name="lessonview_room">Rooms:</string>
+	<string name="lessonview_subject">Subjects:</string>
+	<string name="lessonview_code">Code:</string>
+	<string name="lessonview_type">Type:</string>
+	<string name="lessonview_default">Default</string>
+	
+	<string name="lessonview_cancelled">Cancelled</string>
+	<string name="lessonview_substitute">Substitution</string>
+	
+	<string name="lessonview_type_breaksupervision">Break supervision</string>
+	<string name="lessonview_type_examination">Examination</string>
+	<string name="lessonview_type_officehour">Office hour</string>
+	<string name="lessonview_type_standby">Standby</string>
+	
+	<string name="login_default_school"></string>
+	<string name="login_default_user"></string>
+	<string name="login_default_password"></string>
+	<string name="login_default_url"></string>
+	
+	<string name="login_hint_school">Please enter school name...</string>
+	<string name="login_hint_user">Please enter username...</string>
+	<string name="login_hint_password">Please enter password...</string>
+	<string name="login_hint_url">Please enter server-URL...</string>
+	
+	<string name="newviewtype_popup">Select new ViewType</string>
+	
+	<string name="help_text">
+	&lt;h1>Help&lt;/h1>
+	Insert help text here.
+	</string>
+	
+	<string name="url">Server URL</string>
+	
+	<string name="settingsempty"> The input hasn\'t been saved! Please enter a non-blank string into the input-box!</string>
+	<string name="show_choosen_timetable">Preset timetable</string>
+	
+	<string name="testlist_showmore">Show next month!</string>
+	
+	<string name="add_preset">Add preset!</string>
+	
+	<string name="presets">Login-Presets</string>
+	<string name="use_preset">Use this preset!</string>
+	<string name="delete_preset">Delete this preset!</string>
+	<string name="preset_deleted">Preset has been deleted!</string>
+	<string name="preset_added">Preset has been added!</string>
+	<string name="preset_add_failed">Preset couldn\'t be added! Please enter valid login data!</string>
+	<string name="preset_prefs_updated">Preferences have been updated with the current preset!</string>
+	
+	<string name="test_context_header">Test</string>
+	<string name="test_context_delete">Delete</string>
+	
+	<string name="login_changed">Your login credentials have changed! Do you want to reload the basedata? (This is recommended, because otherwise wrong data might be present.)</string>
+	<string name="login_changed_title">Warning!</string>
+</resources>
