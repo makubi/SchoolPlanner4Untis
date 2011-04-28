@@ -1,0 +1,33 @@
+
+== Android-Projekt in Eclipse einbinden
+
+Neues Android-Projekt erstellen
+
+Temporäre Einstellungen wählen, z.B.
+	Project name: TempProject
+	[o] Create new project in workspace
+	Build Target: Android 2.1
+
+	Properties
+		Application name: TempApp
+		Package name: my.test
+		Min SDK Version: 7
+
+Dateien .classpath und .project in dieses Verzeichnis verschieben
+Danach kann das Test-Projekt wieder gänzlich entfernt werden
+
+Dieses Projekt in den Workspace importieren
+
+Neues Android Projekt erstellen
+	[o] Create project from existing source
+		Location: lib/AmbilWarna-Ordner auswählen
+
+yuku_ambilwarna
+	Refresh
+	Clean
+
+Sollten im Projekt noch Compiler-Fehler sein, folgendes versuchen
+	Properties von SchoolPlanner4Untis
+		--> Android --> Java Compiler --> 1.6
+		Neu bauen
+
