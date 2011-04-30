@@ -90,7 +90,7 @@ public class Network implements NetworkAccess {
 	
 	@Override
 	public String getResponse(String request) throws IOException {	
-		String response;
+		String response = null;
 		try {
 			response = executeRequest(request);
 		}
@@ -102,17 +102,36 @@ public class Network implements NetworkAccess {
 			throw new IllegalArgumentException(e.getMessage());
 		}
 		catch (SSLException e) {
-			Log.d("Network","ERROR",e);
-			// TODO: Import untrusted SSL certificates / add untrusted CAs
-			Log.d("Network","No SSL available, switching to http");
-			httpsUrl = url;
-			response = getResponse(request);
+			
+			// If no trusted certificate is found, CACert.org-certificates are tried.
+			if(e.getMessage().equals("Not trusted server certificate")) {
+				Log.i("Network","No trusted SSL certificate found, trying CACert.org-certificate");
+				
+				// Unregistering standard-scheme for SSL and registering a scheme using the CACert.org-certificate.
+				client.getConnectionManager().getSchemeRegistry().unregister("https");
+				client.getConnectionManager().getSchemeRegistry().register(new Scheme("https", newSslSocketFactory(), httpsUrl != null && httpsUrl.getPort() != -1 ? httpsUrl.getPort() : 443));
+				
+				try {
+					response = executeRequest(request);
+				}
+				
+				// If CACert.org-certificates fail as well, plain mode is used.
+				catch (SSLException e2) {
+					Log.i("Network","No SSL available, switching to plain mode");
+					httpsUrl = url;
+					response = executeRequest(request);
+				}
+			}
 		}
 		catch (UnknownHostException e) {
 			Log.d("Network","Unknown host exception occured, URL: "+url+", host: "+url.getHost());
 			throw new UnknownHostException("Unable to resolve host: "+url.getHost());
 		}
 		
+		// If nothing was returned, there was an error.
+		if(response == null) {
+			throw new IOException("Even plain mode did not work. No data received.");
+		}
 		return response;
 	}
 	
@@ -146,10 +165,8 @@ public class Network implements NetworkAccess {
 	}
 	
 	private void registerScheme() {
-		client.getConnectionManager().getSchemeRegistry().register(new Scheme("http", PlainSocketFactory.getSocketFactory(), url != null && url.getPort() != -1 ? url.getPort() : 80));
-		
-		// trust only cacert
-		client.getConnectionManager().getSchemeRegistry().register(new Scheme("https", newSslSocketFactory(), httpsUrl != null && httpsUrl.getPort() != -1 ? httpsUrl.getPort() : 443));
+		client.getConnectionManager().getSchemeRegistry().register(new Scheme("http", PlainSocketFactory.getSocketFactory(), url != null && url.getPort() != -1 ? url.getPort() : 80));		
+		client.getConnectionManager().getSchemeRegistry().register(new Scheme("https", SSLSocketFactory.getSocketFactory(), httpsUrl != null && httpsUrl.getPort() != -1 ? httpsUrl.getPort() : 443));
 	}
 
 	@Override
