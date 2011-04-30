@@ -96,7 +96,15 @@ public class Network implements NetworkAccess {
 		}
 		catch (SocketTimeoutException e) {
 			Log.w("Network", "Socket timed out during network access.",e);
-			throw new SocketTimeoutException("Socket timed out during network access.");
+			
+			Log.i("Network","No SSL available, switching to plain mode");
+			httpsUrl = url;
+			try {
+				response = executeRequest(request);
+			}
+			catch (SocketTimeoutException e2) {
+				throw new SocketTimeoutException("Socket timed out during network access.");	
+			}			
 		}
 		catch (IllegalArgumentException e) {
 			throw new IllegalArgumentException(e.getMessage());
@@ -115,12 +123,18 @@ public class Network implements NetworkAccess {
 					response = executeRequest(request);
 				}
 				
-				// If CACert.org-certificates fail as well, plain mode is used.
 				catch (SSLException e2) {
 					Log.i("Network","No SSL available, switching to plain mode");
 					httpsUrl = url;
 					response = executeRequest(request);
+				
 				}
+			}
+			// If CACert.org-certificates fail as well, plain mode is used.
+			else {
+				Log.i("Network","No SSL available, switching to plain mode");
+				httpsUrl = url;
+				response = executeRequest(request);
 			}
 		}
 		catch (UnknownHostException e) {
