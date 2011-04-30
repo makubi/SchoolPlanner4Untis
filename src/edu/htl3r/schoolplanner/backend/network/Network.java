@@ -20,10 +20,12 @@ package edu.htl3r.schoolplanner.backend.network;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.security.KeyStore;
 
 import javax.net.ssl.SSLException;
 
@@ -47,6 +49,8 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
 import android.util.Log;
+import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.SchoolplannerContext;
 
 /**
  * 
@@ -98,6 +102,7 @@ public class Network implements NetworkAccess {
 			throw new IllegalArgumentException(e.getMessage());
 		}
 		catch (SSLException e) {
+			Log.d("Network","ERROR",e);
 			// TODO: Import untrusted SSL certificates / add untrusted CAs
 			Log.d("Network","No SSL available, switching to http");
 			httpsUrl = url;
@@ -142,7 +147,9 @@ public class Network implements NetworkAccess {
 	
 	private void registerScheme() {
 		client.getConnectionManager().getSchemeRegistry().register(new Scheme("http", PlainSocketFactory.getSocketFactory(), url != null && url.getPort() != -1 ? url.getPort() : 80));
-		client.getConnectionManager().getSchemeRegistry().register(new Scheme("https", SSLSocketFactory.getSocketFactory(), httpsUrl != null && httpsUrl.getPort() != -1 ? httpsUrl.getPort() : 443));
+		
+		// trust only cacert
+		client.getConnectionManager().getSchemeRegistry().register(new Scheme("https", newSslSocketFactory(), httpsUrl != null && httpsUrl.getPort() != -1 ? httpsUrl.getPort() : 443));
 	}
 
 	@Override
@@ -166,5 +173,21 @@ public class Network implements NetworkAccess {
 		 this.serverUrl = "http://"+serverUrl+"/WebUntis/jsonrpc.do";
 		 this.httpsServerUrl = "https://"+serverUrl+"/WebUntis/jsonrpc.do";
 		 registerScheme();
+	}
+	
+
+	private SSLSocketFactory newSslSocketFactory() {
+	    try {
+	        KeyStore trusted = KeyStore.getInstance("BKS");
+	        InputStream in = SchoolplannerContext.context.getResources().openRawResource(R.raw.cacert_ks);
+	        try {
+	            trusted.load(in, "cacert".toCharArray());
+	        } finally {
+	            in.close();
+	        }
+	        return new SSLSocketFactory(trusted);
+	    } catch (Exception e) {
+	        throw new AssertionError(e);
+	    }
 	}
 }
