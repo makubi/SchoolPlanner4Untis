@@ -30,6 +30,7 @@ import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.timetableviews.DayView;
 import edu.htl3r.schoolplanner.gui.timetableviews.ViewActivity;
+import edu.htl3r.schoolplanner.gui.timetableviews.WeekView;
 
 /**
  * 
@@ -63,7 +64,7 @@ public class Preferences {
 	private boolean autologin = false;
 	private int type; // siehe arrays.xml
 	private String selection; // is es 5AN, 1BI, 263B, BRE etc.
-	private ViewActivity view = new DayView();
+	private ViewActivity view = new WeekView();
 	private boolean autochoose = false;
 	private int bgColor;
 	private int borderColor;
