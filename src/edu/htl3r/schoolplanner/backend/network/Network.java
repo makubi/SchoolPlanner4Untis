@@ -20,10 +20,12 @@ package edu.htl3r.schoolplanner.backend.network;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.security.KeyStore;
 
 import javax.net.ssl.SSLException;
 
@@ -47,6 +49,8 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
 import android.util.Log;
+import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.SchoolplannerContext;
 
 /**
  * 
@@ -86,28 +90,57 @@ public class Network implements NetworkAccess {
 	
 	@Override
 	public String getResponse(String request) throws IOException {	
-		String response;
+		String response = null;
 		try {
 			response = executeRequest(request);
 		}
 		catch (SocketTimeoutException e) {
 			Log.w("Network", "Socket timed out during network access.",e);
-			throw new SocketTimeoutException("Socket timed out during network access.");
+			
+			Log.i("Network","No SSL available, switching to plain mode");
+			httpsUrl = url;
+			response = executeRequest(request);
+				
 		}
 		catch (IllegalArgumentException e) {
 			throw new IllegalArgumentException(e.getMessage());
 		}
 		catch (SSLException e) {
-			// TODO: Import untrusted SSL certificates / add untrusted CAs
-			Log.d("Network","No SSL available, switching to http");
-			httpsUrl = url;
-			response = getResponse(request);
+			
+			// If no trusted certificate is found, CACert.org-certificates are tried.
+			if(e.getMessage().equals("Not trusted server certificate")) {
+				Log.i("Network","No trusted SSL certificate found, trying CACert.org-certificate");
+				
+				// Unregistering standard-scheme for SSL and registering a scheme using the CACert.org-certificate.
+				client.getConnectionManager().getSchemeRegistry().unregister("https");
+				client.getConnectionManager().getSchemeRegistry().register(new Scheme("https", caCertSSLSocketFactory(), httpsUrl != null && httpsUrl.getPort() != -1 ? httpsUrl.getPort() : 443));
+				
+				try {
+					response = executeRequest(request);
+				}
+				
+				catch (SSLException e2) {
+					Log.i("Network","No SSL available, switching to plain mode");
+					httpsUrl = url;
+					response = executeRequest(request);
+				}
+			}
+			// If any other SSL-Exception occurs, continue in plain mode
+			else {
+				Log.i("Network","No SSL available, switching to plain mode");
+				httpsUrl = url;
+				response = executeRequest(request);
+			}
 		}
 		catch (UnknownHostException e) {
 			Log.d("Network","Unknown host exception occured, URL: "+url+", host: "+url.getHost());
 			throw new UnknownHostException("Unable to resolve host: "+url.getHost());
 		}
 		
+		// If nothing was returned, there was an error.
+		if(response == null) {
+			throw new IOException("Even plain mode did not work. No data received.");
+		}
 		return response;
 	}
 	
@@ -141,7 +174,7 @@ public class Network implements NetworkAccess {
 	}
 	
 	private void registerScheme() {
-		client.getConnectionManager().getSchemeRegistry().register(new Scheme("http", PlainSocketFactory.getSocketFactory(), url != null && url.getPort() != -1 ? url.getPort() : 80));
+		client.getConnectionManager().getSchemeRegistry().register(new Scheme("http", PlainSocketFactory.getSocketFactory(), url != null && url.getPort() != -1 ? url.getPort() : 80));		
 		client.getConnectionManager().getSchemeRegistry().register(new Scheme("https", SSLSocketFactory.getSocketFactory(), httpsUrl != null && httpsUrl.getPort() != -1 ? httpsUrl.getPort() : 443));
 	}
 
@@ -166,5 +199,21 @@ public class Network implements NetworkAccess {
 		 this.serverUrl = "http://"+serverUrl+"/WebUntis/jsonrpc.do";
 		 this.httpsServerUrl = "https://"+serverUrl+"/WebUntis/jsonrpc.do";
 		 registerScheme();
+	}
+	
+
+	private SSLSocketFactory caCertSSLSocketFactory() {
+	    try {
+	        KeyStore trusted = KeyStore.getInstance("BKS");
+	        InputStream in = SchoolplannerContext.context.getResources().openRawResource(R.raw.cacert_ks);
+	        try {
+	            trusted.load(in, "cacert".toCharArray());
+	        } finally {
+	            in.close();
+	        }
+	        return new SSLSocketFactory(trusted);
+	    } catch (Exception e) {
+	        throw new AssertionError(e);
+	    }
 	}
 }
