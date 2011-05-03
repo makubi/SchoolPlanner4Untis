@@ -99,12 +99,8 @@ public class Network implements NetworkAccess {
 			
 			Log.i("Network","No SSL available, switching to plain mode");
 			httpsUrl = url;
-			try {
-				response = executeRequest(request);
-			}
-			catch (SocketTimeoutException e2) {
-				throw new SocketTimeoutException("Socket timed out during network access.");	
-			}			
+			response = executeRequest(request);
+				
 		}
 		catch (IllegalArgumentException e) {
 			throw new IllegalArgumentException(e.getMessage());
@@ -117,7 +113,7 @@ public class Network implements NetworkAccess {
 				
 				// Unregistering standard-scheme for SSL and registering a scheme using the CACert.org-certificate.
 				client.getConnectionManager().getSchemeRegistry().unregister("https");
-				client.getConnectionManager().getSchemeRegistry().register(new Scheme("https", newSslSocketFactory(), httpsUrl != null && httpsUrl.getPort() != -1 ? httpsUrl.getPort() : 443));
+				client.getConnectionManager().getSchemeRegistry().register(new Scheme("https", caCertSSLSocketFactory(), httpsUrl != null && httpsUrl.getPort() != -1 ? httpsUrl.getPort() : 443));
 				
 				try {
 					response = executeRequest(request);
@@ -127,10 +123,9 @@ public class Network implements NetworkAccess {
 					Log.i("Network","No SSL available, switching to plain mode");
 					httpsUrl = url;
 					response = executeRequest(request);
-				
 				}
 			}
-			// If CACert.org-certificates fail as well, plain mode is used.
+			// If any other SSL-Exception occurs, continue in plain mode
 			else {
 				Log.i("Network","No SSL available, switching to plain mode");
 				httpsUrl = url;
@@ -207,7 +202,7 @@ public class Network implements NetworkAccess {
 	}
 	
 
-	private SSLSocketFactory newSslSocketFactory() {
+	private SSLSocketFactory caCertSSLSocketFactory() {
 	    try {
 	        KeyStore trusted = KeyStore.getInstance("BKS");
 	        InputStream in = SchoolplannerContext.context.getResources().openRawResource(R.raw.cacert_ks);
