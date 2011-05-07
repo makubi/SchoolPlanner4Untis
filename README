@@ -27,3 +27,5 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 			-) ANDROID_HOME=$SDK_ROOT
 		-) In Eclipse
 			-) File -> Import... -> Maven --> Existing Maven Projects
+		-) Wenn es nicht als Android Projekt erkannt wird
+			-) Rechtsklick auf das Projekt -> Android -> Convert to Android Project
