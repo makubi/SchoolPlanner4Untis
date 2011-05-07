@@ -31,6 +31,13 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 			-) Rechtsklick auf das Projekt -> Android -> Convert to Android Project
 		-) Refresh des Projekts
 
+ERROR IM PROJEKT (in Eclipse)
+
+	-) Sollte die Fehlermeldung ".../gen already exists but is not a source folder. Convert to a source folder or rename it." erscheinen:
+		-) In Eclipse
+			-) -Ordner "gen/" löschen und Projekt refreshen
+
+
 EINRICHTEN DER UMGEBUNGSVARIABLEN
 
 	-) Sollte die Fehlermeldung "[ERROR] Error when generating sources. No Android SDK path could be found...." erscheinen, gibt es folgende Abhilfemaßnahmen:
