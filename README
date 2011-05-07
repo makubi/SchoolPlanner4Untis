@@ -53,8 +53,21 @@ EINRICHTEN DER UMGEBUNGSVARIABLEN
 		
 		-) Script erstellen, von dem Eclipse gestartet wird und dieses über einen Launcher starten
 
+
 MEHRERE ANDROID SDK-INSTALLATIONEN
 
-	-) Sollte eine Fehlermeldung betreffend "Error reading ../android-sdk/platforms/android-3/source.properties -> [Help 1]" erscheinen
+	-) Sollte eine Fehlermeldung betreffend "... Error reading ../android-sdk/platforms/android-3/source.properties -> [Help 1]" erscheinen
 		-) Entfernen alter Android-SDK-Installationen
 		-) Hinzufügen des SDK 7 (2.1)
+
+
+OPTION '-XX:+AggressiveOpts' IN 'eclipse.ini'
+
+	-) Sollte die Fehlermeldung
+		-) 	"
+			Dx trouble writing output: null
+			Conversion to Dalvik format failed with error 2
+			Dx no classfiles specified
+			Conversion to Dalvik format failed with error 1
+			"
+		angezeigt werden, muss die Option '-XX:+AggressiveOpts' in der Datei 'eclipse.ini' entfernt werden
