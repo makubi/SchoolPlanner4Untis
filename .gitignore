@@ -4,6 +4,4 @@
 bin/
 doc/
 gen/
-lib/*/bin/
-lib/*/doc/
-lib/*/gen/
+target/

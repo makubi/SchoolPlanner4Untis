@@ -227,4 +227,7 @@
 	
 	<string name="login_changed">Your login credentials have changed! Do you want to reload the basedata? (This is recommended, because otherwise wrong data might be present.)</string>
 	<string name="login_changed_title">Warning!</string>
+	
+    <string name="ambilwarna_cancel">Cancel</string>
+    <string name="ambilwarna_ok">OK</string>
 </resources>

@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsoluteLayout;
 import android.widget.ImageView;
+import edu.htl3r.schoolplanner.R;
 
 public class AmbilWarnaDialog {
 	private static final String TAG = AmbilWarnaDialog.class.getSimpleName();
@@ -65,7 +66,7 @@ public class AmbilWarnaDialog {
 		viewWarnaBaru.setBackgroundColor(color);
 
 		viewHue.setOnTouchListener(new View.OnTouchListener() {
-			
+			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_MOVE 
 						|| event.getAction() == MotionEvent.ACTION_DOWN
@@ -90,7 +91,7 @@ public class AmbilWarnaDialog {
 			}
 		});
 		viewKotak.setOnTouchListener(new View.OnTouchListener() {
-			
+			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_MOVE 
 						|| event.getAction() == MotionEvent.ACTION_DOWN
@@ -121,7 +122,7 @@ public class AmbilWarnaDialog {
 		dialog = new AlertDialog.Builder(context)
 		.setView(view)
 		.setPositiveButton(R.string.ambilwarna_ok, new DialogInterface.OnClickListener() {
-			
+			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				if (AmbilWarnaDialog.this.listener != null) {
 					AmbilWarnaDialog.this.listener.onOk(AmbilWarnaDialog.this, warnaBaru);
@@ -129,7 +130,7 @@ public class AmbilWarnaDialog {
 			}
 		})
 		.setNegativeButton(R.string.ambilwarna_cancel, new DialogInterface.OnClickListener() {
-			
+			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				if (AmbilWarnaDialog.this.listener != null) {
 					AmbilWarnaDialog.this.listener.onCancel(AmbilWarnaDialog.this);

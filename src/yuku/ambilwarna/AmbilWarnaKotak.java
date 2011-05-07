@@ -11,6 +11,7 @@ import android.graphics.Shader;
 import android.graphics.Shader.TileMode;
 import android.util.AttributeSet;
 import android.view.View;
+import edu.htl3r.schoolplanner.R;
 
 public class AmbilWarnaKotak extends View {
 	

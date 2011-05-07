@@ -51,8 +51,9 @@ public class Authentication {
 	 * @throws MalformedURLException 
 	 */
 	public void setServerUrl(String serverUri) throws URISyntaxException {
-		serverUri = serverUri.replaceAll("/WebUntis(/jsonrpc.do)?", "");
-		Pattern p = Pattern.compile("([a-zA-Z]+://)?(.*)");
+		serverUri = serverUri.replaceAll("/WebUntis(/jsonrpc.do)?$", "");
+		Pattern p = Pattern.compile("^([a-zA-Z]+://)?(.*)$");
+		// Pattern.compile("^([a-zA-Z]+://)?(.*?)/WebUntis(/jsonrpc.do)?$");
 		Matcher m = p.matcher(serverUri);
 		if(m.matches()) {
 			String url = m.group(2);
