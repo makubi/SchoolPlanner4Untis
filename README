@@ -40,3 +40,6 @@ EINRICHTEN DER UMGEBUNGSVARIABLEN
 		
 		-) In /etc/environment
 			-) export ANDROID_HOME=/path/to/android/sdk
+		ODER
+		
+		-) Script erstellen, von dem Eclipse gestartet wird und dieses über einen Launcher starten
