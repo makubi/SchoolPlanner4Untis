@@ -28,10 +28,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import edu.htl3r.schoolplanner.R;
 
 public class SpinnerMultiAdapter extends BaseAdapter implements OnCheckedChangeListener {

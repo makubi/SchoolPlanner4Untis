@@ -5,6 +5,7 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 	-) Einrichten der Entwicklungsumgebung
 		-) Installation von Eclipse
 		-) Installation von ADT
+			-) API 7 (2.1) wird benoetigt
 		-) Installation von Maven 3
 			-) Download Maven 3.0.3
 				-> http://maven.apache.org/download.html
@@ -31,6 +32,7 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 			-) Rechtsklick auf das Projekt -> Android -> Convert to Android Project
 		-) Refresh des Projekts
 
+
 ERROR IM PROJEKT (in Eclipse)
 
 	-) Sollte die Fehlermeldung ".../gen already exists but is not a source folder. Convert to a source folder or rename it." erscheinen:
@@ -50,3 +52,9 @@ EINRICHTEN DER UMGEBUNGSVARIABLEN
 		ODER
 		
 		-) Script erstellen, von dem Eclipse gestartet wird und dieses über einen Launcher starten
+
+MEHRERE ANDROID SDK-INSTALLATIONEN
+
+	-) Sollte eine Fehlermeldung betreffend "Error reading ../android-sdk/platforms/android-3/source.properties -> [Help 1]" erscheinen
+		-) Entfernen alter Android-SDK-Installationen
+		-) Hinzufügen des SDK 7 (2.1)

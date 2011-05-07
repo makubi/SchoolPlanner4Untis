@@ -27,7 +27,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 import edu.htl3r.schoolplanner.backend.Cache;
-import edu.htl3r.schoolplanner.backend.DataConnection;
 import edu.htl3r.schoolplanner.backend.DataProvider;
 import edu.htl3r.schoolplanner.backend.Preferences;
 import edu.htl3r.schoolplanner.gui.timetableviews.ViewActivity;
