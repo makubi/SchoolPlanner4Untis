@@ -2,32 +2,28 @@
 
 ANDROID PROJEKT IN ECLIPSE EINBINDEN
 
-	-) Neues Android-Projekt erstellen
-	-) Temporäre Einstellungen wählen, z.B.
-		Project name: TempProject
-		[o] Create new project in workspace
-		Build Target: Android 2.1
+	-) Einrichten der Entwicklungsumgebung
+		-) Installation von Eclipse
+		-) Installation von ADT
+		-) Installation von Maven 3
+			-) Download Maven 3.0.3
+				-> http://maven.apache.org/download.html
+			-) Entpacke Maven 3
+			-) Setzen der Variablen
+				-) M3_HOME=/path/to/maven
+				-) M3=$M3_HOME/bin
+				-) PATH=$M3:$PATH
+			-) Hinzufügen des entpackten Mavens in Eclipse
+				-) In Eclipse
+					-) Window -> Preferences -> Maven -> Installations -> Add... -> Vorher entpacktes Maven auswählen
+				-) Restart (bei Nachfrage)
+		-) Installation von M2Eclipse
+			-) Install new software
+				-) Update Site: http://m2eclipse.sonatype.org/sites/m2e
+			-) Restart (bei Nachfrage)
 
-		Properties
-			Application name: TempApp
-			Package name: my.test
-			Min SDK Version: 7
-
-	-) Dateien .classpath und .project in dieses Verzeichnis verschieben
-	-) Danach kann das Test-Projekt wieder gänzlich entfernt werden
-
-	-) Dieses Projekt in den Workspace importieren
-
-	-) Neues Android Projekt erstellen
-		[o] Create project from existing source
-			Location: lib/AmbilWarna-Ordner auswählen
-
-	-) yuku_ambilwarna
-		Refresh
-		Clean
-
-	-) Sollten im Projekt noch Compiler-Fehler sein, folgendes versuchen
-		Properties von SchoolPlanner4Untis
-			--> Android --> Java Compiler --> 1.6
-			Neu bauen
-
+	-) Hinzufügen des Projekts
+		-) Setzen der Variable
+			-) ANDROID_HOME=$SDK_ROOT
+		-) In Eclipse
+			-) File -> Import... -> Maven --> Existing Maven Projects
