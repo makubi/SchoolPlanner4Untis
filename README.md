@@ -22,7 +22,7 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 			* Restart (bei Nachfrage)
 			* Installation von M2Eclipse
 				* Install new software
-					* [Update Site](http://m2eclipse.sonatype.org/sites/m2e)
+					* hinzufügen [Update Site](http://m2eclipse.sonatype.org/sites/m2e)
 				* Restart (bei Nachfrage)
 
 	* Hinzufügen des Projekts
