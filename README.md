@@ -49,14 +49,14 @@ EINRICHTEN DER UMGEBUNGSVARIABLEN
 * Sollte die Fehlermeldung "[ERROR] Error when generating sources. No Android SDK path could be found...." erscheinen, gibt es folgende Abhilfemaßnahmen:
 	* Starten von Eclipse über das Terminal (da hier die Umgebungsvariablen richtig gesetzt werden)
 		
-	ODER
+	* ODER
 		
-	* In /etc/environment
-		* export ANDROID_HOME=/path/to/android/sdk
+		* In /etc/environment
+			* export ANDROID_HOME=/path/to/android/sdk
 	
-	ODER
+	* ODER
 		
-	* Script erstellen, von dem Eclipse gestartet wird und dieses über einen Launcher starten
+		* Script erstellen, von dem Eclipse gestartet wird und dieses über einen Launcher starten
 
 
 MEHRERE ANDROID SDK-INSTALLATIONEN
