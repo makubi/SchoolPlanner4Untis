@@ -22,7 +22,7 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 			* Restart (bei Nachfrage)
 			* Installation von M2Eclipse
 				* Install new software
-					* Update Site: http://m2eclipse.sonatype.org/sites/m2e
+				* hinzufügen, Update Site: http://m2eclipse.sonatype.org/sites/m2e
 				* Restart (bei Nachfrage)
 
 	* Hinzufügen des Projekts
@@ -40,7 +40,7 @@ ERROR IM PROJEKT (in Eclipse)
 
 * Sollte die Fehlermeldung ".../gen already exists but is not a source folder. Convert to a source folder or rename it." erscheinen:
 	* In Eclipse
-	* -Ordner "gen/" löschen und Projekt refreshen
+	* Ordner "gen/" löschen und Projekt refreshen
 
 
 EINRICHTEN DER UMGEBUNGSVARIABLEN
@@ -49,14 +49,14 @@ EINRICHTEN DER UMGEBUNGSVARIABLEN
 * Sollte die Fehlermeldung "[ERROR] Error when generating sources. No Android SDK path could be found...." erscheinen, gibt es folgende Abhilfemaßnahmen:
 	* Starten von Eclipse über das Terminal (da hier die Umgebungsvariablen richtig gesetzt werden)
 		
-	ODER
+	* ODER
 		
-	* In /etc/environment
-		* export ANDROID_HOME=/path/to/android/sdk
+		* In /etc/environment
+			* export ANDROID_HOME=/path/to/android/sdk
 	
-	ODER
+	* ODER
 		
-	* Script erstellen, von dem Eclipse gestartet wird und dieses über einen Launcher starten
+		* Script erstellen, von dem Eclipse gestartet wird und dieses über einen Launcher starten
 
 
 MEHRERE ANDROID SDK-INSTALLATIONEN
