@@ -193,6 +193,28 @@
 	Dieser Bildschirm wird dadurch automatisch übersprungen.
 	</string>
 	
+	<string name="help_DayView">
+	&lt;h1>Hilfe&lt;/h1>
+	In der Tagesansicht werden detaillierte Informationen zu Stunden angezeigt, auch jene, die in der Wochenansicht möglicherweise nicht direkt verfügbar waren.
+	&lt;br />&lt;br />
+	In den Einstellungen gibt es außerdem Anpassungsmöglichkeiten dieser Ansicht, wie z.B. das Ein- und Ausblenden des Stundenrasters.
+	&lt;br />&lt;br />
+	Durch Finger-Gesten können Sie weitere Funktionen dieser Ansicht benutzen.
+	&lt;h3>Fingergesten&lt;/h3>
+	&lt;h4>Wechsel des Tages&lt;/h4>
+	Wünschen Sie, sich den vorigen oder nächsten Tag anzeigen zu lassen, können Sie dies komfortabel tun, indem Sie einfach die passende Wisch-Bewegung mit dem Finger nach links oder rechts ausführen.
+	
+	&lt;h4>Detaillierte Stundeninformationen&lt;/h4>
+	Um in die Detailansicht einer Stunde zu gelangen, tippen Sie die gewünschte Stunde einmal kurz an. Danach werden Ihnen ausführliche Informationen dieser angezeigt.
+	
+	&lt;h4>Eintragen von Tests&lt;/h4>
+	Um einen Test für eine bestimmte Stunde einzutragen, können Sie mit dem Finger lange auf dieser Stunde bleiben, um das Kontextmenü der Stunde anzeigen zu lassen und wählen dort das Eintragen eines neuen Tests aus.
+	Außerdem gibt es die Möglichkeit, einen Test über das Menü direkt einzutragen.
+	
+	&lt;h4>Aufruf des Menüs&lt;/h4>
+	Wie in jeder Ansicht, gibt es auch hier die Möglichkeit, das Menü über den Menü-Button anzeigen zu lassen und aus den angezeigten Optionen zu wählen.
+	</string>
+	
 	<string name="help_WeekView">
 	&lt;h1>Hilfe&lt;/h1>
 	In der Wochenansicht sehen Sie den Stundenplan der aktuell ausgewählten Woche.&lt;br />
@@ -221,28 +243,6 @@
 	&lt;b>&lt;/b>
 	
 	&lt;h3>Aufruf des Menüs&lt;/h3>
-	Wie in jeder Ansicht, gibt es auch hier die Möglichkeit, das Menü über den Menü-Button anzeigen zu lassen und aus den angezeigten Optionen zu wählen.
-	</string>
-	
-	<string name="help_DayView">
-	&lt;h1>Hilfe&lt;/h1>
-	In der Tagesansicht werden detaillierte Informationen zu Stunden angezeigt, auch jene, die in der Wochenansicht möglicherweise nicht direkt verfügbar waren.
-	&lt;br />&lt;br />
-	In den Einstellungen gibt es außerdem Anpassungsmöglichkeiten dieser Ansicht, wie z.B. das Ein- und Ausblenden des Stundenrasters.
-	&lt;br />&lt;br />
-	Durch Finger-Gesten können Sie weitere Funktionen dieser Ansicht benutzen.
-	&lt;h3>Fingergesten&lt;/h3>
-	&lt;h4>Wechsel des Tages&lt;/h4>
-	Wünschen Sie, sich den vorigen oder nächsten Tag anzeigen zu lassen, können Sie dies komfortabel tun, indem Sie einfach die passende Wisch-Bewegung mit dem Finger nach links oder rechts ausführen.
-	
-	&lt;h4>Detaillierte Stundeninformationen&lt;/h4>
-	Um in die Detailansicht einer Stunde zu gelangen, tippen Sie die gewünschte Stunde einmal kurz an. Danach werden Ihnen ausführliche Informationen dieser angezeigt.
-	
-	&lt;h4>Eintragen von Tests&lt;/h4>
-	Um einen Test für eine bestimmte Stunde einzutragen, können Sie mit dem Finger lange auf dieser Stunde bleiben, um das Kontextmenü der Stunde anzeigen zu lassen und wählen dort das Eintragen eines neuen Tests aus.
-	Außerdem gibt es die Möglichkeit, einen Test über das Menü direkt einzutragen.
-	
-	&lt;h4>Aufruf des Menüs&lt;/h4>
 	Wie in jeder Ansicht, gibt es auch hier die Möglichkeit, das Menü über den Menü-Button anzeigen zu lassen und aus den angezeigten Optionen zu wählen.
 	</string>
 	

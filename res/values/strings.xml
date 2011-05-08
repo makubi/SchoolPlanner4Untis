@@ -202,8 +202,101 @@
 	
 	<string name="help_text">
 	&lt;h1>Help&lt;/h1>
-	Insert help text here.
+	&lt;h3>Display dependent menu entries&lt;/h3>
+	Depending on the actual display, you can see different menu entries to organize the time table quickly. The help screen can be access from every display.
+	&lt;br />&lt;br />
+	&lt;h3>Display dependent help&lt;/h3>
+	Every display has its own help text. If there is none available, this one is shown.
+	&lt;br />&lt;br />
+	&lt;h3>Further help&lt;/h3>
+	If you required further help or got questions about our app, you can contact us by sending an e-mail to team@schoolplanner.at or visiting our website http://www.schoolplanner.at/.
 	</string>
+	
+	<string name="help_LoginScreen">
+	&lt;h1>Help&lt;/h1>
+	&lt;h3>Login data&lt;/h3>
+	&lt;b>Server URL:&lt;/b> The URL of the server, like \'urania.webtermin.com\', without protocol (\'http://\') and the path of WebUntis (\'/WebUntis/\').&lt;br />
+	&lt;b>School name:&lt;/b> Name of the school that you use to authenticate at WebUntis.&lt;br />
+	&lt;b>Username:&lt;/b> Username you use to log in at WebUntis.&lt;br />
+	&lt;b>Password:&lt;/b> Password you use to log in at WebUntis.
+	
+	&lt;h3>Automatic Login&lt;/h3>
+	You can activate the option &lt;i>Auto-Login&lt;/i> to automatically log in when you start the app.&lt;br />
+	If you do so, this dialog will be skipped.
+	&lt;br />&lt;br />
+	&lt;h3>Login-sets&lt;/h3>
+	If you created login sets, you can select them here.&lt;br />
+	Thereby, the actual login data is replaced by the data the login-set uses.
+	&lt;br />&lt;br />
+	&lt;h4>Manage your login-sets&lt;/h4>
+	You can manage your login-sets in the menu &lt;i>settings&lt;/i> after you logged into the app.
+	</string>
+	
+	<string name="help_SelectScreen">
+	&lt;i>Help for this screen follows.&lt;/i>
+	&lt;h1>Help&lt;/h1>
+	&lt;h3>Display dependent menu entries&lt;/h3>
+	Depending on the actual display, you can see different menu entries to organize the time table quickly. The help screen can be access from every display.
+	&lt;br />&lt;br />
+	&lt;h3>Display dependent help&lt;/h3>
+	Every display has its own help text. If there is none available, this one is shown.
+	&lt;br />&lt;br />
+	&lt;h3>Further help&lt;/h3>
+	If you required further help or got questions about our app, you can contact us by sending an e-mail to team@schoolplanner.at or visiting our website http://www.schoolplanner.at/.
+	</string>
+	
+	<string name="help_DayView">
+	&lt;i>Help for this screen follows.&lt;/i>
+	&lt;h1>Help&lt;/h1>
+	&lt;h3>Display dependent menu entries&lt;/h3>
+	Depending on the actual display, you can see different menu entries to organize the time table quickly. The help screen can be access from every display.
+	&lt;br />&lt;br />
+	&lt;h3>Display dependent help&lt;/h3>
+	Every display has its own help text. If there is none available, this one is shown.
+	&lt;br />&lt;br />
+	&lt;h3>Further help&lt;/h3>
+	If you required further help or got questions about our app, you can contact us by sending an e-mail to team@schoolplanner.at or visiting our website http://www.schoolplanner.at/.
+	</string>
+	
+	<string name="help_WeekView">
+	&lt;i>Help for this screen follows.&lt;/i>
+	&lt;h1>Help&lt;/h1>
+	&lt;h3>Display dependent menu entries&lt;/h3>
+	Depending on the actual display, you can see different menu entries to organize the time table quickly. The help screen can be access from every display.
+	&lt;br />&lt;br />
+	&lt;h3>Display dependent help&lt;/h3>
+	Every display has its own help text. If there is none available, this one is shown.
+	&lt;br />&lt;br />
+	&lt;h3>Further help&lt;/h3>
+	If you required further help or got questions about our app, you can contact us by sending an e-mail to team@schoolplanner.at or visiting our website http://www.schoolplanner.at/.
+	</string>
+	
+	<string name="help_MonthView">
+	&lt;i>Help for this screen follows.&lt;/i>
+	&lt;h1>Help&lt;/h1>
+	&lt;h3>Display dependent menu entries&lt;/h3>
+	Depending on the actual display, you can see different menu entries to organize the time table quickly. The help screen can be access from every display.
+	&lt;br />&lt;br />
+	&lt;h3>Display dependent help&lt;/h3>
+	Every display has its own help text. If there is none available, this one is shown.
+	&lt;br />&lt;br />
+	&lt;h3>Further help&lt;/h3>
+	If you required further help or got questions about our app, you can contact us by sending an e-mail to team@schoolplanner.at or visiting our website http://www.schoolplanner.at/.
+	</string>
+
+	<string name="help_DateListView">
+	&lt;i>Help for this screen follows.&lt;/i>
+	&lt;h1>Help&lt;/h1>
+	&lt;h3>Display dependent menu entries&lt;/h3>
+	Depending on the actual display, you can see different menu entries to organize the time table quickly. The help screen can be access from every display.
+	&lt;br />&lt;br />
+	&lt;h3>Display dependent help&lt;/h3>
+	Every display has its own help text. If there is none available, this one is shown.
+	&lt;br />&lt;br />
+	&lt;h3>Further help&lt;/h3>
+	If you required further help or got questions about our app, you can contact us by sending an e-mail to team@schoolplanner.at or visiting our website http://www.schoolplanner.at/.
+	</string>
+	
 	
 	<string name="url">Server URL</string>
 	
