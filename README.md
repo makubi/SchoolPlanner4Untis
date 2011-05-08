@@ -22,7 +22,7 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 			* Restart (bei Nachfrage)
 			* Installation von M2Eclipse
 				* Install new software
-					* Update Site: http://m2eclipse.sonatype.org/sites/m2e
+					* [Update Site](http://m2eclipse.sonatype.org/sites/m2e)
 				* Restart (bei Nachfrage)
 
 	* Hinzufügen des Projekts
@@ -40,7 +40,7 @@ ERROR IM PROJEKT (in Eclipse)
 
 * Sollte die Fehlermeldung ".../gen already exists but is not a source folder. Convert to a source folder or rename it." erscheinen:
 	* In Eclipse
-	* -Ordner "gen/" löschen und Projekt refreshen
+	* Ordner "gen/" löschen und Projekt refreshen
 
 
 EINRICHTEN DER UMGEBUNGSVARIABLEN
