@@ -44,7 +44,8 @@ ERROR IM PROJEKT (in Eclipse)
 EINRICHTEN DER UMGEBUNGSVARIABLEN
 ---------------------------------
 	
-* Sollte die Fehlermeldung
+Sollte die Fehlermeldung:
+
 	[ERROR] Error when generating sources. No Android SDK path could be found....
 erscheinen, gibt es folgende Abhilfemaßnahmen:
 	* Starten von Eclipse über das Terminal (da hier die Umgebungsvariablen richtig gesetzt werden)
@@ -61,7 +62,7 @@ erscheinen, gibt es folgende Abhilfemaßnahmen:
 MEHRERE ANDROID SDK-INSTALLATIONEN
 ----------------------------------
 
-* Sollte eine Fehlermeldung betreffend
+Sollte eine Fehlermeldung betreffend
 
 	... Error reading ../android-sdk/platforms/android-3/source.properties -> [Help 1]
 erscheinen
