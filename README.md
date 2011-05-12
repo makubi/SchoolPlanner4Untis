@@ -37,9 +37,14 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 ERROR IM PROJEKT (in Eclipse)
 -----------------------------
 
-* Sollte die Fehlermeldung ".../gen already exists but is not a source folder. Convert to a source folder or rename it." erscheinen:
-	* In Eclipse
-	* Ordner "gen/" löschen und Projekt refreshen
+Sollte die Fehlermeldung
+
+	.../gen already exists but is not a source folder. Convert to a source folder or rename it.
+
+erscheinen:
+
+* In Eclipse
+* Ordner "gen/" löschen und Projekt refreshen
 
 EINRICHTEN DER UMGEBUNGSVARIABLEN
 ---------------------------------
@@ -47,18 +52,15 @@ EINRICHTEN DER UMGEBUNGSVARIABLEN
 Sollte die Fehlermeldung:
 
 	[ERROR] Error when generating sources. No Android SDK path could be found....
+
 erscheinen, gibt es folgende Abhilfemaßnahmen:
 
-	* Starten von Eclipse über das Terminal (da hier die Umgebungsvariablen richtig gesetzt werden)
-		
-	* ODER
-		
-		* In /etc/environment
+* Starten von Eclipse über das Terminal (da hier die Umgebungsvariablen richtig gesetzt werden)
+* ODER
+	* In /etc/environment
 			* export ANDROID_HOME=/path/to/android/sdk
-	
-	* ODER
-		
-		* Script erstellen, von dem Eclipse gestartet wird und dieses über einen Launcher starten
+* ODER
+	* Script erstellen, von dem Eclipse gestartet wird und dieses über einen Launcher starten
 
 MEHRERE ANDROID SDK-INSTALLATIONEN
 ----------------------------------
@@ -67,8 +69,9 @@ Sollte eine Fehlermeldung betreffend
 
 	... Error reading ../android-sdk/platforms/android-3/source.properties -> [Help 1]
 erscheinen
-	* Entfernen alter Android-SDK-Installationen
-	* Hinzufügen des SDK 7 (2.1)
+
+* Entfernen alter Android-SDK-Installationen
+* Hinzufügen des SDK 7 (2.1)
 
 OPTION '-XX:+AggressiveOpts' IN 'eclipse.ini'
 ---------------------------------------------
