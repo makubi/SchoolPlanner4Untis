@@ -48,6 +48,7 @@ Sollte die Fehlermeldung:
 
 	[ERROR] Error when generating sources. No Android SDK path could be found....
 erscheinen, gibt es folgende Abhilfemaßnahmen:
+
 	* Starten von Eclipse über das Terminal (da hier die Umgebungsvariablen richtig gesetzt werden)
 		
 	* ODER
