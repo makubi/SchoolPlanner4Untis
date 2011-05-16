@@ -105,7 +105,7 @@ public class Network implements NetworkAccess {
 				
 		}
 		catch (IllegalArgumentException e) {
-			throw new IllegalArgumentException(e.getMessage());
+			new IOException(e.getMessage());
 		}
 		catch (SSLException e) {
 			
@@ -159,15 +159,12 @@ public class Network implements NetworkAccess {
 		StringEntity entity = new StringEntity(request, "UTF-8");
 		httpRequest.setEntity(entity);
 
-		HttpResponse httpResponse  = null;
-		String response;
-
-		httpResponse = client.execute(httpRequest);
+		HttpResponse httpResponse = client.execute(httpRequest);
 		Log.d("Network", "Sent: " + request);
 		
 		ByteArrayOutputStream body = new ByteArrayOutputStream();
 		httpResponse.getEntity().writeTo(body);
-		response = body.toString();
+		String response = body.toString();
 		
 		Log.d("Network", "Got status: " + httpResponse.getStatusLine());
 		Log.d("Network", "Got body: " + response);
