@@ -187,7 +187,10 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 					if(!user.equals(prefs.getUsername()) || !schol.equals(prefs.getSchool()) || !urls.equals(prefs.getServerUrl())){
 						setPrefs();
 						handler.sendEmptyMessage(RESYNC_DIALOG);
-					}					
+					}
+					else {
+						handler.sendEmptyMessage(INITIALIZE_OKAY);
+					}
 				}
 				else {
 					handler.sendEmptyMessage(INITIALIZE_FAIL);
