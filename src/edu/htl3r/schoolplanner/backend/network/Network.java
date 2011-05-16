@@ -25,7 +25,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.security.KeyStore;
 
@@ -49,6 +48,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
+import org.springframework.web.util.UriUtils;
 
 import android.util.Log;
 import edu.htl3r.schoolplanner.R;
@@ -181,11 +181,8 @@ public class Network implements NetworkAccess {
 	public void setSchool(String school) {
 		try {
 			// Encode school as iso-8859-1 string
-			String encodedSchool = URLEncoder.encode(school,"ISO-8859-1");
-			
-			// Spaces get encoded as + but we need %20 instead
-			encodedSchool = encodedSchool.replace("+", "%20");
-			
+			String encodedSchool = UriUtils.encodeQuery(school,"ISO-8859-1");
+						
 			url = new URI(serverUrl + "?school=" + encodedSchool);
 			httpsUrl = new URI(httpsServerUrl + "?school=" + encodedSchool);
 			
