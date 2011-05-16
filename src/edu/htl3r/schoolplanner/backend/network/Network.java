@@ -21,9 +21,11 @@ package edu.htl3r.schoolplanner.backend.network;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.KeyStore;
 
@@ -92,6 +94,7 @@ public class Network implements NetworkAccess {
 	public String getResponse(String request) throws IOException {	
 		String response = null;
 		try {
+			Log.d("Network", "Using url: "+httpsUrl);
 			response = executeRequest(request);
 		}
 		catch (SocketTimeoutException e) {
@@ -181,9 +184,14 @@ public class Network implements NetworkAccess {
 	@Override
 	public void setSchool(String school) {
 		try {
-			url = new URI(serverUrl + "?school=" + school);
-			httpsUrl = new URI(httpsServerUrl + "?school=" + school);
+			URL url = new URL(serverUrl + "?school=" + school);
+			URL httpsUrl = new URL(httpsServerUrl + "?school=" + school);
+			this.url = new URI(url.getProtocol(), url.getHost(), url.getPath(), url.getQuery(), null);
+			this.httpsUrl = new URI(httpsUrl.getProtocol(), httpsUrl.getHost(), httpsUrl.getPath(), httpsUrl.getQuery(), null);
 		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

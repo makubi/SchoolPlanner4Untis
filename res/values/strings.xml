@@ -148,23 +148,21 @@
 		
 	<string name="about_text" type="text/html">
 		<b>SchoolPlanner4Untis</b>\n
-		<small>Version Beta</small>\n\n
-		Diplomarbeit 2010/11\n
-		5AN\n
+		<small>Version Beta</small>\n
 		\n
 		Mathias Kub\n
+		Sebastian Chlan\n
+		Christian Pascher\n
 		Gerald Schreiber\n
-		Philip Wölfel\n
-		\n
-		HTL Rennweg\n
-		Rennweg 89b\n
-		A-1030 Wien\n
 		\n
 		team@schoolplanner.at\n
 		www.schoolplanner.at\n
 		\n
-		Color-Picker-Dialog android-color-picker\n
-		code.google.com/p/android-color-picker/
+		<u>Used libraries</u>\n
+		<small>
+		<b>Color-Picker-Dialog android-color-picker</b>\n
+		<i>code.google.com/p/android-color-picker/</i>
+		</small>
 		</string>
 		
 	

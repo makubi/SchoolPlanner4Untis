@@ -68,7 +68,7 @@ MEHRERE ANDROID SDK-INSTALLATIONEN
 Sollte eine Fehlermeldung betreffend
 
 	... Error reading ../android-sdk/platforms/android-3/source.properties -> [Help 1]
-erscheinen
+erscheinen:
 
 * Entfernen alter Android-SDK-Installationen
 * Hinzufügen des SDK 7 (2.1)

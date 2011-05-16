@@ -28,6 +28,9 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
+/**
+ * Repraesentiert eine Klasse, die alle Stammdaten haelt.
+ */
 public class MasterData {
 
 	private List<SchoolClass> schoolClassList;
@@ -39,6 +42,9 @@ public class MasterData {
 	private List<SchoolTestType> schoolTestTypeList;
 	
 	private Timegrid timegrid;
+	
+	// TODO: List of departments
+	// TODO: Status data (colors of lstypes and codes)
 
 	public List<SchoolClass> getSchoolClassList() {
 		return schoolClassList;
@@ -88,15 +94,20 @@ public class MasterData {
 		this.schoolHolidayList = schoolHolidayList;
 	}
 
+	/**
+	 * Not implemented yet! 
+	 * @return null
+	 */
 	public List<SchoolTestType> getSchoolTestTypeList() {
 		return schoolTestTypeList;
 	}
 
+	/**
+	 * Not implemented yet! 
+	 * @param schoolTestTypeList
+	 */
 	public void setSchoolTestTypeList(List<SchoolTestType> schoolTestTypeList) {
 		this.schoolTestTypeList = schoolTestTypeList;
 	}
-	
-	// TODO: Weitere Stammdaten
-
 	
 }
