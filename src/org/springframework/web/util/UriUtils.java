@@ -193,7 +193,7 @@ public abstract class UriUtils {
 		if(uri == null) {
 			throw new IllegalArgumentException("'uri' must not be null");
 		}
-		if(encoding.isEmpty()) {
+		if(encoding.length() == 0) {
 			throw new UnsupportedEncodingException("'encoding' must not be empty");
 		}
 		
@@ -361,7 +361,7 @@ public abstract class UriUtils {
 		if(source == null) {
 			throw new IllegalArgumentException("'source' must not be null");
 		}
-		if(encoding.isEmpty()) {
+		if(encoding.length() == 0) {
 			throw new UnsupportedEncodingException("'encoding' must not be empty");
 		}
 		
@@ -409,7 +409,7 @@ public abstract class UriUtils {
 		if(source == null) {
 			throw new IllegalArgumentException("'source' must not be null");
 		}
-		if(encoding.isEmpty()) {
+		if(encoding.length() == 0) {
 			throw new UnsupportedEncodingException("'encoding' must not be empty");
 		}
 		
