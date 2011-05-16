@@ -116,7 +116,7 @@
 	
 	<string name="login_failure">Login fehlgeschlagen! Bitte überprüfen Sie die Login-Daten!</string>
 	<string name="login_no_network">Keine Netzwerkverbindung vorhanden! Es wird versucht, Daten aus dem lokalen Cache zu laden.</string>
-	<string name="login_network_error">Ein unerwarteter Fehler ist aufgetreten! Bitte überprüfen Sie Ihre Netzwerkkonnektivität und Ihre Login-Daten!</string>
+	<string name="login_network_error">Ein Fehler ist aufgetreten. Bitte überprüfen Sie Ihre Netzwerkkonnektivität und Ihre Login-Daten!</string>
 	
 	<string name="no_lessons">An diesem Tag gibt es keine Unterrichtsstunden!\n\<b>Genieße den Tag! :)</b></string>
 	<string name="no_lessons_part1">Am </string>

@@ -105,7 +105,7 @@ public class Network implements NetworkAccess {
 				
 		}
 		catch (IllegalArgumentException e) {
-			new IOException(e.getMessage());
+			throw new SocketTimeoutException(e.getMessage());
 		}
 		catch (SSLException e) {
 			

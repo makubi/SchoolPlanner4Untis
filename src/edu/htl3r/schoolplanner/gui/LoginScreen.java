@@ -136,7 +136,6 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 		dialog.setNegativeButton(getResources().getString(R.string.button_no), this);
 		dialog.setPositiveButton(getResources().getString(R.string.button_yes), this);
 		dialog.show();
-
 	}
 
 	@Override
@@ -148,16 +147,7 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 		String urls = url.getText().toString();
 		
 		if(user!=null && !user.equals("") && urls!=null && !urls.equals("")  && schol!=null && !schol.equals("")){
-			
-			if(!user.equals(prefs.getUsername()) || !schol.equals(prefs.getSchool()) || !urls.equals(prefs.getServerUrl())){
-				setPrefs();
-				handler.sendEmptyMessage(RESYNC_DIALOG);
-			}
-			else{
-				setPrefs();
 				doTheRealLogin();
-			}
-			
 		}
 		else{
 			handler.sendEmptyMessage(INITIALIZE_FAIL);
@@ -185,11 +175,19 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 	
 	
 	private void doTheRealLogin() {
+		String user = new String(prefs.getUsername());
+		//String pwd = password.getText().toString();
+		String schol = new String(prefs.getSchool());
+		String urls = new String(prefs.getServerUrl());
 		
+		setPrefs();
 		if (app.isNetworkEnabled()) {
 			try {
 				if (app.getData().authenticate()) {
-					handler.sendEmptyMessage(INITIALIZE_OKAY);
+					if(!user.equals(prefs.getUsername()) || !schol.equals(prefs.getSchool()) || !urls.equals(prefs.getServerUrl())){
+						setPrefs();
+						handler.sendEmptyMessage(RESYNC_DIALOG);
+					}					
 				}
 				else {
 					handler.sendEmptyMessage(INITIALIZE_FAIL);
@@ -256,6 +254,7 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 				resync_data = false;
 				break;
 		}
+		handler.sendEmptyMessage(INITIALIZE_OKAY);
 		doLogin();
 	}
 }

@@ -64,7 +64,7 @@
 	
 	<string name="login_failure">Unable to log in! Please check your login data!</string>
 	<string name="login_no_network">No network connection available, using local data!</string>
-	<string name="login_network_error">An unexpected error occurred! Please check your network connectivity and your login data!</string>
+	<string name="login_network_error">An error occurred. Please check your network connectivity and your login data!</string>
 	
 	<string name="prefs_saved">Preferences has been saved!</string>
 	<string name="prefs_cat_login">Login Data</string>
