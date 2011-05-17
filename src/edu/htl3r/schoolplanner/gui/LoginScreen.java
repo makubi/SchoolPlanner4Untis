@@ -60,6 +60,10 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 	protected HashMap<String, Authentication> sets;
 	
 
+	private boolean isLoginDataNull() {
+		return username.getText() != null && username.getText().length() > 0 && password.getText() != null && password.getText().length() > 0 && school.getText() != null && school.getText().length() > 0 && url.getText() != null && url.getText().length() > 0;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -88,7 +92,7 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 							break;
 					}
 				}
-			};
+			}
 		};
 
 		setContentView(R.layout.login);
@@ -186,7 +190,13 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 				if (app.getData().authenticate()) {
 					if(!user.equals(prefs.getUsername()) || !schol.equals(prefs.getSchool()) || !urls.equals(prefs.getServerUrl())){
 						setPrefs();
-						handler.sendEmptyMessage(RESYNC_DIALOG);
+						if(urls != null && urls.length() > 0 && schol != null && schol.length() > 0 && user != null && user.length() > 0) {
+							handler.sendEmptyMessage(RESYNC_DIALOG);
+						}
+						else {
+							resync_data = true;
+							handler.sendEmptyMessage(INITIALIZE_OKAY);
+						}
 					}
 					else {
 						handler.sendEmptyMessage(INITIALIZE_OKAY);
