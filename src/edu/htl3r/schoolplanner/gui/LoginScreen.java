@@ -58,11 +58,6 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 	protected Spinner presets;
 
 	protected HashMap<String, Authentication> sets;
-	
-
-	private boolean isLoginDataNull() {
-		return username.getText() != null && username.getText().length() > 0 && password.getText() != null && password.getText().length() > 0 && school.getText() != null && school.getText().length() > 0 && url.getText() != null && url.getText().length() > 0;
-	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

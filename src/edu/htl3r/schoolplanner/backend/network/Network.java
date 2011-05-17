@@ -76,8 +76,8 @@ public class Network implements NetworkAccess {
 		HttpParams params = new BasicHttpParams();
 		
 		// TODO: Timeouts sind statisch
-		HttpConnectionParams.setConnectionTimeout(params, 8000);
-		HttpConnectionParams.setSoTimeout(params, 5000);
+		HttpConnectionParams.setConnectionTimeout(params, 10000);
+		HttpConnectionParams.setSoTimeout(params, 8000);
 		
 		HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
 		HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
