@@ -51,6 +51,10 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  */
 public class JSONNetwork implements DataProvider{
 
+	
+	/**
+	 * JSON-RPC Version, die der Untis-Server verwendet.
+	 */
 	private final String jsonrpcVersion = "2.0";
 
 	private final NetworkAccess network = new Network();
@@ -58,11 +62,24 @@ public class JSONNetwork implements DataProvider{
 	private final JSONParser jsonParser = new JSONParser();
 	private final LessonProcessor lessonProcessor = new LessonProcessor();
 
+	/**
+	 * Benutzername fuer Login.
+	 */
 	private String username;
+	
+	/**
+	 * Passwort fuer Login.
+	 */
 	private String password;
 	
+	/**
+	 * Zeitpunkt, wann das letzte mal der Stundenplan importiert wurde.
+	 */
 	private long latestTimetableImportTime = 0;
 	
+	/**
+	 * Mapping der internen ViewType-Klassen auf die Nummern, die sie jeweils in WebUntis haben.
+	 */
 	private Map<Class<? extends ViewType>, Integer> viewTypeMapping = new HashMap<Class<? extends ViewType>, Integer>();
 	
 	public JSONNetwork() {
@@ -72,6 +89,10 @@ public class JSONNetwork implements DataProvider{
 		viewTypeMapping.put(SchoolRoom.class, WebUntis.SCHOOLROOM);
 	}
 
+	/**
+	 * Setzt die Server-URL und den Schulnamen im Netzwerk sowie den Benutzernamen und das Passwort fuer die Authentifizierung.
+	 * @param preferences {@link Preferences} die verwendet werden sollen
+	 */
 	public void setPreferences(Preferences preferences) {
 		network.setServerUrl(preferences.getServerUrl());
 		network.setSchool(preferences.getSchool());
@@ -206,6 +227,13 @@ public class JSONNetwork implements DataProvider{
 		return responseList;
 	}
 
+	/**
+	 * Liefert eine Liste anhand der uebergebenen Parameter, die passende Objekten beinhaltet, z.B. ein Liste mit freien Tagen.
+	 * @param id ID, die fuer die Anfrage verwendet werden soll
+	 * @param method Methode, die fuer die Anfrage verwendet werden soll (siehe dazu {@link JSONGetMethods}).
+	 * @return Eine Liste mit den Objekten fuer die uebergeben Methode
+	 * @throws IOException Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein Fehler auftritt
+	 */
 	private List<SchoolObject> getList(String id, String method) throws IOException {
 		List<SchoolObject> responseList = null;
 
@@ -230,6 +258,13 @@ public class JSONNetwork implements DataProvider{
 		return responseList;
 	}
 	
+	/**
+	 * Liefert das passende Objekt zur angefragten Methode, z.B. das Stundenraster.
+	 * @param id ID, die fuer die Anfrage verwendet werden soll
+	 * @param method Methode, die fuer die Anfrage verwendet werden soll (siehe dazu {@link JSONGetMethods}).
+	 * @return Das passende Objekt zur Anfrage
+	 * @throws IOException Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein Fehler auftritt
+	 */
 	private SchoolObject getSchoolObject(String id, String method) throws IOException {
 		SchoolObject response = null;
 
@@ -340,8 +375,6 @@ public class JSONNetwork implements DataProvider{
 	@Override
 	public Map<String, List<Lesson>> getLessons(ViewType view, Calendar startDate,
 			Calendar endDate) throws IOException {
-		//Log.d("METHOD_CALL", "JSONNetwork.getLessons(" + type.getSimpleName() + " : Class<? extends ViewType>, "+value+" : String, "+date.get(Calendar.YEAR)+"-"+date.get(Calendar.MONTH)+"-"+date.get(Calendar.DAY_OF_MONTH)+" "+date.get(Calendar.HOUR_OF_DAY)+":"+date.get(Calendar.MINUTE)+" : Date");
-		long ms_methodstart = System.currentTimeMillis();
 		final String id = "ID";
 		final String method = JSONGetMethods.getTimetable;
 		
@@ -351,9 +384,13 @@ public class JSONNetwork implements DataProvider{
 		Map<String, List<Lesson>> responseList = new HashMap<String, List<Lesson>>();
 		
 		try {
+			// Setze die ID des ViewTypes (z.B. 5AN)
 			params.put("id", view.getId());
+			
+			// Setze die Art des ViewTypes (z.B. Klasse)
 			params.put("type", viewTypeMapping.get(view.getClass()));
 			
+			// Parsen der Daten
 			String startYear = ""+startDate.get(Calendar.YEAR);
 			// Intern 0 - 11
 			String startMonth = ""+(startDate.get(Calendar.MONTH)+1);
@@ -380,6 +417,7 @@ public class JSONNetwork implements DataProvider{
 				endDay = "0"+endDay;
 			}
 			
+			// Setze die Daten der Abfrage
 			params.put("startDate",startYear+startMonth+startDay);
 			params.put("endDate",endYear+endMonth+endDay);
 			
@@ -387,18 +425,18 @@ public class JSONNetwork implements DataProvider{
 			request.put("method", method);
 			request.put("id", id);
 			request.put("params", params);
-			long ms_objectcreated = System.currentTimeMillis();
+			
+			// Netzwerkanfrage
 			JSONObject response = getJSONData(request);
-			long ms_responsegot = System.currentTimeMillis();
+			
+			// Extrahiere Nutzdaten
 			JSONArray result = response.getJSONArray("result");
 			
+			// Parse die JSON-Response zu passender Map
 			responseList = jsonParser.jsonToLessonMap(result);
-			lessonProcessor.addEmptyDaysToLessonMap(responseList, startDate, endDate);
 			
-			long ms_responseparsed = System.currentTimeMillis();
-			Log.d("SPEEDTESTING", getClass().getSimpleName() + ": create JSON: " +(ms_objectcreated-ms_methodstart) +" ms");
-			Log.d("SPEEDTESTING", getClass().getSimpleName() + ": get response: " +(ms_responsegot-ms_objectcreated) +" ms");
-			Log.d("SPEEDTESTING", getClass().getSimpleName() + ": parse JSON response: " +(ms_responseparsed-ms_responsegot) +" ms");
+			// Fuege leere Listen fuer Daten ohne Stunden hinzu
+			lessonProcessor.addEmptyDaysToLessonMap(responseList, startDate, endDate);
 			
 		} catch (JSONException e) {
 			Log.e("JSON", "Error on requesting lessons",e);
@@ -416,13 +454,13 @@ public class JSONNetwork implements DataProvider{
 	
 	@Override
 	public List<SchoolTestType> getSchoolTestTypeList() {
-		// TODO Auto-generated method stub
+		// TODO Not implemented in v1.0
 		return null;
 	}
 
 	@Override
 	public List<SchoolTest> getSchoolTestList() {
-		// TODO Auto-generated method stub
+		// TODO Not implemented in v1.0
 		return null;
 	}
 
@@ -432,7 +470,7 @@ public class JSONNetwork implements DataProvider{
 	 * der jede weitere Abfrage durchgefuehrt wird.
 	 * 
 	 * @return true, wenn die Authentifizierung erfolgreich war
-	 * @throws IOException 
+	 * @throws IOException Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein Fehler auftritt
 	 */
 	public boolean authenticate() throws IOException {
 		Log.d("METHOD_CALL", "JSONNetwork.authenticate()");
@@ -515,6 +553,11 @@ public class JSONNetwork implements DataProvider{
 		}
 	}
 	
+	/**
+	 * Liefert den Zeitpunkt des letzten Imports des Stundenplans.
+	 * @return Den Zeitpunkt des letzten Imports des Stundenplans
+	 * @throws IOException Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein Fehler auftritt
+	 */
 	private long getLatestTimetableImportTime() throws IOException {
 		final String id = "ID";
 		final String method = JSONGetMethods.getLatestImportTime;
@@ -532,6 +575,11 @@ public class JSONNetwork implements DataProvider{
 		return latestImport >= 0 ? latestImport : latestTimetableImportTime;
 	}
 	
+	/**
+	 * Eruiert, ob der Stundenplan seit dem letzten Methodenaufruf geaendert wurde.
+	 * @return true, wenn der Stundenplan seit dem letzten Methodenaufruf geaendert wurde
+	 * @throws IOException Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein Fehler auftritt
+	 */
 	public boolean timetableUpdated() throws IOException {
 		long newLatestTimetableImportTime = getLatestTimetableImportTime();
 		

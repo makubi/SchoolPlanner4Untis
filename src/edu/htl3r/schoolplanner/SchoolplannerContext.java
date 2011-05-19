@@ -18,9 +18,15 @@
 
 package edu.htl3r.schoolplanner;
 
+import android.app.Application;
 import android.content.Context;
 import edu.htl3r.schoolplanner.backend.Cache;
 
+/**
+ * Stellt den {@link Context} sowie den {@link Cache} fuer andere Klassen zur Verfuegung.<br>
+ * Der Cache muss mit {@link Cache#init()} initialisiert werden, bevor er verwendet werden kann.<br>
+ * Der Context muss mit dem {@link Application#getApplicationContext()} initialisert werden. Zur Zeit geschieht dies in der Klasse {@link SchoolPlannerApp}.
+ */
 public class SchoolplannerContext {
 	
 	public static Context context;

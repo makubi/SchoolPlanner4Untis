@@ -18,7 +18,6 @@
 
 package edu.htl3r.schoolplanner.backend;
 
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,15 +44,14 @@ public class Authentication {
 	}
 
 	/**
-	 * Setzt die URL des Servers, sollte z.B. urania.webuntis.at sein.
-	 * @param serverUrl
-	 * @throws URISyntaxException 
-	 * @throws MalformedURLException 
+	 * Setzt die URL des Servers, sollte z.B. urania.webuntis.at sein.<br>
+	 * Protokoll und WebUntis-Verzeichnis + jsonrpc.do koennen weggelassen werden. Diese werden vor dem Setzen der internen Server-URL entfernt.
+	 * @param serverUrl Server URL von der GUI, die gesetzt werden soll
+	 * @throws URISyntaxException Wird geworfen, falls keine gueltige URL aus dem uebergebenen String ermittelt werden konnte
 	 */
 	public void setServerUrl(String serverUri) throws URISyntaxException {
 		serverUri = serverUri.replaceAll("/WebUntis(/jsonrpc.do)?$", "");
 		Pattern p = Pattern.compile("^([a-zA-Z]+://)?(.*)$");
-		// Pattern.compile("^([a-zA-Z]+://)?(.*?)/WebUntis(/jsonrpc.do)?$");
 		Matcher m = p.matcher(serverUri);
 		if(m.matches()) {
 			String url = m.group(2);

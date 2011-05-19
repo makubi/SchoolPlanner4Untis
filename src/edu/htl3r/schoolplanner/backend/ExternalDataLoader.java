@@ -40,6 +40,8 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
 /**
  * Laedt Daten aus externen Datenquellen, wie der lokalen Datenbank oder dem Netzwerk.
+ * @see LocalData
+ * @see JSONNetwork
  */
 public class ExternalDataLoader implements DataProvider, InternalData {
 

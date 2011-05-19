@@ -52,8 +52,8 @@ public class SchoolplannerActivity extends Activity implements Runnable {
 	
 	protected static final int MENU_SETTINGS = 0;
 	protected static final int MENU_HELP = 1;
-	protected static final int MENU_CREDITS = 2
-	;private static final int MENU_PRESETS = 34769;
+	protected static final int MENU_CREDITS = 2;
+	private static final int MENU_PRESETS = 34769;
 	
 
 	protected static final int DIALOG_PROGRESS = 13513513;

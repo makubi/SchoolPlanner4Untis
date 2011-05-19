@@ -38,15 +38,21 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
 /**
- * 
  * Liefert Daten. Diese werden aus dem internen Speicher und wenn nicht vorhanden, von einer externen Datenquelle geholt.
- * 
+ * @see InternalMemory
+ * @see ExternalDataLoader
  */
 public class Cache implements DataConnection, InternalData {
 	
 	private InternalMemory internalMemory;
 	private ExternalDataLoader externalDataLoader;
 	
+	
+	/**
+	 * Initialisiert den internen Speicher und die externen Datenquelle.
+	 * @see InternalMemory
+	 * @see ExternalDataLoader
+	 */
 	public void init() {
 		internalMemory = new InternalMemory();
 		externalDataLoader = new ExternalDataLoader();
@@ -154,9 +160,11 @@ public class Cache implements DataConnection, InternalData {
 
 	@Override
 	public List<SchoolTestType> getSchoolTestTypeList() {
-		Log.d("METHOD_CALL", "DataSelection.getTestTypes()");
+		// TODO: From interal / external data source
+		
 		Log.d("DataSource", "schoolTestTypeList: Dummy data");
 		ArrayList<SchoolTestType> al = new ArrayList<SchoolTestType>();
+		
 		SchoolTestType t1 = new SchoolTestType();
 		t1.setTitle("SA");
 		al.add(t1);
@@ -169,6 +177,7 @@ public class Cache implements DataConnection, InternalData {
 		SchoolTestType t4 = new SchoolTestType();
 		t4.setTitle("Test");
 		al.add(t4);
+		
 		return al;
 	}
 
@@ -307,7 +316,9 @@ public class Cache implements DataConnection, InternalData {
 	@Override
 	public void resyncMasterData() throws IOException {
 		Log.d("METHOD_CALL","Cache.resyncMasterData()");
+		
 		MasterData masterData = externalDataLoader.resyncMasterData();
+		
 		internalMemory.setSchoolClassList(masterData.getSchoolClassList());
 		internalMemory.setSchoolTeacherList(masterData.getSchoolTeacherList());
 		internalMemory.setSchoolRoomList(masterData.getSchoolRoomList());

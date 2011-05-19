@@ -22,6 +22,9 @@ import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.Locale;
 
+/**
+ * Stellt einige Hilfsmethoden zur Verfuegung, mit denen {@link Calendar}-Objekte verglichen, als String dargestellt oder spezifische Informationen aus diesem ausgelesen werden koennen.
+ */
 public class CalendarUtils {
 
 	/**
@@ -80,8 +83,6 @@ public class CalendarUtils {
 	 * @return die Minuten zwischen den zwei Daten
 	 */
 	public static long minBetween(Calendar start, Calendar end) {
-		// Log.d("Philip", ": start: " + Utils.getDateString(start, true) +", " +Utils.getTimeStr(start, true));
-		// Log.d("Philip", ": end: " + Utils.getDateString(end, true) +", " +Utils.getTimeStr(end, true));
 		if (start.after(end)) {
 			return 0;
 		}
@@ -145,7 +146,7 @@ public class CalendarUtils {
 	}
 
 	/**
-	 * Gibt einen String in Form YYYYMMDD zurueck. Ausserdem wird das Monat um 1 erhoeht.
+	 * Gibt einen String des {@link Calendar} in Form YYYYMMDD zurueck. Ausserdem wird das Monat um 1 erhoeht.
 	 * @param date Datum, angepasst und umgewandelt werden soll
 	 * @return Einen String in Form YYYYMMDD
 	 */
@@ -210,9 +211,6 @@ public class CalendarUtils {
 		lend.set(Calendar.DAY_OF_MONTH, lend.get(Calendar.DAY_OF_MONTH) + 1);
 		
 		if (search.after(lstart) && search.before(lend)) {
-			// Log.d("Philip", ": lstart: " + dateToStr(lstart));
-			// Log.d("Philip", ": lend: " + dateToStr(lend));
-			// Log.d("Philip", ": search: " + dateToStr(search));
 			return true;
 		}
 		return false;
