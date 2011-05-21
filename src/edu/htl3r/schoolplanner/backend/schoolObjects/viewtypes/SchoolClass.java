@@ -31,4 +31,5 @@ public class SchoolClass extends ViewType implements Serializable{
 	
 	private static final long serialVersionUID = 627598682907019482L;
 
+	
 }

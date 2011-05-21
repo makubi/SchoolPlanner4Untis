@@ -203,17 +203,14 @@ public class CalendarUtils {
 		}
 		return false;
 	}
-
+	
 	public static boolean betweenCalendars(Calendar start, Calendar end, Calendar search) {
 		Calendar lstart = (Calendar) start.clone();
 		lstart.set(Calendar.DAY_OF_MONTH, lstart.get(Calendar.DAY_OF_MONTH) - 1);
 		Calendar lend = (Calendar) end.clone();
-		lend.set(Calendar.DAY_OF_MONTH, lend.get(Calendar.DAY_OF_MONTH) + 1);
+		lend.set(Calendar.DAY_OF_MONTH, lend.get(Calendar.DAY_OF_MONTH) + 1);		
 		
-		if (search.after(lstart) && search.before(lend)) {
-			return true;
-		}
-		return false;
+		return search.after(lstart) && search.before(lend) ? true : false;
 	}
 
 	public static Calendar getEmptyInstance() {

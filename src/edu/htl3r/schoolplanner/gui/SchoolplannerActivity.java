@@ -46,7 +46,7 @@ import edu.htl3r.schoolplanner.gui.elements.SpinnerMultiAdapter;
  * @author Philip Woelfel <philip@woelfel.at>
  * 
  */
-public class SchoolplannerActivity extends Activity implements Runnable {
+public abstract class SchoolplannerActivity extends Activity implements Runnable {
 	protected SchoolPlannerApp app;
 	protected Preferences prefs;
 	
@@ -66,11 +66,7 @@ public class SchoolplannerActivity extends Activity implements Runnable {
 
 
 	protected Thread thisThread;
-	protected Handler handler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			Log.w("Philip", "Please override this method!");
-		};
-	};
+	protected Handler handler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +98,6 @@ public class SchoolplannerActivity extends Activity implements Runnable {
 		}
 		menu.add(0, MENU_HELP, 1, R.string.help).setIcon(R.drawable.ic_menu_help);
 		menu.add(0, MENU_CREDITS, 2, R.string.info).setIcon(R.drawable.ic_menu_info_details);
-		// menu.add(0, MENU_PRESETS, 3, R.string.presets).setIcon(android.R.drawable.ic_menu_edit); --> is jetzt in den settings
 
 		return true;
 	}
@@ -417,12 +412,5 @@ public class SchoolplannerActivity extends Activity implements Runnable {
 		Toast toast = Toast.makeText(getApplicationContext(), denToastBitte, wieGutDurch);
 		toast.show();
 	}
-
 	
-	
-	@Override
-	public void run() {
-		// needs to be overriden in subclasses
-		handler.sendEmptyMessage(0);
-	}
 }

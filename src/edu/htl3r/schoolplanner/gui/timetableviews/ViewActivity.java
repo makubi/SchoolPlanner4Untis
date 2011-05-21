@@ -117,12 +117,7 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 		}
 		currentDate = Calendar.getInstance();
 		if (getIntent().hasExtra(ExtrasStrings.DATE)) {
-			// dateString = (String) extras.get("date");
-			// try {
 			currentDate = (Calendar) extras.get(ExtrasStrings.DATE);
-			// } catch (ParseException e) {
-			// e.printStackTrace();
-			// }
 		}
 		if (getIntent().hasExtra("prevClass")) {
 			prevClass = (Class<ViewActivity>) extras.get("prevClass");
@@ -131,9 +126,6 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 		scale = getResources().getDisplayMetrics().density;
 		// Title und Statusbar ausblenden
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		// getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-		// setContentView(R.layout.newday);
 
 		slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
 		slideLeftOut = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
@@ -146,7 +138,6 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 
 		handler = new Handler() {
 			public void handleMessage(android.os.Message msg) {
-				// dismissDialog(SchoolplannerActivity.DIALOG_PROGRESS_CANCELABLE);
 
 				switch (msg.what) {
 					case HANDLER_UPDATEVIEW:
@@ -202,23 +193,19 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.d("Philip", "resume");
 		checkCurrentView();
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		Log.d("Philip", "result");
 		switch (requestCode) {
 			case MENU_ADD_TEST:
 				if (resultCode == RESULT_OK) {
-					Log.d("Philip", "menuadd");
 					bitteToasten(getString(R.string.addtest_success), 3);
 
 				}
 				else {
-					Log.d("Philip", "error");
 					bitteToasten(getString(R.string.addtest_failed), 3);
 				}
 				break;
@@ -238,6 +225,8 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
+
+		// TODO: Remove unnecessary if-clause
 		if (thisThread != null && thisThread.isAlive()) {
 			// thread lauft grad --> wird erst gladen --> nix tun
 			Log.d("Philip", getClass().getSimpleName() + ": runningthread");
@@ -331,7 +320,6 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
-		// Log.d("Philip", "dispatch");
 		if (!(this instanceof DateListView)) {
 			if (gestureDetector.onTouchEvent(ev)) {
 				return true;
@@ -397,7 +385,6 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 	@Override
 	public void onCancel(DialogInterface dialog) {
 		finish();
-
 	}
 
 	@Override

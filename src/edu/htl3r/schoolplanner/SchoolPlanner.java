@@ -32,6 +32,12 @@ public class SchoolPlanner extends SchoolplannerActivity {
 		Intent myIntent = new Intent(getBaseContext(), LoginScreen.class);
         startActivity(myIntent);
 	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

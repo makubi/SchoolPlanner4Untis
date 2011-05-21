@@ -319,8 +319,7 @@ public class ViewLesson extends View {
 
 	@Override
 	protected ContextMenuInfo getContextMenuInfo() {
-		ViewLessonContextInfo ci = new ViewLessonContextInfo(getLesson());
-		return ci;
+		return new ViewLessonContextInfo(getLesson());
 	}
 
 	/**

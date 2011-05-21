@@ -191,4 +191,10 @@ public class LoginPresetScreen extends SchoolplannerActivity implements OnItemSe
 			setResult(PrefScreen.RES_UPDATELOGIN);
 		}
 	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
 }

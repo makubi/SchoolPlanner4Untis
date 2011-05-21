@@ -176,4 +176,10 @@ public class LessonView extends SchoolplannerActivity implements OnClickListener
 				break;
 		}
 	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
+	}
 }
