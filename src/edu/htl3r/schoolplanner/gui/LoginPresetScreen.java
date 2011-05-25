@@ -142,14 +142,20 @@ public class LoginPresetScreen extends SchoolplannerActivity implements OnItemSe
 
 	private void updateDropdown() {
 		sets = app.getData().getAllPresets();
-		Log.d("Philip", getClass().getSimpleName() + ": sets: " + sets);
-		if (sets != null) {
+		
+		if (sets != null && sets.size() > 0) {
 			ArrayList<String> list = new ArrayList<String>(sets.keySet());
 			list.add(0, "");
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, list);
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			presets.setAdapter(adapter);
 			presets.invalidate();
+		}
+		else {
+			ArrayList<String> list = new ArrayList<String>();
+			list.add("No presets. Disabled.");
+			initializeAdapter(presets, list, null);
+			presets.setEnabled(false);
 		}
 	}
 

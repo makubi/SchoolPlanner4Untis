@@ -28,6 +28,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
+import android.graphics.Color;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -229,12 +231,18 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 
 	private void updateDropdown() {
 		sets = app.getData().getAllPresets();
-		Log.d("Philip", getClass().getSimpleName() + ": sets: " + sets);
-		if (sets != null) {
+		
+		if (sets != null && sets.size() > 0) {
 			ArrayList<String> list = new ArrayList<String>(sets.keySet());
 			list.add(0, "");
 			initializeAdapter(presets, list, this);
 			presets.invalidate();
+		}
+		else {
+			ArrayList<String> list = new ArrayList<String>();
+			list.add("No presets. Disabled.");
+			initializeAdapter(presets, list, null);
+			presets.setEnabled(false);
 		}
 	}
 
