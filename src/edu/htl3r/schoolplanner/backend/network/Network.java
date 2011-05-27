@@ -74,8 +74,8 @@ public class Network implements NetworkAccess {
 	private String jsessionid;
 	
 	// Prioritized
-	private SSLSocketFactory[] sslSocketFactories = new SSLSocketFactory[2];
-	private Scheme[] sslSchemes = new Scheme[2];
+	private SSLSocketFactory[] sslSocketFactories = new SSLSocketFactory[3];
+	private Scheme[] sslSchemes = new Scheme[3];
 	
 	boolean sslAvailable = false;
 	
@@ -102,11 +102,13 @@ public class Network implements NetworkAccess {
 	private void initSSLSocketFactories() {
 		sslSocketFactories[0] = SSLSocketFactory.getSocketFactory();
 		sslSocketFactories[1] = caCertSSLSocketFactory();
+		sslSocketFactories[2] = startSSLSocketFactory();
 	}
 
 	private void initSSLSchemes() {
 		sslSchemes[0] = new Scheme("https", sslSocketFactories[0], httpsServerUrl != null && httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
 		sslSchemes[1] = new Scheme("https", sslSocketFactories[1], httpsServerUrl != null && httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
+		sslSchemes[2] = new Scheme("https", sslSocketFactories[2], httpsServerUrl != null && httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
 	}
 
 	private SSLSocket getWorkingSSLSocket(SocketAddress sa, Set<SSLSocket> set) throws SSLException {
@@ -135,6 +137,7 @@ public class Network implements NetworkAccess {
 			Map<SSLSocket, Scheme> checkSocketsToSchemeMapping = new HashMap<SSLSocket, Scheme>();			
 			checkSocketsToSchemeMapping.put((SSLSocket) sslSocketFactories[0].createSocket(), sslSchemes[0]);
 			checkSocketsToSchemeMapping.put((SSLSocket) sslSocketFactories[1].createSocket(), sslSchemes[1]);
+			checkSocketsToSchemeMapping.put((SSLSocket) sslSocketFactories[2].createSocket(), sslSchemes[2]);
 			
 			SSLSocket availableSocket = getWorkingSSLSocket(sa, checkSocketsToSchemeMapping.keySet());
 			
@@ -231,7 +234,6 @@ public class Network implements NetworkAccess {
 		checkServerCapability();
 	}
 	
-
 	private SSLSocketFactory caCertSSLSocketFactory() {
 	    try {
 	        KeyStore trusted = KeyStore.getInstance("BKS");
@@ -246,4 +248,20 @@ public class Network implements NetworkAccess {
 	        throw new AssertionError(e);
 	    }
 	}
+	
+	private SSLSocketFactory startSSLSocketFactory() {
+	    try {
+	        KeyStore trusted = KeyStore.getInstance("BKS");
+	        InputStream in = SchoolplannerContext.context.getResources().openRawResource(R.raw.startssl_ks);
+	        try {
+	            trusted.load(in, "startssl".toCharArray());
+	        } finally {
+	            in.close();
+	        }
+	        return new SSLSocketFactory(trusted);
+	    } catch (Exception e) {
+	        throw new AssertionError(e);
+	    }
+	}
+	
 }
