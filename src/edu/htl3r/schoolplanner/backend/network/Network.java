@@ -79,20 +79,6 @@ public class Network implements NetworkAccess {
 	
 	boolean sslAvailable = false;
 	
-	/*private final TrustManager[] trustAllCerts = new TrustManager[]{
-		    new X509TrustManager() {
-		        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-		            return null;
-		        }
-		        public void checkClientTrusted(
-		            java.security.cert.X509Certificate[] certs, String authType) {
-		        }
-		        public void checkServerTrusted(
-		            java.security.cert.X509Certificate[] certs, String authType) {
-		        }
-		    }
-		};*/
-	
 	public Network() {
 		initSSLSocketFactories();
 		
@@ -163,32 +149,6 @@ public class Network implements NetworkAccess {
 			registerSchemes();
 		}
 		Log.i("Network", "SSL available: "+sslAvailable);
-		
-		/*
-		// Check in general.
-		try {
-			// Initialize SSLContext
-	           SSLContext sslContext = SSLContext.getInstance("TLS");
-	           sslContext.init(null, trustAllCerts, new SecureRandom());
-	           
-	           // Trying to connect via SSL
-	           SSLSocket socket = (SSLSocket) sslContext.getSocketFactory().createSocket();
-	           SocketAddress sa = new InetSocketAddress(httpsUrl.getHost(), httpsUrl != null && httpsUrl.getPort() != -1 ? httpsUrl.getPort() : 443);
-	           socket.connect(sa, 3000);
-	           
-	           
-	           
-	           // If nothing fails, SSL is ready
-	           sslAvailable = true;
-	           } catch (IOException ex) {
-	           } catch (NoSuchAlgorithmException e) {
-	        	   // TODO Auto-generated catch block
-	        	   e.printStackTrace();
-	           } catch (KeyManagementException e) {
-	        	   // TODO Auto-generated catch block
-	        	   e.printStackTrace();
-	           }
-	      */
 	}
 	
 	private void registerSchemes() {
