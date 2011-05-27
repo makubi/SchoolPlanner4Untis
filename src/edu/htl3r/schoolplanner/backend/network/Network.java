@@ -22,17 +22,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.SocketTimeoutException;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.UnknownHostException;
 import java.security.KeyStore;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLSocket;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ClientConnectionManager;
@@ -62,22 +65,42 @@ import edu.htl3r.schoolplanner.SchoolplannerContext;
 public class Network implements NetworkAccess {
 	
 	private HttpClient client;
-
-	// TODO: No duplicate url entries
-	private String serverUrl;
-	private String httpsServerUrl;
 	
-	private URI url;
-	private URI httpsUrl;
+	private URI serverUrl;
+	private URI httpsServerUrl;
+	
+	private URI usedUrl;
 	
 	private String jsessionid;
 	
+	// Prioritized
+	private SSLSocketFactory[] sslSocketFactories = new SSLSocketFactory[2];
+	private Scheme[] sslSchemes = new Scheme[2];
+	
+	boolean sslAvailable = false;
+	
+	/*private final TrustManager[] trustAllCerts = new TrustManager[]{
+		    new X509TrustManager() {
+		        public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+		            return null;
+		        }
+		        public void checkClientTrusted(
+		            java.security.cert.X509Certificate[] certs, String authType) {
+		        }
+		        public void checkServerTrusted(
+		            java.security.cert.X509Certificate[] certs, String authType) {
+		        }
+		    }
+		};*/
+	
 	public Network() {
+		initSSLSocketFactories();
+		
 		HttpParams params = new BasicHttpParams();
 		
 		// TODO: Timeouts sind statisch
-		HttpConnectionParams.setConnectionTimeout(params, 10000);
-		HttpConnectionParams.setSoTimeout(params, 8000);
+		HttpConnectionParams.setConnectionTimeout(params, 210000);
+		HttpConnectionParams.setSoTimeout(params, 28000);
 		
 		HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
 		HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
@@ -90,64 +113,103 @@ public class Network implements NetworkAccess {
 		client = new DefaultHttpClient(connman, params);
 	}
 	
-	@Override
-	public String getResponse(String request) throws IOException {	
-		String response = null;
-		try {
-			response = executeRequest(request);
-		}
-		catch (SocketTimeoutException e) {
-			Log.w("Network", "Socket timed out during network access.",e);
-			
-			Log.i("Network","No SSL available, switching to plain mode");
-			httpsUrl = url;
-			response = executeRequest(request);
-				
-		}
-		catch (IllegalArgumentException e) {
-			throw new SocketTimeoutException(e.getMessage());
-		}
-		catch (SSLException e) {
-			
-			// If no trusted certificate is found, CACert.org-certificates are tried.
-			if(e.getMessage().equals("Not trusted server certificate")) {
-				Log.i("Network","No trusted SSL certificate found, trying CACert.org-certificate");
-				
-				// Unregistering standard-scheme for SSL and registering a scheme using the CACert.org-certificate.
-				client.getConnectionManager().getSchemeRegistry().unregister("https");
-				client.getConnectionManager().getSchemeRegistry().register(new Scheme("https", caCertSSLSocketFactory(), httpsUrl != null && httpsUrl.getPort() != -1 ? httpsUrl.getPort() : 443));
-				
+	private void initSSLSocketFactories() {
+		sslSocketFactories[0] = SSLSocketFactory.getSocketFactory();
+		sslSocketFactories[1] = caCertSSLSocketFactory();
+	}
+
+	private void initSSLSchemes() {
+		sslSchemes[0] = new Scheme("https", sslSocketFactories[0], httpsServerUrl != null && httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
+		sslSchemes[1] = new Scheme("https", sslSocketFactories[1], httpsServerUrl != null && httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
+	}
+
+	private SSLSocket getWorkingSSLSocket(SocketAddress sa, Set<SSLSocket> set) throws SSLException {
+		final int sslSocketTimeout = 3000;
+		for(SSLSocket sslSocket : set) {
+			try {
+				sslSocket.connect(sa, sslSocketTimeout);
+				sslSocket.setReuseAddress(true);
+				sslSocket.startHandshake();
+				return sslSocket;
+			}
+			catch (IOException e) {}
+			finally {
 				try {
-					response = executeRequest(request);
-				}
-				
-				catch (SSLException e2) {
-					Log.i("Network","No SSL available, switching to plain mode");
-					httpsUrl = url;
-					response = executeRequest(request);
-				}
-			}
-			// If any other SSL-Exception occurs, continue in plain mode
-			else {
-				Log.i("Network","No SSL available, switching to plain mode");
-				httpsUrl = url;
-				response = executeRequest(request);
+					sslSocket.close();
+				} catch (IOException e) {}
 			}
 		}
-		catch (UnknownHostException e) {
-			Log.d("Network","Unknown host exception occured, URL: "+url+", host: "+url.getHost());
-			throw new UnknownHostException("Unable to resolve host: "+url.getHost());
-		}
-		
-		// If nothing was returned, there was an error.
-		if(response == null) {
-			throw new IOException("Even plain mode did not work. No data received.");
-		}
-		return response;
+		return null;
 	}
 	
-	private String executeRequest(String request) throws ClientProtocolException, UnknownHostException, IOException {
-		HttpPost httpRequest = new HttpPost(httpsUrl);
+	private void checkServerCapability() {
+		final SocketAddress sa = new InetSocketAddress(httpsServerUrl.getHost(), httpsServerUrl != null && httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
+		
+		try {
+			Map<SSLSocket, Scheme> checkSocketsToSchemeMapping = new HashMap<SSLSocket, Scheme>();			
+			checkSocketsToSchemeMapping.put((SSLSocket) sslSocketFactories[0].createSocket(), sslSchemes[0]);
+			checkSocketsToSchemeMapping.put((SSLSocket) sslSocketFactories[1].createSocket(), sslSchemes[1]);
+			
+			SSLSocket availableSocket = getWorkingSSLSocket(sa, checkSocketsToSchemeMapping.keySet());
+			
+			sslAvailable = availableSocket != null;
+			
+			registerSchemes(checkSocketsToSchemeMapping.get(availableSocket));
+			
+
+		}
+		catch (IOException e) {
+			sslAvailable = false;
+			registerSchemes();
+		}
+		Log.i("Network", "SSL available: "+sslAvailable);
+		
+		/*
+		// Check in general.
+		try {
+			// Initialize SSLContext
+	           SSLContext sslContext = SSLContext.getInstance("TLS");
+	           sslContext.init(null, trustAllCerts, new SecureRandom());
+	           
+	           // Trying to connect via SSL
+	           SSLSocket socket = (SSLSocket) sslContext.getSocketFactory().createSocket();
+	           SocketAddress sa = new InetSocketAddress(httpsUrl.getHost(), httpsUrl != null && httpsUrl.getPort() != -1 ? httpsUrl.getPort() : 443);
+	           socket.connect(sa, 3000);
+	           
+	           
+	           
+	           // If nothing fails, SSL is ready
+	           sslAvailable = true;
+	           } catch (IOException ex) {
+	           } catch (NoSuchAlgorithmException e) {
+	        	   // TODO Auto-generated catch block
+	        	   e.printStackTrace();
+	           } catch (KeyManagementException e) {
+	        	   // TODO Auto-generated catch block
+	        	   e.printStackTrace();
+	           }
+	      */
+	}
+	
+	private void registerSchemes() {
+		registerSchemes(null);	
+	}
+
+	private void registerSchemes(Scheme scheme) {
+		client.getConnectionManager().getSchemeRegistry().register(new Scheme("http", PlainSocketFactory.getSocketFactory(), serverUrl != null && serverUrl.getPort() != -1 ? serverUrl.getPort() : 80));
+		
+		if(scheme != null) {
+			client.getConnectionManager().getSchemeRegistry().register(scheme);
+		}
+	}
+
+	@Override
+	public String getResponse(String request) throws IOException {		
+				return executeRequest(request);
+	}
+	
+	private String executeRequest(String request) throws IOException {
+		HttpPost httpRequest = new HttpPost(usedUrl);
 
 		if (jsessionid != null) {
 			httpRequest.addHeader("Cookie", "JSESSIONID=" + jsessionid);
@@ -172,22 +234,15 @@ public class Network implements NetworkAccess {
 		return response;
 	}
 	
-	private void registerScheme() {
-		client.getConnectionManager().getSchemeRegistry().register(new Scheme("http", PlainSocketFactory.getSocketFactory(), url != null && url.getPort() != -1 ? url.getPort() : 80));		
-		client.getConnectionManager().getSchemeRegistry().register(new Scheme("https", SSLSocketFactory.getSocketFactory(), httpsUrl != null && httpsUrl.getPort() != -1 ? httpsUrl.getPort() : 443));
-	}
-
 	@Override
 	public void setSchool(String school) {
 		try {
 			// Encode school as iso-8859-1 string
 			String encodedSchool = UriUtils.encodeQuery(school,"ISO-8859-1");
-						
-			url = new URI(serverUrl + "?school=" + encodedSchool);
-			httpsUrl = new URI(httpsServerUrl + "?school=" + encodedSchool);
 			
-			Log.d("Network", "Setting http url: "+url.toString());
-			Log.d("Network", "Setting https url: "+httpsUrl.toString());
+			usedUrl = sslAvailable ? new URI(httpsServerUrl + "?school=" + encodedSchool) : new URI(serverUrl + "?school=" + encodedSchool);
+			
+			Log.d("Network", "Setting url: "+usedUrl.toString());
 			
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
@@ -205,9 +260,15 @@ public class Network implements NetworkAccess {
 
 	@Override
 	public void setServerUrl(String serverUrl) {
-		 this.serverUrl = "http://"+serverUrl+"/WebUntis/jsonrpc.do";
-		 this.httpsServerUrl = "https://"+serverUrl+"/WebUntis/jsonrpc.do";
-		 registerScheme();
+		 try {
+			this.serverUrl = new URI("http://"+serverUrl+"/WebUntis/jsonrpc.do");
+			this.httpsServerUrl = new URI("https://"+serverUrl+"/WebUntis/jsonrpc.do");
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		initSSLSchemes();
+		checkServerCapability();
 	}
 	
 

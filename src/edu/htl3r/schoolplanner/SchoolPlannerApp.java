@@ -46,7 +46,6 @@ public class SchoolPlannerApp extends Application {
 		initBackend();
 		prefs = new Preferences();
 		data = SchoolplannerContext.cache;
-		data.setPreferences(prefs);
 		currentView = prefs.getView().getClass();
 
 		ConnectivityManager conmgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
