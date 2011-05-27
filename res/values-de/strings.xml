@@ -240,7 +240,10 @@
 	&lt;h3>Außergewöhnliche Stunden&lt;/h3>
 	Stunden, die nicht dem Standard entsprechen (z.B. Ausfall, Supplierung, Prüfung, etc.) werden farbig hervorgehoben.
 	&lt;h4>Hintergrundfarben der Stunden&lt;/h4>
-	&lt;b>&lt;/b>
+	Enfallstunde: Rot&lt;br />
+	Supplierstunde: Orange&lt;br />
+	Stunde mit Prüfung: Grün&lt;br />
+	Sprechstunde: Violett
 	
 	&lt;h3>Aufruf des Menüs&lt;/h3>
 	Wie in jeder Ansicht, gibt es auch hier die Möglichkeit, das Menü über den Menü-Button anzeigen zu lassen und aus den angezeigten Optionen zu wählen.
