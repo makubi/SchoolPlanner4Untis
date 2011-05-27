@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLSocket;
 
 import org.apache.http.HttpResponse;
@@ -99,19 +98,32 @@ public class Network implements NetworkAccess {
 		client = new DefaultHttpClient(connman, params);
 	}
 	
+	/**
+	 * Initialisiert die {@link SSLSocketFactory}s, die benoetigte CAs enthalten.
+	 * Zur Zeit sind das die Standard-CAs, CACert und StartSSL.
+	 */
 	private void initSSLSocketFactories() {
 		sslSocketFactories[0] = SSLSocketFactory.getSocketFactory();
 		sslSocketFactories[1] = caCertSSLSocketFactory();
 		sslSocketFactories[2] = startSSLSocketFactory();
 	}
 
+	/**
+	 * Initialisiert alle {@link Scheme}s fuer HTTPS.
+	 */
 	private void initSSLSchemes() {
 		sslSchemes[0] = new Scheme("https", sslSocketFactories[0], httpsServerUrl != null && httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
 		sslSchemes[1] = new Scheme("https", sslSocketFactories[1], httpsServerUrl != null && httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
 		sslSchemes[2] = new Scheme("https", sslSocketFactories[2], httpsServerUrl != null && httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
 	}
 
-	private SSLSocket getWorkingSSLSocket(SocketAddress sa, Set<SSLSocket> set) throws SSLException {
+	/**
+	 * Liefert ein {@link SSLSocket}, wenn eine Verbindung via SSL zum Server aufgebaut werden konnte oder 'null', wenn SSL nicht verfuegbar ist.
+	 * @param sa Die Adresse des Sockets, zum dem die Verbindung aufgebaut werden soll
+	 * @param set Ein Set mit {@link SSLSocket}s, mithilfe derer versucht werden soll, eine Verbindung aufzubauen 
+	 * @return Das erste SSLSocket aus dem Set, mit dem eine problemlos Verbindung zum Server aufgebaut werden konnte oder 'null', wenn dies mit keinem moeglich war
+	 */
+	private SSLSocket getWorkingSSLSocket(SocketAddress sa, Set<SSLSocket> set) {
 		final int sslSocketTimeout = 3000;
 		for(SSLSocket sslSocket : set) {
 			try {
@@ -130,6 +142,9 @@ public class Network implements NetworkAccess {
 		return null;
 	}
 	
+	/**
+	 * Ueberprueft, ob der Server SSL unterstuetz oder nicht und registriert die passenden {@link Scheme}s fuer die spaetere Verwendung.
+	 */
 	private void checkServerCapability() {
 		final SocketAddress sa = new InetSocketAddress(httpsServerUrl.getHost(), httpsServerUrl != null && httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
 		
@@ -154,10 +169,17 @@ public class Network implements NetworkAccess {
 		Log.i("Network", "SSL available: "+sslAvailable);
 	}
 	
+	/**
+	 * Registriert nur eine {@link Scheme} fuer plain HTTP.
+	 */
 	private void registerSchemes() {
 		registerSchemes(null);	
 	}
 
+	/**
+	 * Registriert eine {@link Scheme} fuer plain HTTP und falls uebergeben, eine fuer HTTPS.
+	 * @param scheme Scheme fuer HTTPS, die registriert werden soll
+	 */
 	private void registerSchemes(Scheme scheme) {
 		client.getConnectionManager().getSchemeRegistry().register(new Scheme("http", PlainSocketFactory.getSocketFactory(), serverUrl != null && serverUrl.getPort() != -1 ? serverUrl.getPort() : 80));
 		
@@ -171,6 +193,14 @@ public class Network implements NetworkAccess {
 				return executeRequest(request);
 	}
 	
+	/**
+	 * Versucht mittels HTTP(S), eine Verbindung mit dem Server herzustellen, der sich hinter der gesetzten URL befindet, sendet die uebergeben Anfrage an ihn und gibt die Antwort als String zurueck.
+	 * Wenn eine JSESSIONID bekannt ist, wird diese an den HTTP-Header angehaengt.
+	 * Das verwendete Character-Set ist UTF-8.
+	 * @param request Anfrage, die gesendet werden soll
+	 * @return Antwort auf die Anfrage
+	 * @throws IOException Wenn waehrend der Uebertragung ein Fehler auftritt
+	 */
 	private String executeRequest(String request) throws IOException {
 		HttpPost httpRequest = new HttpPost(usedUrl);
 
@@ -234,6 +264,11 @@ public class Network implements NetworkAccess {
 		checkServerCapability();
 	}
 	
+	/**
+	 * Liefert eine {@link SSLSocketFactory}, die CACert-CAs enthaelt.
+	 * Der dazugehoerigt KeyStore wird als 'raw'-Ressource gelesen.
+	 * @return Eine {@link SSLSocketFactory}, die CACert-CAs enthaelt
+	 */
 	private SSLSocketFactory caCertSSLSocketFactory() {
 	    try {
 	        KeyStore trusted = KeyStore.getInstance("BKS");
@@ -249,6 +284,11 @@ public class Network implements NetworkAccess {
 	    }
 	}
 	
+	/**
+	 * Liefert eine {@link SSLSocketFactory}, die CACert-CAs enthaelt.
+	 * Der dazugehoerigt KeyStore wird als 'raw'-Ressource gelesen.
+	 * @return Eine {@link SSLSocketFactory}, die CACert-CAs enthaelt
+	 */
 	private SSLSocketFactory startSSLSocketFactory() {
 	    try {
 	        KeyStore trusted = KeyStore.getInstance("BKS");
