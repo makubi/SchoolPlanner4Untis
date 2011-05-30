@@ -25,21 +25,19 @@ import java.util.HashMap;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
-import android.graphics.Color;
-import android.opengl.Visibility;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.Authentication;
 
@@ -67,7 +65,15 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 		handler = new Handler() {
 			public void handleMessage(android.os.Message msg) {
 				if (!isCanceled) {
-					dismissDialog(SchoolplannerActivity.DIALOG_PROGRESS_CANCELABLE);
+					
+					// TODO: ugly hack, quickfix
+					try {
+						dismissDialog(SchoolplannerActivity.DIALOG_PROGRESS_CANCELABLE);
+					}
+					catch(IllegalArgumentException e) {
+						Log.w("GUI", "Trying to dismiss dialog "+SchoolplannerActivity.DIALOG_PROGRESS_CANCELABLE+" that was never started.");
+					}
+					
 					switch (msg.what) {
 						case INITIALIZE_OKAY:
 							app.setCurrentView(app.getPrefs().getView().getClass());
