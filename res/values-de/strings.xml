@@ -263,7 +263,7 @@
 	&lt;h1>Markierte Tage&lt;/h1>
 	Freie Tage sind in dieser Ansicht farblich hervorgehoben. Dadurch ist zu erkennen, welche Tage frei sind.
 	&lt;h1>Wechseln im Stundenplan mit Fingergesten&lt;/h1>
-	Im Header ist es möglich den Stundenplan zu wechseln. Es ist möglich das Monat über Fingergesten zu wechseln. Ein Wischen nach rechts zeigt das vorhergehende Monat an.
+	Im Header ist es möglich den Stundenplan zu wechseln. Es ist möglich das Monat über Fingergesten zu wechseln. Ein Wischen nach rechts zeigt das vorhergehende Monat an.&lt;br />
 	Ein Wischen nach links zeigt das folgende Monat an. Nach der Auswahl eines Tages wird die Tagesansicht für diesen Tag geöffnet. Um wieder zum aktuellen Monat zurückuzukehren,
 	steht der Menüpunkt &quot;Heute&quot; zur Verfügung. 
 	</string>
@@ -274,6 +274,17 @@
 	&lt;h1>Wechseln zwischen den Monaten&lt;/h1>
 	Zwischen den einzelnen Monaten kann mithilfe der Fingergesten gewechselt werden. Ein Wischen nach rechts zeigt den vorhergehenden Monat an und ein Wischen nach links zeigt
 	den folgenden Monat an. Soll wieder zum aktuellen Monat gewechselt werden, kann der Menüpunkt &quot;Heute&quot; verwendet werden.
+	</string>
+	
+	<string name="help_LessonView">
+	&lt;h1>Hilfe&lt;/h1>
+	&lt;h3>Daten&lt;/h3>
+	Hier finden Sie eine detaillierte Ausgabe der Daten zur aktuell ausgewählten Stunde.
+	Informationen zu Klassen, Lehrern, Gegenständen und Räumen der Stunde werden angezeigt, außerdem wird der Typ (z.B. Supplierung) und die Art (z.B. Sprechstunde) angezeigt.&lt;br />
+	Ein Lehrer, der in (Klammern) steht, symbolisiert, dass dieser der zu supplierende Lehrer ist, das selbe gilt für Raum-Verschübe.
+	&lt;br />&lt;br />
+	&lt;h3>Hinzufügen neuer Prüfungen&lt;/h3>
+	Über den Button "Neue Prüfung", können Sie eine neue Prüfung zu dieser Stunde anlegen.
 	</string>
 	
 	<string name="url">Server-URL</string>

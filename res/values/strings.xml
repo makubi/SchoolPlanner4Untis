@@ -294,6 +294,17 @@
 	If you required further help or got questions about our app, you can contact us by sending an e-mail to team@schoolplanner.at or visiting our website http://www.schoolplanner.at/.
 	</string>
 	
+	<string name="help_LessonView">
+	&lt;h1>Help&lt;/h1>
+	&lt;h3>Data&lt;/h3>
+	On this screen you can find detailed information about the currently selected lesson.&lt;br />
+	Information for Classes, Teachers, Subjects and Rooms can be viewed here, furthermore the lesson type (e.g. substitution) plus the less conde (e.g. break supervision) are shown.&lt;br />
+	A teacher listed in (brackets) symbolizes that this teacher is missing, another one might be added instead. This applies for switched rooms as well.
+	&lt;br />&lt;br />
+	&lt;h3>New test&lt;/h3>
+	If you press the button \'New test\', you can add exams to the currently selected lesson.
+	</string>
+	
 	
 	<string name="url">Server URL</string>
 	
