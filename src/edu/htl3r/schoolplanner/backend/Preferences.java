@@ -112,13 +112,14 @@ public class Preferences {
 
 	/**
 	 * Aktualisiert alle Einstellungen
+	 * @throws URISyntaxException 
 	 */
 	public void updateData() {
+		String url = preferences.getString(URL, "");
 		try {
-			setServerUrl(preferences.getString(URL, ""));
+			setServerUrl(url);
 		} catch (URISyntaxException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			Log.w("Misc", "Unable to parse url: "+url);
 		}
 		setSchool(preferences.getString(SCHOOL, ""));
 		setUsername(preferences.getString(USERNAME, ""));

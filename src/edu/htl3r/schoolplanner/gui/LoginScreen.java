@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
@@ -48,6 +47,7 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 	private final int INITIALIZE_OKAY = 1;
 	private final int INITIALIZE_FAIL = 0;
 	private final int INITIALIZE_NETWORK_ERROR = -1;
+	private final int INITIALIZE_WRONG_URL = -2;
 	private final int RESYNC_DIALOG = 2;
 	
 	private boolean resync_data = false;
@@ -57,12 +57,16 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 	protected EditText school;
 	protected EditText url;
 	protected Spinner presets;
+	
+	private String oldUrl = "";
+	private String oldSchool = "";
+	private String oldUsername = "";
 
 	protected HashMap<String, Authentication> sets;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);		
 		handler = new Handler() {
 			public void handleMessage(android.os.Message msg) {
 				if (!isCanceled) {
@@ -90,6 +94,9 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 							break;
 						case INITIALIZE_NETWORK_ERROR:
 							bitteToasten(getString(R.string.login_network_error), Toast.LENGTH_LONG);
+							break;
+						case INITIALIZE_WRONG_URL:
+							bitteToasten(getString(R.string.wrongServerUrl), Toast.LENGTH_LONG);
 							break;
 						case RESYNC_DIALOG:
 							doYouWantToResync();
@@ -134,8 +141,12 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 	private void doLogin() {
 		// TODO popup beim ersten mal willst daten speichern
 		isCanceled = false;
-		setPrefs();
-		startDialogAction(getString(R.string.progress_login_title), getString(R.string.progress_login_text), this);
+		try {
+			setPrefs();
+			startDialogAction(getString(R.string.progress_login_title), getString(R.string.progress_login_text), this);
+		} catch (URISyntaxException e) {
+			handler.sendEmptyMessage(INITIALIZE_WRONG_URL);
+		}
 	}
 	
 	private void doYouWantToResync() {
@@ -163,31 +174,35 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 		}
 	}
 
-	private void setPrefs(){
+	private void setPrefs() throws URISyntaxException {
 		String user = username.getText().toString();
 		String pwd = password.getText().toString();
 		String schol = school.getText().toString();
 		String urls = url.getText().toString();
+		
+		String oldUrl = prefs.getServerUrl();
+		String oldSchool = prefs.getSchool();
+		String oldUsername = prefs.getUsername();
+		
+		this.oldUrl = oldUrl != null ? new String(oldUrl) : this.oldUrl;
+		this.oldSchool = oldSchool != null ? new String(oldSchool) : this.oldSchool;
+		this.oldUsername = oldUsername != null ? new String(oldUsername) : this.oldUsername;
+		
 		prefs.setUsername(user);
 		prefs.setPassword(pwd);
 		prefs.setSchool(schol);
-		try {
-			prefs.setServerUrl(urls);
-		} catch (URISyntaxException e1) {
-			handler.sendEmptyMessage(INITIALIZE_FAIL);
-			e1.printStackTrace();
-			return;
-		}
+		prefs.setServerUrl(urls);
+		
 		Log.d("Philip", "" +prefs.toString());
-		//app.getData().setPreferences(prefs);
+		
 	}
 	
 	
 	private void doTheRealLogin() {
-		String user = new String(prefs.getUsername());
+		String user = oldUsername;
 		//String pwd = password.getText().toString();
-		String schol = new String(prefs.getSchool());
-		String urls = new String(prefs.getServerUrl());
+		String schol = oldSchool;
+		String urls = oldUrl;
 		
 		if (app.isNetworkEnabled()) {
 			try {
@@ -277,6 +292,5 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 				break;
 		}
 		handler.sendEmptyMessage(INITIALIZE_OKAY);
-		doLogin();
 	}
 }

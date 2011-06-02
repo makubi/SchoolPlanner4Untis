@@ -314,5 +314,5 @@
 	<string name="login_changed">Die Logindaten haben sich geändert! Möchten Sie die Stammdaten neu laden? (Dies wird empfohlen, da sonst möglicherweise Falsche Daten angezeigt werden.)</string>
 	<string name="login_changed_title">Warnung!</string>
 	
-	<string name="wrongServerUrl">Konnte Server-URL nicht parsen. Verwende vorherige Einstellung.</string>
+	<string name="wrongServerUrl">Konnte Server-URL nicht parsen. Bitte überprüfen Sie Ihre Einstellung.</string>
 </resources>

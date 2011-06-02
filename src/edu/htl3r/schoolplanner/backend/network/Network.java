@@ -118,9 +118,9 @@ public class Network implements NetworkAccess {
 	 * Initialisiert alle {@link Scheme}s fuer HTTPS.
 	 */
 	private void initSSLSchemes() {
-		sslSchemes[0] = new Scheme("https", sslSocketFactories[0], httpsServerUrl != null && httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
-		sslSchemes[1] = new Scheme("https", sslSocketFactories[1], httpsServerUrl != null && httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
-		sslSchemes[2] = new Scheme("https", sslSocketFactories[2], httpsServerUrl != null && httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
+		sslSchemes[0] = new Scheme("https", sslSocketFactories[0], httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
+		sslSchemes[1] = new Scheme("https", sslSocketFactories[1], httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
+		sslSchemes[2] = new Scheme("https", sslSocketFactories[2], httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
 	}
 
 	/**
@@ -150,9 +150,17 @@ public class Network implements NetworkAccess {
 	
 	/**
 	 * Ueberprueft, ob der Server SSL unterstuetz oder nicht und registriert die passenden {@link Scheme}s fuer die spaetere Verwendung.
+	 * @throws IOException Wenn die URL nicht zur Uebertragung verwendet werden kann
 	 */
-	private void checkServerCapability() {
-		final SocketAddress sa = new InetSocketAddress(httpsServerUrl.getHost(), httpsServerUrl != null && httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
+	private void checkServerCapability() throws IOException {
+		final SocketAddress sa;
+		try {
+			sa = new InetSocketAddress(httpsServerUrl.getHost(), httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
+		}
+		catch (IllegalArgumentException e) {
+			// Thrown, if server url can not be parsed
+			throw new IOException("Unable to parse URL");
+		}
 		
 		try {
 			Map<SSLSocket, Scheme> checkSocketsToSchemeMapping = new HashMap<SSLSocket, Scheme>();			
@@ -237,7 +245,7 @@ public class Network implements NetworkAccess {
 		return !(preferences.getServerUrl().equals(oldServerUrl) && preferences.getSchool().equals(oldSchool));
 	}
 	
-	private void checkPreferenceChange() {
+	private void checkPreferenceChange() throws IOException {
 		if(preferencesChanged()) {
 			String serverUrl = preferences.getServerUrl();
 			String school = preferences.getSchool();
@@ -245,36 +253,33 @@ public class Network implements NetworkAccess {
 			oldServerUrl = serverUrl;
 			oldSchool = school;
 			
-			setServerUrl(serverUrl);
-			setSchool(school);
+			try {
+				setServerUrl(serverUrl);
+				setSchool(school);
+			} catch (URISyntaxException e) {
+				// Thrown, if server url can not be parsed
+				throw new IOException("Unable to parse URL");
+			}
 			
 			jsessionid = null;
 			
 			initSSLSchemes();
-			checkServerCapability();			
+			checkServerCapability();
 		}
 	}
 
 	/**
 	 * Setzt den Namen der Schule, die als GET-Parameter in der Request-URL verwendet werden soll .
 	 * @param school Name der zu verwendenden Schule
+	 * @throws UnsupportedEncodingException Wenn die Kodierung nicht unterstützt wird
+	 * @throws URISyntaxException Wenn die URL nicht gesetzt werden konnte
 	 */
-	private void setSchool(String school) {
-		try {
+	private void setSchool(String school) throws UnsupportedEncodingException, URISyntaxException {
 			// Encode school as iso-8859-1 string
 			String encodedSchool = UriUtils.encodeQuery(school,"ISO-8859-1");
-			
 			usedUrl = sslAvailable ? new URI(httpsServerUrl + "?school=" + encodedSchool) : new URI(serverUrl + "?school=" + encodedSchool);
 			
 			Log.d("Network", "Setting url: "+usedUrl.toString());
-			
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -285,15 +290,11 @@ public class Network implements NetworkAccess {
 	/**
 	 * Setzt die URL des Servers (inklusive Port).
 	 * @param serverUrl URL des Servers inklusive Port
+	 * @throws URISyntaxException Wenn die URL nicht geparst werden konnte
 	 */
-	private void setServerUrl(String serverUrl) {
-		 try {
+	private void setServerUrl(String serverUrl) throws URISyntaxException {
 			this.serverUrl = new URI("http://"+serverUrl+"/WebUntis/jsonrpc.do");
 			this.httpsServerUrl = new URI("https://"+serverUrl+"/WebUntis/jsonrpc.do");
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	
 	/**

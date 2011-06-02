@@ -1036,7 +1036,7 @@ public class LocalData implements DataStore, DataProvider, InternalData {
 			try {
 				tmp.setServerUrl(object.get("serverUrl"));
 			} catch (URISyntaxException e) {
-				e.printStackTrace();
+				// Wrong URLs are loaded but should be handled later.
 			}
 			tmp.setSchool(object.get("school"));
 			tmp.setUsername(object.get("username"));
