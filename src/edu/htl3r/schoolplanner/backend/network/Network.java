@@ -248,6 +248,8 @@ public class Network implements NetworkAccess {
 			setServerUrl(serverUrl);
 			setSchool(school);
 			
+			jsessionid = null;
+			
 			initSSLSchemes();
 			checkServerCapability();			
 		}
