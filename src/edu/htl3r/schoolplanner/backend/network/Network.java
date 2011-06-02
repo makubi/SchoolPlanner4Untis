@@ -159,8 +159,6 @@ public class Network implements NetworkAccess {
 			sslAvailable = availableSocket != null;
 			
 			registerSchemes(checkSocketsToSchemeMapping.get(availableSocket));
-			
-
 		}
 		catch (IOException e) {
 			sslAvailable = false;

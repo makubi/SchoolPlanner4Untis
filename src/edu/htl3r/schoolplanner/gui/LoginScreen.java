@@ -133,6 +133,7 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 	private void doLogin() {
 		// TODO popup beim ersten mal willst daten speichern
 		isCanceled = false;
+		setPrefs();
 		startDialogAction(getString(R.string.progress_login_title), getString(R.string.progress_login_text), this);
 	}
 	
@@ -187,12 +188,10 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 		String schol = new String(prefs.getSchool());
 		String urls = new String(prefs.getServerUrl());
 		
-		setPrefs();
 		if (app.isNetworkEnabled()) {
 			try {
 				if (app.getData().authenticate()) {
 					if(!user.equals(prefs.getUsername()) || !schol.equals(prefs.getSchool()) || !urls.equals(prefs.getServerUrl())){
-						setPrefs();
 						if(urls != null && urls.length() > 0 && schol != null && schol.length() > 0 && user != null && user.length() > 0) {
 							handler.sendEmptyMessage(RESYNC_DIALOG);
 						}

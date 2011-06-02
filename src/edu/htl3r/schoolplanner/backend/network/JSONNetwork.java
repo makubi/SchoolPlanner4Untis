@@ -98,6 +98,7 @@ public class JSONNetwork implements DataProvider{
 		network.setSchool(preferences.getSchool());
 		this.username = preferences.getUsername();
 		this.password = preferences.getPassword();
+		Log.d("Network", "Preferences in network set.");
 	}
 
 	/**
