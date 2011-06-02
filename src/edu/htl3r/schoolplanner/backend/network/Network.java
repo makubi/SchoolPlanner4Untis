@@ -55,6 +55,7 @@ import org.springframework.web.util.UriUtils;
 import android.util.Log;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
+import edu.htl3r.schoolplanner.backend.Preferences;
 
 /**
  * 
@@ -63,7 +64,12 @@ import edu.htl3r.schoolplanner.SchoolplannerContext;
  */
 public class Network implements NetworkAccess {
 	
+	private String oldServerUrl;
+	private String oldSchool;
+	
 	private HttpClient client;
+	
+	private Preferences preferences;
 	
 	private URI serverUrl;
 	private URI httpsServerUrl;
@@ -124,7 +130,7 @@ public class Network implements NetworkAccess {
 	 * @return Das erste SSLSocket aus dem Set, mit dem eine problemlos Verbindung zum Server aufgebaut werden konnte oder 'null', wenn dies mit keinem moeglich war
 	 */
 	private SSLSocket getWorkingSSLSocket(SocketAddress sa, Set<SSLSocket> set) {
-		final int sslSocketTimeout = 3000;
+		final int sslSocketTimeout = 2000;
 		for(SSLSocket sslSocket : set) {
 			try {
 				sslSocket.connect(sa, sslSocketTimeout);
@@ -200,6 +206,8 @@ public class Network implements NetworkAccess {
 	 * @throws IOException Wenn waehrend der Uebertragung ein Fehler auftritt
 	 */
 	private String executeRequest(String request) throws IOException {
+		checkPreferenceChange();
+		
 		HttpPost httpRequest = new HttpPost(usedUrl);
 
 		if (jsessionid != null) {
@@ -225,8 +233,31 @@ public class Network implements NetworkAccess {
 		return response;
 	}
 	
-	@Override
-	public void setSchool(String school) {
+	private boolean preferencesChanged() {
+		return !(preferences.getServerUrl().equals(oldServerUrl) && preferences.getSchool().equals(oldSchool));
+	}
+	
+	private void checkPreferenceChange() {
+		if(preferencesChanged()) {
+			String serverUrl = preferences.getServerUrl();
+			String school = preferences.getSchool();
+			
+			oldServerUrl = serverUrl;
+			oldSchool = school;
+			
+			setServerUrl(serverUrl);
+			setSchool(school);
+			
+			initSSLSchemes();
+			checkServerCapability();			
+		}
+	}
+
+	/**
+	 * Setzt den Namen der Schule, die als GET-Parameter in der Request-URL verwendet werden soll .
+	 * @param school Name der zu verwendenden Schule
+	 */
+	private void setSchool(String school) {
 		try {
 			// Encode school as iso-8859-1 string
 			String encodedSchool = UriUtils.encodeQuery(school,"ISO-8859-1");
@@ -249,8 +280,11 @@ public class Network implements NetworkAccess {
 		this.jsessionid = jsessionid;
 	}
 
-	@Override
-	public void setServerUrl(String serverUrl) {
+	/**
+	 * Setzt die URL des Servers (inklusive Port).
+	 * @param serverUrl URL des Servers inklusive Port
+	 */
+	private void setServerUrl(String serverUrl) {
 		 try {
 			this.serverUrl = new URI("http://"+serverUrl+"/WebUntis/jsonrpc.do");
 			this.httpsServerUrl = new URI("https://"+serverUrl+"/WebUntis/jsonrpc.do");
@@ -258,8 +292,6 @@ public class Network implements NetworkAccess {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		initSSLSchemes();
-		checkServerCapability();
 	}
 	
 	/**
@@ -300,6 +332,11 @@ public class Network implements NetworkAccess {
 	    } catch (Exception e) {
 	        throw new AssertionError(e);
 	    }
+	}
+
+	@Override
+	public void setPreferences(Preferences preferences) {
+		this.preferences = preferences;
 	}
 	
 }

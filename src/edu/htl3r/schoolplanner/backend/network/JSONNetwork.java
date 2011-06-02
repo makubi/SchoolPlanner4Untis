@@ -61,16 +61,8 @@ public class JSONNetwork implements DataProvider{
 
 	private final JSONParser jsonParser = new JSONParser();
 	private final LessonProcessor lessonProcessor = new LessonProcessor();
-
-	/**
-	 * Benutzername fuer Login.
-	 */
-	private String username;
 	
-	/**
-	 * Passwort fuer Login.
-	 */
-	private String password;
+	private Preferences preferences;
 	
 	/**
 	 * Zeitpunkt, wann das letzte mal der Stundenplan importiert wurde.
@@ -94,10 +86,8 @@ public class JSONNetwork implements DataProvider{
 	 * @param preferences {@link Preferences} die verwendet werden sollen
 	 */
 	public void setPreferences(Preferences preferences) {
-		network.setServerUrl(preferences.getServerUrl());
-		network.setSchool(preferences.getSchool());
-		this.username = preferences.getUsername();
-		this.password = preferences.getPassword();
+		this.preferences = preferences;
+		network.setPreferences(preferences);
 		Log.d("Network", "Preferences in network set.");
 	}
 
@@ -484,8 +474,8 @@ public class JSONNetwork implements DataProvider{
 		JSONObject response = null;
 
 		try {
-			params.put("user", this.username);
-			params.put("password", this.password);
+			params.put("user", preferences.getUsername());
+			params.put("password", preferences.getPassword());
 
 			request.put("jsonrpc", jsonrpcVersion);
 			request.put("method", method);

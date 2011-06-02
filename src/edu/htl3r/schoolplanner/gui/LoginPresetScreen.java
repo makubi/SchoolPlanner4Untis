@@ -189,10 +189,9 @@ public class LoginPresetScreen extends SchoolplannerActivity implements OnItemSe
 			try {
 				prefs.setServerUrl(urls);
 			} catch (URISyntaxException e1) {
-				e1.printStackTrace();
+				bitteToasten(getString(R.string.wrongServerUrl), Toast.LENGTH_LONG);
 				return;
 			}
-			app.getData().setPreferences(prefs);
 			bitteToasten(getString(R.string.preset_prefs_updated), Toast.LENGTH_SHORT);
 			setResult(PrefScreen.RES_UPDATELOGIN);
 		}

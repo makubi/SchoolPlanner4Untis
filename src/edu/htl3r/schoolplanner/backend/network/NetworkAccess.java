@@ -20,6 +20,8 @@ package edu.htl3r.schoolplanner.backend.network;
 
 import java.io.IOException;
 
+import edu.htl3r.schoolplanner.backend.Preferences;
+
 /**
  * 
  * Spezifiziert die noetigen Methoden fuer den Netzwerkzugriff.
@@ -37,24 +39,12 @@ public interface NetworkAccess {
 	 */
 	public String getResponse(String request) throws IOException;
 
-	
-	/**
-	 * Setzt den Namen der Schule, die als GET-Parameter in der Request-URL verwendet werden soll .
-	 * @param school Name der zu verwendenden Schule
-	 */
-	public void setSchool(String school);
-
 	/**
 	 * Setzt die SessionID, die nach einem erfolgreichen Login vom Server uebertragen wurde.
 	 * @param jsessionid SessionID, die fuer weitere Anfragen verwendet wird
 	 */
 	public void setJsessionid(String jsessionid);
-
-
-	/**
-	 * Setzt die URL des Servers (inklusive Port).
-	 * @param serverUrl URL des Servers inklusive Port
-	 */
-	public void setServerUrl(String serverUrl);
+	
+	public void setPreferences(Preferences preferences);
 
 }

@@ -134,6 +134,7 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 	private void doLogin() {
 		// TODO popup beim ersten mal willst daten speichern
 		isCanceled = false;
+		setPrefs();
 		startDialogAction(getString(R.string.progress_login_title), getString(R.string.progress_login_text), this);
 	}
 	
@@ -155,7 +156,6 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 		String urls = url.getText().toString();
 		
 		if(user!=null && !user.equals("") && urls!=null && !urls.equals("")  && schol!=null && !schol.equals("")){
-				setPrefs();
 				doTheRealLogin();
 		}
 		else{
@@ -179,7 +179,7 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 			return;
 		}
 		Log.d("Philip", "" +prefs.toString());
-		app.getData().setPreferences(prefs);
+		//app.getData().setPreferences(prefs);
 	}
 	
 	

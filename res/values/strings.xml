@@ -349,4 +349,6 @@
 	
     <string name="ambilwarna_cancel">Cancel</string>
     <string name="ambilwarna_ok">OK</string>
+    
+    <string name="wrongServerUrl">Unable to parse server url. Using previous setting.</string>
 </resources>

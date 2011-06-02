@@ -19,6 +19,7 @@
 package edu.htl3r.schoolplanner.gui;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 import yuku.ambilwarna.AmbilWarnaDialog.OnAmbilWarnaListener;
@@ -66,6 +67,7 @@ public class PrefScreen extends PreferenceActivity implements OnPreferenceChange
 	private Preference urlInput;
 	private Preference userInput;
 	private Preference schoolInput;
+	private Preference passwordInput;
 	private Preference presets;
 	
 	private AmbilWarnaDialog dial;
@@ -161,6 +163,9 @@ public class PrefScreen extends PreferenceActivity implements OnPreferenceChange
 		schoolInput = findPreference(getString(R.string.pref_key_school));
 		schoolInput.setOnPreferenceChangeListener(this);
 		
+		passwordInput = findPreference(getString(R.string.pref_key_password));
+		passwordInput.setOnPreferenceChangeListener(this);
+		
 		presets = findPreference(getString(R.string.pref_key_presets));
 		presets.setOnPreferenceClickListener(this);
 		
@@ -174,13 +179,42 @@ public class PrefScreen extends PreferenceActivity implements OnPreferenceChange
 			viewValuesInitialization(val);
 
 		}
-		if(preference == urlInput || preference == userInput || preference == schoolInput){
+		else if(preference == urlInput){
 			if(newValue.equals("")){
-				bitteToasten(getString(R.string.settingsempty), 5);
+				bitteToasten(getString(R.string.settingsempty), Toast.LENGTH_SHORT);
 				return false;
 			}
+			else {
+				try {
+					prefs.setServerUrl((String) newValue);
+				} catch (URISyntaxException e) {
+					bitteToasten(getString(R.string.wrongServerUrl), Toast.LENGTH_LONG);
+				}
+			}
 		}
-		if(preference == viewValues){
+		else if(preference == userInput) {
+			if(newValue.equals("")){
+				bitteToasten(getString(R.string.settingsempty), Toast.LENGTH_SHORT);
+				return false;
+			}
+			else {
+				prefs.setUsername((String) newValue);
+			}
+		}
+		else if(preference == schoolInput) {
+			if(newValue.equals("")){
+				bitteToasten(getString(R.string.settingsempty), Toast.LENGTH_SHORT);
+				return false;
+			}
+			else {
+				prefs.setSchool((String) newValue);
+			}
+		}
+		else if(preference == passwordInput) {
+				prefs.setPassword((String) newValue);
+		}
+		
+		else if(preference == viewValues){
 			Intent inth = new Intent();
 			inth.putExtra(ExtrasStrings.UPDATESELSCRBTN, true);
 			setResult(RESULT_OK, inth);
@@ -392,7 +426,7 @@ public class PrefScreen extends PreferenceActivity implements OnPreferenceChange
 			loadingDialog.setMessage(getString(R.string.progress_resync_text));
 			loadingDialog.setTitle(getString(R.string.progress_resync_title));
 			loadingDialog.setIndeterminate(true);
-			loadingDialog.setCancelable(false);
+			loadingDialog.setCancelable(true);
 			return loadingDialog;
 		}
 		
