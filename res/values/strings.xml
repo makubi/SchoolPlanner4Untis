@@ -256,16 +256,34 @@
 	</string>
 	
 	<string name="help_WeekView">
-	&lt;i>Help for this screen follows.&lt;/i>
 	&lt;h1>Help&lt;/h1>
-	&lt;h3>Display dependent menu entries&lt;/h3>
-	Depending on the actual display, you can see different menu entries to organize the time table quickly. The help screen can be access from every display.
+	On this screen you can see the timetable of the currently selected week.
+	Some information may not be shown completely, because of the limited space. 
 	&lt;br />&lt;br />
-	&lt;h3>Display dependent help&lt;/h3>
-	Every display has its own help text. If there is none available, this one is shown.
-	&lt;br />&lt;br />
-	&lt;h3>Further help&lt;/h3>
-	If you required further help or got questions about our app, you can contact us by sending an e-mail to team@schoolplanner.at or visiting our website http://www.schoolplanner.at/.
+	&lt;h3>Finger-gestures&lt;/h3>
+	&lt;h4>Switch the week&lt;/h4>
+	To get to the previous or next week, you can use finger-gestures easilly.
+	
+	&lt;h4>Display a day&lt;/h4>
+	To display one day and watch it in detail, you have to touch the name in the header.&lt;br />
+	To be able to do that, you have to activate the option \'Show names of days in weekview\' in the settings.
+	
+	&lt;h4>Show detailed lesson information&lt;/h4>
+	To display detailed lesson information, you have to touch the choosen lesson.
+	
+	&lt;h4>Add exams&lt;/h4>
+	You can add exams by touching and holding down your finger on a lesson. After that, you can choose \'New\' form the appearing context menu.
+	
+	&lt;h3>Red dot&lt;/h3>
+	The red dot marks a lesson that contains more information than you can see.
+	
+	&lt;h3>Exceptional lessons&lt;/h3>
+	None-standard lessons (e.g. substitution, cancel, exam) are highlighted.
+	&lt;h4>Background colors of highlighted lessons&lt;/h4>
+	Cancelled: red&lt;br />
+	Substitution: orange&lt;br />
+	Exams: green&lt;br />
+	Break supervision: violet
 	</string>
 	
 	<string name="help_MonthView">

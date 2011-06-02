@@ -229,7 +229,7 @@
 	Informationen, also z.B. Namen von Lehrern oder Klassen, werden möglicherweise nicht vollständig angezeigt, da sich diese auf der aktuellen Anzeige aufgrund des begrenzten Platzes nicht ausgehen.
 	&lt;br />&lt;br />
 	&lt;h3>Fingergesten&lt;/h3>
-	&lt;h4>Wechsel des Tages&lt;/h4>
+	&lt;h4>Wechsel der Woche&lt;/h4>
 	Durch Links- oder Rechts-Fingergesten können Sie problemlos zwischen den Wochen hin und her wechseln.
 	
 	&lt;h4>Auswahl eines Tages&lt;/h4>
@@ -252,9 +252,6 @@
 	Supplierstunde: Orange&lt;br />
 	Stunde mit Prüfung: Grün&lt;br />
 	Sprechstunde: Violett
-	
-	&lt;h3>Aufruf des Menüs&lt;/h3>
-	Wie in jeder Ansicht, gibt es auch hier die Möglichkeit, das Menü über den Menü-Button anzeigen zu lassen und aus den angezeigten Optionen zu wählen.
 	</string>
 	
 	<string name="help_MonthView">
