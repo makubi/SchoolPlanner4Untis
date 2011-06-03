@@ -351,4 +351,5 @@
     <string name="ambilwarna_ok">OK</string>
     
     <string name="wrongServerUrl">Unable to parse server url. Please check your settings.</string>
+    <string name="emptyList">No list elements available.</string>
 </resources>

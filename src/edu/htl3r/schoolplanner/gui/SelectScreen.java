@@ -19,11 +19,12 @@
 package edu.htl3r.schoolplanner.gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,10 +32,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
@@ -44,9 +46,14 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
 public class SelectScreen extends SchoolplannerActivity implements OnItemSelectedListener, Runnable, OnClickListener, OnCancelListener {
 	private Spinner classesDd;
+	
 	private Spinner teachersDd;
+	
 	private Spinner roomsDd;
+	
 	private Spinner subjectsDd;
+	
+	
 	private Button show;
 
 	private List<SchoolClass> schoolClassList;
@@ -172,41 +179,61 @@ public class SelectScreen extends SchoolplannerActivity implements OnItemSelecte
 			tv.setText(getString(R.string.error_laoddata));
 			tv.setTextColor(Color.RED);
 			setContentView(tv);
-			Log.w("Philip", getClass().getSimpleName() + ": eine oder mehrere der Listen ist null");
+			Log.w("Philip", getClass().getSimpleName() + ": alle Listen sind null");
 		}
 		else {
 			setContentView(R.layout.selection);
 
 			classesDd = (Spinner) findViewById(R.id.classesDd);
-			if (schoolClassList != null) {
+			if (schoolClassList != null && schoolClassList.size() > 0) {
 				initializeAdapter(classesDd, schoolClassList, this, true);
 			}
 			else {
 				classesDd.setEnabled(false);
+				
+				List<String> emptyMessage = new ArrayList<String>();
+				emptyMessage.add("No list elements available.");
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, emptyMessage);
+				classesDd.setAdapter(adapter);
 			}
 
 			teachersDd = (Spinner) findViewById(R.id.teachersDd);
-			if (schoolTeacherList != null) {
+			if (schoolTeacherList != null && schoolTeacherList.size() > 0) {
 				initializeAdapter(teachersDd, schoolTeacherList, this, true);
 			}
 			else {
 				teachersDd.setEnabled(false);
+			
+				List<String> emptyMessage = new ArrayList<String>();
+				emptyMessage.add("No list elements available.");
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, emptyMessage);
+				teachersDd.setAdapter(adapter);
 			}
 
 			roomsDd = (Spinner) findViewById(R.id.roomsDd);
-			if (schoolRoomList != null) {
+			if (schoolRoomList != null && schoolRoomList.size() > 0) {
 				initializeAdapter(roomsDd, schoolRoomList, this, true);
 			}
 			else {
 				roomsDd.setEnabled(false);
+				
+				List<String> emptyMessage = new ArrayList<String>();
+				emptyMessage.add("No list elements available.");
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, emptyMessage);
+				roomsDd.setAdapter(adapter);
 			}
 
 			subjectsDd = (Spinner) findViewById(R.id.subjectsDd);
-			if (schoolSubjectList != null) {
+			if (schoolSubjectList != null && schoolSubjectList.size() > 0) {
 				initializeAdapter(subjectsDd, schoolSubjectList, this, true);
 			}
 			else {
 				subjectsDd.setEnabled(false);
+				
+				List<String> emptyMessage = new ArrayList<String>();
+				emptyMessage.add("No list elements available.");
+				ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, emptyMessage);
+				subjectsDd.setAdapter(adapter);
 			}
 
 			show = (Button) findViewById(R.id.showButton);

@@ -315,4 +315,5 @@
 	<string name="login_changed_title">Warnung!</string>
 	
 	<string name="wrongServerUrl">Konnte Server-URL nicht parsen. Bitte überprüfen Sie Ihre Einstellung.</string>
+	<string name="emptyList">Keine Listen-Elemente verfügbar.</string>
 </resources>
