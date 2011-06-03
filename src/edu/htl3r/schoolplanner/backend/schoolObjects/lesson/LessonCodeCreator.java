@@ -24,6 +24,7 @@ import java.util.Map;
 import android.util.Log;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeCancelled;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeIrregular;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
 
 public class LessonCodeCreator {
@@ -33,6 +34,7 @@ public class LessonCodeCreator {
 	
 	public LessonCodeCreator() {
 		lessonCodes.put(WebUntis.CANCELLED, new LessonCodeCancelled());
+		lessonCodes.put(WebUntis.IRREGULAR, new LessonCodeIrregular());
 	}
 	
 	public LessonCode createLessonCode(String lessonCode) { 

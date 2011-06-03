@@ -77,4 +77,7 @@ public interface WebUntis {
 	// LessonCodes
 	/**	Enthaelt den String des LessonCodes Cancelled. */
 	public static final String CANCELLED = "cancelled";
+
+	/** Enthaelt den String des LessonCodes Irregular */
+	public static final String IRREGULAR = "irregular";
 }

@@ -18,14 +18,9 @@
 
 package edu.htl3r.schoolplanner.backend;
 
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import android.util.Log;
 
 /**
  * 
