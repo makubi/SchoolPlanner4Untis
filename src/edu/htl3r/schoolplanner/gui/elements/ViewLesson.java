@@ -19,6 +19,7 @@
 package edu.htl3r.schoolplanner.gui.elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -28,6 +29,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Picture;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Paint.Style;
@@ -166,20 +168,36 @@ public class ViewLesson extends View {
 		RectF maxRectF = new RectF(maxRect);
 		Resources res = getContext().getResources();
 		
+		Calendar now = Calendar.getInstance();
 		
+		Calendar lessonDate = (Calendar) lesson.getDate().clone();
+		Calendar lessonStart = (Calendar) lesson.getStartTime().clone();
+		Calendar lessonEnd = (Calendar) lesson.getEndTime().clone();
+		
+		lessonStart.set(lessonDate.get(Calendar.YEAR), lessonDate.get(Calendar.MONTH), lessonDate.get(Calendar.DAY_OF_MONTH));
+		lessonEnd.set(lessonDate.get(Calendar.YEAR), lessonDate.get(Calendar.MONTH), lessonDate.get(Calendar.DAY_OF_MONTH));
+		
+		// Findet aktuelle Stunde gerade statt?
+		boolean lessonOccursNow = lessonStart.before(now) && lessonEnd.after(now);
 		
 		paint.setColor(bgColor);
 		paint.setStyle(Style.FILL);
 		canvas.drawRect(maxRect, paint);
 		//canvas.drawRoundRect(maxRectF, ecke, ecke, paint);
 		
-		paint.setColor(app.getPrefs().getBorderColor());
+		if(lessonOccursNow) {
+			paint.setColor(lesson.getLessonCode() instanceof LessonCodeSubstitute ? Color.WHITE : Color.parseColor("#FF8C00"));
+			paint.setStrokeWidth(8);
+		}
+		else {
+			paint.setColor(app.getPrefs().getBorderColor());
+			paint.setStrokeWidth(3);
+		}
+		
 		paint.setStyle(Style.STROKE);
-		paint.setStrokeWidth(3);
+		
 		canvas.drawRect(maxRect, paint);
 		//canvas.drawRoundRect(maxRectF, ecke, ecke, paint);
-
-		
 		
 		paint = new Paint();
 		if (getContext() instanceof DayView) {
@@ -260,9 +278,9 @@ public class ViewLesson extends View {
 						name = trimString(add, getWidth() - 2, paint);
 					}
 					Paint kr = new Paint();
-					kr.setColor(Color.RED);
+					kr.setColor(Color.parseColor("#008000"));
 					kr.setStyle(Style.FILL);
-					canvas.drawCircle(5, 5, 3, kr);
+					canvas.drawCircle(6, 6, 4, kr);
 					break;
 				}
 			}
