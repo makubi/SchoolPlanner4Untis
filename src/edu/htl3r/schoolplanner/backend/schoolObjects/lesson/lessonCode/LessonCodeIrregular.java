@@ -12,7 +12,7 @@ public class LessonCodeIrregular extends LessonCode implements Serializable, Clo
 	
 	
 	public LessonCodeIrregular() {
-		bgColor = Color.YELLOW;
+		bgColor = Color.parseColor("#FFEA00");
 		fgColor = Color.BLACK;
 	}
 }
