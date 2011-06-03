@@ -242,8 +242,8 @@
 	&lt;h4>Eintragen von Tests&lt;/h4>
 	Durch längeres Berühren einer Stunde, öffnet sich das Kontextmenü und ein Test kann erstellt werden.
 	
-	&lt;h3>Roter Punkt&lt;/h3>
-	Sollte die Anzeige aller anzuzeigenden Informationen nicht möglich sein, wird in der linken oberen Ecke der Stunde, ein roter Punkt angezeigt.
+	&lt;h3>Grüner Punkt&lt;/h3>
+	Sollte die Anzeige aller anzuzeigenden Informationen nicht möglich sein, wird in der linken oberen Ecke der Stunde, ein grüner Punkt angezeigt.
 	
 	&lt;h3>Außergewöhnliche Stunden&lt;/h3>
 	Stunden, die nicht dem Standard entsprechen (z.B. Ausfall, Supplierung, Prüfung, etc.) werden farbig hervorgehoben.
