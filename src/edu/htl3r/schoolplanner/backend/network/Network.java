@@ -82,7 +82,7 @@ public class Network implements NetworkAccess {
 	private SSLSocketFactory[] sslSocketFactories = new SSLSocketFactory[3];
 	private Scheme[] sslSchemes = new Scheme[3];
 	
-	boolean sslAvailable = false;
+	boolean sslAvailable = true;
 	
 	public Network() {
 		initSSLSocketFactories();
