@@ -64,8 +64,8 @@ import edu.htl3r.schoolplanner.backend.Preferences;
  */
 public class Network implements NetworkAccess {
 	
-	private String oldServerUrl;
-	private String oldSchool;
+	private String oldServerUrl = "";
+	private String oldSchool = "";
 	
 	private HttpClient client;
 	
@@ -149,7 +149,7 @@ public class Network implements NetworkAccess {
 	}
 	
 	/**
-	 * Ueberprueft, ob der Server SSL unterstuetz oder nicht und registriert die passenden {@link Scheme}s fuer die spaetere Verwendung.
+	 * Ueberprueft, ob der Server SSL unterstuetzt oder nicht und registriert die passenden {@link Scheme}s fuer die spaetere Verwendung.
 	 * @throws IOException Wenn die URL nicht zur Uebertragung verwendet werden kann
 	 */
 	private void checkServerCapability() throws IOException {
@@ -202,7 +202,7 @@ public class Network implements NetworkAccess {
 
 	@Override
 	public String getResponse(String request) throws IOException {		
-				return executeRequest(request);
+		return executeRequest(request);
 	}
 	
 	/**
@@ -250,8 +250,8 @@ public class Network implements NetworkAccess {
 			String serverUrl = preferences.getServerUrl();
 			String school = preferences.getSchool();
 			
-			oldServerUrl = serverUrl;
-			oldSchool = school;
+			oldServerUrl = new String(serverUrl);
+			oldSchool = new String(school);
 			
 			try {
 				setServerUrl(serverUrl);
@@ -265,6 +265,15 @@ public class Network implements NetworkAccess {
 			
 			initSSLSchemes();
 			checkServerCapability();
+			
+			// TODO: Ugly hack, setting URL after server SSL check
+			try {
+				setServerUrl(serverUrl);
+				setSchool(school);
+			} catch (URISyntaxException e) {
+				// Thrown, if server url can not be parsed
+				throw new IOException("Unable to parse URL");
+			}
 		}
 	}
 
