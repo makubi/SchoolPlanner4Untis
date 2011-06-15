@@ -79,8 +79,8 @@ public class Network implements NetworkAccess {
 	private String jsessionid;
 	
 	// Prioritized
-	private SSLSocketFactory[] sslSocketFactories = new SSLSocketFactory[3];
-	private Scheme[] sslSchemes = new Scheme[3];
+	private SSLSocketFactory[] sslSocketFactories = new SSLSocketFactory[4];
+	private Scheme[] sslSchemes = new Scheme[4];
 	
 	boolean sslAvailable = true;
 	
@@ -112,6 +112,7 @@ public class Network implements NetworkAccess {
 		sslSocketFactories[0] = SSLSocketFactory.getSocketFactory();
 		sslSocketFactories[1] = caCertSSLSocketFactory();
 		sslSocketFactories[2] = startSSLSocketFactory();
+		sslSocketFactories[3] = geoTrustSSLSocketFactory();
 	}
 
 	/**
@@ -121,6 +122,7 @@ public class Network implements NetworkAccess {
 		sslSchemes[0] = new Scheme("https", sslSocketFactories[0], httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
 		sslSchemes[1] = new Scheme("https", sslSocketFactories[1], httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
 		sslSchemes[2] = new Scheme("https", sslSocketFactories[2], httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
+		sslSchemes[3] = new Scheme("https", sslSocketFactories[3], httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
 	}
 
 	/**
@@ -167,6 +169,7 @@ public class Network implements NetworkAccess {
 			checkSocketsToSchemeMapping.put((SSLSocket) sslSocketFactories[0].createSocket(), sslSchemes[0]);
 			checkSocketsToSchemeMapping.put((SSLSocket) sslSocketFactories[1].createSocket(), sslSchemes[1]);
 			checkSocketsToSchemeMapping.put((SSLSocket) sslSocketFactories[2].createSocket(), sslSchemes[2]);
+			checkSocketsToSchemeMapping.put((SSLSocket) sslSocketFactories[3].createSocket(), sslSchemes[3]);
 			
 			SSLSocket availableSocket = getWorkingSSLSocket(sa, checkSocketsToSchemeMapping.keySet());
 			
@@ -337,6 +340,26 @@ public class Network implements NetworkAccess {
 	        InputStream in = SchoolplannerContext.context.getResources().openRawResource(R.raw.startssl_ks);
 	        try {
 	            trusted.load(in, "startssl".toCharArray());
+	        } finally {
+	            in.close();
+	        }
+	        return new SSLSocketFactory(trusted);
+	    } catch (Exception e) {
+	        throw new AssertionError(e);
+	    }
+	}
+	
+	/**
+	 * Liefert eine {@link SSLSocketFactory}, die GeoTrust-CAs enthaelt.
+	 * Der dazugehoerigt KeyStore wird als 'raw'-Ressource gelesen.
+	 * @return Eine {@link SSLSocketFactory}, die GeoTrust-CAs enthaelt
+	 */
+	private SSLSocketFactory geoTrustSSLSocketFactory() {
+	    try {
+	        KeyStore trusted = KeyStore.getInstance("BKS");
+	        InputStream in = SchoolplannerContext.context.getResources().openRawResource(R.raw.geotrust_ks);
+	        try {
+	            trusted.load(in, "geotrust".toCharArray());
 	        } finally {
 	            in.close();
 	        }
