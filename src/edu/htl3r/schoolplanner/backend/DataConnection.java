@@ -36,7 +36,7 @@ public interface DataConnection extends DataProvider {
 	 * Setzt die Preferences. Diese muessen neu gesetzt werden, wenn sie upgedatet wurden.
 	 * @param prefs Einstellungen, die gesetzt werden sollen
 	 */
-	public void setPreferences(Preferences prefs);
+	public void setPreferences(Authentication prefs);
 
 	/**
 	 * Setzt den Status des Netzwerkes, wenn sich dieser aendert.

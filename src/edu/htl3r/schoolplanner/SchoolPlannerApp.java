@@ -26,13 +26,14 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import edu.htl3r.schoolplanner.backend.Authentication;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataProvider;
 import edu.htl3r.schoolplanner.backend.Preferences;
 
 public class SchoolPlannerApp extends Application {
 		
-	protected Preferences prefs;
+	protected Authentication prefs;
 	protected Cache data;
 
 	// TODO: Wieder aktivieren oder entfernen
@@ -44,7 +45,7 @@ public class SchoolPlannerApp extends Application {
 	public void onCreate() {
 		super.onCreate();
 		initBackend();
-		prefs = new Preferences();
+		prefs = new Authentication();
 		data = SchoolplannerContext.cache;
 		// TODO: Wieder aktivieren oder entfernen
 		//currentView = prefs.getView().getClass();
@@ -82,23 +83,6 @@ public class SchoolPlannerApp extends Application {
 		if (info != null) {
 			setNetworkEnabled(info.isConnected());
 		}
-	}
-
-	/**
-	 * gibt das aktuelle {@link Preferences} Objekt zurueck in dem die Einstellungen gespeichert sind
-	 * @return prefs das {@link Preferences} Objekt
-	 */
-	public Preferences getPrefs() {
-		return prefs;
-	}
-
-	/**
-	 * setzt das {@link Preferences} Objekt neu und updatet auch das Objekt in dem {@link DataProvider}
-	 * @param prefs das neue {@link Preferences} Objekt
-	 */
-	public void setPrefs(Preferences prefs) {
-		this.prefs = prefs;
-		data.setPreferences(prefs);
 	}
 
 	/**

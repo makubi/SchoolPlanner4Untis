@@ -299,7 +299,7 @@ public class Cache implements DataConnection, InternalData {
 	}
 
 	@Override
-	public void setPreferences(Preferences preferences) {
+	public void setPreferences(Authentication preferences) {
 		externalDataLoader.setPreferences(preferences);
 	}
 
