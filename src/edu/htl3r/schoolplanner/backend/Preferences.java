@@ -28,9 +28,6 @@ import android.util.Log;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
-import edu.htl3r.schoolplanner.gui.timetableviews.DayView;
-import edu.htl3r.schoolplanner.gui.timetableviews.ViewActivity;
-import edu.htl3r.schoolplanner.gui.timetableviews.WeekView;
 
 /**
  * 
@@ -64,7 +61,8 @@ public class Preferences {
 	private boolean autologin = false;
 	private int type; // siehe arrays.xml
 	private String selection; // is es 5AN, 1BI, 263B, BRE etc.
-	private ViewActivity view = new WeekView();
+	// TODO: Wieder aktivieren oder entfernen
+	//private ViewActivity view = new WeekView();
 	private boolean autochoose = false;
 	private int bgColor;
 	private int borderColor;
@@ -138,8 +136,8 @@ public class Preferences {
 		setTimegridEnabled(preferences.getBoolean(SHOW_TIMEGRID, false));
 		setZerohourEnabled(preferences.getBoolean(SHOW_ZEROHOUR, false));
 		
-		
-		String schoolView = preferences.getString(SCHOOLVIEW, "");
+		// TODO: Wieder aktivieren oder entfernen
+		/*String schoolView = preferences.getString(SCHOOLVIEW, "");
 		if(!"".equals(schoolView)){
 			Log.d("Philip", getClass().getSimpleName() + ": schoolView: " + schoolView);
 			try {
@@ -148,7 +146,7 @@ public class Preferences {
 				e.printStackTrace();
 				view = new DayView();
 			}
-		}
+		}*/
 	}
 
 	/**
@@ -313,9 +311,10 @@ public class Preferences {
 	 * Liefert die View, die standardgemaess verwendet werden soll.
 	 * @return Eine Implementierung von {@link ViewActivity}
 	 */
-	public ViewActivity getView() {
+	// TODO: Wieder aktivieren oder entfernen
+	/*public ViewActivity getView() {
 		return view;
-	}
+	}*/
 
 	/**
 	 * Setzt die View, die standardgemaess verwendet werden soll.
@@ -323,10 +322,11 @@ public class Preferences {
 	 * @param view
 	 *            Eine Implementierung von {@link ViewActivity}
 	 */
-	public void setView(ViewActivity view) {
+	// TODO: Wieder aktivieren oder entfernen
+	/*public void setView(ViewActivity view) {
 		this.view = view;
 		saveString(SCHOOLVIEW, view.getClass().getCanonicalName());
-	}
+	}*/
 
 	/**
 	 * Liefert zurueck, ob der Stundenplan automatisch gewaehlt werden soll
@@ -421,11 +421,11 @@ public class Preferences {
 		sb.append("Autochoose: " + autochoose + "\n");
 		sb.append("Type: " + type + "\n");
 		
-		
-		if(view != null){
+		// TODO: Wieder aktivieren oder entfernen
+		/*if(view != null){
 			sb.append("View: " + view.getClass().getSimpleName() +"\n");
 			sb.append("View ID: " + view.settingsId + "\n");
-		}
+		}*/
 
 		return sb.toString();
 	}
