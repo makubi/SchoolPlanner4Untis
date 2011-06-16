@@ -55,7 +55,7 @@ import org.springframework.web.util.UriUtils;
 import android.util.Log;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
-import edu.htl3r.schoolplanner.backend.Preferences;
+import edu.htl3r.schoolplanner.backend.Authentication;
 
 /**
  * 
@@ -69,7 +69,7 @@ public class Network implements NetworkAccess {
 	
 	private HttpClient client;
 	
-	private Preferences preferences;
+	private Authentication preferences;
 	
 	private URI serverUrl;
 	private URI httpsServerUrl;
@@ -370,7 +370,7 @@ public class Network implements NetworkAccess {
 	}
 
 	@Override
-	public void setPreferences(Preferences preferences) {
+	public void setPreferences(Authentication preferences) {
 		this.preferences = preferences;
 	}
 	

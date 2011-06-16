@@ -295,7 +295,7 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 	 * Setzt die Preferences fuer das Netzwerk neu.
 	 * @param prefs Preferences, die gesetzt werden sollen
 	 */
-	public void setPreferences(Preferences prefs) {
+	public void setPreferences(Authentication prefs) {
 		network.setPreferences(prefs);
 	}
 
