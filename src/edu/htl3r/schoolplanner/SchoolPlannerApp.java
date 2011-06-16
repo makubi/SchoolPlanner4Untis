@@ -29,14 +29,14 @@ import android.util.Log;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataProvider;
 import edu.htl3r.schoolplanner.backend.Preferences;
-import edu.htl3r.schoolplanner.gui.timetableviews.ViewActivity;
 
 public class SchoolPlannerApp extends Application {
 		
 	protected Preferences prefs;
 	protected Cache data;
 
-	protected Class<? extends ViewActivity> currentView;
+	// TODO: Wieder aktivieren oder entfernen
+	//protected Class<? extends ViewActivity> currentView;
 
 	protected boolean hasNetwork;
 
@@ -46,7 +46,8 @@ public class SchoolPlannerApp extends Application {
 		initBackend();
 		prefs = new Preferences();
 		data = SchoolplannerContext.cache;
-		currentView = prefs.getView().getClass();
+		// TODO: Wieder aktivieren oder entfernen
+		//currentView = prefs.getView().getClass();
 		data.setPreferences(prefs);
 
 		ConnectivityManager conmgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -138,15 +139,17 @@ public class SchoolPlannerApp extends Application {
 	 * gibt die aktuelle Stundenplanansicht zurueck
 	 * @return ein Class-Objekt einer von {@link ViewActivity} abgeleiteten Klasse
 	 */
-	public Class<? extends ViewActivity> getCurrentView() {
+	// TODO: Wieder aktivieren oder entfernen
+	/*public Class<? extends ViewActivity> getCurrentView() {
 		return currentView;
-	}
+	}*/
 
 	/**
 	 * setzt die aktuelle Stundenplanansicht neu
 	 * @param currentView die neue Ansicht, ein Class-Objekt einer von {@link ViewActivity} abgeleiteten Klasse
 	 */
-	public void setCurrentView(Class<? extends ViewActivity> currentView) {
+	// TODO: Wieder aktivieren oder entfernen
+	/*public void setCurrentView(Class<? extends ViewActivity> currentView) {
 		this.currentView = currentView;
-	}
+	}*/
 }
