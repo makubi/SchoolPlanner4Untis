@@ -59,9 +59,7 @@ public class JSONNetwork implements DataProvider{
 	private final String jsonrpcVersion = "2.0";
 
 	private final NetworkAccess network = new Network();
-
 	private final JSONParser jsonParser = new JSONParser();
-	private final LessonProcessor lessonProcessor = new LessonProcessor();
 	
 	private Authentication preferences;
 	
@@ -89,7 +87,6 @@ public class JSONNetwork implements DataProvider{
 	public void setPreferences(Authentication preferences) {
 		this.preferences = preferences;
 		network.setPreferences(preferences);
-		Log.d("Network", "Preferences in network set.");
 	}
 
 	/**
@@ -428,7 +425,7 @@ public class JSONNetwork implements DataProvider{
 			responseList = jsonParser.jsonToLessonMap(result);
 			
 			// Fuege leere Listen fuer Daten ohne Stunden hinzu
-			lessonProcessor.addEmptyDaysToLessonMap(responseList, startDate, endDate);
+			//lessonProcessor.addEmptyDaysToLessonMap(responseList, startDate, endDate);
 			
 		} catch (JSONException e) {
 			Log.e("JSON", "Error on requesting lessons",e);
@@ -509,14 +506,14 @@ public class JSONNetwork implements DataProvider{
 	public List<Lesson> getMergedLessons(ViewType view, Calendar date)
 			throws IOException {
 		List<Lesson> lessonList = getLessons(view, date);
-		return lessonList != null ? lessonProcessor.mergeLessons(lessonList) : null;
+		return lessonList;
 	}
 
 	@Override
 	public Map<String, List<Lesson>> getMergedLessons(ViewType view,
 			Calendar startDate, Calendar endDate) throws IOException {
 		Map<String, List<Lesson>> lessonMap = getLessons(view, startDate, endDate);
-		return lessonMap != null ? lessonProcessor.mergeLessons(lessonMap) : null;
+		return lessonMap;
 	}
 	
 	@Override
@@ -531,6 +528,11 @@ public class JSONNetwork implements DataProvider{
 		// TODO Not implemented in v1.0
 	}
 	
+	
+	/**
+	 * Initialisiert die Farben der LessonTypes und -Codes.
+	 * @throws IOException Wenn ein Fehler bei der Uebertragung auftritt
+	 */
 	public void initStatusData() throws IOException {		
 		final String id = "ID";
 		final String method = JSONGetMethods.getStatusData;
