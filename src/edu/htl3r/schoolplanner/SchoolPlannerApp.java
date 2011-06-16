@@ -36,9 +36,6 @@ public class SchoolPlannerApp extends Application {
 	protected Authentication prefs;
 	protected Cache data;
 
-	// TODO: Wieder aktivieren oder entfernen
-	//protected Class<? extends ViewActivity> currentView;
-
 	protected boolean hasNetwork;
 
 	@Override
@@ -47,8 +44,6 @@ public class SchoolPlannerApp extends Application {
 		initBackend();
 		prefs = new Authentication();
 		data = SchoolplannerContext.cache;
-		// TODO: Wieder aktivieren oder entfernen
-		//currentView = prefs.getView().getClass();
 		data.setPreferences(prefs);
 
 		ConnectivityManager conmgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -64,8 +59,6 @@ public class SchoolPlannerApp extends Application {
 				updateNetstat(info);
 			}
 		}, filter);
-
-		Log.d("Philip", "endapp");
 	}
 	
 	private void initBackend() {
@@ -86,54 +79,10 @@ public class SchoolPlannerApp extends Application {
 	}
 
 	/**
-	 * liefert das {@link DataProvider} Objekt zurueck aus dem Daten wie z.B.: die Klassenlisten, Stunden etc. ausgelesen werden koennen 
-	 * @return das {@link DataProvider} Objekt mit den Daten
-	 */
-	public Cache getData() {
-		return data;
-	}
-
-	/**
-	 * setzt ein neue {@link DataProvider} Objekt
-	 * @param data das neue {@link DataProvider} Objekt
-	 */
-	public void setData(Cache data) {
-		this.data = data;
-	}
-
-	/**
-	 * gibt den aktuellen Netzwerkstatus zurueck
-	 * @return true wenn eine Datenverbindung vorhanden ist, wenn nicht false
-	 */
-	public boolean isNetworkEnabled() {
-		return hasNetwork;
-	}
-
-	/**
 	 * setzt den Netzwerkstatus neu und updatet die Information im {@link DataProvider}
 	 * @param hasNetwork true wenn eine Datenverbindung vorhanden ist, wenn nicht false
 	 */
 	public void setNetworkEnabled(boolean hasNetwork) {
-		this.hasNetwork = hasNetwork;
 		data.networkAvailabilityChanged(hasNetwork);
-		Log.d("Philip", "info.isConnected(): " + hasNetwork);
 	}
-
-	/**
-	 * gibt die aktuelle Stundenplanansicht zurueck
-	 * @return ein Class-Objekt einer von {@link ViewActivity} abgeleiteten Klasse
-	 */
-	// TODO: Wieder aktivieren oder entfernen
-	/*public Class<? extends ViewActivity> getCurrentView() {
-		return currentView;
-	}*/
-
-	/**
-	 * setzt die aktuelle Stundenplanansicht neu
-	 * @param currentView die neue Ansicht, ein Class-Objekt einer von {@link ViewActivity} abgeleiteten Klasse
-	 */
-	// TODO: Wieder aktivieren oder entfernen
-	/*public void setCurrentView(Class<? extends ViewActivity> currentView) {
-		this.currentView = currentView;
-	}*/
 }
