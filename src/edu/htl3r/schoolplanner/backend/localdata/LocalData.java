@@ -169,8 +169,8 @@ public class LocalData implements DataStore, DataProvider, InternalData {
 			tmp.setId(Integer.parseInt(object.get("id")));
 			tmp.setName(object.get("name"));
 			tmp.setLongName(object.get("longname"));
-			tmp.setForeColor(Integer.parseInt(object.get("forecolor")));
-			tmp.setBackColor(Integer.parseInt(object.get("backcolor")));
+			tmp.setForeColor(object.get("forecolor"));
+			tmp.setBackColor(object.get("backcolor"));
 			result.add(tmp);
 		}
 		return result;
@@ -209,8 +209,8 @@ public class LocalData implements DataStore, DataProvider, InternalData {
 			tmp.setId(Integer.parseInt(object.get("id")));
 			tmp.setName(object.get("name"));
 			tmp.setLongName(object.get("longname"));
-			tmp.setForeColor(Integer.parseInt(object.get("forecolor")));
-			tmp.setBackColor(Integer.parseInt(object.get("backcolor")));
+			tmp.setForeColor(object.get("forecolor"));
+			tmp.setBackColor(object.get("backcolor"));
 			result.add(tmp);
 		}
 		return result;
@@ -249,8 +249,8 @@ public class LocalData implements DataStore, DataProvider, InternalData {
 			tmp.setId(Integer.parseInt(object.get("id")));
 			tmp.setName(object.get("name"));
 			tmp.setLongName(object.get("longname"));
-			tmp.setForeColor(Integer.parseInt(object.get("forecolor")));
-			tmp.setBackColor(Integer.parseInt(object.get("backcolor")));
+			tmp.setForeColor(object.get("forecolor"));
+			tmp.setBackColor(object.get("backcolor"));
 			result.add(tmp);
 		}
 		return result;
@@ -289,8 +289,8 @@ public class LocalData implements DataStore, DataProvider, InternalData {
 			tmp.setId(Integer.parseInt(object.get("id")));
 			tmp.setName(object.get("name"));
 			tmp.setLongName(object.get("longname"));
-			tmp.setForeColor(Integer.parseInt(object.get("forecolor")));
-			tmp.setBackColor(Integer.parseInt(object.get("backcolor")));
+			tmp.setForeColor(object.get("forecolor"));
+			tmp.setBackColor(object.get("backcolor"));
 			result.add(tmp);
 		}
 		return result;

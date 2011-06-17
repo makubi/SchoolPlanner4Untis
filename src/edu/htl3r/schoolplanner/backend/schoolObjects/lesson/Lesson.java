@@ -24,7 +24,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
-import edu.htl3r.schoolplanner.CalendarUtils;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
@@ -40,8 +39,8 @@ public class Lesson implements Serializable, Comparable<Lesson> {
 	private int id;
 
 	private Calendar date;
-	private Calendar startTime;
-	private Calendar endTime;
+	private Calendar startTime = Calendar.getInstance();
+	private Calendar endTime = Calendar.getInstance();
 
 	private List<SchoolClass> schoolClasses = new ArrayList<SchoolClass>();
 	private List<SchoolTeacher> schoolTeachers = new ArrayList<SchoolTeacher>();
@@ -51,12 +50,7 @@ public class Lesson implements Serializable, Comparable<Lesson> {
 	private LessonType lessonType;
 	private LessonCode lessonCode;
 
-	private long last_update;
-
-	public Lesson() {
-		startTime = Calendar.getInstance();
-		endTime = Calendar.getInstance();
-	}
+	@Deprecated private long last_update;
 
 	/**
 	 * Liefert den aktuellen Kalender (Datum) der Stunde.
@@ -159,48 +153,24 @@ public class Lesson implements Serializable, Comparable<Lesson> {
 		this.id = id;
 	}
 
+	@Deprecated
 	public long getLast_update() {
 		return last_update;
 	}
 
+	@Deprecated
 	public void setLast_update(long lastUpdate) {
 		last_update = lastUpdate;
 	}
 
 	@Override
 	public String toString() {
-		String out = "============== Lesson ==============\n";
-		for(int i=0;i<schoolClasses.size();i++){
-			out += "class[" +i +"]: " + schoolClasses.get(i).getName() + "\n";
-		}
-		
-		for(int i=0;i<schoolRooms.size();i++){
-			out += "room[" +i +"]: " + schoolRooms.get(i).getName() + "\n";
-		}
-		
-		for(int i=0;i<schoolSubjects.size();i++){
-			out += "subject[" +i +"]: " + schoolSubjects.get(i).getName() + "\n";
-		}
-		
-		for(int i=0;i<schoolTeachers.size();i++){
-			out += "teacher[" +i +"]: " + schoolTeachers.get(i).getName() + "\n";
-		}
-		if(lessonType != null){
-			out += "lessontype: " +lessonType.getClass().getSimpleName() +"\n";
-		}
-		if(lessonCode!= null){
-			out += "educationtype: " +lessonCode.getClass().getSimpleName() +"\n";
-		}
-		if(date!=null){
-			out += "date: " + CalendarUtils.getDateString(date, false) + "\n";
-		}
-		if(startTime!=null){
-		out += "starttime: " + CalendarUtils.getTimeStr(startTime, false) + "\n";
-		}
-		if(endTime!=null){
-		out += "endtime: " + CalendarUtils.getTimeStr(endTime, false) + "\n";
-		}
-		return out;
+		return "Lesson [id=" + id + ", date=" + date + ", startTime="
+				+ startTime + ", endTime=" + endTime + ", schoolClasses="
+				+ schoolClasses + ", schoolTeachers=" + schoolTeachers
+				+ ", schoolSubjects=" + schoolSubjects + ", schoolRooms="
+				+ schoolRooms + ", lessonType=" + lessonType + ", lessonCode="
+				+ lessonCode + ", last_update=" + last_update + "]";
 	}
 
 	@Override
@@ -209,10 +179,20 @@ public class Lesson implements Serializable, Comparable<Lesson> {
 		return diff == 0 ? getStartTime().compareTo(another.getStartTime()) : diff;
 	}
 
+	/**
+	 * Ueberprueft, ob die uebergebene Stunde am selben Datum und zur selben Zeit startet und endet wie diese Stunde.
+	 * @param another Stunde, die mit der aktuellen verglichen werden soll
+	 * @return 'true', wenn die Stunden am selben Datum und zur selben Zeit stattfinden
+	 */
 	public boolean equals(Lesson another) {
 		return getDate().get(Calendar.YEAR) == another.getDate().get(Calendar.YEAR) && getDate().get(Calendar.MONTH) == another.getDate().get(Calendar.MONTH) && getDate().get(Calendar.DAY_OF_MONTH) == another.getDate().get(Calendar.DAY_OF_MONTH) && getStartTime().get(Calendar.HOUR_OF_DAY) == another.getStartTime().get(Calendar.HOUR_OF_DAY) && getStartTime().get(Calendar.MINUTE) == another.getStartTime().get(Calendar.MINUTE);
 	}
 	
+	/**
+	 * Ueberprueft, ob die uebergebene Stunde am gleichen Datum und zwischen der aktuellen stattfindet.
+	 * @param another Zu ueberpruefende Stunde
+	 * @return 'true', wenn die uebergebene Stunde am gleichen Datum und zwischen der aktuellen stattfindet
+	 */
 	public boolean inLesson(Lesson another) {
 		return getDate().equals(another.getDate()) && 
 		(getStartTime().before(another.getStartTime()) || getStartTime().equals(another.getStartTime())) && 
@@ -222,6 +202,13 @@ public class Lesson implements Serializable, Comparable<Lesson> {
 	
 	// TODO: Auf append(Lesson) umstellen und mit LessonCode usw. auch machen
 	
+	/**
+	 * Fuegt die Listen zusammen, erzeugt keine doppelten Eintraege.
+	 * @param schoolClasses Liste mit Schulklassen
+	 * @param schoolTeachers Liste mit Lehrern
+	 * @param schoolSubjects Liste mit Faechern
+	 * @param schoolRooms Liste mit Raeumen
+	 */
 	public void appendLists(List<SchoolClass> schoolClasses, List<SchoolTeacher> schoolTeachers, List<SchoolSubject> schoolSubjects, List<SchoolRoom> schoolRooms) {
 		for(SchoolClass schoolClass : schoolClasses) {
 			if(!containsSchoolClass(schoolClass)) {

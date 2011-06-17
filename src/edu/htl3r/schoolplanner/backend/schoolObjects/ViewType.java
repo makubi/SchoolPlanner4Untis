@@ -26,39 +26,14 @@ import java.io.Serializable;
  *
  */
 public abstract class ViewType implements Serializable, Comparable<ViewType> {
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 4424283163744496080L;
 	
 	private int id;
 	private String name;
 	private String longName;
-	private int foreColor;
-	private int backColor;
-	
-	/**
-	 * statische Konstante fuer eine Klasse<br />
-	 * <b>Wert</b>: 1
-	 */
-	public static final int SCHOOLCLASS = 1;
-	/**
-	 * statische Konstante fuer einen Raum<br />
-	 * <b>Wert</b>: 2
-	 */
-	public static final int SCHOOLROOM = 2;
-	/**
-	 * statische Konstante fuer einen Lehrer<br />
-	 * <b>Wert</b>: 3
-	 */
-	public static final int SCHOOLTEACHER = 3;
-	/**
-	 * statische Konstante fuer ein Fach<br />
-	 * <b>Wert</b>: 4
-	 */
-	public static final int SCHOOLSUBJECT = 4;
-	
+	private String foreColor;
+	private String backColor;
 	
 	/**
 	 * Liefert die ID dieses Objekts. Diese wird mit der ID in der gegebenen Datenbank uebereinstimmen.
@@ -100,29 +75,33 @@ public abstract class ViewType implements Serializable, Comparable<ViewType> {
 		this.longName = longName;
 	}
 
-	public int getForeColor() {
+	public String getForeColor() {
 		return foreColor;
 	}
 
-	public void setForeColor(int foreColor) {
+	public void setForeColor(String foreColor) {
 		this.foreColor = foreColor;
 	}
 
-	public int getBackColor() {
+	public String getBackColor() {
 		return backColor;
 	}
 
-	public void setBackColor(int backColor) {
+	public void setBackColor(String backColor) {
 		this.backColor = backColor;
 	}
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() +": " +getName();
+		return "ViewType [id=" + id + ", name=" + name + ", longName="
+				+ longName + ", foreColor=" + foreColor + ", backColor="
+				+ backColor + "]";
 	}
 	
 	@Override
 	public int compareTo(ViewType another) {
 		return getName().compareTo(another.getName());
 	}
+	
+	
 }

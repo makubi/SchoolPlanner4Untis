@@ -25,11 +25,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 import edu.htl3r.schoolplanner.backend.Authentication;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataProvider;
-import edu.htl3r.schoolplanner.backend.Preferences;
 
 public class SchoolPlannerApp extends Application {
 		

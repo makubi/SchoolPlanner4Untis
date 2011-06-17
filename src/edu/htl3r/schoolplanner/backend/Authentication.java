@@ -114,12 +114,10 @@ public class Authentication {
 		this.password = password;
 	}
 
-
 	@Override
 	public String toString() {
-		return "Authentication [" + (password != null ? "password=" + password + ", " : "") + (school != null ? "school=" + school + ", " : "") + (serverUrl != null ? "serverUrl=" + serverUrl + ", " : "") + (username != null ? "username=" + username : "") + "]";
+		return "Authentication [serverUrl=" + serverUrl + ", school=" + school
+				+ ", username=" + username + ", password=" + password + "]";
 	}
-	
-	
 	
 }

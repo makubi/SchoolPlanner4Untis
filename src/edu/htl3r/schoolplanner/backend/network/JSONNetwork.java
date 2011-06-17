@@ -52,7 +52,6 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  */
 public class JSONNetwork implements DataProvider{
 
-	
 	/**
 	 * JSON-RPC Version, die der Untis-Server verwendet.
 	 */
@@ -99,8 +98,6 @@ public class JSONNetwork implements DataProvider{
 	 * @throws IOException 
 	 */
 	private JSONObject getJSONData(final JSONObject request) throws IOException {
-		Log.d("METHOD_CALL", "JSONNetwork.getJSONData(" + request
-				+ " : String)");
 		JSONObject response = null;
 		String responseString = network.getResponse(request.toString());
 		
@@ -145,7 +142,7 @@ public class JSONNetwork implements DataProvider{
 			request.put("jsonrpc", jsonrpcVersion);
 			request.put("method", method);
 			request.put("id", id);
-			// TODO: Zur Zeit unterstuetzt der Server das Weglassen der params nicht.
+			// Server benoetigt leere Params
 			request.put("params", "");
 		} catch (JSONException e) {
 			Log.e("JSON", "Error on building request for list",e);
@@ -169,9 +166,9 @@ public class JSONNetwork implements DataProvider{
 		JSONTokener t = new JSONTokener(data);
 		Object next = t.nextValue();
 
-		Log.d("JSON", "Got class: " + next.getClass());
-		Log.d("JSON", "Got value: " + next.toString());
-		Log.d("JSON", "Another object available: " + t.more());
+		Log.v("JSON", "Got class: " + next.getClass());
+		Log.v("JSON", "Got value: " + next.toString());
+		Log.v("JSON", "Another object available: " + t.more());
 
 		if (next instanceof JSONObject) {
 			return (JSONObject) next;
@@ -422,11 +419,7 @@ public class JSONNetwork implements DataProvider{
 			JSONArray result = response.getJSONArray("result");
 			
 			// Parse die JSON-Response zu passender Map
-			responseList = jsonParser.jsonToLessonMap(result);
-			
-			// Fuege leere Listen fuer Daten ohne Stunden hinzu
-			//lessonProcessor.addEmptyDaysToLessonMap(responseList, startDate, endDate);
-			
+			responseList = jsonParser.jsonToLessonMap(result);			
 		} catch (JSONException e) {
 			Log.e("JSON", "Error on requesting lessons",e);
 		}
