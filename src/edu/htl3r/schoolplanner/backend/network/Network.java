@@ -79,8 +79,8 @@ public class Network implements NetworkAccess {
 	private String jsessionid;
 	
 	// Prioritized
-	private SSLSocketFactory[] sslSocketFactories = new SSLSocketFactory[4];
-	private Scheme[] sslSchemes = new Scheme[4];
+	private SSLSocketFactory[] sslSocketFactories = new SSLSocketFactory[2];
+	private Scheme[] sslSchemes = new Scheme[2];
 	
 	boolean sslAvailable = true;
 	
@@ -110,9 +110,7 @@ public class Network implements NetworkAccess {
 	 */
 	private void initSSLSocketFactories() {
 		sslSocketFactories[0] = SSLSocketFactory.getSocketFactory();
-		sslSocketFactories[1] = caCertSSLSocketFactory();
-		sslSocketFactories[2] = startSSLSocketFactory();
-		sslSocketFactories[3] = geoTrustSSLSocketFactory();
+		sslSocketFactories[1] = additionalCASSLSocketFactory();
 	}
 
 	/**
@@ -121,8 +119,6 @@ public class Network implements NetworkAccess {
 	private void initSSLSchemes() {
 		sslSchemes[0] = new Scheme("https", sslSocketFactories[0], httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
 		sslSchemes[1] = new Scheme("https", sslSocketFactories[1], httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
-		sslSchemes[2] = new Scheme("https", sslSocketFactories[2], httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
-		sslSchemes[3] = new Scheme("https", sslSocketFactories[3], httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
 	}
 
 	/**
@@ -136,6 +132,7 @@ public class Network implements NetworkAccess {
 		for(SSLSocket sslSocket : set) {
 			try {
 				sslSocket.connect(sa, sslSocketTimeout);
+				sslSocket.setSoTimeout(sslSocketTimeout);
 				sslSocket.setReuseAddress(true);
 				sslSocket.startHandshake();
 				return sslSocket;
@@ -168,8 +165,6 @@ public class Network implements NetworkAccess {
 			Map<SSLSocket, Scheme> checkSocketsToSchemeMapping = new HashMap<SSLSocket, Scheme>();			
 			checkSocketsToSchemeMapping.put((SSLSocket) sslSocketFactories[0].createSocket(), sslSchemes[0]);
 			checkSocketsToSchemeMapping.put((SSLSocket) sslSocketFactories[1].createSocket(), sslSchemes[1]);
-			checkSocketsToSchemeMapping.put((SSLSocket) sslSocketFactories[2].createSocket(), sslSchemes[2]);
-			checkSocketsToSchemeMapping.put((SSLSocket) sslSocketFactories[3].createSocket(), sslSchemes[3]);
 			
 			SSLSocket availableSocket = getWorkingSSLSocket(sa, checkSocketsToSchemeMapping.keySet());
 			
@@ -309,57 +304,13 @@ public class Network implements NetworkAccess {
 			this.httpsServerUrl = new URI("https://"+serverUrl+"/WebUntis/jsonrpc.do");
 	}
 	
-	/**
-	 * Liefert eine {@link SSLSocketFactory}, die CACert-CAs enthaelt.
-	 * Der dazugehoerigt KeyStore wird als 'raw'-Ressource gelesen.
-	 * @return Eine {@link SSLSocketFactory}, die CACert-CAs enthaelt
-	 */
-	private SSLSocketFactory caCertSSLSocketFactory() {
+	private SSLSocketFactory additionalCASSLSocketFactory() {
 	    try {
 	        KeyStore trusted = KeyStore.getInstance("BKS");
-	        InputStream in = SchoolplannerContext.context.getResources().openRawResource(R.raw.cacert_ks);
+	        InputStream in = SchoolplannerContext.context.getResources().openRawResource(R.raw.additional_cas);
 	        try {
-	            trusted.load(in, "cacert".toCharArray());
-	        } finally {
-	            in.close();
-	        }
-	        return new SSLSocketFactory(trusted);
-	    } catch (Exception e) {
-	        throw new AssertionError(e);
-	    }
-	}
-	
-	/**
-	 * Liefert eine {@link SSLSocketFactory}, die CACert-CAs enthaelt.
-	 * Der dazugehoerigt KeyStore wird als 'raw'-Ressource gelesen.
-	 * @return Eine {@link SSLSocketFactory}, die CACert-CAs enthaelt
-	 */
-	private SSLSocketFactory startSSLSocketFactory() {
-	    try {
-	        KeyStore trusted = KeyStore.getInstance("BKS");
-	        InputStream in = SchoolplannerContext.context.getResources().openRawResource(R.raw.startssl_ks);
-	        try {
-	            trusted.load(in, "startssl".toCharArray());
-	        } finally {
-	            in.close();
-	        }
-	        return new SSLSocketFactory(trusted);
-	    } catch (Exception e) {
-	        throw new AssertionError(e);
-	    }
-	}
-	
-	/**
-	 * Liefert eine {@link SSLSocketFactory}, die GeoTrust-CAs enthaelt.
-	 * Der dazugehoerigt KeyStore wird als 'raw'-Ressource gelesen.
-	 * @return Eine {@link SSLSocketFactory}, die GeoTrust-CAs enthaelt
-	 */
-	private SSLSocketFactory geoTrustSSLSocketFactory() {
-	    try {
-	        KeyStore trusted = KeyStore.getInstance("BKS");
-	        InputStream in = SchoolplannerContext.context.getResources().openRawResource(R.raw.geotrust_ks);
-	        try {
-	            trusted.load(in, "geotrust".toCharArray());
+	        	final String keystorePassword = "additionalCAs";
+	            trusted.load(in, keystorePassword.toCharArray());
 	        } finally {
 	            in.close();
 	        }
