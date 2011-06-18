@@ -27,7 +27,9 @@ public class DataSetEntry extends View{
 	 * Zeichnet den Datensatz
 	 * Vorher muessen das TableLayout und die Daten gesetzt werden.
 	 */
-	public void draw() {		
+	public void draw() {
+		tableLayout = new TableLayout(context);
+		
 		TextView name = new TextView(context);
 		name.setTextSize(18);
 		name.setText(dataEntry.get("name"));
@@ -72,14 +74,6 @@ public class DataSetEntry extends View{
 	}
 
 	/**
-	 * Setze das TableLayout, zu dem der Eintrag hinzugefuegt werden soll.
-	 * @param tableLayout TableLayout, zu dem der Eintrag hinzugefuegt werden soll
-	 */
-	public void setTableLayout(TableLayout tableLayout) {
-		this.tableLayout = tableLayout;
-	}
-
-	/**
 	 * Daten, die Verwendet werden sollen
 	 * 'name' = Name des Eintrags
 	 * 'url' = URL des Servers
@@ -89,6 +83,10 @@ public class DataSetEntry extends View{
 	 */
 	public void setDataEntry(Map<String, String> dataEntry) {
 		this.dataEntry = dataEntry;
+	}
+
+	public String getName() {
+		return dataEntry.get("name");
 	}
 	
 	
