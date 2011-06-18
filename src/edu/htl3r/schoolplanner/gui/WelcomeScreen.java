@@ -27,9 +27,9 @@ public class WelcomeScreen extends Activity{
 	private void addEntry(String name, String url, String school, String user) {
 		Map<String, String> dataEntry = new HashMap<String, String>();
 		dataEntry.put("name", name);
-		dataEntry.put("url", "webuntis.grupet.at:8080");
-		dataEntry.put("school", "demo");
-		dataEntry.put("user", "user");
+		dataEntry.put("url", url);
+		dataEntry.put("school", school);
+		dataEntry.put("user", user);
 		
 		DataSetEntry entry = new DataSetEntry(this);
 		entry.setTableLayout(tl);
