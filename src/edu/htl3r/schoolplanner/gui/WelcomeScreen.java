@@ -7,6 +7,10 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import edu.htl3r.schoolplanner.R;
@@ -20,13 +24,21 @@ public class WelcomeScreen extends Activity{
 		
 		ListView mainListView = (ListView) findViewById(R.id.main_listview);
 		
+		final List<Map<String, String>> entrySetList = getEntrySetList();
 		
-		List<Map<String, String>> myList = getEntrySetList();
-		
-		SimpleAdapter aa = new SimpleAdapter(this, myList, R.layout.table_row,
+		SimpleAdapter aa = new SimpleAdapter(this, entrySetList, R.layout.table_row,
                 new String[] {"name", "url", "school", "user"},
                 new int[] {R.id.txt_name, R.id.txt_url, R.id.txt_school, R.id.txt_user});
 		mainListView.setAdapter(aa);
+		
+		mainListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Log.d("DataSet","Selected:" + entrySetList.get(position).get("name"));
+			}
+		});
 	}
 	
 	private List<Map<String, String>> getEntrySetList() {
