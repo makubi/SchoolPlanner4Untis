@@ -15,7 +15,8 @@
 			android:textSize="20sp"
 			android:textStyle="bold"
 			android:paddingLeft="1dp"
-			android:gravity="left">
+			android:gravity="left"
+			android:textColor="#FFFF00">
 		</TextView>
 	</TableRow>
 	

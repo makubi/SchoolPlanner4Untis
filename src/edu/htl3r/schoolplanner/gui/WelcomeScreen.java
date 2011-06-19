@@ -87,7 +87,7 @@ public class WelcomeScreen extends Activity{
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
 						mainListView.setEnabled(true);
-						mainListView.setBackgroundColor(Color.BLACK);
+						mainListView.setBackgroundColor(Color.TRANSPARENT);						
 						progress.setVisibility(View.INVISIBLE);
 					}
 				};
@@ -95,14 +95,6 @@ public class WelcomeScreen extends Activity{
 				task.execute();
 			}
 		});
-	}
-	
-	
-	@Override
-	protected void onPause() {
-		// TODO Auto-generated method stub
-		super.onPause();
-		
 	}
 	
 	private List<Map<String, String>> getEntrySetList() {
