@@ -16,6 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
 
 public class WelcomeScreen extends Activity{
@@ -25,20 +26,22 @@ public class WelcomeScreen extends Activity{
 	private final String schoolKey = Constants.schoolKey;
 	private final String userKey = Constants.usernameKey;
 	
-	private ProgressBar progress;
+	private ProgressBar progressWheel;
+	private TextView loginProgressText;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.welcome);
 		
-		progress = (ProgressBar) findViewById(R.id.progressBar1);
+		progressWheel = (ProgressBar) findViewById(R.id.loginProgress);
+		loginProgressText = (TextView) findViewById(R.id.loginProgressText);
 		
-		final ListView mainListView = (ListView) findViewById(R.id.main_listview);
+		final ListView mainListView = (ListView) findViewById(R.id.loginList);
 		
 		final List<Map<String, String>> entrySetList = getEntrySetList();
 		
-		SimpleAdapter aa = new SimpleAdapter(this, entrySetList, R.layout.table_row,
+		SimpleAdapter aa = new SimpleAdapter(this, entrySetList, R.layout.login_table_row,
                 new String[] {nameKey, urlKey, schoolKey, userKey},
                 new int[] {R.id.txt_name, R.id.txt_url, R.id.txt_school, R.id.txt_user});
 		mainListView.setAdapter(aa);
@@ -80,15 +83,17 @@ public class WelcomeScreen extends Activity{
 						super.onPreExecute();
 						mainListView.setEnabled(false);
 						mainListView.setBackgroundColor(Color.GRAY);
-						progress.setVisibility(View.VISIBLE);
+						loginProgressText.setText("Logging in...");
+						progressWheel.setVisibility(View.VISIBLE);
 					}
 					
 					@Override
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
 						mainListView.setEnabled(true);
-						mainListView.setBackgroundColor(Color.TRANSPARENT);						
-						progress.setVisibility(View.INVISIBLE);
+						mainListView.setBackgroundColor(Color.TRANSPARENT);
+						loginProgressText.setText("");
+						progressWheel.setVisibility(View.INVISIBLE);
 					}
 				};
 				

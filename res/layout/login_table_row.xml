@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent" android:orientation="vertical">
-	<TableLayout android:id="@+id/tableLayout1" android:layout_width="fill_parent" android:layout_height="fill_parent" android:stretchColumns="1">
+	<TableLayout android:layout_width="fill_parent" android:layout_height="fill_parent" android:stretchColumns="1">
     
     <View
         android:layout_height="2dip"
@@ -16,8 +16,7 @@
 			android:textStyle="bold"
 			android:paddingLeft="1dp"
 			android:gravity="left"
-			android:textColor="#FFFF00">
-		</TextView>
+			android:textColor="#FFDE00" />
 	</TableRow>
 	
 	<TableRow>
@@ -25,19 +24,16 @@
 			android:id="@+id/txt_url"
 			android:textSize="14sp"
 			android:paddingLeft="3dp"
-			android:gravity="left">
-		</TextView>
+			android:gravity="left" />
 		<TextView
 			android:id="@+id/txt_school"
 			android:textSize="14sp"
-			android:gravity="center_horizontal">
-		</TextView>
+			android:gravity="center_horizontal" />
 		<TextView
 			android:id="@+id/txt_user"
 			android:textSize="14sp"
 			android:paddingRight="3dp"
-			android:gravity="right">
-		</TextView>
+			android:gravity="right" />
 	</TableRow>
 	</TableLayout>
 </LinearLayout>
