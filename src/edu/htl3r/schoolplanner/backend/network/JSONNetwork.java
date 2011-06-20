@@ -179,7 +179,6 @@ public class JSONNetwork implements DataProvider{
 			return (JSONObject) next;
 		}
 		else {
-			// Kann bei falscher URL- oder Schulangabe passieren.
 			throw new JSONException("Unable to parse data");
 		}
 		

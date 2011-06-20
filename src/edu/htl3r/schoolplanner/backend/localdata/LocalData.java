@@ -46,9 +46,9 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTestType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCode;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCodeCreator;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCodeFactory;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonTypeCreator;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonTypeFactory;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeCancelled;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeBreakSupervision;
@@ -761,8 +761,8 @@ public class LocalData implements DataStore, DataProvider, InternalData {
 		List<SchoolRoom> rooms = cache.getSchoolRoomList();
 		List<SchoolSubject> subjects = cache.getSchoolSubjectList();
 		List<SchoolClass> classes = cache.getSchoolClassList();
-		LessonCodeCreator lessonCodeCreator = new LessonCodeCreator();
-		LessonTypeCreator lessonTypeCreator = new LessonTypeCreator();
+		LessonCodeFactory lessonCodeCreator = new LessonCodeFactory();
+		LessonTypeFactory lessonTypeCreator = new LessonTypeFactory();
 
 		String[] columns_lessons = { "viewtype", "schoolObject", "date" };
 		Calendar myDate = (Calendar) date.clone();
