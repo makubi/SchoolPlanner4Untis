@@ -30,20 +30,16 @@ public class LoginListener implements OnItemClickListener {
 			protected Void doInBackground(Void... params) {
 
 				// TODO: Do login here
-				try {
-					Thread.sleep(3000);
-					Intent t = new Intent(welcomescreen, SelectScreen.class);
-
-					LoginEntry loginEntry = new LoginEntry(selectedEntry);
-
-					Bundle extras = new Bundle();
-					extras.putSerializable("entry", loginEntry);
-					t.putExtras(extras);
-					welcomescreen.startActivity(t);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				
+				Intent t = new Intent(welcomescreen, SelectScreen.class);
+				
+				LoginEntry loginEntry = new LoginEntry(selectedEntry);
+				
+				Bundle extras = new Bundle();
+				extras.putSerializable("entry", loginEntry);
+				t.putExtras(extras);
+				welcomescreen.startActivity(t);
+			
 				return null;
 			}
 
