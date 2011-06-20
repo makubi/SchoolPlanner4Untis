@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<string name="help_text">
+	&lt;h1>Help&lt;/h1>
+	&lt;h3>Display dependent menu entries&lt;/h3>
+	Depending on the actual display, you can see different menu entries to organize the time table quickly. The help screen can be access from every display.
+	&lt;br />&lt;br />
+	&lt;h3>Display dependent help&lt;/h3>
+	Every display has its own help text. If there is none available, this one is shown.
+	&lt;br />&lt;br />
+	&lt;h3>Further help&lt;/h3>
+	If you required further help or got questions about our app, you can contact us by sending an e-mail to team@schoolplanner.at or visiting our website http://www.schoolplanner.at/.
+	</string>
+	
+	<string name="help_LoginScreen">
+	&lt;h1>Help&lt;/h1>
+	&lt;h3>Login data&lt;/h3>
+	&lt;b>Server URL:&lt;/b> The URL of the server, like \'urania.webtermin.com\', without protocol (\'http://\') and the path of WebUntis (\'/WebUntis/\').&lt;br />
+	&lt;b>School name:&lt;/b> Name of the school that you use to authenticate at WebUntis.&lt;br />
+	&lt;b>Username:&lt;/b> Username you use to log in at WebUntis.&lt;br />
+	&lt;b>Password:&lt;/b> Password you use to log in at WebUntis.
+	
+	&lt;h3>Automatic Login&lt;/h3>
+	You can activate the option &lt;i>Auto-Login&lt;/i> to automatically log in when you start the app.&lt;br />
+	If you do so, this dialog will be skipped.
+	&lt;br />&lt;br />
+	&lt;h3>Login-sets&lt;/h3>
+	If you created login sets, you can select them here.&lt;br />
+	Thereby, the actual login data is replaced by the data the login-set uses.
+	&lt;br />&lt;br />
+	&lt;h4>Manage your login-sets&lt;/h4>
+	You can manage your login-sets in the menu &lt;i>settings&lt;/i> after you logged into the app.
+	</string>
+	
+	<string name="help_SelectScreen">
+	&lt;i>Help for this screen follows.&lt;/i>
+	&lt;h1>Help&lt;/h1>
+	&lt;h3>Display dependent menu entries&lt;/h3>
+	Depending on the actual display, you can see different menu entries to organize the time table quickly. The help screen can be access from every display.
+	&lt;br />&lt;br />
+	&lt;h3>Display dependent help&lt;/h3>
+	Every display has its own help text. If there is none available, this one is shown.
+	&lt;br />&lt;br />
+	&lt;h3>Further help&lt;/h3>
+	If you required further help or got questions about our app, you can contact us by sending an e-mail to team@schoolplanner.at or visiting our website http://www.schoolplanner.at/.
+	</string>
+	
+	<string name="help_DayView">
+	&lt;i>Help for this screen follows.&lt;/i>
+	&lt;h1>Help&lt;/h1>
+	&lt;h3>Display dependent menu entries&lt;/h3>
+	Depending on the actual display, you can see different menu entries to organize the time table quickly. The help screen can be access from every display.
+	&lt;br />&lt;br />
+	&lt;h3>Display dependent help&lt;/h3>
+	Every display has its own help text. If there is none available, this one is shown.
+	&lt;br />&lt;br />
+	&lt;h3>Further help&lt;/h3>
+	If you required further help or got questions about our app, you can contact us by sending an e-mail to team@schoolplanner.at or visiting our website http://www.schoolplanner.at/.
+	</string>
+	
+	<string name="help_WeekView">
+	&lt;h1>Help&lt;/h1>
+	On this screen you can see the timetable of the currently selected week.
+	Some information may not be shown completely, because of the limited space. 
+	&lt;br />&lt;br />
+	&lt;h3>Finger-gestures&lt;/h3>
+	&lt;h4>Switch the week&lt;/h4>
+	To get to the previous or next week, you can use finger-gestures easilly.
+	
+	&lt;h4>Display a day&lt;/h4>
+	To display one day and watch it in detail, you have to touch the name in the header.&lt;br />
+	To be able to do that, you have to activate the option \'Show names of days in weekview\' in the settings.
+	
+	&lt;h4>Show detailed lesson information&lt;/h4>
+	To display detailed lesson information, you have to touch the choosen lesson.
+	
+	&lt;h4>Add exams&lt;/h4>
+	You can add exams by touching and holding down your finger on a lesson. After that, you can choose \'New\' form the appearing context menu.
+	
+	&lt;h3>Green dot&lt;/h3>
+	The green dot marks a lesson that contains more information than you can see.
+	
+	&lt;h3>Exceptional lessons&lt;/h3>
+	None-standard lessons (e.g. substitution, cancel, exam) are highlighted.
+	&lt;h4>Background colors of highlighted lessons&lt;/h4>
+	Cancelled: red&lt;br />
+	Substitution: orange&lt;br />
+	Exams: green&lt;br />
+	Break supervision: violet
+	</string>
+	
+	<string name="help_MonthView">
+	&lt;i>Help for this screen follows.&lt;/i>
+	&lt;h1>Help&lt;/h1>
+	&lt;h3>Display dependent menu entries&lt;/h3>
+	Depending on the actual display, you can see different menu entries to organize the time table quickly. The help screen can be access from every display.
+	&lt;br />&lt;br />
+	&lt;h3>Display dependent help&lt;/h3>
+	Every display has its own help text. If there is none available, this one is shown.
+	&lt;br />&lt;br />
+	&lt;h3>Further help&lt;/h3>
+	If you required further help or got questions about our app, you can contact us by sending an e-mail to team@schoolplanner.at or visiting our website http://www.schoolplanner.at/.
+	</string>
+
+	<string name="help_DateListView">
+	&lt;i>Help for this screen follows.&lt;/i>
+	&lt;h1>Help&lt;/h1>
+	&lt;h3>Display dependent menu entries&lt;/h3>
+	Depending on the actual display, you can see different menu entries to organize the time table quickly. The help screen can be access from every display.
+	&lt;br />&lt;br />
+	&lt;h3>Display dependent help&lt;/h3>
+	Every display has its own help text. If there is none available, this one is shown.
+	&lt;br />&lt;br />
+	&lt;h3>Further help&lt;/h3>
+	If you required further help or got questions about our app, you can contact us by sending an e-mail to team@schoolplanner.at or visiting our website http://www.schoolplanner.at/.
+	</string>
+	
+	<string name="help_LessonView">
+	&lt;h1>Help&lt;/h1>
+	&lt;h3>Data&lt;/h3>
+	On this screen you can find detailed information about the currently selected lesson.&lt;br />
+	Information for Classes, Teachers, Subjects and Rooms can be viewed here, furthermore the lesson type (e.g. substitution) plus the less conde (e.g. break supervision) are shown.&lt;br />
+	A teacher listed in (brackets) symbolizes that this teacher is missing, another one might be added instead. This applies for switched rooms as well.
+	&lt;br />&lt;br />
+	&lt;h3>New test&lt;/h3>
+	If you press the button \'New test\', you can add exams to the currently selected lesson.
+	</string>
+</resources>

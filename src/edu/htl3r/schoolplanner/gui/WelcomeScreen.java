@@ -37,6 +37,7 @@ public class WelcomeScreen extends Activity{
 		progressWheel = (ProgressBar) findViewById(R.id.loginProgress);
 		loginProgressText = (TextView) findViewById(R.id.loginProgressText);
 		
+		
 		final ListView mainListView = (ListView) findViewById(R.id.loginList);
 		
 		final List<Map<String, String>> entrySetList = getEntrySetList();
@@ -45,6 +46,8 @@ public class WelcomeScreen extends Activity{
                 new String[] {nameKey, urlKey, schoolKey, userKey},
                 new int[] {R.id.txt_name, R.id.txt_url, R.id.txt_school, R.id.txt_user});
 		mainListView.setAdapter(aa);
+		
+		mainListView.setBackgroundColor(Color.parseColor("#efebef"));
 		
 		mainListView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -91,7 +94,7 @@ public class WelcomeScreen extends Activity{
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
 						mainListView.setEnabled(true);
-						mainListView.setBackgroundColor(Color.TRANSPARENT);
+						mainListView.setBackgroundColor(Color.parseColor("#efebef"));
 						loginProgressText.setText("");
 						progressWheel.setVisibility(View.INVISIBLE);
 					}
