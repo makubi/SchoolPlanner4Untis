@@ -1,7 +1,7 @@
 /* SchoolPlanner4Untis - Android app to manage your Untis timetable
     Copyright (C) 2011  Mathias Kub <mail@makubi.at>
-						Gerald Schreiber <mail@gerald-schreiber.at>
-						Philip Woelfel <philip@woelfel.at>
+			Sebastian Chlan <sebastian@schoolplanner.at>
+			Christian Pascher <christian@schoolplanner.at>
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -15,22 +15,36 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package edu.htl3r.schoolplanner.backend.preferences;
 
-package edu.htl3r.schoolplanner.backend;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import edu.htl3r.schoolplanner.backend.preferences.Authentication;
+public class LoginSetManager {
 
-/**
- * @author Philip Woelfel <philip[at]woelfel[dot]at>
- *	Dieses Interface enthaelt nur interne Daten.
- *  Also zum Beispiel Dinge wie die Login-Preset die nur in unseren Programm gespeichert werden.
- */
-public interface InternalData {
-	public void savePreset(String title, Authentication auth);
+	private Map<String, LoginSet> loginSets = new HashMap<String, LoginSet>();
 	
-	public HashMap<String, Authentication> getAllPresets();
+	public void addLoginSet(LoginSet loginSet) {
+		loginSets.put(loginSet.getName(), loginSet);
+	}
 	
-	public void deletePreset(String title);
+	public void removeLoginSet(LoginSet loginSet) {
+		loginSets.remove(loginSet);
+	}
+	
+	public LoginSet getLoginSet(String name) {
+		return loginSets.get(name);
+	}
+	
+	public List<LoginSet> getAllLoginSets() {
+		List<LoginSet> allLoginSets = new ArrayList<LoginSet>();
+		
+		for(String name: loginSets.keySet()) {
+			allLoginSets.add(loginSets.get(name));
+		}
+		
+		return allLoginSets;
+	}
 }

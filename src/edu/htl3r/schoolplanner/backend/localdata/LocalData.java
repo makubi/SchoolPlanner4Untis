@@ -29,19 +29,17 @@ import java.util.Map;
 import java.util.Random;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import edu.htl3r.schoolplanner.CalendarUtils;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
-import edu.htl3r.schoolplanner.backend.Authentication;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataProvider;
 import edu.htl3r.schoolplanner.backend.DataStore;
 import edu.htl3r.schoolplanner.backend.InternalData;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;
+import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTest;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTestType;
@@ -70,10 +68,17 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 public class LocalData implements DataStore, DataProvider, InternalData {
 
 	private final String LOGTAG = "Database";
-	private final Context context = SchoolplannerContext.context;
-	private final SQLiteOpenHelper dbHelper = new DatabaseHelper(context);
-	private final SQLiteDatabase database = dbHelper.getWritableDatabase();
-	private final Cache cache = SchoolplannerContext.cache;
+	private SQLiteDatabase database;
+	private Cache cache;
+
+	public void setCache(Cache cache) {
+		this.cache = cache;
+	}
+	
+	public LocalData() {
+		database = new DatabaseHelper(SchoolplannerContext.context).getWritableDatabase();
+	}
+	
 
 	/**
 	 * Liefert Objekte aus der Datenbank zurueck

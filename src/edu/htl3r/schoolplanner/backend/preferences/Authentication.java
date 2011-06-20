@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package edu.htl3r.schoolplanner.backend;
+package edu.htl3r.schoolplanner.backend.preferences;
 
 import java.net.URISyntaxException;
 import java.util.prefs.Preferences;

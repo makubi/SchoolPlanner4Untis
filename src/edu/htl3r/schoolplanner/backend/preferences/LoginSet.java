@@ -1,9 +1,11 @@
-package edu.htl3r.schoolplanner.gui;
+package edu.htl3r.schoolplanner.backend.preferences;
 
 import java.io.Serializable;
 import java.util.Map;
 
-public class LoginEntry implements Serializable {
+import edu.htl3r.schoolplanner.gui.Constants;
+
+public class LoginSet implements Serializable {
 	
 	private static final long serialVersionUID = 6417138756120086971L;
 
@@ -13,7 +15,7 @@ public class LoginEntry implements Serializable {
 	private String username;
 	private String password;
 	
-	public LoginEntry(Map<String, String> data) {
+	public LoginSet(Map<String, String> data) {
 		name = data.get(Constants.nameKey);
 		serverUrl = data.get(Constants.serverUrlKey);
 		school = data.get(Constants.schoolKey);

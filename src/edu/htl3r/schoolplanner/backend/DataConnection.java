@@ -23,6 +23,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
+import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 
@@ -36,7 +37,7 @@ public interface DataConnection extends DataProvider {
 	 * Setzt die Preferences. Diese muessen neu gesetzt werden, wenn sie upgedatet wurden.
 	 * @param prefs Einstellungen, die gesetzt werden sollen
 	 */
-	public void setPreferences(Authentication prefs);
+	public void setLoginCredentials(Authentication prefs);
 
 	/**
 	 * Setzt den Status des Netzwerkes, wenn sich dieser aendert.

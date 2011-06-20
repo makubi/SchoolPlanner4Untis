@@ -32,7 +32,6 @@ import org.json.JSONObject;
 
 import android.graphics.Color;
 import edu.htl3r.schoolplanner.CalendarUtils;
-import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
@@ -55,8 +54,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  */
 public class JSONParser {
 
-	private final Cache cache = SchoolplannerContext.cache;
-	
+	private Cache cache;
 	private final LessonCodeCreator lessonCodeCreator = new LessonCodeCreator();
 	private final LessonTypeCreator lessonTypeCreator = new LessonTypeCreator();
 	
@@ -541,5 +539,9 @@ public class JSONParser {
 			
 			return unknownObject;
 		}		
+	}
+
+	public void setCache(Cache cache) {
+		this.cache = cache;
 	}
 }

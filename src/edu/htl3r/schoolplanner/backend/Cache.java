@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.util.Log;
+import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTest;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTestType;
@@ -44,18 +45,12 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  */
 public class Cache implements DataConnection, InternalData {
 	
-	private InternalMemory internalMemory;
-	private ExternalDataLoader externalDataLoader;
+	private InternalMemory internalMemory = new InternalMemory();
+	private ExternalDataLoader externalDataLoader = new ExternalDataLoader();
 	
 	
-	/**
-	 * Initialisiert den internen Speicher und die externen Datenquelle.
-	 * @see InternalMemory
-	 * @see ExternalDataLoader
-	 */
-	public void init() {
-		internalMemory = new InternalMemory();
-		externalDataLoader = new ExternalDataLoader();
+	public Cache() {
+		externalDataLoader.setCache(this);
 	}
 
 	@Override
@@ -299,8 +294,8 @@ public class Cache implements DataConnection, InternalData {
 	}
 
 	@Override
-	public void setPreferences(Authentication preferences) {
-		externalDataLoader.setPreferences(preferences);
+	public void setLoginCredentials(Authentication authentication) {
+		externalDataLoader.setLoginCredentials(authentication);
 	}
 
 	@Override
