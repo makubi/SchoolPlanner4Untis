@@ -48,7 +48,6 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		SimpleAdapter aa = new SimpleAdapter(this, entrySetList, R.layout.login_table_row,list_keys ,list_ids);
 		
 		mainListView.setAdapter(aa);
-		mainListView.setBackgroundColor(Color.parseColor("#efebef"));
 		mainListView.setOnItemClickListener(new LoginListener(this));
 	}
 
