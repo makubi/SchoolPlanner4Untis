@@ -8,11 +8,11 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import edu.htl3r.schoolplanner.R;
 
-public class ImageAdapter extends BaseAdapter {
+public class ImageAdapter2 extends BaseAdapter {
 
 	 private Context mContext;
 
-	    public ImageAdapter(Context c) {
+	    public ImageAdapter2(Context c) {
 	        mContext = c;
 	    }
 
@@ -47,6 +47,6 @@ public class ImageAdapter extends BaseAdapter {
 
 	    // references to our images
 	    private Integer[] mThumbIds = {
-	           R.drawable.ic_class, R.drawable.hat_symbol, R.drawable.ic_door
+	           R.drawable.calculator_symbol, R.drawable.hat_symbol
 	    };
 }

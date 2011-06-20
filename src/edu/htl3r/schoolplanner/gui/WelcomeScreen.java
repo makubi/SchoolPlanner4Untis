@@ -64,8 +64,8 @@ public class WelcomeScreen extends Activity{
 					protected Void doInBackground(Void... params) {
 						
 						// TODO: Do login here
-						try {
-							Thread.sleep(3000);
+						//try {
+							//Thread.sleep(3000);
 							Intent t = new Intent(getApplicationContext(), SelectScreen.class);
 							
 							LoginEntry loginEntry = new LoginEntry(selectedEntry);
@@ -74,10 +74,10 @@ public class WelcomeScreen extends Activity{
 							extras.putSerializable("entry", loginEntry);
 							t.putExtras(extras);
 							startActivity(t);
-						} catch (InterruptedException e) {
+						/*} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
-						}
+						}*/
 						return null;
 					}
 					

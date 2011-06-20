@@ -19,6 +19,9 @@ public class SelectScreen extends Activity{
 		GridView gridview = (GridView) findViewById(R.id.gridview);
 	    gridview.setAdapter(new ImageAdapter(this));
 	    
+	    GridView gridview2 = (GridView) findViewById(R.id.gridview2);
+	    gridview2.setAdapter(new ImageAdapter2(this));
+	    
 	    gridview.setOnItemClickListener(new OnItemClickListener() {
 	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 	            Toast.makeText(SelectScreen.this, "" + position, Toast.LENGTH_SHORT).show();
