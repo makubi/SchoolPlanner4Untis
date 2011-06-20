@@ -29,7 +29,6 @@ import java.util.Set;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.gui.Constants;
 
@@ -39,6 +38,7 @@ public class LoginSetManager {
 	private final String urlKey = Constants.serverUrlKey;
 	private final String schoolKey = Constants.schoolKey;
 	private final String userKey = Constants.usernameKey;
+	private final String passwordKey = Constants.passwordKey;
 	private final String loginsharedpreferences = Constants.loginsharedpreferences;
 
 	private SharedPreferences preferences;
@@ -70,10 +70,11 @@ public class LoginSetManager {
 	 * @param url
 	 * @param school
 	 * @param user
+	 * @param password
 	 * @return
 	 */
-	public boolean addLoginEntry(String name, String url, String school, String user) {
-		return addLoginEntry(new LoginSet(getDataEntry(name, url, school, user)));
+	public boolean addLoginEntry(String name, String url, String school, String user, String password) {
+		return addLoginEntry(new LoginSet(getDataEntry(name, url, school, user, password)));
 	}
 
 	/**
@@ -133,15 +134,17 @@ public class LoginSetManager {
 		dataEntry.put(urlKey, tmp[1]);
 		dataEntry.put(schoolKey, tmp[2]);
 		dataEntry.put(userKey, tmp[3]);
+		dataEntry.put(passwordKey, tmp[4]);
 		return dataEntry;
 	}
 	
-	private Map<String, String> getDataEntry(String name, String url, String school, String user) {
+	private Map<String, String> getDataEntry(String name, String url, String school, String user, String password) {
 		Map<String, String> dataEntry = new HashMap<String, String>();
 		dataEntry.put(nameKey, name);
 		dataEntry.put(urlKey, url);
 		dataEntry.put(schoolKey, school);
 		dataEntry.put(userKey, user);
+		dataEntry.put(passwordKey, password);
 		return dataEntry;
 	}
 

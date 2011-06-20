@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -36,6 +35,9 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		mainListView = (ListView) findViewById(R.id.loginList);
 		
 		loginmanager = new LoginSetManager();
+		
+		//loginmanager.addLoginEntry("HTL Rennweg", "http://xxx.xxx", "HTL3R", "htl3r", "htl3r");
+		
 		initList();
 		
 
