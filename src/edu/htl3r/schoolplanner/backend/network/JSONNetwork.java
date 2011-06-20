@@ -33,8 +33,9 @@ import org.json.JSONTokener;
 
 import android.util.Log;
 import edu.htl3r.schoolplanner.CalendarUtils;
-import edu.htl3r.schoolplanner.backend.Authentication;
+import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataProvider;
+import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTest;
@@ -60,7 +61,11 @@ public class JSONNetwork implements DataProvider{
 	private final NetworkAccess network = new Network();
 	private final JSONParser jsonParser = new JSONParser();
 	
-	private Authentication preferences;
+	private Authentication authentication;
+	
+	public void setCache(Cache cache) {
+		jsonParser.setCache(cache);
+	}
 	
 	/**
 	 * Zeitpunkt, wann das letzte mal der Stundenplan importiert wurde.
@@ -81,11 +86,11 @@ public class JSONNetwork implements DataProvider{
 
 	/**
 	 * Setzt die Server-URL und den Schulnamen im Netzwerk sowie den Benutzernamen und das Passwort fuer die Authentifizierung.
-	 * @param preferences {@link Preferences} die verwendet werden sollen
+	 * @param authentication {@link Preferences} die verwendet werden sollen
 	 */
-	public void setPreferences(Authentication preferences) {
-		this.preferences = preferences;
-		network.setPreferences(preferences);
+	public void setLoginCredentials(Authentication authentication) {
+		this.authentication = authentication;
+		network.setLoginCredentials(authentication);
 	}
 
 	/**
@@ -465,8 +470,8 @@ public class JSONNetwork implements DataProvider{
 		JSONObject response = null;
 
 		try {
-			params.put("user", preferences.getUsername());
-			params.put("password", preferences.getPassword());
+			params.put("user", authentication.getUsername());
+			params.put("password", authentication.getPassword());
 
 			request.put("jsonrpc", jsonrpcVersion);
 			request.put("method", method);

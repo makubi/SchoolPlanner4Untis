@@ -27,6 +27,7 @@ import java.util.Map;
 import android.util.Log;
 import edu.htl3r.schoolplanner.backend.localdata.LocalData;
 import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
+import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTest;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTestType;
@@ -293,10 +294,10 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 
 	/**
 	 * Setzt die Preferences fuer das Netzwerk neu.
-	 * @param prefs Preferences, die gesetzt werden sollen
+	 * @param authentications Preferences, die gesetzt werden sollen
 	 */
-	public void setPreferences(Authentication prefs) {
-		network.setPreferences(prefs);
+	public void setLoginCredentials(Authentication authentications) {
+		network.setLoginCredentials(authentications);
 	}
 
 	/**
@@ -428,6 +429,11 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 	public void deletePreset(String title) {
 		database.deletePreset(title);
 		
+	}
+
+	public void setCache(Cache cache) {
+		database.setCache(cache);
+		network.setCache(cache);
 	}
 	
 }

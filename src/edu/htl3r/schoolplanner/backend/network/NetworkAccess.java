@@ -20,7 +20,7 @@ package edu.htl3r.schoolplanner.backend.network;
 
 import java.io.IOException;
 
-import edu.htl3r.schoolplanner.backend.Authentication;
+import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 
 /**
  * 
@@ -45,6 +45,6 @@ public interface NetworkAccess {
 	 */
 	public void setJsessionid(String jsessionid);
 	
-	public void setPreferences(Authentication preferences);
+	public void setLoginCredentials(Authentication authentication);
 
 }

@@ -28,13 +28,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import edu.htl3r.schoolplanner.backend.Authentication;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataProvider;
+import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 
 public class SchoolPlannerApp extends Application {
 		
-	protected Authentication prefs;
+	protected Authentication loginCredentials = new Authentication();
 	protected Cache data;
 
 	protected boolean hasNetwork;
@@ -42,10 +42,8 @@ public class SchoolPlannerApp extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		
 		initBackend();
-		prefs = new Authentication();
-		data = SchoolplannerContext.cache;
-		data.setPreferences(prefs);
 
 		ConnectivityManager conmgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo info = conmgr.getActiveNetworkInfo();
@@ -61,10 +59,11 @@ public class SchoolPlannerApp extends Application {
 			}
 		}, filter);
 	}
-	
+
 	private void initBackend() {
 		SchoolplannerContext.context = getApplicationContext();
-		SchoolplannerContext.cache.init();
+		data = new Cache();
+		data.setLoginCredentials(loginCredentials);
 	}
 
 	/**
