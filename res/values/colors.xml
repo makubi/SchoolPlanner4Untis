@@ -3,7 +3,9 @@
 	<color name="background">#F7F7F7</color>
 	<color name="header_background">#193403</color>
 	<color name="element_background">#EFEBEF</color>
-	<color name="delimiter">#FFBCBCBC</color>
+	<color name="disabled_element_background">#BCBCBC</color>
+	
+	<color name="delimiter">#BCBCBC</color>
 	
 	<color name="header_text">#FFFFFF</color>
 	<color name="text">#000000</color>

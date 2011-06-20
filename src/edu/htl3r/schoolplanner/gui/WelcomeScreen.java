@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -70,15 +69,17 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		return entrySetList;
 	}
 	
+	/**
+	 * @param active 'true' if the login is currently in progress
+	 */
 	public void setOnLogin(boolean active) {
+		mainListView.setEnabled(!active);
 		if (active) {
-			mainListView.setEnabled(false);
-			mainListView.setBackgroundColor(Color.GRAY);
+			mainListView.setBackgroundResource(R.color.disabled_element_background);
 			loginProgressText.setText("Logging in...");
 			progressWheel.setVisibility(View.VISIBLE);
 		} else {
-			mainListView.setEnabled(true);
-			mainListView.setBackgroundColor(Color.parseColor("#efebef"));
+			mainListView.setBackgroundResource(R.color.element_background);
 			loginProgressText.setText("");
 			progressWheel.setVisibility(View.INVISIBLE);
 		}
