@@ -38,9 +38,9 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCode;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCodeCreator;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCodeFactory;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonTypeCreator;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonTypeFactory;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
@@ -55,8 +55,8 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 public class JSONParser {
 
 	private Cache cache;
-	private final LessonCodeCreator lessonCodeCreator = new LessonCodeCreator();
-	private final LessonTypeCreator lessonTypeCreator = new LessonTypeCreator();
+	private final LessonCodeFactory lessonCodeCreator = new LessonCodeFactory();
+	private final LessonTypeFactory lessonTypeCreator = new LessonTypeFactory();
 	
 	public List<SchoolTeacher> jsonToTeacherList(JSONArray result)
 			throws JSONException {

@@ -28,11 +28,11 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTyp
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeOfficeHour;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeStandby;
 
-public class LessonTypeCreator {
+public class LessonTypeFactory {
 
 	private Map<String, LessonType> lessonTypes = new HashMap<String, LessonType>();
 	
-	public LessonTypeCreator() {
+	public LessonTypeFactory() {
 		lessonTypes.put(WebUntis.OFFICEHOUR, new LessonTypeOfficeHour());
 		lessonTypes.put(WebUntis.STANDBY, new LessonTypeStandby());
 		lessonTypes.put(WebUntis.BREAKSUPERVISION, new LessonTypeBreakSupervision());

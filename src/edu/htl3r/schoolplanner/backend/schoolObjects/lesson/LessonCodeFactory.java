@@ -27,12 +27,12 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCod
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeIrregular;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
 
-public class LessonCodeCreator {
+public class LessonCodeFactory {
 
 	private Map<String, LessonCode> lessonCodes = new HashMap<String, LessonCode>();
 	private LessonCodeSubstitute lessonCodeSubstitude = new LessonCodeSubstitute();
 	
-	public LessonCodeCreator() {
+	public LessonCodeFactory() {
 		lessonCodes.put(WebUntis.CANCELLED, new LessonCodeCancelled());
 		lessonCodes.put(WebUntis.IRREGULAR, new LessonCodeIrregular());
 	}
