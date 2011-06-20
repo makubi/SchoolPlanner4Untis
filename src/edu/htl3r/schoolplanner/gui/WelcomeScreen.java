@@ -36,7 +36,6 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		mainListView = (ListView) findViewById(R.id.loginList);
 		
 		loginmanager = new LoginSetManager();
-		Log.d("basti",loginmanager.getAllLoginSets()+"");
 		initList();
 		
 
