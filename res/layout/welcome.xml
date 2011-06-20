@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:background="#f7f7f7">
+	android:background="@color/background">
 
 	<TextView android:id="@+id/welcome_title"
 		android:layout_alignParentTop="true" android:text="SchoolPlanner4Untis"
-		android:textSize="25sp" android:textColor="#FFFFFF" android:textStyle="bold"
+		android:textSize="25sp" android:textColor="@color/header_text" android:textStyle="bold"
 		android:paddingLeft="5dip" android:paddingTop="3dip" android:gravity="center_vertical|left"
 		android:layout_height="70dip" android:layout_width="fill_parent"
-		android:background="#193403" />
+		android:background="@color/header_background" />
 
 	<ListView android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:id="@+id/loginList"
 		android:layout_below="@id/welcome_title" android:cacheColorHint="#00000000" 
-		android:background="#efebef" />
+		android:background="@color/element_background" />
 
 
 	<RelativeLayout android:id="@+id/welcome_footer"
 		android:layout_width="fill_parent" android:layout_alignParentBottom="true"
 		android:layout_height="wrap_content"
-		android:background="#efebef">
+		android:background="@color/element_background">
 
 		<View android:id="@+id/welcome_footer_border"
 			android:layout_height="1dip" android:layout_width="fill_parent"
-			android:background="#FFBCBCBC" />
+			android:background="@color/delimiter" />
 
 		<TextView android:id="@+id/loginProgressText"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:textSize="15sp" android:textColor="#000000"
+			android:textSize="15sp" android:textColor="@color/text"
 			android:paddingLeft="5dip" android:layout_gravity="left|center_vertical"
 			android:layout_below="@id/welcome_footer_border"
 			android:layout_alignParentLeft="true" />
