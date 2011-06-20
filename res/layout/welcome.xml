@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:background="#efebef">
+	android:background="#f7f7f7">
 
 	<TextView android:id="@+id/welcome_title"
 		android:layout_alignParentTop="true" android:text="SchoolPlanner4Untis"
@@ -18,7 +18,8 @@
 
 	<RelativeLayout android:id="@+id/welcome_footer"
 		android:layout_width="fill_parent" android:layout_alignParentBottom="true"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:background="#efebef">
 
 		<View android:id="@+id/welcome_footer_border"
 			android:layout_height="1dip" android:layout_width="fill_parent"
