@@ -19,6 +19,7 @@
 package edu.htl3r.schoolplanner.backend;
 
 import java.net.URISyntaxException;
+import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,7 +50,10 @@ public class Authentication {
 	 * @param serverUrl Server URL von der GUI, die gesetzt werden soll
 	 * @throws URISyntaxException Wird geworfen, falls keine gueltige URL aus dem uebergebenen String ermittelt werden konnte
 	 */
-	public void setServerUrl(String serverUri) throws URISyntaxException {		
+	public void setServerUrl(String serverUri) throws URISyntaxException {
+		if(serverUri.length() <= 0) {
+			throw new URISyntaxException(serverUri, "Empty url");
+		}
 		serverUri = serverUri.replaceAll("/WebUntis(/jsonrpc.do)?$", "");
 		Pattern p = Pattern.compile("^([a-zA-Z]+://)?(.*)$");
 		Matcher m = p.matcher(serverUri);

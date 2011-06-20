@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.prefs.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,7 +35,6 @@ import android.util.Log;
 import edu.htl3r.schoolplanner.CalendarUtils;
 import edu.htl3r.schoolplanner.backend.Authentication;
 import edu.htl3r.schoolplanner.backend.DataProvider;
-import edu.htl3r.schoolplanner.backend.Preferences;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTest;
