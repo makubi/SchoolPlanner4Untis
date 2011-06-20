@@ -65,7 +65,7 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		List<Map<String, String>> entrySetList = new ArrayList<Map<String, String>>();
 
 		entrySetList.add(getDataEntry("HTL Rennweg", "urania.webuntis.com", "htl3r", "htl3r"));
-		entrySetList.add(getDataEntry("WebUntis Testschule", "webuntis.grupet.at:8080", "demo", "user"));
+		entrySetList.add(getDataEntry("WebUntis Testschule", "webuntis.grupet-super-porntotalfreecomeinandwatchnow.xxx:666", "demo", "user"));
 
 		return entrySetList;
 	}
