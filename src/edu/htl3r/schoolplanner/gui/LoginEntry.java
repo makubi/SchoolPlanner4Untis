@@ -41,4 +41,9 @@ public class LoginEntry implements Serializable {
 		return password;
 	}
 	
+	@Override
+	public String toString() {
+		return name+"§"+serverUrl+"§"+school+"§"+username+"§"+password;
+	}
+	
 }

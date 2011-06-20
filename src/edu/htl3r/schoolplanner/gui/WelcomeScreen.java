@@ -24,6 +24,7 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 	private ProgressBar progressWheel;
 	private TextView loginProgressText;
 	private ListView mainListView;
+	private LoginManager loginmanager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +34,16 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		progressWheel = (ProgressBar) findViewById(R.id.loginProgress);
 		loginProgressText = (TextView) findViewById(R.id.loginProgressText);
 		mainListView = (ListView) findViewById(R.id.loginList);
-
+		
+		loginmanager = new LoginManager();
+		
 		initList();
 		
+
 	}
 
 	private void initList(){
-		final List<Map<String, String>> entrySetList = getEntrySetList();
+		final List<Map<String, String>> entrySetList = loginmanager.getAllLoginEntries();
 		
 		String [] list_keys = new String[] {nameKey, urlKey, schoolKey, userKey};
 		int [] list_ids =  new int[] {R.id.txt_name, R.id.txt_url, R.id.txt_school, R.id.txt_user};
@@ -50,24 +54,6 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		mainListView.setOnItemClickListener(new LoginListener(this));
 	}
 
-	private Map<String, String> getDataEntry(String name, String url, String school, String user) {
-		Map<String, String> dataEntry = new HashMap<String, String>();
-		dataEntry.put(nameKey, name);
-		dataEntry.put(urlKey, url);
-		dataEntry.put(schoolKey, school);
-		dataEntry.put(userKey, user);
-
-		return dataEntry;
-	}
-
-	public List<Map<String, String>> getEntrySetList() {
-		List<Map<String, String>> entrySetList = new ArrayList<Map<String, String>>();
-
-		entrySetList.add(getDataEntry("HTL Rennweg", "urania.webuntis.com", "htl3r", "htl3r"));
-		entrySetList.add(getDataEntry("WebUntis Testschule", "webuntis.grupet-super-porntotalfreecomeinandwatchnow.xxx:666", "demo", "user"));
-
-		return entrySetList;
-	}
 	
 	/**
 	 * @param active 'true' if the login is currently in progress
@@ -83,5 +69,9 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 			loginProgressText.setText("");
 			progressWheel.setVisibility(View.INVISIBLE);
 		}
+	}
+	
+	public LoginManager getLoginManager(){
+		return loginmanager;
 	}
 }

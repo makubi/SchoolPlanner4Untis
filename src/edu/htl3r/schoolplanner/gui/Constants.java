@@ -7,4 +7,7 @@ public interface Constants {
 	public final String schoolKey = "school";
 	public final String usernameKey = "user";
 	public final String passwordKey = "password";
+	
+	public final String loginsharedpreferences = "loginprefs";
+	
 }

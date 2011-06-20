@@ -18,6 +18,9 @@
 
 package edu.htl3r.schoolplanner;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -82,5 +85,34 @@ public class SchoolPlannerApp extends Application {
 	 */
 	public void setNetworkEnabled(boolean hasNetwork) {
 		data.networkAvailabilityChanged(hasNetwork);
+	}
+	
+	/**
+	 * Generiert einen MD5 Hash
+	 * @param s der zu verhasende String
+	 * @return Hash
+	 */
+	public String md5(final String s) {
+		try {
+			// Create MD5 Hash
+			MessageDigest digest = java.security.MessageDigest
+					.getInstance("MD5");
+			digest.update(s.getBytes());
+			byte messageDigest[] = digest.digest();
+
+			// Create Hex String
+			StringBuffer hexString = new StringBuffer();
+			for (int i = 0; i < messageDigest.length; i++) {
+				String h = Integer.toHexString(0xFF & messageDigest[i]);
+				while (h.length() < 2)
+					h = "0" + h;
+				hexString.append(h);
+			}
+			return hexString.toString();
+
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 }
