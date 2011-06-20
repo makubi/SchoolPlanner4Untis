@@ -29,7 +29,6 @@ import java.util.Set;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.gui.Constants;
 
