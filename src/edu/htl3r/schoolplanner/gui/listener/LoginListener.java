@@ -22,7 +22,7 @@ public class LoginListener implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		final Map<String, String> selectedEntry = welcomescreen.getLoginManager().getAllLoginEntries().get(position);
+		final Map<String, String> selectedEntry = welcomescreen.getLoginManager().getAllLoginSetsForListAdapter().get(position);
 
 		AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
 

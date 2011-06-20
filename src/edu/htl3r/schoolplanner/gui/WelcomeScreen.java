@@ -1,17 +1,17 @@
 package edu.htl3r.schoolplanner.gui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.backend.preferences.LoginSetManager;
 import edu.htl3r.schoolplanner.gui.listener.LoginListener;
 
 public class WelcomeScreen extends SchoolPlannerActivity {
@@ -24,7 +24,7 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 	private ProgressBar progressWheel;
 	private TextView loginProgressText;
 	private ListView mainListView;
-	private LoginManager loginmanager;
+	private LoginSetManager loginmanager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +35,15 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		loginProgressText = (TextView) findViewById(R.id.loginProgressText);
 		mainListView = (ListView) findViewById(R.id.loginList);
 		
-		loginmanager = new LoginManager();
-		
+		loginmanager = new LoginSetManager();
+		Log.d("basti",loginmanager.getAllLoginSets()+"");
 		initList();
 		
 
 	}
 
 	private void initList(){
-		final List<Map<String, String>> entrySetList = loginmanager.getAllLoginEntries();
+		final List<Map<String, String>> entrySetList = loginmanager.getAllLoginSetsForListAdapter();
 		
 		String [] list_keys = new String[] {nameKey, urlKey, schoolKey, userKey};
 		int [] list_ids =  new int[] {R.id.txt_name, R.id.txt_url, R.id.txt_school, R.id.txt_user};
@@ -71,7 +71,7 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		}
 	}
 	
-	public LoginManager getLoginManager(){
+	public LoginSetManager getLoginManager(){
 		return loginmanager;
 	}
 }
