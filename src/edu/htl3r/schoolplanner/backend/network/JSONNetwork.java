@@ -63,8 +63,10 @@ public class JSONNetwork implements DataProvider{
 	
 	private Authentication authentication;
 	
-	public void setCache(Cache cache) {
-		jsonParser.setCache(cache);
+	private int id = 0;
+	
+	public String getNextID() {
+		return ""+id++;
 	}
 	
 	/**
@@ -281,7 +283,7 @@ public class JSONNetwork implements DataProvider{
 
 	@Override
 	public List<SchoolTeacher> getSchoolTeacherList() throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getTeachers;
 
 		List<SchoolTeacher> list = new ArrayList<SchoolTeacher>();
@@ -295,7 +297,7 @@ public class JSONNetwork implements DataProvider{
 
 	@Override
 	public List<SchoolClass> getSchoolClassList() throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getClasses;
 
 		List<SchoolClass> list = new ArrayList<SchoolClass>();
@@ -309,7 +311,7 @@ public class JSONNetwork implements DataProvider{
 
 	@Override
 	public List<SchoolSubject> getSchoolSubjectList() throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getSubjects;
 
 		List<SchoolSubject> list = new ArrayList<SchoolSubject>();
@@ -323,7 +325,7 @@ public class JSONNetwork implements DataProvider{
 
 	@Override
 	public List<SchoolRoom> getSchoolRoomList() throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getRooms;
 
 		List<SchoolRoom> list = new ArrayList<SchoolRoom>();
@@ -337,7 +339,7 @@ public class JSONNetwork implements DataProvider{
 
 	@Override
 	public List<SchoolHoliday> getSchoolHolidayList() throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getHolidays;
 
 		List<SchoolHoliday> list = new ArrayList<SchoolHoliday>();
@@ -351,7 +353,7 @@ public class JSONNetwork implements DataProvider{
 
 	@Override
 	public Timegrid getTimegrid() throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getTimegridUnits;
 		
 		Timegrid timegrid = new Timegrid();
@@ -365,7 +367,7 @@ public class JSONNetwork implements DataProvider{
 	@Override
 	public Map<String, List<Lesson>> getLessons(ViewType view, Calendar startDate,
 			Calendar endDate) throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getTimetable;
 		
 		final JSONObject request = new JSONObject();
@@ -461,7 +463,7 @@ public class JSONNetwork implements DataProvider{
 	public boolean authenticate() throws IOException {
 		Log.d("METHOD_CALL", "JSONNetwork.authenticate()");
 
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = "authenticate";
 		final JSONObject params = new JSONObject();
 		final JSONObject request = new JSONObject();
@@ -531,7 +533,7 @@ public class JSONNetwork implements DataProvider{
 	 * @throws IOException Wenn ein Fehler bei der Uebertragung auftritt
 	 */
 	public void initStatusData() throws IOException {		
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getStatusData;
 		
 		JSONObject response;
@@ -550,7 +552,7 @@ public class JSONNetwork implements DataProvider{
 	 * @throws IOException Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein Fehler auftritt
 	 */
 	private long getLatestTimetableImportTime() throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getLatestImportTime;
 		
 		long latestImport = -1;
@@ -580,6 +582,10 @@ public class JSONNetwork implements DataProvider{
 		}
 		
 		return false;
+	}
+
+	public void setCache(Cache cache) {
+		jsonParser.setCache(cache);
 	}
 
 }
