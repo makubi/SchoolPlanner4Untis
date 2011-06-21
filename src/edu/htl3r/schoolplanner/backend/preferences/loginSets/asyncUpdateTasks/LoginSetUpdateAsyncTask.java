@@ -42,7 +42,7 @@ public abstract class LoginSetUpdateAsyncTask extends AsyncTask<Void, Void, Void
 	}
 	
 	/**
-	 * Fuehrt Operationen auf die {@link LoginSet}-List des {@link LoginSetManager}s aus.
+	 * Fuehrt Operationen auf die {@link LoginSet}-Liste des {@link LoginSetManager}s aus.
 	 */
 	protected abstract void editList();
 
