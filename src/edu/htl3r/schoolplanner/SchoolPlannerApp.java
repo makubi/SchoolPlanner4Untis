@@ -18,6 +18,9 @@
 
 package edu.htl3r.schoolplanner;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -25,29 +28,22 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataProvider;
-import edu.htl3r.schoolplanner.backend.Preferences;
-import edu.htl3r.schoolplanner.gui.timetableviews.ViewActivity;
+import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 
 public class SchoolPlannerApp extends Application {
 		
-	protected Preferences prefs;
+	protected Authentication loginCredentials = new Authentication();
 	protected Cache data;
-
-	protected Class<? extends ViewActivity> currentView;
 
 	protected boolean hasNetwork;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		
 		initBackend();
-		prefs = new Preferences();
-		data = SchoolplannerContext.cache;
-		currentView = prefs.getView().getClass();
-		data.setPreferences(prefs);
 
 		ConnectivityManager conmgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo info = conmgr.getActiveNetworkInfo();
@@ -62,13 +58,12 @@ public class SchoolPlannerApp extends Application {
 				updateNetstat(info);
 			}
 		}, filter);
-
-		Log.d("Philip", "endapp");
 	}
-	
+
 	private void initBackend() {
 		SchoolplannerContext.context = getApplicationContext();
-		SchoolplannerContext.cache.init();
+		data = new Cache();
+		data.setLoginCredentials(loginCredentials);
 	}
 
 	/**
@@ -84,69 +79,39 @@ public class SchoolPlannerApp extends Application {
 	}
 
 	/**
-	 * gibt das aktuelle {@link Preferences} Objekt zurueck in dem die Einstellungen gespeichert sind
-	 * @return prefs das {@link Preferences} Objekt
-	 */
-	public Preferences getPrefs() {
-		return prefs;
-	}
-
-	/**
-	 * setzt das {@link Preferences} Objekt neu und updatet auch das Objekt in dem {@link DataProvider}
-	 * @param prefs das neue {@link Preferences} Objekt
-	 */
-	public void setPrefs(Preferences prefs) {
-		this.prefs = prefs;
-		data.setPreferences(prefs);
-	}
-
-	/**
-	 * liefert das {@link DataProvider} Objekt zurueck aus dem Daten wie z.B.: die Klassenlisten, Stunden etc. ausgelesen werden koennen 
-	 * @return das {@link DataProvider} Objekt mit den Daten
-	 */
-	public Cache getData() {
-		return data;
-	}
-
-	/**
-	 * setzt ein neue {@link DataProvider} Objekt
-	 * @param data das neue {@link DataProvider} Objekt
-	 */
-	public void setData(Cache data) {
-		this.data = data;
-	}
-
-	/**
-	 * gibt den aktuellen Netzwerkstatus zurueck
-	 * @return true wenn eine Datenverbindung vorhanden ist, wenn nicht false
-	 */
-	public boolean isNetworkEnabled() {
-		return hasNetwork;
-	}
-
-	/**
 	 * setzt den Netzwerkstatus neu und updatet die Information im {@link DataProvider}
 	 * @param hasNetwork true wenn eine Datenverbindung vorhanden ist, wenn nicht false
 	 */
 	public void setNetworkEnabled(boolean hasNetwork) {
-		this.hasNetwork = hasNetwork;
 		data.networkAvailabilityChanged(hasNetwork);
-		Log.d("Philip", "info.isConnected(): " + hasNetwork);
 	}
-
+	
 	/**
-	 * gibt die aktuelle Stundenplanansicht zurueck
-	 * @return ein Class-Objekt einer von {@link ViewActivity} abgeleiteten Klasse
+	 * Generiert einen MD5 Hash
+	 * @param s der zu verhasende String
+	 * @return Hash
 	 */
-	public Class<? extends ViewActivity> getCurrentView() {
-		return currentView;
-	}
+	public String md5(final String s) {
+		try {
+			// Create MD5 Hash
+			MessageDigest digest = java.security.MessageDigest
+					.getInstance("MD5");
+			digest.update(s.getBytes());
+			byte messageDigest[] = digest.digest();
 
-	/**
-	 * setzt die aktuelle Stundenplanansicht neu
-	 * @param currentView die neue Ansicht, ein Class-Objekt einer von {@link ViewActivity} abgeleiteten Klasse
-	 */
-	public void setCurrentView(Class<? extends ViewActivity> currentView) {
-		this.currentView = currentView;
+			// Create Hex String
+			StringBuffer hexString = new StringBuffer();
+			for (int i = 0; i < messageDigest.length; i++) {
+				String h = Integer.toHexString(0xFF & messageDigest[i]);
+				while (h.length() < 2)
+					h = "0" + h;
+				hexString.append(h);
+			}
+			return hexString.toString();
+
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 }

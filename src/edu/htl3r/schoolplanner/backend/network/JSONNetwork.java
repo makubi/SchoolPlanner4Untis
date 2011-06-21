@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.prefs.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,8 +33,9 @@ import org.json.JSONTokener;
 
 import android.util.Log;
 import edu.htl3r.schoolplanner.CalendarUtils;
+import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataProvider;
-import edu.htl3r.schoolplanner.backend.Preferences;
+import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTest;
@@ -51,18 +53,21 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  */
 public class JSONNetwork implements DataProvider{
 
-	
 	/**
 	 * JSON-RPC Version, die der Untis-Server verwendet.
 	 */
 	private final String jsonrpcVersion = "2.0";
 
 	private final NetworkAccess network = new Network();
-
 	private final JSONParser jsonParser = new JSONParser();
-	private final LessonProcessor lessonProcessor = new LessonProcessor();
 	
-	private Preferences preferences;
+	private Authentication authentication;
+	
+	private int id = 0;
+	
+	public String getNextID() {
+		return ""+id++;
+	}
 	
 	/**
 	 * Zeitpunkt, wann das letzte mal der Stundenplan importiert wurde.
@@ -83,12 +88,11 @@ public class JSONNetwork implements DataProvider{
 
 	/**
 	 * Setzt die Server-URL und den Schulnamen im Netzwerk sowie den Benutzernamen und das Passwort fuer die Authentifizierung.
-	 * @param preferences {@link Preferences} die verwendet werden sollen
+	 * @param authentication {@link Preferences} die verwendet werden sollen
 	 */
-	public void setPreferences(Preferences preferences) {
-		this.preferences = preferences;
-		network.setPreferences(preferences);
-		Log.d("Network", "Preferences in network set.");
+	public void setLoginCredentials(Authentication authentication) {
+		this.authentication = authentication;
+		network.setLoginCredentials(authentication);
 	}
 
 	/**
@@ -101,8 +105,6 @@ public class JSONNetwork implements DataProvider{
 	 * @throws IOException 
 	 */
 	private JSONObject getJSONData(final JSONObject request) throws IOException {
-		Log.d("METHOD_CALL", "JSONNetwork.getJSONData(" + request
-				+ " : String)");
 		JSONObject response = null;
 		String responseString = network.getResponse(request.toString());
 		
@@ -147,7 +149,7 @@ public class JSONNetwork implements DataProvider{
 			request.put("jsonrpc", jsonrpcVersion);
 			request.put("method", method);
 			request.put("id", id);
-			// TODO: Zur Zeit unterstuetzt der Server das Weglassen der params nicht.
+			// Server benoetigt leere Params
 			request.put("params", "");
 		} catch (JSONException e) {
 			Log.e("JSON", "Error on building request for list",e);
@@ -171,15 +173,14 @@ public class JSONNetwork implements DataProvider{
 		JSONTokener t = new JSONTokener(data);
 		Object next = t.nextValue();
 
-		Log.d("JSON", "Got class: " + next.getClass());
-		Log.d("JSON", "Got value: " + next.toString());
-		Log.d("JSON", "Another object available: " + t.more());
+		Log.v("JSON", "Got class: " + next.getClass());
+		Log.v("JSON", "Got value: " + next.toString());
+		Log.v("JSON", "Another object available: " + t.more());
 
 		if (next instanceof JSONObject) {
 			return (JSONObject) next;
 		}
 		else {
-			// Kann bei falscher URL- oder Schulangabe passieren.
 			throw new JSONException("Unable to parse data");
 		}
 		
@@ -282,7 +283,7 @@ public class JSONNetwork implements DataProvider{
 
 	@Override
 	public List<SchoolTeacher> getSchoolTeacherList() throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getTeachers;
 
 		List<SchoolTeacher> list = new ArrayList<SchoolTeacher>();
@@ -296,7 +297,7 @@ public class JSONNetwork implements DataProvider{
 
 	@Override
 	public List<SchoolClass> getSchoolClassList() throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getClasses;
 
 		List<SchoolClass> list = new ArrayList<SchoolClass>();
@@ -310,7 +311,7 @@ public class JSONNetwork implements DataProvider{
 
 	@Override
 	public List<SchoolSubject> getSchoolSubjectList() throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getSubjects;
 
 		List<SchoolSubject> list = new ArrayList<SchoolSubject>();
@@ -324,7 +325,7 @@ public class JSONNetwork implements DataProvider{
 
 	@Override
 	public List<SchoolRoom> getSchoolRoomList() throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getRooms;
 
 		List<SchoolRoom> list = new ArrayList<SchoolRoom>();
@@ -338,7 +339,7 @@ public class JSONNetwork implements DataProvider{
 
 	@Override
 	public List<SchoolHoliday> getSchoolHolidayList() throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getHolidays;
 
 		List<SchoolHoliday> list = new ArrayList<SchoolHoliday>();
@@ -352,7 +353,7 @@ public class JSONNetwork implements DataProvider{
 
 	@Override
 	public Timegrid getTimegrid() throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getTimegridUnits;
 		
 		Timegrid timegrid = new Timegrid();
@@ -366,7 +367,7 @@ public class JSONNetwork implements DataProvider{
 	@Override
 	public Map<String, List<Lesson>> getLessons(ViewType view, Calendar startDate,
 			Calendar endDate) throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getTimetable;
 		
 		final JSONObject request = new JSONObject();
@@ -424,11 +425,7 @@ public class JSONNetwork implements DataProvider{
 			JSONArray result = response.getJSONArray("result");
 			
 			// Parse die JSON-Response zu passender Map
-			responseList = jsonParser.jsonToLessonMap(result);
-			
-			// Fuege leere Listen fuer Daten ohne Stunden hinzu
-			lessonProcessor.addEmptyDaysToLessonMap(responseList, startDate, endDate);
-			
+			responseList = jsonParser.jsonToLessonMap(result);			
 		} catch (JSONException e) {
 			Log.e("JSON", "Error on requesting lessons",e);
 		}
@@ -466,7 +463,7 @@ public class JSONNetwork implements DataProvider{
 	public boolean authenticate() throws IOException {
 		Log.d("METHOD_CALL", "JSONNetwork.authenticate()");
 
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = "authenticate";
 		final JSONObject params = new JSONObject();
 		final JSONObject request = new JSONObject();
@@ -474,8 +471,8 @@ public class JSONNetwork implements DataProvider{
 		JSONObject response = null;
 
 		try {
-			params.put("user", preferences.getUsername());
-			params.put("password", preferences.getPassword());
+			params.put("user", authentication.getUsername());
+			params.put("password", authentication.getPassword());
 
 			request.put("jsonrpc", jsonrpcVersion);
 			request.put("method", method);
@@ -508,14 +505,14 @@ public class JSONNetwork implements DataProvider{
 	public List<Lesson> getMergedLessons(ViewType view, Calendar date)
 			throws IOException {
 		List<Lesson> lessonList = getLessons(view, date);
-		return lessonList != null ? lessonProcessor.mergeLessons(lessonList) : null;
+		return lessonList;
 	}
 
 	@Override
 	public Map<String, List<Lesson>> getMergedLessons(ViewType view,
 			Calendar startDate, Calendar endDate) throws IOException {
 		Map<String, List<Lesson>> lessonMap = getLessons(view, startDate, endDate);
-		return lessonMap != null ? lessonProcessor.mergeLessons(lessonMap) : null;
+		return lessonMap;
 	}
 	
 	@Override
@@ -530,8 +527,13 @@ public class JSONNetwork implements DataProvider{
 		// TODO Not implemented in v1.0
 	}
 	
+	
+	/**
+	 * Initialisiert die Farben der LessonTypes und -Codes.
+	 * @throws IOException Wenn ein Fehler bei der Uebertragung auftritt
+	 */
 	public void initStatusData() throws IOException {		
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getStatusData;
 		
 		JSONObject response;
@@ -550,7 +552,7 @@ public class JSONNetwork implements DataProvider{
 	 * @throws IOException Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein Fehler auftritt
 	 */
 	private long getLatestTimetableImportTime() throws IOException {
-		final String id = "ID";
+		final String id = getNextID();
 		final String method = JSONGetMethods.getLatestImportTime;
 		
 		long latestImport = -1;
@@ -580,6 +582,10 @@ public class JSONNetwork implements DataProvider{
 		}
 		
 		return false;
+	}
+
+	public void setCache(Cache cache) {
+		jsonParser.setCache(cache);
 	}
 
 }

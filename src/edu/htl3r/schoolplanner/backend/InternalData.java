@@ -20,6 +20,8 @@ package edu.htl3r.schoolplanner.backend;
 
 import java.util.HashMap;
 
+import edu.htl3r.schoolplanner.backend.preferences.Authentication;
+
 /**
  * @author Philip Woelfel <philip[at]woelfel[dot]at>
  *	Dieses Interface enthaelt nur interne Daten.

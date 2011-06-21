@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_set_add_title">Add login set</string>
+    
+    <string name="login_set_add_name_text">\n\n\n\nName</string>
+    <string name="login_set_add_server_url_text">Server URL</string>
+    <string name="login_set_add_school_text">School</string>
+    <string name="login_set_add_username_text">Username</string>
+    <string name="login_set_add_password_text">Password</string>
+    
+    <string name="login_set_add_ssl_only">SSL only</string>
+    <string name="login_set_add_save">Save</string>
+</resources>

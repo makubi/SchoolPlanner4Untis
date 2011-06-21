@@ -31,18 +31,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.graphics.Color;
-import android.util.Log;
 import edu.htl3r.schoolplanner.CalendarUtils;
-import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCode;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCodeCreator;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCodeFactory;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonTypeCreator;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonTypeFactory;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
@@ -56,30 +54,9 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  */
 public class JSONParser {
 
-	private final Cache cache = SchoolplannerContext.cache;
-	
-	private final LessonCodeCreator lessonCodeCreator = new LessonCodeCreator();
-	private final LessonTypeCreator lessonTypeCreator = new LessonTypeCreator();
-	
-	/**
-	 * Liefert die Farbe eines JSON-Objekts.
-	 * Sollte das uebergebene Objekt den mitgegebenen Key nicht enthalten, wird als Standardfarbe 'FFFFFF' (entspricht weiss) verwendet.
-	 * @param jsonObject JSONObjekt, von dem die Farbe bestimmt werden soll
-	 * @param jsonKey Key des Farb-Strings (z.B. 'color', 'foreColor', 'backColor')
-	 * @return Den Farbstring der Farbe oder 'FFFFFF', wenn keine Farbe gefunden
-	 * @throws JSONException 
-	 */
-	private String parseColor(JSONObject jsonObject, String jsonKey) {
-		String color = "FFFFFF";
-		if(jsonObject.has(jsonKey))
-			try {
-				color = jsonObject.getString(jsonKey);
-			} catch (JSONException e) {
-				Log.i("JSON","Error occured while parsing color, using key: "+jsonKey,e);
-			}
-		
-		return color;
-	}
+	private Cache cache;
+	private final LessonCodeFactory lessonCodeCreator = new LessonCodeFactory();
+	private final LessonTypeFactory lessonTypeCreator = new LessonTypeFactory();
 	
 	public List<SchoolTeacher> jsonToTeacherList(JSONArray result)
 			throws JSONException {
@@ -94,14 +71,14 @@ public class JSONParser {
 			String name = teacherObject.getString("name");
 			String foreName = teacherObject.getString("foreName");
 			String longName = teacherObject.getString("longName");
-			String foreColor = parseColor(teacherObject, "foreColor");
-			String backColor = parseColor(teacherObject, "backColor");			
+			String foreColor = teacherObject.getString("foreColor");
+			String backColor = teacherObject.getString("backColor");			
 			schoolTeacherObject.setId(id);
 			schoolTeacherObject.setName(name);
 			schoolTeacherObject.setForeName(foreName);
 			schoolTeacherObject.setLongName(longName);
-			schoolTeacherObject.setForeColor(Color.parseColor("#"+foreColor));
-			schoolTeacherObject.setBackColor(Color.parseColor("#"+backColor));
+			schoolTeacherObject.setForeColor(foreColor);
+			schoolTeacherObject.setBackColor(backColor);
 			
 			schoolTeacherList.add(schoolTeacherObject);
 		}
@@ -120,14 +97,14 @@ public class JSONParser {
 			int id = classObject.getInt("id");
 			String name = classObject.getString("name");
 			String longName = classObject.getString("longName");
-			String foreColor = parseColor(classObject, "foreColor");
-			String backColor = parseColor(classObject, "backColor");
+			String foreColor = classObject.getString("foreColor");
+			String backColor = classObject.getString("backColor");
 
 			schoolClassObject.setId(id);
 			schoolClassObject.setName(name);
 			schoolClassObject.setLongName(longName);
-			schoolClassObject.setForeColor(Color.parseColor("#"+foreColor));
-			schoolClassObject.setBackColor(Color.parseColor("#"+backColor));
+			schoolClassObject.setForeColor(foreColor);
+			schoolClassObject.setBackColor(backColor);
 
 			schoolClassList.add(schoolClassObject);
 		}
@@ -146,13 +123,13 @@ public class JSONParser {
 			int id = subjectObject.getInt("id");
 			String name = subjectObject.getString("name");
 			String longName = subjectObject.getString("longName");
-			String foreColor = parseColor(subjectObject, "foreColor");
-			String backColor = parseColor(subjectObject, "backColor");
+			String foreColor = subjectObject.getString("foreColor");
+			String backColor = subjectObject.getString("backColor");
 			schoolSubjectObject.setId(id);
 			schoolSubjectObject.setName(name);
 			schoolSubjectObject.setLongName(longName);
-			schoolSubjectObject.setForeColor(Color.parseColor("#"+foreColor));
-			schoolSubjectObject.setBackColor(Color.parseColor("#"+backColor));
+			schoolSubjectObject.setForeColor(foreColor);
+			schoolSubjectObject.setBackColor(backColor);
 
 			schoolSubjectList.add(schoolSubjectObject);
 		}
@@ -171,13 +148,13 @@ public class JSONParser {
 			int id = roomObject.getInt("id");
 			String name = roomObject.getString("name");
 			String longName = roomObject.getString("longName");
-			String foreColor = parseColor(roomObject, "foreColor");
-			String backColor = parseColor(roomObject, "backColor");			
+			String foreColor = roomObject.getString("foreColor");
+			String backColor = roomObject.getString("backColor");			
 			schoolRoomObject.setId(id);
 			schoolRoomObject.setName(name);
 			schoolRoomObject.setLongName(longName);
-			schoolRoomObject.setForeColor(Color.parseColor("#"+foreColor));
-			schoolRoomObject.setBackColor(Color.parseColor("#"+backColor));
+			schoolRoomObject.setForeColor(foreColor);
+			schoolRoomObject.setBackColor(backColor);
 			
 			schoolRoomsList.add(schoolRoomObject);
 		}
@@ -244,27 +221,12 @@ public class JSONParser {
 				String starttime = ""+timeUnit.getInt("startTime");
 				String endtime = ""+timeUnit.getInt("endTime");
 				
-				int startMinute;
-				int startHour;
+				int startMinute = Integer.parseInt(getMinute(starttime));
+				int startHour = Integer.parseInt(getHour(starttime));
 				
-				try {
-					startMinute = Integer.parseInt(getMinute(starttime));
-					startHour = Integer.parseInt(getHour(starttime));
-				}
-				catch(NumberFormatException e) {
-					throw new NumberFormatException("Unable to parse startTimeString: "+starttime);
-				}
+				int endMinute = Integer.parseInt(getMinute(endtime));
+				int endHour = Integer.parseInt(getHour(endtime));
 				
-				int endMinute;
-				int endHour;
-				
-				try {
-					endMinute = Integer.parseInt(getMinute(endtime));
-					endHour = Integer.parseInt(getHour(endtime));
-				}
-				catch(NumberFormatException e) {
-					throw new NumberFormatException("Unable to parse endTimeString: "+endtime);
-				}
 				
 				// Setze nicht verwendete Werte auf 0
 				Calendar startCalendar = Calendar.getInstance();
@@ -330,27 +292,12 @@ public class JSONParser {
 			date.set(year, month, day, 0, 0, 0);
 			date.set(Calendar.MILLISECOND, 0);
 			
-			int startMinute;
-			int startHour;
+			int startMinute = Integer.parseInt(getMinute(startTime));
+			int startHour = Integer.parseInt(getHour(startTime));
 			
-			try {
-				startMinute = Integer.parseInt(getMinute(startTime));
-				startHour = Integer.parseInt(getHour(startTime));
-			}
-			catch(NumberFormatException e) {
-				throw new NumberFormatException("Unable to parse startTimeString: "+startTime);
-			}
+			int endMinute = Integer.parseInt(getMinute(endTime));
+			int endHour = Integer.parseInt(getHour(endTime));
 			
-			int endMinute;
-			int endHour;
-			
-			try {
-				endMinute = Integer.parseInt(getMinute(endTime));
-				endHour = Integer.parseInt(getHour(endTime));
-			}
-			catch(NumberFormatException e) {
-				throw new NumberFormatException("Unable to parse endTimeString: "+endTime);
-			}
 			
 			LessonCode lessonCode = null;
 			LessonType lessonType = null;
@@ -587,10 +534,14 @@ public class JSONParser {
 			unknownObject.setId(-1);
 			unknownObject.setName("?");
 			unknownObject.setLongName("Unknown object");
-			unknownObject.setBackColor(0);
-			unknownObject.setForeColor(0);
+			unknownObject.setBackColor("");
+			unknownObject.setForeColor("");
 			
 			return unknownObject;
 		}		
+	}
+
+	public void setCache(Cache cache) {
+		this.cache = cache;
 	}
 }

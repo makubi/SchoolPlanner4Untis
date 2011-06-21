@@ -32,6 +32,5 @@ public class LessonTypeBreakSupervision extends LessonType implements Serializab
 	public LessonTypeBreakSupervision() {
 		bgColor = Color.rgb(0,0,80);
 		fgColor = Color.WHITE;
-		text = SchoolplannerContext.context.getString(R.string.lessonview_type_breaksupervision);
 	}
 }

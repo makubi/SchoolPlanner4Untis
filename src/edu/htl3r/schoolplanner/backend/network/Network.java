@@ -55,7 +55,7 @@ import org.springframework.web.util.UriUtils;
 import android.util.Log;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
-import edu.htl3r.schoolplanner.backend.Preferences;
+import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 
 /**
  * 
@@ -69,7 +69,7 @@ public class Network implements NetworkAccess {
 	
 	private HttpClient client;
 	
-	private Preferences preferences;
+	private Authentication authentication;
 	
 	private URI serverUrl;
 	private URI httpsServerUrl;
@@ -240,13 +240,13 @@ public class Network implements NetworkAccess {
 	}
 	
 	private boolean preferencesChanged() {
-		return !(preferences.getServerUrl().equals(oldServerUrl) && preferences.getSchool().equals(oldSchool));
+		return !(authentication.getServerUrl().equals(oldServerUrl) && authentication.getSchool().equals(oldSchool));
 	}
 	
 	private void checkPreferenceChange() throws IOException {
 		if(preferencesChanged()) {
-			String serverUrl = preferences.getServerUrl();
-			String school = preferences.getSchool();
+			String serverUrl = authentication.getServerUrl();
+			String school = authentication.getSchool();
 			
 			oldServerUrl = new String(serverUrl);
 			oldSchool = new String(school);
@@ -321,8 +321,8 @@ public class Network implements NetworkAccess {
 	}
 
 	@Override
-	public void setPreferences(Preferences preferences) {
-		this.preferences = preferences;
+	public void setLoginCredentials(Authentication preferences) {
+		this.authentication = preferences;
 	}
 	
 }

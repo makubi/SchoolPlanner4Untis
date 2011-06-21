@@ -1,7 +1,7 @@
 /* SchoolPlanner4Untis - Android app to manage your Untis timetable
     Copyright (C) 2011  Mathias Kub <mail@makubi.at>
-						Gerald Schreiber <mail@gerald-schreiber.at>
-						Philip Woelfel <philip@woelfel.at>
+			Sebastian Chlan <sebastian@schoolplanner.at>
+			Christian Pascher <christian@schoolplanner.at>
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -15,22 +15,26 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks;
 
-package edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
+import edu.htl3r.schoolplanner.gui.WelcomeScreen;
 
-import java.io.Serializable;
+/**
+ * Diese Klasse updated das UI, nachdem ein {@link LoginSet}-Eintrag hinzugefuegt wurde. 
+ */
+public class LoginSetAddAsyncTask extends LoginSetUpdateAsyncTask {
 
-import android.graphics.Color;
-import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.SchoolplannerContext;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonType;
-
-public class LessonTypeExamination extends LessonType implements Serializable {
 	
-	private static final long serialVersionUID = -273926953295334612L;
 
-	public LessonTypeExamination() {
-		bgColor = Color.GREEN;
-		fgColor = Color.BLACK;
+	public LoginSetAddAsyncTask(WelcomeScreen parent) {
+		super(parent);
 	}
+
+	@Override
+	protected void editList() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

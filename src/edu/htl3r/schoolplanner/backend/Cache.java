@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.util.Log;
+import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTest;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTestType;
@@ -44,18 +45,12 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  */
 public class Cache implements DataConnection, InternalData {
 	
-	private InternalMemory internalMemory;
-	private ExternalDataLoader externalDataLoader;
+	private InternalMemory internalMemory = new InternalMemory();
+	private ExternalDataLoader externalDataLoader = new ExternalDataLoader();
 	
 	
-	/**
-	 * Initialisiert den internen Speicher und die externen Datenquelle.
-	 * @see InternalMemory
-	 * @see ExternalDataLoader
-	 */
-	public void init() {
-		internalMemory = new InternalMemory();
-		externalDataLoader = new ExternalDataLoader();
+	public Cache() {
+		externalDataLoader.setCache(this);
 	}
 
 	@Override
@@ -64,7 +59,7 @@ public class Cache implements DataConnection, InternalData {
 		
 		// Check internal memory
 		if((schoolClassList = internalMemory.getSchoolClassList()) != null) {
-			Log.d("DataSource", "schoolClassList: InternalMemory");
+			Log.v("DataSource", "schoolClassList: InternalMemory");
 			return schoolClassList;
 		}
 		
@@ -74,7 +69,7 @@ public class Cache implements DataConnection, InternalData {
 			return schoolClassList;
 		}
 		
-		Log.d("DataSource", "schoolClassList: -");
+		Log.v("DataSource", "schoolClassList: -");
 		return null;
 	}
 
@@ -84,7 +79,7 @@ public class Cache implements DataConnection, InternalData {
 		
 		// Check internal memory
 		if((schoolTeacherList = internalMemory.getSchoolTeacherList()) != null) {
-			Log.d("DataSource", "schoolTeacherList: InternalMemory");
+			Log.v("DataSource", "schoolTeacherList: InternalMemory");
 			return schoolTeacherList;
 		}
 		
@@ -94,7 +89,7 @@ public class Cache implements DataConnection, InternalData {
 			return schoolTeacherList;
 		}
 		
-		Log.d("DataSource", "schoolTeacherList: -");
+		Log.v("DataSource", "schoolTeacherList: -");
 		return null;
 	}
 
@@ -104,7 +99,7 @@ public class Cache implements DataConnection, InternalData {
 		
 		// Check internal memory
 		if((schoolRoomList = internalMemory.getSchoolRoomList()) != null) {
-			Log.d("DataSource", "schoolRoomList: InternalMemory");
+			Log.v("DataSource", "schoolRoomList: InternalMemory");
 			return schoolRoomList;
 		}
 		
@@ -114,7 +109,7 @@ public class Cache implements DataConnection, InternalData {
 			return schoolRoomList;
 		}
 		
-		Log.d("DataSource", "schoolRoomList: -");
+		Log.v("DataSource", "schoolRoomList: -");
 		return null;
 	}
 
@@ -124,7 +119,7 @@ public class Cache implements DataConnection, InternalData {
 		
 		// Check internal memory
 		if((schoolSubjectList = internalMemory.getSchoolSubjectList()) != null) {
-			Log.d("DataSource", "schoolSubjectList: InternalMemory");
+			Log.v("DataSource", "schoolSubjectList: InternalMemory");
 			return schoolSubjectList;
 		}
 		
@@ -134,7 +129,7 @@ public class Cache implements DataConnection, InternalData {
 			return schoolSubjectList;
 		}
 		
-		Log.d("DataSource", "schoolSubjectList: -");
+		Log.v("DataSource", "schoolSubjectList: -");
 		return null;
 	}
 
@@ -144,7 +139,7 @@ public class Cache implements DataConnection, InternalData {
 		
 		// Check internal memory
 		if((schoolHolidayList = internalMemory.getSchoolHolidayList()) != null) {
-			Log.d("DataSource", "schoolHolidayList: InternalMemory");
+			Log.v("DataSource", "schoolHolidayList: InternalMemory");
 			return schoolHolidayList;
 		}
 		
@@ -154,7 +149,7 @@ public class Cache implements DataConnection, InternalData {
 			return schoolHolidayList;
 		}
 		
-		Log.d("DataSource", "schoolHolidayList: -");
+		Log.v("DataSource", "schoolHolidayList: -");
 		return null;
 	}
 
@@ -162,7 +157,7 @@ public class Cache implements DataConnection, InternalData {
 	public List<SchoolTestType> getSchoolTestTypeList() {
 		// TODO: From interal / external data source
 		
-		Log.d("DataSource", "schoolTestTypeList: Dummy data");
+		Log.v("DataSource", "schoolTestTypeList: Dummy data");
 		ArrayList<SchoolTestType> al = new ArrayList<SchoolTestType>();
 		
 		SchoolTestType t1 = new SchoolTestType();
@@ -187,7 +182,7 @@ public class Cache implements DataConnection, InternalData {
 		
 		// Check internal memory
 		if((timegrid = internalMemory.getTimegrid()) != null) {
-			Log.d("DataSource", "timegrid: InternalMemory");
+			Log.v("DataSource", "timegrid: InternalMemory");
 			return timegrid;
 		}
 		
@@ -197,7 +192,7 @@ public class Cache implements DataConnection, InternalData {
 			return timegrid;
 		}
 		
-		Log.d("DataSource", "timegrid: -");
+		Log.v("DataSource", "timegrid: -");
 		return null;
 	}
 
@@ -208,7 +203,7 @@ public class Cache implements DataConnection, InternalData {
 		
 		// Check internal memory
 		if((schoolTestList = internalMemory.getSchoolTestList()) != null) {
-			Log.d("DataSource", "schoolTestList: InternalMemory");
+			Log.v("DataSource", "schoolTestList: InternalMemory");
 			return schoolTestList;
 		}
 		
@@ -218,7 +213,7 @@ public class Cache implements DataConnection, InternalData {
 			return schoolTestList;
 		}
 		
-		Log.d("DataSource", "schoolTestList: -");
+		Log.v("DataSource", "schoolTestList: -");
 		return null;
 	}
 
@@ -227,7 +222,7 @@ public class Cache implements DataConnection, InternalData {
 		List<Lesson> lessonList;
 		
 		if((lessonList = internalMemory.getLessons(view, date)) != null) {
-			Log.d("DataSource", "lessons: InternalMemory");
+			Log.v("DataSource", "lessons: InternalMemory");
 			return lessonList;
 		}
 		
@@ -236,7 +231,7 @@ public class Cache implements DataConnection, InternalData {
 			return lessonList;
 		}
 		
-		Log.d("DataSource", "lessons: -");
+		Log.v("DataSource", "lessons: -");
 		return null;
 	}
 	
@@ -247,7 +242,7 @@ public class Cache implements DataConnection, InternalData {
 	
 		
 		if((lessonMap = internalMemory.getLessons(view, startDate, endDate)) != null) {
-			Log.d("DataSource", "lessons: InternalMemory");
+			Log.v("DataSource", "lessons: InternalMemory");
 			return lessonMap;
 		}
 		
@@ -256,7 +251,7 @@ public class Cache implements DataConnection, InternalData {
 			return lessonMap;
 		}
 		
-		Log.d("DataSource", "lessons: -");
+		Log.v("DataSource", "lessons: -");
 		return null;
 	}
 
@@ -265,7 +260,7 @@ public class Cache implements DataConnection, InternalData {
 		List<Lesson> mergedLessonList;
 		
 		if((mergedLessonList = internalMemory.getMergedLessons(view, date)) != null) {
-			Log.d("DataSource", "mergedLessons: InternalMemory");
+			Log.v("DataSource", "mergedLessons: InternalMemory");
 			return mergedLessonList;
 		}
 		
@@ -274,7 +269,7 @@ public class Cache implements DataConnection, InternalData {
 			return mergedLessonList;
 		}
 		
-		Log.d("DataSource", "mergedLessons: -");
+		Log.v("DataSource", "mergedLessons: -");
 		return null;
 	}
 	
@@ -285,7 +280,7 @@ public class Cache implements DataConnection, InternalData {
 
 		
 		if((mergedLessonMap = internalMemory.getMergedLessons(view, startDate, endDate)) != null) {
-			Log.d("DataSource", "mergedLessons: InternalMemory");
+			Log.v("DataSource", "mergedLessons: InternalMemory");
 			return mergedLessonMap;
 		}
 		
@@ -294,13 +289,13 @@ public class Cache implements DataConnection, InternalData {
 			return mergedLessonMap;
 		}
 		
-		Log.d("DataSource", "mergedLessons: -");
+		Log.v("DataSource", "mergedLessons: -");
 		return null;
 	}
 
 	@Override
-	public void setPreferences(Preferences preferences) {
-		externalDataLoader.setPreferences(preferences);
+	public void setLoginCredentials(Authentication authentication) {
+		externalDataLoader.setLoginCredentials(authentication);
 	}
 
 	@Override
@@ -349,7 +344,7 @@ public class Cache implements DataConnection, InternalData {
 		List<SchoolTest> schoolTestList;
 		
 		if((schoolTestList = internalMemory.getSchoolTestList(view, startDate, endDate)) != null) {
-			Log.d("DataSource", "schoolTests: InternalMemory");
+			Log.v("DataSource", "schoolTests: InternalMemory");
 			return schoolTestList;
 		}
 		
@@ -358,7 +353,7 @@ public class Cache implements DataConnection, InternalData {
 			return schoolTestList;
 		}
 		
-		Log.d("DataSource", "schoolTests: -");
+		Log.v("DataSource", "schoolTests: -");
 		
 		return new ArrayList<SchoolTest>();
 	}

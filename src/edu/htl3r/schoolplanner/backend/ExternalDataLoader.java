@@ -27,6 +27,7 @@ import java.util.Map;
 import android.util.Log;
 import edu.htl3r.schoolplanner.backend.localdata.LocalData;
 import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
+import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTest;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTestType;
@@ -56,14 +57,14 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 
 		// Check database
 		if ((schoolClassList = database.getSchoolClassList()) != null) {
-			Log.d("DataSource", "schoolClassList: Database");
+			Log.v("DataSource", "schoolClassList: Database");
 			return schoolClassList;
 		}
 		// Check network
 		if (networkAvailable) {
 			if ((schoolClassList = network.getSchoolClassList()) != null) {
 				database.setSchoolClassList(schoolClassList);
-				Log.d("DataSource", "schoolClassList: Network");
+				Log.v("DataSource", "schoolClassList: Network");
 				return schoolClassList;
 			}
 		}
@@ -77,14 +78,14 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 
 		// Check database
 		if ((schoolTeacherList = database.getSchoolTeacherList()) != null) {
-			Log.d("DataSource", "schoolTeacherList: Database");
+			Log.v("DataSource", "schoolTeacherList: Database");
 			return schoolTeacherList;
 		}
 		// Check network
 		if (networkAvailable) {
 			if ((schoolTeacherList = network.getSchoolTeacherList()) != null) {
 				database.setSchoolTeacherList(schoolTeacherList);
-				Log.d("DataSource", "schoolTeacherList: Network");
+				Log.v("DataSource", "schoolTeacherList: Network");
 				return schoolTeacherList;
 			}
 		}
@@ -98,14 +99,14 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 
 		// Check database
 		if ((schoolRoomList = database.getSchoolRoomList()) != null) {
-			Log.d("DataSource", "schoolRoomList: Database");
+			Log.v("DataSource", "schoolRoomList: Database");
 			return schoolRoomList;
 		}
 		// Check network
 		if (networkAvailable) {
 			if ((schoolRoomList = network.getSchoolRoomList()) != null) {
 				database.setSchoolRoomList(schoolRoomList);
-				Log.d("DataSource", "schoolRoomList: Network");
+				Log.v("DataSource", "schoolRoomList: Network");
 				return schoolRoomList;
 			}
 		}
@@ -119,14 +120,14 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 
 		// Check database
 		if ((schoolSubjectList = database.getSchoolSubjectList()) != null) {
-			Log.d("DataSource", "schoolSubjectList: Database");
+			Log.v("DataSource", "schoolSubjectList: Database");
 			return schoolSubjectList;
 		}
 		// Check network
 		if (networkAvailable) {
 			if ((schoolSubjectList = network.getSchoolSubjectList()) != null) {
 				database.setSchoolSubjectList(schoolSubjectList);
-				Log.d("DataSource", "schoolSubjectList: Network");
+				Log.v("DataSource", "schoolSubjectList: Network");
 				return schoolSubjectList;
 			}
 		}
@@ -140,14 +141,14 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 
 		// Check database
 		if ((schoolHolidayList = database.getSchoolHolidayList()) != null) {
-			Log.d("DataSource", "schoolHolidayList: Database");
+			Log.v("DataSource", "schoolHolidayList: Database");
 			return schoolHolidayList;
 		}
 		// Check network
 		if (networkAvailable) {
 			if ((schoolHolidayList = network.getSchoolHolidayList()) != null) {
 				database.setSchoolHolidayList(schoolHolidayList);
-				Log.d("DataSource", "schoolHolidayList: Network");
+				Log.v("DataSource", "schoolHolidayList: Network");
 				return schoolHolidayList;
 			}
 		}
@@ -161,14 +162,14 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 
 		// Check database
 		if ((schoolTestTypeList = database.getSchoolTestTypeList()) != null) {
-			Log.d("DataSource", "schoolTestTypeList: Database");
+			Log.v("DataSource", "schoolTestTypeList: Database");
 			return schoolTestTypeList;
 		}
 		// Check network
 		if (networkAvailable) {
 			if ((schoolTestTypeList = network.getSchoolTestTypeList()) != null) {
 				database.setSchoolTestTypeList(schoolTestTypeList);
-				Log.d("DataSource", "schoolTestTypeList: Network");
+				Log.v("DataSource", "schoolTestTypeList: Network");
 				return schoolTestTypeList;
 			}
 		}
@@ -182,14 +183,14 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 
 		// Check database
 		if ((timegrid = database.getTimegrid()) != null) {
-			Log.d("DataSource", "timegrid: Database");
+			Log.v("DataSource", "timegrid: Database");
 			return timegrid;
 		}
 		// Check network
 		if (networkAvailable) {
 			if ((timegrid = network.getTimegrid()) != null) {
 				database.setTimegrid(timegrid);
-				Log.d("DataSource", "timegrid: Network");
+				Log.v("DataSource", "timegrid: Network");
 				return timegrid;
 			}
 		}
@@ -211,14 +212,14 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 		if (networkAvailable) {
 			if ((lessons = network.getLessons(view, date)) != null) {
 				database.setLessons(view, lessons);
-				Log.d("DataSource", "lessons: Network");
+				Log.v("DataSource", "lessons: Network");
 				return lessons;
 			}
 		}
 
 		// Check database
 		if ((lessons = database.getLessons(view, date)) != null) {
-			Log.d("DataSource", "lessons: Database");
+			Log.v("DataSource", "lessons: Database");
 			return lessons;
 		}
 
@@ -233,14 +234,14 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 		if (networkAvailable) {
 			if ((lessonMap = network.getLessons(view, startDate, endDate)) != null) {
 				database.setLessons(view, startDate, endDate, lessonMap);
-				Log.d("DataSource", "mergedLessons: Network");
+				Log.v("DataSource", "mergedLessons: Network");
 				return lessonMap;
 			}
 		}
 
 		// Check database
 		if ((lessonMap = database.getLessons(view, startDate, endDate)) != null) {
-			Log.d("DataSource", "mergedLessons: Database");
+			Log.v("DataSource", "mergedLessons: Database");
 			return lessonMap;
 		}
 
@@ -255,14 +256,14 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 		if (networkAvailable) {
 			if ((mergedLessonMap = network.getMergedLessons(view, startDate, endDate)) != null) {
 				database.setMergedLessons(view, startDate, endDate, mergedLessonMap);
-				Log.d("DataSource", "mergedLessons: Network");
+				Log.v("DataSource", "mergedLessons: Network");
 				return mergedLessonMap;
 			}
 		}
 
 		// Check database
 		if ((mergedLessonMap = database.getMergedLessons(view, startDate, endDate)) != null) {
-			Log.d("DataSource", "mergedLessons: Database");
+			Log.v("DataSource", "mergedLessons: Database");
 			return mergedLessonMap;
 		}
 
@@ -277,14 +278,14 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 		if (networkAvailable) {
 			if ((mergedLessons = network.getMergedLessons(view, date)) != null) {
 				database.setMergedLessons(view, date, mergedLessons);
-				Log.d("DataSource", "mergedLessons: Network");
+				Log.v("DataSource", "mergedLessons: Network");
 				return mergedLessons;
 			}
 		}
 
 		// Check database
 		if ((mergedLessons = database.getMergedLessons(view, date)) != null) {
-			Log.d("DataSource", "mergedLessons: Database");
+			Log.v("DataSource", "mergedLessons: Database");
 			return mergedLessons;
 		}
 
@@ -293,10 +294,10 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 
 	/**
 	 * Setzt die Preferences fuer das Netzwerk neu.
-	 * @param prefs Preferences, die gesetzt werden sollen
+	 * @param authentications Preferences, die gesetzt werden sollen
 	 */
-	public void setPreferences(Preferences prefs) {
-		network.setPreferences(prefs);
+	public void setLoginCredentials(Authentication authentications) {
+		network.setLoginCredentials(authentications);
 	}
 
 	/**
@@ -394,14 +395,14 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 		if (networkAvailable) {
 			if ((schoolTestList = network.getSchoolTestList(view, startDate, endDate)) != null) {
 				database.setSchoolTestList(schoolTestList);
-				Log.d("DataSource", "schoolTests: Network");
+				Log.v("DataSource", "schoolTests: Network");
 				return schoolTestList;
 			}
 		}
 
 		// Check database
 		if ((schoolTestList = database.getSchoolTestList(view, startDate, endDate)) != null) {
-			Log.d("DataSource", "schoolTest: Database");
+			Log.v("DataSource", "schoolTest: Database");
 			return schoolTestList;
 		}
 
@@ -428,6 +429,11 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 	public void deletePreset(String title) {
 		database.deletePreset(title);
 		
+	}
+
+	public void setCache(Cache cache) {
+		database.setCache(cache);
+		network.setCache(cache);
 	}
 	
 }

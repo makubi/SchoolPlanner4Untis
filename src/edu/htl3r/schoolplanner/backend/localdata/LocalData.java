@@ -29,28 +29,26 @@ import java.util.Map;
 import java.util.Random;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import edu.htl3r.schoolplanner.CalendarUtils;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
-import edu.htl3r.schoolplanner.backend.Authentication;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataProvider;
 import edu.htl3r.schoolplanner.backend.DataStore;
 import edu.htl3r.schoolplanner.backend.InternalData;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;
+import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTest;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTestType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCode;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCodeCreator;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCodeFactory;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonTypeCreator;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonTypeFactory;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeCancelled;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeBreakSupervision;
@@ -70,10 +68,17 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 public class LocalData implements DataStore, DataProvider, InternalData {
 
 	private final String LOGTAG = "Database";
-	private final Context context = SchoolplannerContext.context;
-	private final SQLiteOpenHelper dbHelper = new DatabaseHelper(context);
-	private final SQLiteDatabase database = dbHelper.getWritableDatabase();
-	private final Cache cache = SchoolplannerContext.cache;
+	private SQLiteDatabase database;
+	private Cache cache;
+
+	public void setCache(Cache cache) {
+		this.cache = cache;
+	}
+	
+	public LocalData() {
+		database = new DatabaseHelper(SchoolplannerContext.context).getWritableDatabase();
+	}
+	
 
 	/**
 	 * Liefert Objekte aus der Datenbank zurueck
@@ -169,8 +174,8 @@ public class LocalData implements DataStore, DataProvider, InternalData {
 			tmp.setId(Integer.parseInt(object.get("id")));
 			tmp.setName(object.get("name"));
 			tmp.setLongName(object.get("longname"));
-			tmp.setForeColor(Integer.parseInt(object.get("forecolor")));
-			tmp.setBackColor(Integer.parseInt(object.get("backcolor")));
+			tmp.setForeColor(object.get("forecolor"));
+			tmp.setBackColor(object.get("backcolor"));
 			result.add(tmp);
 		}
 		return result;
@@ -209,8 +214,8 @@ public class LocalData implements DataStore, DataProvider, InternalData {
 			tmp.setId(Integer.parseInt(object.get("id")));
 			tmp.setName(object.get("name"));
 			tmp.setLongName(object.get("longname"));
-			tmp.setForeColor(Integer.parseInt(object.get("forecolor")));
-			tmp.setBackColor(Integer.parseInt(object.get("backcolor")));
+			tmp.setForeColor(object.get("forecolor"));
+			tmp.setBackColor(object.get("backcolor"));
 			result.add(tmp);
 		}
 		return result;
@@ -249,8 +254,8 @@ public class LocalData implements DataStore, DataProvider, InternalData {
 			tmp.setId(Integer.parseInt(object.get("id")));
 			tmp.setName(object.get("name"));
 			tmp.setLongName(object.get("longname"));
-			tmp.setForeColor(Integer.parseInt(object.get("forecolor")));
-			tmp.setBackColor(Integer.parseInt(object.get("backcolor")));
+			tmp.setForeColor(object.get("forecolor"));
+			tmp.setBackColor(object.get("backcolor"));
 			result.add(tmp);
 		}
 		return result;
@@ -289,8 +294,8 @@ public class LocalData implements DataStore, DataProvider, InternalData {
 			tmp.setId(Integer.parseInt(object.get("id")));
 			tmp.setName(object.get("name"));
 			tmp.setLongName(object.get("longname"));
-			tmp.setForeColor(Integer.parseInt(object.get("forecolor")));
-			tmp.setBackColor(Integer.parseInt(object.get("backcolor")));
+			tmp.setForeColor(object.get("forecolor"));
+			tmp.setBackColor(object.get("backcolor"));
 			result.add(tmp);
 		}
 		return result;
@@ -756,8 +761,8 @@ public class LocalData implements DataStore, DataProvider, InternalData {
 		List<SchoolRoom> rooms = cache.getSchoolRoomList();
 		List<SchoolSubject> subjects = cache.getSchoolSubjectList();
 		List<SchoolClass> classes = cache.getSchoolClassList();
-		LessonCodeCreator lessonCodeCreator = new LessonCodeCreator();
-		LessonTypeCreator lessonTypeCreator = new LessonTypeCreator();
+		LessonCodeFactory lessonCodeCreator = new LessonCodeFactory();
+		LessonTypeFactory lessonTypeCreator = new LessonTypeFactory();
 
 		String[] columns_lessons = { "viewtype", "schoolObject", "date" };
 		Calendar myDate = (Calendar) date.clone();
