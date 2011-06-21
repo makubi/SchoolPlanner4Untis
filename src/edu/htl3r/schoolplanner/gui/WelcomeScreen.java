@@ -1,5 +1,6 @@
 package edu.htl3r.schoolplanner.gui;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +11,10 @@ import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.backend.preferences.LoginSetManager;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetDatabase;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetDatabaseHelper;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.gui.listener.LoginListener;
 
 public class WelcomeScreen extends SchoolPlannerActivity {
@@ -36,7 +40,8 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		
 		loginmanager = new LoginSetManager();
 		
-		//loginmanager.addLoginEntry("HTL Rennweg", "http://xxx.xxx", "HTL3R", "htl3r", "htl3r");
+		//loginmanager.addLoginSet("HTL Rennweg", "http://urania.webuntis.com", "htl3r", "htl3r", "htl3r");
+		//loginmanager.addLoginSet("WebUntis Testschule", "http://webuntis.grupet.at:8080", "demo", "user", "");
 		
 		initList();
 		

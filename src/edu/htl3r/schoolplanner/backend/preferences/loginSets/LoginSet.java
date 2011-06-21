@@ -1,4 +1,4 @@
-package edu.htl3r.schoolplanner.backend.preferences;
+package edu.htl3r.schoolplanner.backend.preferences.loginSets;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -22,6 +22,14 @@ public class LoginSet implements Serializable {
 		username = data.get(Constants.usernameKey);
 		password = data.get(Constants.passwordKey);
 	}
+	
+	public LoginSet(String name, String serverUrl, String school, String username, String password) {
+		this.name = name;
+		this.serverUrl = serverUrl;
+		this.school = school;
+		this.username = username;
+		this.password = password;
+	}
 
 	public String getName() {
 		return name;
@@ -41,11 +49,6 @@ public class LoginSet implements Serializable {
 
 	public String getPassword() {
 		return password;
-	}
-	
-	@Override
-	public String toString() {
-		return name+"§"+serverUrl+"§"+school+"§"+username+"§"+password;
 	}
 	
 }
