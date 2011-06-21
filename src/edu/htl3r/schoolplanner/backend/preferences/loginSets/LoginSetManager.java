@@ -31,6 +31,8 @@ public class LoginSetManager {
 	private List<LoginSet> loginSets;
 	private LoginSetDatabase database = new LoginSetDatabase();
 	
+	private List<LoginSetUpdateObserver> observers = new ArrayList<LoginSetUpdateObserver>();
+	
 	public LoginSetManager() {
 		database.setContext(SchoolplannerContext.context);
 		loginSets = database.getAllLoginSets();
@@ -39,6 +41,10 @@ public class LoginSetManager {
 	public void addLoginSet(LoginSet loginSet) {
 		loginSets.add(loginSet);
 		database.saveLoginSet(loginSet);
+		
+		for(LoginSetUpdateObserver observer : observers) {
+			observer.loginSetAdded();
+		}
 	}
 
 
@@ -74,6 +80,14 @@ public class LoginSetManager {
 	public void removeLoginEntry(LoginSet loginSet) {
 		loginSets.remove(loginSet);
 		database.removeLoginSet(loginSet);
+	}
+	
+	public void removeLoginEntry(int pos) {
+		removeLoginEntry(loginSets.get(pos));
+	}
+	
+	public void addSetUpdateObserver(LoginSetUpdateObserver observer) {
+		observers.add(observer);
 	}
 	
 }

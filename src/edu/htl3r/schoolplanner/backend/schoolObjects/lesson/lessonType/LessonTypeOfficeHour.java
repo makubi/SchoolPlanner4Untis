@@ -32,6 +32,5 @@ public class LessonTypeOfficeHour extends LessonType implements Serializable {
 	public LessonTypeOfficeHour() {
 		fgColor = Color.BLACK;
 		bgColor = Color.parseColor("#DAA520");
-		text = SchoolplannerContext.context.getString(R.string.lessonview_type_officehour);
 	}
 }

@@ -32,7 +32,6 @@ public class LessonTypeStandby extends LessonType implements Serializable {
 	public LessonTypeStandby() {
 		fgColor = Color.WHITE;
 		bgColor = Color.rgb(80,0,80);
-		text = SchoolplannerContext.context.getString(R.string.lessonview_type_standby);
 	}
 	
 }

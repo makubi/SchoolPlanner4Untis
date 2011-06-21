@@ -20,7 +20,9 @@ public class LoginSet implements Serializable {
 		serverUrl = data.get(Constants.serverUrlKey);
 		school = data.get(Constants.schoolKey);
 		username = data.get(Constants.usernameKey);
-		password = data.get(Constants.passwordKey);
+		
+		String password = data.get(Constants.passwordKey);
+		this.password = password != null ? password : "";
 	}
 	
 	public LoginSet(String name, String serverUrl, String school, String username, String password) {
@@ -28,7 +30,7 @@ public class LoginSet implements Serializable {
 		this.serverUrl = serverUrl;
 		this.school = school;
 		this.username = username;
-		this.password = password;
+		this.password = password != null ? password : "";
 	}
 
 	public String getName() {

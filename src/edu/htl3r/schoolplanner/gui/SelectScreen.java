@@ -14,14 +14,31 @@ public class SelectScreen extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.selectscreen);
+		setContentView(R.layout.select_screen);
 		
 		GridView gridview = (GridView) findViewById(R.id.gridview);
 	    gridview.setAdapter(new ImageAdapter(this));
 	    
 	    gridview.setOnItemClickListener(new OnItemClickListener() {
 	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-	            Toast.makeText(SelectScreen.this, "" + position, Toast.LENGTH_SHORT).show();
+	        	String text = "Selected ";
+	        	switch (position) {
+				case 0:
+					text+="classes";
+					break;
+				case 1:
+					text+="teacher";
+					break;
+				case 2:
+					text+="rooms";
+					break;
+				case 3:
+					text+="subjects";
+					break;
+				default:
+					break;
+				}
+	            Toast.makeText(SelectScreen.this, text, Toast.LENGTH_SHORT).show();
 	        }
 	    });
 	}
