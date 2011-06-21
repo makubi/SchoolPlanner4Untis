@@ -1,6 +1,7 @@
 package edu.htl3r.schoolplanner.gui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -8,6 +9,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.gui.basti.ViewBasti;
+import edu.htl3r.schoolplanner.gui.chris.ViewChris;
 
 public class SelectScreen extends Activity{
 	
@@ -24,7 +27,9 @@ public class SelectScreen extends Activity{
 	        	String text = "Selected ";
 	        	switch (position) {
 				case 0:
-					text+="classes";
+					Intent chris = new Intent(SelectScreen.this, ViewChris.class);
+					startActivity(chris);
+					text+="Chris";
 					break;
 				case 1:
 					text+="teacher";
@@ -33,7 +38,9 @@ public class SelectScreen extends Activity{
 					text+="rooms";
 					break;
 				case 3:
-					text+="subjects";
+					Intent basti = new Intent(SelectScreen.this, ViewBasti.class);
+					startActivity(basti);
+					text+="Basti";
 					break;
 				default:
 					break;
