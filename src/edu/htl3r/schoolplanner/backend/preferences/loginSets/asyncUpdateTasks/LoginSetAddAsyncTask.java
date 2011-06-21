@@ -15,24 +15,26 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.backend.preferences.loginSets;
+package edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks;
 
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
 
-public class LoginSetRemoveAsyncTask extends LoginSetUpdateAsyncTask {
+/**
+ * Diese Klasse updated das UI, nachdem ein {@link LoginSet}-Eintrag hinzugefuegt wurde. 
+ */
+public class LoginSetAddAsyncTask extends LoginSetUpdateAsyncTask {
 
-	private LoginSetManager manager;
-	private int idToBeRemoved;
 	
-	public LoginSetRemoveAsyncTask(WelcomeScreen parent, LoginSetManager manager, int idToBeRemoved) {
+
+	public LoginSetAddAsyncTask(WelcomeScreen parent) {
 		super(parent);
-		this.manager = manager;
-		this.idToBeRemoved = idToBeRemoved;
 	}
 
 	@Override
 	protected void editList() {
-		manager.removeLoginEntry(idToBeRemoved);
+		// TODO Auto-generated method stub
+
 	}
 
 }

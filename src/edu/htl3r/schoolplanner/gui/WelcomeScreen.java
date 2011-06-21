@@ -17,11 +17,11 @@ import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetAddAsyncTask;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
-import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetRemoveAsyncTask;
-import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetUpdateObserver;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks.LoginSetAddAsyncTask;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks.LoginSetRemoveAsyncTask;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.gui.listener.LoginListener;
 
 public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpdateObserver{

@@ -43,8 +43,6 @@ public class AddLoginSetDialog extends Dialog{
 	public AddLoginSetDialog(Context context) {
 		super(context);
 		
-		
-		
 		errorMessage = Toast.makeText(context, "Test", Toast.LENGTH_SHORT);
         
 		setContentView(R.layout.login_set_add_dialog);

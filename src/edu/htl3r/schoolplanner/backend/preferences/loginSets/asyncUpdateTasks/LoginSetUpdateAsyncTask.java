@@ -15,11 +15,17 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.backend.preferences.loginSets;
+package edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks;
 
 import android.os.AsyncTask;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
 
+/**
+ * Diese Klasse updated die LoginSet-Liste des WelcomeScreens, indem sie die Methode {@link WelcomeScreen#loginSetListUpdated()} aufruft und dadurch das UI aktualisiert.<br>
+ * Ableitende Klassen muessen die Methode {@link #editList()} implementieren, um bestimmte Aktionen durchzufuehren. Danach wird die UI aktualisiert.<br>
+ * Bekannte Implementierungen: {@link LoginSetAddAsyncTask}, {@link LoginSetRemoveAsyncTask}
+ */
 public abstract class LoginSetUpdateAsyncTask extends AsyncTask<Void, Void, Void>{
 	
 	private WelcomeScreen parent;
@@ -35,6 +41,9 @@ public abstract class LoginSetUpdateAsyncTask extends AsyncTask<Void, Void, Void
 		return null;
 	}
 	
+	/**
+	 * Fuehrt Operationen auf die {@link LoginSet}-List des {@link LoginSetManager}s aus.
+	 */
 	protected abstract void editList();
 
 	@Override
