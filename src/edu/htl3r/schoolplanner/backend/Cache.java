@@ -19,19 +19,10 @@
 package edu.htl3r.schoolplanner.backend;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import android.util.Log;
 import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTest;
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTestType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
@@ -43,7 +34,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see InternalMemory
  * @see ExternalDataLoader
  */
-public class Cache implements DataConnection, InternalData {
+public class Cache implements DataConnection, ExtendedStatusDataProvider {
 	
 	private InternalMemory internalMemory = new InternalMemory();
 	private ExternalDataLoader externalDataLoader = new ExternalDataLoader();
@@ -54,243 +45,118 @@ public class Cache implements DataConnection, InternalData {
 	}
 
 	@Override
-	public List<SchoolClass> getSchoolClassList() throws IOException {
-		List<SchoolClass> schoolClassList;
+	public DataFacade<List<SchoolClass>> getSchoolClassList() throws IOException {
+		DataFacade<List<SchoolClass>> data;
+		List<SchoolClass> internalSchoolClassList = internalMemory.getSchoolClassList();
 		
-		// Check internal memory
-		if((schoolClassList = internalMemory.getSchoolClassList()) != null) {
-			Log.v("DataSource", "schoolClassList: InternalMemory");
-			return schoolClassList;
+		if(internalSchoolClassList != null) {
+			data = new DataFacade<List<SchoolClass>>();
+			data.setData(internalSchoolClassList);
+		}
+		else {
+			data = externalDataLoader.getSchoolClassList();
+			if(data.isSuccessful()) {
+				internalMemory.setSchoolClassList(data.getData());
+			}
 		}
 		
-		// Check external data sources
-		if((schoolClassList = externalDataLoader.getSchoolClassList()) != null) {
-			internalMemory.setSchoolClassList(schoolClassList);
-			return schoolClassList;
-		}
+		return data;
 		
-		Log.v("DataSource", "schoolClassList: -");
-		return null;
 	}
 
 	@Override
-	public List<SchoolTeacher> getSchoolTeacherList() throws IOException {
-		List<SchoolTeacher> schoolTeacherList;
+	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() throws IOException {
+		DataFacade<List<SchoolTeacher>> data;
+		List<SchoolTeacher> internalSchoolTeacherList = internalMemory.getSchoolTeacherList();
 		
-		// Check internal memory
-		if((schoolTeacherList = internalMemory.getSchoolTeacherList()) != null) {
-			Log.v("DataSource", "schoolTeacherList: InternalMemory");
-			return schoolTeacherList;
+		if(internalSchoolTeacherList != null) {
+			data = new DataFacade<List<SchoolTeacher>>();
+			data.setData(internalSchoolTeacherList);
+		}
+		else {
+			data = externalDataLoader.getSchoolTeacherList();
+			if(data.isSuccessful()) {
+				internalMemory.setSchoolTeacherList(data.getData());
+			}
 		}
 		
-		// Check external data sources
-		if((schoolTeacherList = externalDataLoader.getSchoolTeacherList()) != null) {
-			internalMemory.setSchoolTeacherList(schoolTeacherList);
-			return schoolTeacherList;
-		}
-		
-		Log.v("DataSource", "schoolTeacherList: -");
-		return null;
+		return data;
 	}
 
 	@Override
-	public List<SchoolRoom> getSchoolRoomList() throws IOException {
-		List<SchoolRoom> schoolRoomList;
+	public DataFacade<List<SchoolRoom>> getSchoolRoomList() throws IOException {
+		DataFacade<List<SchoolRoom>> data;
+		List<SchoolRoom> internalSchoolRoomList = internalMemory.getSchoolRoomList();
 		
-		// Check internal memory
-		if((schoolRoomList = internalMemory.getSchoolRoomList()) != null) {
-			Log.v("DataSource", "schoolRoomList: InternalMemory");
-			return schoolRoomList;
+		if(internalSchoolRoomList != null) {
+			data = new DataFacade<List<SchoolRoom>>();
+			data.setData(internalSchoolRoomList);
+		}
+		else {
+			data = externalDataLoader.getSchoolRoomList();
+			if(data.isSuccessful()) {
+				internalMemory.setSchoolRoomList(data.getData());
+			}
 		}
 		
-		// Check external data sources
-		if((schoolRoomList = externalDataLoader.getSchoolRoomList()) != null) {
-			internalMemory.setSchoolRoomList(schoolRoomList);
-			return schoolRoomList;
-		}
-		
-		Log.v("DataSource", "schoolRoomList: -");
-		return null;
+		return data;
 	}
 
 	@Override
-	public List<SchoolSubject> getSchoolSubjectList() throws IOException {
-		List<SchoolSubject> schoolSubjectList;
+	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() throws IOException {
+		DataFacade<List<SchoolSubject>> data;
+		List<SchoolSubject> internalSchoolSubjectList = internalMemory.getSchoolSubjectList();
 		
-		// Check internal memory
-		if((schoolSubjectList = internalMemory.getSchoolSubjectList()) != null) {
-			Log.v("DataSource", "schoolSubjectList: InternalMemory");
-			return schoolSubjectList;
+		if(internalSchoolSubjectList != null) {
+			data = new DataFacade<List<SchoolSubject>>();
+			data.setData(internalSchoolSubjectList);
+		}
+		else {
+			data = externalDataLoader.getSchoolSubjectList();
+			if(data.isSuccessful()) {
+				internalMemory.setSchoolSubjectList(data.getData());
+			}
 		}
 		
-		// Check external data sources
-		if((schoolSubjectList = externalDataLoader.getSchoolSubjectList()) != null) {
-			internalMemory.setSchoolSubjectList(schoolSubjectList);
-			return schoolSubjectList;
-		}
-		
-		Log.v("DataSource", "schoolSubjectList: -");
-		return null;
+		return data;
 	}
 
 	@Override
-	public List<SchoolHoliday> getSchoolHolidayList() throws IOException {
-		List<SchoolHoliday> schoolHolidayList;
+	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList() throws IOException {
+		DataFacade<List<SchoolHoliday>> data;
+		List<SchoolHoliday> internalSchoolHolidayList = internalMemory.getSchoolHolidayList();
 		
-		// Check internal memory
-		if((schoolHolidayList = internalMemory.getSchoolHolidayList()) != null) {
-			Log.v("DataSource", "schoolHolidayList: InternalMemory");
-			return schoolHolidayList;
+		if(internalSchoolHolidayList != null) {
+			data = new DataFacade<List<SchoolHoliday>>();
+			data.setData(internalSchoolHolidayList);
+		}
+		else {
+			data = externalDataLoader.getSchoolHolidayList();
+			if(data.isSuccessful()) {
+				internalMemory.setSchoolHolidayList(data.getData());
+			}
 		}
 		
-		// Check external data sources
-		if((schoolHolidayList = externalDataLoader.getSchoolHolidayList()) != null) {
-			internalMemory.setSchoolHolidayList(schoolHolidayList);
-			return schoolHolidayList;
-		}
-		
-		Log.v("DataSource", "schoolHolidayList: -");
-		return null;
+		return data;
 	}
 
 	@Override
-	public List<SchoolTestType> getSchoolTestTypeList() {
-		// TODO: From interal / external data source
+	public DataFacade<Timegrid> getTimegrid() throws IOException {
+		DataFacade<Timegrid> data;
+		Timegrid internalTimegrid = internalMemory.getTimegrid();
 		
-		Log.v("DataSource", "schoolTestTypeList: Dummy data");
-		ArrayList<SchoolTestType> al = new ArrayList<SchoolTestType>();
-		
-		SchoolTestType t1 = new SchoolTestType();
-		t1.setTitle("SA");
-		al.add(t1);
-		SchoolTestType t2 = new SchoolTestType();
-		t2.setTitle("PMÜ");
-		al.add(t2);
-		SchoolTestType t3 = new SchoolTestType();
-		t3.setTitle("SMÜ");
-		al.add(t3);
-		SchoolTestType t4 = new SchoolTestType();
-		t4.setTitle("Test");
-		al.add(t4);
-		
-		return al;
-	}
-
-	@Override
-	public Timegrid getTimegrid() throws IOException {
-		Timegrid timegrid;
-		
-		// Check internal memory
-		if((timegrid = internalMemory.getTimegrid()) != null) {
-			Log.v("DataSource", "timegrid: InternalMemory");
-			return timegrid;
+		if(internalTimegrid != null) {
+			data = new DataFacade<Timegrid>();
+			data.setData(internalTimegrid);
+		}
+		else {
+			data = externalDataLoader.getTimegrid();
+			if(data.isSuccessful()) {
+				internalMemory.setTimegrid(data.getData());
+			}
 		}
 		
-		// Check external data sources
-		if((timegrid = externalDataLoader.getTimegrid()) != null) {
-			internalMemory.setTimegrid(timegrid);
-			return timegrid;
-		}
-		
-		Log.v("DataSource", "timegrid: -");
-		return null;
-	}
-
-	@Override
-	@Deprecated
-	public List<SchoolTest> getSchoolTestList() {
-		List<SchoolTest> schoolTestList;
-		
-		// Check internal memory
-		if((schoolTestList = internalMemory.getSchoolTestList()) != null) {
-			Log.v("DataSource", "schoolTestList: InternalMemory");
-			return schoolTestList;
-		}
-		
-		// Check external data sources
-		if((schoolTestList = externalDataLoader.getSchoolTestList()) != null) {
-			internalMemory.setSchoolTestList(schoolTestList);
-			return schoolTestList;
-		}
-		
-		Log.v("DataSource", "schoolTestList: -");
-		return null;
-	}
-
-	@Override
-	public List<Lesson> getLessons(ViewType view, Calendar date) throws IOException {
-		List<Lesson> lessonList;
-		
-		if((lessonList = internalMemory.getLessons(view, date)) != null) {
-			Log.v("DataSource", "lessons: InternalMemory");
-			return lessonList;
-		}
-		
-		if((lessonList = externalDataLoader.getLessons(view, date)) != null) {
-			internalMemory.setLessons(view, lessonList);
-			return lessonList;
-		}
-		
-		Log.v("DataSource", "lessons: -");
-		return null;
-	}
-	
-	@Override
-	public Map<String, List<Lesson>> getLessons(ViewType view,
-			Calendar startDate, Calendar endDate) throws IOException {
-		Map<String, List<Lesson>> lessonMap;
-	
-		
-		if((lessonMap = internalMemory.getLessons(view, startDate, endDate)) != null) {
-			Log.v("DataSource", "lessons: InternalMemory");
-			return lessonMap;
-		}
-		
-		if((lessonMap = externalDataLoader.getLessons(view, startDate, endDate)) != null) {
-			internalMemory.setLessons(view, startDate, endDate, lessonMap);
-			return lessonMap;
-		}
-		
-		Log.v("DataSource", "lessons: -");
-		return null;
-	}
-
-	@Override
-	public List<Lesson> getMergedLessons(ViewType view, Calendar date) throws IOException {
-		List<Lesson> mergedLessonList;
-		
-		if((mergedLessonList = internalMemory.getMergedLessons(view, date)) != null) {
-			Log.v("DataSource", "mergedLessons: InternalMemory");
-			return mergedLessonList;
-		}
-		
-		if((mergedLessonList = externalDataLoader.getMergedLessons(view, date)) != null) {
-			internalMemory.setMergedLessons(view, date, mergedLessonList);
-			return mergedLessonList;
-		}
-		
-		Log.v("DataSource", "mergedLessons: -");
-		return null;
-	}
-	
-	@Override
-	public Map<String, List<Lesson>> getMergedLessons(ViewType view, Calendar startDate,
-			Calendar endDate) throws IOException {
-		Map<String, List<Lesson>> mergedLessonMap;
-
-		
-		if((mergedLessonMap = internalMemory.getMergedLessons(view, startDate, endDate)) != null) {
-			Log.v("DataSource", "mergedLessons: InternalMemory");
-			return mergedLessonMap;
-		}
-		
-		if((mergedLessonMap = externalDataLoader.getMergedLessons(view, startDate, endDate)) != null) {
-			internalMemory.setMergedLessons(view, startDate, endDate, mergedLessonMap);
-			return mergedLessonMap;
-		}
-		
-		Log.v("DataSource", "mergedLessons: -");
-		return null;
+		return data;
 	}
 
 	@Override
@@ -304,79 +170,31 @@ public class Cache implements DataConnection, InternalData {
 	}
 
 	@Override
-	public boolean authenticate() throws IOException {
+	public DataFacade<Boolean> authenticate() throws IOException {
 		return externalDataLoader.authenticate();
 	}
 
 	@Override
-	public void resyncMasterData() throws IOException {
-		Log.d("METHOD_CALL","Cache.resyncMasterData()");
+	public DataFacade<Boolean> resyncMasterData() throws IOException {		
+		DataFacade<MasterData> masterData = externalDataLoader.resyncMasterData();
+		MasterData masterDataContent = masterData.getData();
 		
-		MasterData masterData = externalDataLoader.resyncMasterData();
+		DataFacade<Boolean> data = new DataFacade<Boolean>();
 		
-		internalMemory.setSchoolClassList(masterData.getSchoolClassList());
-		internalMemory.setSchoolTeacherList(masterData.getSchoolTeacherList());
-		internalMemory.setSchoolRoomList(masterData.getSchoolRoomList());
-		internalMemory.setSchoolSubjectList(masterData.getSchoolSubjectList());
-		internalMemory.setSchoolHolidayList(masterData.getSchoolHolidayList());
-		internalMemory.setSchoolTestTypeList(masterData.getSchoolTestTypeList());
-		internalMemory.setTimegrid(masterData.getTimegrid());
+		if(masterData.isSuccessful()) {
+			internalMemory.setSchoolClassList(masterDataContent.getSchoolClassList());
+			internalMemory.setSchoolTeacherList(masterDataContent.getSchoolTeacherList());
+			internalMemory.setSchoolRoomList(masterDataContent.getSchoolRoomList());
+			internalMemory.setSchoolSubjectList(masterDataContent.getSchoolSubjectList());
+			internalMemory.setSchoolHolidayList(masterDataContent.getSchoolHolidayList());
+			internalMemory.setTimegrid(masterDataContent.getTimegrid());
 		
-		// TODO: Weitere Stammdaten aktualisieren
-	}
-
-	@Override
-	public Map<String, List<Lesson>> getMergedLessons(ViewType view,
-			Calendar startDate, Calendar endDate, boolean forceNetwork)
-			throws IOException {
-		return forceNetwork ? externalDataLoader.getMergedLessons(view, startDate, endDate, forceNetwork) : getMergedLessons(view, startDate, endDate);
-	}
-
-	@Override
-	public List<Lesson> getMergedLessons(ViewType view, Calendar date,
-			boolean forceNetwork) throws IOException {
-		return forceNetwork ? externalDataLoader.getMergedLessons(view, date, forceNetwork) : getMergedLessons(view, date);
-	}
-
-	@Override
-	public List<SchoolTest> getSchoolTestList(ViewType view, Calendar startDate,
-			Calendar endDate) throws IOException {
-		List<SchoolTest> schoolTestList;
-		
-		if((schoolTestList = internalMemory.getSchoolTestList(view, startDate, endDate)) != null) {
-			Log.v("DataSource", "schoolTests: InternalMemory");
-			return schoolTestList;
+			data.setData(true);
+		}
+		else {
+			data.setErrorCode(masterData.getErrorCode());
 		}
 		
-		if((schoolTestList = externalDataLoader.getSchoolTestList(view, startDate, endDate)) != null) {
-			internalMemory.setSchoolTestList(schoolTestList);
-			return schoolTestList;
-		}
-		
-		Log.v("DataSource", "schoolTests: -");
-		
-		return new ArrayList<SchoolTest>();
-	}
-
-	@Override
-	public void saveSchoolTest(SchoolTest schoolTest) {
-		internalMemory.saveSchoolTest(schoolTest);
-		externalDataLoader.saveSchoolTest(schoolTest);
-	}
-
-	@Override
-	public HashMap<String, Authentication> getAllPresets() {
-		return externalDataLoader.getAllPresets();
-	}
-
-	@Override
-	public void savePreset(String title, Authentication auth) {
-		externalDataLoader.savePreset(title, auth);
-	}
-
-	@Override
-	public void deletePreset(String title) {
-		externalDataLoader.deletePreset(title);
-		
+		return data;
 	}
 }

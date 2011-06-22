@@ -14,13 +14,12 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package edu.htl3r.schoolplanner.backend.network;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,16 +31,13 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import android.util.Log;
-import edu.htl3r.schoolplanner.CalendarUtils;
 import edu.htl3r.schoolplanner.backend.Cache;
-import edu.htl3r.schoolplanner.backend.DataProvider;
+import edu.htl3r.schoolplanner.backend.DataFacade;
+import edu.htl3r.schoolplanner.backend.ExtendedStatusDataProvider;
 import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTest;
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTestType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
@@ -51,7 +47,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 /**
  * Netzwerkzugriff fuer die Datenabfrage ueber JSON.
  */
-public class JSONNetwork implements DataProvider{
+public class JSONNetwork implements ExtendedStatusDataProvider {
 
 	/**
 	 * JSON-RPC Version, die der Untis-Server verwendet.
@@ -60,25 +56,26 @@ public class JSONNetwork implements DataProvider{
 
 	private final NetworkAccess network = new Network();
 	private final JSONParser jsonParser = new JSONParser();
-	
+
 	private Authentication authentication;
-	
+
 	private int id = 0;
-	
+
 	public String getNextID() {
-		return ""+id++;
+		return "" + id++;
 	}
-	
+
 	/**
 	 * Zeitpunkt, wann das letzte mal der Stundenplan importiert wurde.
 	 */
 	private long latestTimetableImportTime = 0;
-	
+
 	/**
-	 * Mapping der internen ViewType-Klassen auf die Nummern, die sie jeweils in WebUntis haben.
+	 * Mapping der internen ViewType-Klassen auf die Nummern, die sie jeweils in
+	 * WebUntis haben.
 	 */
 	private Map<Class<? extends ViewType>, Integer> viewTypeMapping = new HashMap<Class<? extends ViewType>, Integer>();
-	
+
 	public JSONNetwork() {
 		viewTypeMapping.put(SchoolClass.class, WebUntis.SCHOOLCLASS);
 		viewTypeMapping.put(SchoolTeacher.class, WebUntis.SCHOOLTEACHER);
@@ -87,8 +84,11 @@ public class JSONNetwork implements DataProvider{
 	}
 
 	/**
-	 * Setzt die Server-URL und den Schulnamen im Netzwerk sowie den Benutzernamen und das Passwort fuer die Authentifizierung.
-	 * @param authentication {@link Preferences} die verwendet werden sollen
+	 * Setzt die Server-URL und den Schulnamen im Netzwerk sowie den
+	 * Benutzernamen und das Passwort fuer die Authentifizierung.
+	 * 
+	 * @param authentication
+	 *            {@link Preferences} die verwendet werden sollen
 	 */
 	public void setLoginCredentials(Authentication authentication) {
 		this.authentication = authentication;
@@ -102,59 +102,11 @@ public class JSONNetwork implements DataProvider{
 	 *            JSON-Anfrage
 	 * @return Antwort auf die Anfrage
 	 * @throws JSONException
-	 * @throws IOException 
+	 * @throws IOException
 	 */
-	private JSONObject getJSONData(final JSONObject request) throws IOException {
-		JSONObject response = null;
-		String responseString = network.getResponse(request.toString());
-		
-		try {
-			response = parseData(responseString);
-		
-
-		if(response.has("error")) {
-			JSONObject errorObject = response.getJSONObject("error");
-			int errorCode = errorObject.getInt("code");
-			String errorMessage = errorObject.getString("message");
-			Log.d("JSON", "Received error code: "+errorCode+ ", message: "+errorMessage);
-			
-			if(errorCode == 0 && errorMessage.equals("not authenticated")) {
-				Log.d("Network", "Reauthenticating");
-				if(authenticate()) {
-					responseString = network.getResponse(request.toString());
-					response = parseData(responseString);
-				}
-			}
-			else {
-				throw new IOException("Received error code: +"+errorCode+ ", message: "+errorMessage);
-			}
-		
-		}
-		
-		} catch (JSONException e) {
-			Log.w("JSON", "Unable to parse String to JSONObject",e);
-		}
-		
-		return response;
-	}
-
-	private JSONObject requestList(String id, String method)
-			throws JSONException, IOException {
-		Log.d("METHOD_CALL", "JSONNetwork.requestList(" + id + " : String, "
-				+ method + " : String)");
-
-		final JSONObject request = new JSONObject();
-
-		try {
-			request.put("jsonrpc", jsonrpcVersion);
-			request.put("method", method);
-			request.put("id", id);
-			// Server benoetigt leere Params
-			request.put("params", "");
-		} catch (JSONException e) {
-			Log.e("JSON", "Error on building request for list",e);
-		}
-		return getJSONData(request);
+	private JSONObject getJSONData(final JSONObject request)
+			throws IOException, JSONException {
+		return parseData(network.getResponse(request.toString()));
 	}
 
 	/**
@@ -173,283 +125,294 @@ public class JSONNetwork implements DataProvider{
 		JSONTokener t = new JSONTokener(data);
 		Object next = t.nextValue();
 
-		Log.v("JSON", "Got class: " + next.getClass());
-		Log.v("JSON", "Got value: " + next.toString());
-		Log.v("JSON", "Another object available: " + t.more());
-
 		if (next instanceof JSONObject) {
 			return (JSONObject) next;
-		}
-		else {
+		} else {
 			throw new JSONException("Unable to parse data");
 		}
-		
+
 	}
 
-	private List<? extends ViewType> getViewTypeList(String id, String method) throws IOException {
-		List<? extends ViewType> responseList = null;
+	private JSONObject requestList(String id, String method)
+			throws JSONException, IOException {
+		final JSONObject request = new JSONObject();
+
+		request.put("jsonrpc", jsonrpcVersion);
+		request.put("method", method);
+		request.put("id", id);
+		// Server benoetigt leere Params
+		request.put("params", "");
+
+		return getJSONData(request);
+	}
+
+	private DataFacade<List<? extends ViewType>> getViewTypeList(String id,
+			String method) throws IOException {
+		DataFacade<List<? extends ViewType>> data = new DataFacade<List<? extends ViewType>>();
 
 		try {
 			JSONObject responseObject = requestList(id, method);
 
-			JSONArray result = responseObject.getJSONArray("result");
-			Log.v("JSON", "Got object type [response/result]: "
-					+ responseObject.get("result").getClass().toString());
-			Log.v("JSON",
-					"Got object data [response/result]: " + result.toString());
+			if (responseObject.has("error")) {
+				JSONObject errorObject = responseObject.getJSONObject("error");
+				int errorCode = errorObject.getInt("code");
+				String errorMessage = errorObject.getString("message");
+				Log.d("JSON", "Received error code: " + errorCode
+						+ ", message: " + errorMessage);
 
-			if (method.equals(JSONGetMethods.getTeachers)) {
-				responseList = jsonParser.jsonToTeacherList(result);
-			} else if (method.equals(JSONGetMethods.getClasses)) {
-				responseList = jsonParser.jsonToClassList(result);
-			} else if (method.equals(JSONGetMethods.getSubjects)) {
-				responseList = jsonParser.jsonToSubjectList(result);
-			} else if (method.equals(JSONGetMethods.getRooms)) {
-				responseList = jsonParser.jsonToRoomList(result);
-			} else {
-				Log.e("JSON", "Unknown request method: " + method);
+				data.setErrorCode(errorCode);
 			}
 
+			else {
+				JSONArray result = responseObject.getJSONArray("result");
+
+				if (method.equals(JSONGetMethods.getTeachers)) {
+					data.setData(jsonParser.jsonToTeacherList(result));
+				} else if (method.equals(JSONGetMethods.getClasses)) {
+					data.setData(jsonParser.jsonToClassList(result));
+				} else if (method.equals(JSONGetMethods.getSubjects)) {
+					data.setData(jsonParser.jsonToSubjectList(result));
+				} else if (method.equals(JSONGetMethods.getRooms)) {
+					data.setData(jsonParser.jsonToRoomList(result));
+				} else {
+					Log.e("JSON", "Unknown request method: " + method);
+				}
+
+			}
 		} catch (JSONException e) {
-			Log.e("JSON", "Unable to parse JSON-String", e);
+			data.setErrorCode(255);
 		}
-		if(responseList == null) {
-			throw new IOException("Empty list returned, id:"+id+", method:"+method);
-		}
-		return responseList;
+
+		return data;
 	}
 
 	/**
-	 * Liefert eine Liste anhand der uebergebenen Parameter, die passende Objekten beinhaltet, z.B. ein Liste mit freien Tagen.
-	 * @param id ID, die fuer die Anfrage verwendet werden soll
-	 * @param method Methode, die fuer die Anfrage verwendet werden soll (siehe dazu {@link JSONGetMethods}).
+	 * Liefert eine Liste anhand der uebergebenen Parameter, die passende
+	 * Objekten beinhaltet, z.B. ein Liste mit freien Tagen.
+	 * 
+	 * @param id
+	 *            ID, die fuer die Anfrage verwendet werden soll
+	 * @param method
+	 *            Methode, die fuer die Anfrage verwendet werden soll (siehe
+	 *            dazu {@link JSONGetMethods}).
 	 * @return Eine Liste mit den Objekten fuer die uebergeben Methode
-	 * @throws IOException Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein Fehler auftritt
+	 * @throws IOException
+	 *             Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein
+	 *             Fehler auftritt
 	 */
-	private List<SchoolObject> getList(String id, String method) throws IOException {
-		List<SchoolObject> responseList = null;
+	private DataFacade<List<SchoolObject>> getList(String id, String method)
+			throws IOException {
+		DataFacade<List<SchoolObject>> data = new DataFacade<List<SchoolObject>>();
 
 		try {
 			JSONObject responseObject = requestList(id, method);
 
+			if (responseObject.has("error")) {
+				JSONObject errorObject = responseObject.getJSONObject("error");
+				int errorCode = errorObject.getInt("code");
+				String errorMessage = errorObject.getString("message");
+				Log.d("JSON", "Received error code: " + errorCode
+						+ ", message: " + errorMessage);
+
+				data.setErrorCode(errorCode);
+			}
+
 			JSONArray result = responseObject.getJSONArray("result");
-			Log.v("JSON", "Got object type [response/result]: "
-					+ responseObject.get("result").getClass().toString());
-			Log.v("JSON",
-					"Got object data [response/result]: " + result.toString());
 
 			if (method.equals(JSONGetMethods.getHolidays)) {
-				responseList = jsonParser.jsonToHolidayList(result);
+				data.setData(jsonParser.jsonToHolidayList(result));
 			} else {
 				Log.e("JSON", "Unknown request method: " + method);
 			}
 
 		} catch (JSONException e) {
-			Log.e("JSON", "Unable to parse JSON-String", e);
+			data.setErrorCode(255);
 		}
-		return responseList;
+		return data;
 	}
-	
+
 	/**
-	 * Liefert das passende Objekt zur angefragten Methode, z.B. das Stundenraster.
-	 * @param id ID, die fuer die Anfrage verwendet werden soll
-	 * @param method Methode, die fuer die Anfrage verwendet werden soll (siehe dazu {@link JSONGetMethods}).
+	 * Liefert das passende Objekt zur angefragten Methode, z.B. das
+	 * Stundenraster.
+	 * 
+	 * @param id
+	 *            ID, die fuer die Anfrage verwendet werden soll
+	 * @param method
+	 *            Methode, die fuer die Anfrage verwendet werden soll (siehe
+	 *            dazu {@link JSONGetMethods}).
 	 * @return Das passende Objekt zur Anfrage
-	 * @throws IOException Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein Fehler auftritt
+	 * @throws IOException
+	 *             Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein
+	 *             Fehler auftritt
 	 */
-	private SchoolObject getSchoolObject(String id, String method) throws IOException {
-		SchoolObject response = null;
+	private DataFacade<SchoolObject> getSchoolObject(String id, String method)
+			throws IOException {
+		DataFacade<SchoolObject> data = new DataFacade<SchoolObject>();
 
 		try {
 			JSONObject responseObject = requestList(id, method);
-
 			JSONArray result = responseObject.getJSONArray("result");
-			Log.v("JSON", "Got object type [response/result]: "
-					+ responseObject.get("result").getClass().toString());
-			Log.v("JSON",
-					"Got object data [response/result]: " + result.toString());
 
 			if (method.equals(JSONGetMethods.getTimegridUnits)) {
-				response = jsonParser.jsonToTimegrid(result);
+				data.setData(jsonParser.jsonToTimegrid(result));
 			} else {
 				Log.e("JSON", "Unknown request method: " + method);
 			}
 
 		} catch (JSONException e) {
-			Log.e("JSON", "Unable to parse JSON-String", e);
+			data.setErrorCode(255);
 		}
-		return response;
+		return data;
 	}
 
 	@Override
-	public List<SchoolTeacher> getSchoolTeacherList() throws IOException {
+	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList()
+			throws IOException {
 		final String id = getNextID();
 		final String method = JSONGetMethods.getTeachers;
 
-		List<SchoolTeacher> list = new ArrayList<SchoolTeacher>();
-		for (ViewType obj : getViewTypeList(id, method)) {
-			if (obj instanceof SchoolTeacher) {
-				list.add((SchoolTeacher) obj);
+		DataFacade<List<? extends ViewType>> viewTypeList = getViewTypeList(id,
+				method);
+		DataFacade<List<SchoolTeacher>> data = new DataFacade<List<SchoolTeacher>>();
+
+		if (viewTypeList.isSuccessful()) {
+			
+			List<SchoolTeacher> list = new ArrayList<SchoolTeacher>();
+			for (ViewType obj : viewTypeList.getData()) {
+				if (obj instanceof SchoolTeacher) {
+					list.add((SchoolTeacher) obj);
+				}
 			}
+			data.setData(list);
+		} else {
+			data.setErrorCode(viewTypeList.getErrorCode());
 		}
-		return list;
+
+		return data;
 	}
 
 	@Override
-	public List<SchoolClass> getSchoolClassList() throws IOException {
+	public DataFacade<List<SchoolClass>> getSchoolClassList()
+			throws IOException {
 		final String id = getNextID();
 		final String method = JSONGetMethods.getClasses;
 
-		List<SchoolClass> list = new ArrayList<SchoolClass>();
-		for (ViewType obj : getViewTypeList(id, method)) {
-			if (obj instanceof SchoolClass) {
-				list.add((SchoolClass) obj);
+		DataFacade<List<? extends ViewType>> viewTypeList = getViewTypeList(id,
+				method);
+		DataFacade<List<SchoolClass>> data = new DataFacade<List<SchoolClass>>();
+
+		if (viewTypeList.isSuccessful()) {
+
+			List<SchoolClass> list = new ArrayList<SchoolClass>();
+			for (ViewType obj : viewTypeList.getData()) {
+				if (obj instanceof SchoolClass) {
+					list.add((SchoolClass) obj);
+				}
 			}
+			data.setData(list);
+		} else {
+			data.setErrorCode(viewTypeList.getErrorCode());
 		}
-		return list;
+
+		return data;
 	}
 
 	@Override
-	public List<SchoolSubject> getSchoolSubjectList() throws IOException {
+	public DataFacade<List<SchoolSubject>> getSchoolSubjectList()
+			throws IOException {
 		final String id = getNextID();
 		final String method = JSONGetMethods.getSubjects;
 
-		List<SchoolSubject> list = new ArrayList<SchoolSubject>();
-		for (ViewType obj : getViewTypeList(id, method)) {
-			if (obj instanceof SchoolSubject) {
-				list.add((SchoolSubject) obj);
+		DataFacade<List<? extends ViewType>> viewTypeList = getViewTypeList(id,
+				method);
+		DataFacade<List<SchoolSubject>> data = new DataFacade<List<SchoolSubject>>();
+
+		if (viewTypeList.isSuccessful()) {
+
+			List<SchoolSubject> list = new ArrayList<SchoolSubject>();
+			for (ViewType obj : viewTypeList.getData()) {
+				if (obj instanceof SchoolSubject) {
+					list.add((SchoolSubject) obj);
+				}
 			}
+			data.setData(list);
+		} else {
+			data.setErrorCode(viewTypeList.getErrorCode());
 		}
-		return list;
+		return data;
 	}
 
 	@Override
-	public List<SchoolRoom> getSchoolRoomList() throws IOException {
+	public DataFacade<List<SchoolRoom>> getSchoolRoomList() throws IOException {
 		final String id = getNextID();
 		final String method = JSONGetMethods.getRooms;
 
-		List<SchoolRoom> list = new ArrayList<SchoolRoom>();
-		for (ViewType obj : getViewTypeList(id, method)) {
-			if (obj instanceof SchoolRoom) {
-				list.add((SchoolRoom) obj);
+		DataFacade<List<? extends ViewType>> viewTypeList = getViewTypeList(id,
+				method);
+		DataFacade<List<SchoolRoom>> data = new DataFacade<List<SchoolRoom>>();
+
+		if (viewTypeList.isSuccessful()) {
+
+			List<SchoolRoom> list = new ArrayList<SchoolRoom>();
+			for (ViewType obj : viewTypeList.getData()) {
+				if (obj instanceof SchoolRoom) {
+					list.add((SchoolRoom) obj);
+				}
 			}
+			data.setData(list);
+		} else {
+			data.setErrorCode(viewTypeList.getErrorCode());
 		}
-		return list;
+
+		return data;
 	}
 
 	@Override
-	public List<SchoolHoliday> getSchoolHolidayList() throws IOException {
+	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList()
+			throws IOException {
 		final String id = getNextID();
 		final String method = JSONGetMethods.getHolidays;
 
-		List<SchoolHoliday> list = new ArrayList<SchoolHoliday>();
-		for (SchoolObject obj : getList(id, method)) {
-			if (obj instanceof SchoolHoliday) {
-				list.add((SchoolHoliday) obj);
+		DataFacade<List<SchoolObject>> schoolObjectList = getList(id, method);
+		DataFacade<List<SchoolHoliday>> data = new DataFacade<List<SchoolHoliday>>();
+
+		if (schoolObjectList.isSuccessful()) {
+
+			List<SchoolHoliday> list = new ArrayList<SchoolHoliday>();
+			for (SchoolObject obj : schoolObjectList.getData()) {
+				if (obj instanceof SchoolHoliday) {
+					list.add((SchoolHoliday) obj);
+				}
 			}
+			data.setData(list);
+		} else {
+			data.setErrorCode(schoolObjectList.getErrorCode());
 		}
-		return list;
+
+		return data;
 	}
 
 	@Override
-	public Timegrid getTimegrid() throws IOException {
+	public DataFacade<Timegrid> getTimegrid() throws IOException {
 		final String id = getNextID();
 		final String method = JSONGetMethods.getTimegridUnits;
-		
-		Timegrid timegrid = new Timegrid();
-		SchoolObject obj = getSchoolObject(id, method);
-		if (obj instanceof Timegrid) {
-			timegrid = (Timegrid) obj;
+
+		DataFacade<SchoolObject> schoolObjectList = getSchoolObject(id, method);
+		DataFacade<Timegrid> data = new DataFacade<Timegrid>();
+
+		if (schoolObjectList.isSuccessful()) {
+
+			Timegrid timegrid = new Timegrid();
+			SchoolObject obj = schoolObjectList.getData();
+			if (obj instanceof Timegrid) {
+				timegrid = (Timegrid) obj;
+			}
+			data.setData(timegrid);
+		} else {
+			data.setErrorCode(schoolObjectList.getErrorCode());
 		}
-		return timegrid;
-	}
 
-	@Override
-	public Map<String, List<Lesson>> getLessons(ViewType view, Calendar startDate,
-			Calendar endDate) throws IOException {
-		final String id = getNextID();
-		final String method = JSONGetMethods.getTimetable;
-		
-		final JSONObject request = new JSONObject();
-		final JSONObject params = new JSONObject();
-		
-		Map<String, List<Lesson>> responseList = new HashMap<String, List<Lesson>>();
-		
-		try {
-			// Setze die ID des ViewTypes (z.B. 5AN)
-			params.put("id", view.getId());
-			
-			// Setze die Art des ViewTypes (z.B. Klasse)
-			params.put("type", viewTypeMapping.get(view.getClass()));
-			
-			// Parsen der Daten
-			String startYear = ""+startDate.get(Calendar.YEAR);
-			// Intern 0 - 11
-			String startMonth = ""+(startDate.get(Calendar.MONTH)+1);
-			String startDay = ""+startDate.get(Calendar.DAY_OF_MONTH);
-			
-			if(startMonth.length() < 2) {
-				startMonth = "0"+startMonth;
-			}
-			
-			if(startDay.length() < 2) {
-				startDay = "0"+startDay;
-			}
-			
-			String endYear = ""+endDate.get(Calendar.YEAR);
-			// Intern 0 - 11
-			String endMonth = ""+(endDate.get(Calendar.MONTH)+1);
-			String endDay = ""+endDate.get(Calendar.DAY_OF_MONTH);
-			
-			if(endMonth.length() < 2) {
-				endMonth = "0"+endMonth;
-			}
-			
-			if(endDay.length() < 2) {
-				endDay = "0"+endDay;
-			}
-			
-			// Setze die Daten der Abfrage
-			params.put("startDate",startYear+startMonth+startDay);
-			params.put("endDate",endYear+endMonth+endDay);
-			
-			request.put("jsonrpc", jsonrpcVersion);
-			request.put("method", method);
-			request.put("id", id);
-			request.put("params", params);
-			
-			// Netzwerkanfrage
-			JSONObject response = getJSONData(request);
-			
-			// Extrahiere Nutzdaten
-			JSONArray result = response.getJSONArray("result");
-			
-			// Parse die JSON-Response zu passender Map
-			responseList = jsonParser.jsonToLessonMap(result);			
-		} catch (JSONException e) {
-			Log.e("JSON", "Error on requesting lessons",e);
-		}
-		
-		return responseList;
-	}
-
-	@Override
-	public List<Lesson> getLessons(ViewType type,
-			Calendar date) throws IOException {
-		List<Lesson> result = getLessons(type, date, date).get(CalendarUtils.getCalendarAs8601String(date));
-		return result != null ? result : new ArrayList<Lesson>();
-	}
-	
-	@Override
-	public List<SchoolTestType> getSchoolTestTypeList() {
-		// TODO Not implemented in v1.0
-		return null;
-	}
-
-	@Override
-	public List<SchoolTest> getSchoolTestList() {
-		// TODO Not implemented in v1.0
-		return null;
+		return data;
 	}
 
 	/**
@@ -458,17 +421,20 @@ public class JSONNetwork implements DataProvider{
 	 * der jede weitere Abfrage durchgefuehrt wird.
 	 * 
 	 * @return true, wenn die Authentifizierung erfolgreich war
-	 * @throws IOException Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein Fehler auftritt
+	 * @throws IOException
+	 *             Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein
+	 *             Fehler auftritt
 	 */
-	public boolean authenticate() throws IOException {
-		Log.d("METHOD_CALL", "JSONNetwork.authenticate()");
-
+	public DataFacade<Boolean> authenticate() throws IOException {
 		final String id = getNextID();
 		final String method = "authenticate";
 		final JSONObject params = new JSONObject();
 		final JSONObject request = new JSONObject();
 
 		JSONObject response = null;
+
+		DataFacade<Boolean> data = new DataFacade<Boolean>();
+		data.setData(false);
 
 		try {
 			params.put("user", authentication.getUsername());
@@ -480,62 +446,49 @@ public class JSONNetwork implements DataProvider{
 			request.put("id", id);
 
 			response = getJSONData(request);
-		
-			// TODO: Pruefung auf ID und jsonrpc-version?
-			if(response != null) {
-				JSONObject result = response.getJSONObject("result");
-				if(result != null) {
-					String sessionId = result.getString("sessionId");
-					if(!result.equals("null")) {
-						network.setJsessionid(sessionId);
-						return true;
-					}
-					else {
-						network.setJsessionid(null);
+
+			if (response.has("error")) {
+				JSONObject errorObject = response.getJSONObject("error");
+				int errorCode = errorObject.getInt("code");
+				String errorMessage = errorObject.getString("message");
+				Log.d("JSON", "Received error code: " + errorCode
+						+ ", message: " + errorMessage);
+
+				data.setErrorCode(errorCode);
+			}
+
+			else {
+
+				// TODO: Pruefung auf ID und jsonrpc-version?
+				if (response != null) {
+					JSONObject result = response.getJSONObject("result");
+					if (result != null) {
+						String sessionId = result.getString("sessionId");
+						if (!result.equals("null")) {
+							network.setJsessionid(sessionId);
+							data.setData(true);
+						} else {
+							network.setJsessionid(null);
+						}
 					}
 				}
 			}
 		} catch (JSONException e) {
-			Log.e("JSON", "Error on authentication", e);
+			data.setErrorCode(255);
 		}
-		return false;
+		return data;
 	}
 
-	@Override
-	public List<Lesson> getMergedLessons(ViewType view, Calendar date)
-			throws IOException {
-		List<Lesson> lessonList = getLessons(view, date);
-		return lessonList;
-	}
-
-	@Override
-	public Map<String, List<Lesson>> getMergedLessons(ViewType view,
-			Calendar startDate, Calendar endDate) throws IOException {
-		Map<String, List<Lesson>> lessonMap = getLessons(view, startDate, endDate);
-		return lessonMap;
-	}
-	
-	@Override
-	public List<SchoolTest> getSchoolTestList(ViewType view, Calendar startDate,
-			Calendar endDate) {
-		// TODO Not implemented in v1.0
-		return null;
-	}
-
-	@Override
-	public void saveSchoolTest(SchoolTest schoolTest) {
-		// TODO Not implemented in v1.0
-	}
-	
-	
 	/**
 	 * Initialisiert die Farben der LessonTypes und -Codes.
-	 * @throws IOException Wenn ein Fehler bei der Uebertragung auftritt
+	 * 
+	 * @throws IOException
+	 *             Wenn ein Fehler bei der Uebertragung auftritt
 	 */
-	public void initStatusData() throws IOException {		
+	public void initStatusData() throws IOException {
 		final String id = getNextID();
 		final String method = JSONGetMethods.getStatusData;
-		
+
 		JSONObject response;
 		try {
 			response = requestList(id, method);
@@ -545,42 +498,50 @@ public class JSONNetwork implements DataProvider{
 			Log.e("JSON", "Unable to parse JSON-String", e);
 		}
 	}
-	
+
 	/**
 	 * Liefert den Zeitpunkt des letzten Imports des Stundenplans.
+	 * 
 	 * @return Den Zeitpunkt des letzten Imports des Stundenplans
-	 * @throws IOException Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein Fehler auftritt
+	 * @throws IOException
+	 *             Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein
+	 *             Fehler auftritt
 	 */
 	private long getLatestTimetableImportTime() throws IOException {
 		final String id = getNextID();
 		final String method = JSONGetMethods.getLatestImportTime;
-		
+
 		long latestImport = -1;
-		
+
 		try {
 			JSONObject response = requestList(id, method);
 			latestImport = response.getLong("result");
-			Log.v("Misc","Last import time: "+response.get("result"));	
+			Log.v("Misc", "Last import time: " + response.get("result"));
 		} catch (JSONException e) {
 			Log.e("JSON", "Unable to parse JSON-String", e);
 		}
-		
+
 		return latestImport >= 0 ? latestImport : latestTimetableImportTime;
 	}
-	
+
 	/**
-	 * Eruiert, ob der Stundenplan seit dem letzten Methodenaufruf geaendert wurde.
-	 * @return true, wenn der Stundenplan seit dem letzten Methodenaufruf geaendert wurde
-	 * @throws IOException Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein Fehler auftritt
+	 * Eruiert, ob der Stundenplan seit dem letzten Methodenaufruf geaendert
+	 * wurde.
+	 * 
+	 * @return true, wenn der Stundenplan seit dem letzten Methodenaufruf
+	 *         geaendert wurde
+	 * @throws IOException
+	 *             Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein
+	 *             Fehler auftritt
 	 */
 	public boolean timetableUpdated() throws IOException {
 		long newLatestTimetableImportTime = getLatestTimetableImportTime();
-		
-		if(newLatestTimetableImportTime > latestTimetableImportTime) {
+
+		if (newLatestTimetableImportTime > latestTimetableImportTime) {
 			latestTimetableImportTime = newLatestTimetableImportTime;
 			return true;
 		}
-		
+
 		return false;
 	}
 

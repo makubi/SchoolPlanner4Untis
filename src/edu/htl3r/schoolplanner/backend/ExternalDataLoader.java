@@ -19,20 +19,13 @@
 package edu.htl3r.schoolplanner.backend;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.util.Log;
 import edu.htl3r.schoolplanner.backend.localdata.LocalData;
 import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
 import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTest;
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTestType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
@@ -44,7 +37,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see LocalData
  * @see JSONNetwork
  */
-public class ExternalDataLoader implements DataProvider, InternalData {
+public class ExternalDataLoader implements ExtendedStatusDataProvider {
 
 	private LocalData database = new LocalData();
 	private JSONNetwork network = new JSONNetwork();
@@ -52,18 +45,18 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 	private boolean networkAvailable = true;
 
 	@Override
-	public List<SchoolClass> getSchoolClassList() throws IOException {
-		List<SchoolClass> schoolClassList;
+	public DataFacade<List<SchoolClass>> getSchoolClassList() throws IOException {
+		DataFacade<List<SchoolClass>> schoolClassList;
 
 		// Check database
-		if ((schoolClassList = database.getSchoolClassList()) != null) {
+		/*if ((schoolClassList = database.getSchoolClassList()) != null) {
 			Log.v("DataSource", "schoolClassList: Database");
 			return schoolClassList;
-		}
+		}*/
 		// Check network
 		if (networkAvailable) {
 			if ((schoolClassList = network.getSchoolClassList()) != null) {
-				database.setSchoolClassList(schoolClassList);
+				database.setSchoolClassList(schoolClassList.getData());
 				Log.v("DataSource", "schoolClassList: Network");
 				return schoolClassList;
 			}
@@ -73,18 +66,18 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 	}
 
 	@Override
-	public List<SchoolTeacher> getSchoolTeacherList() throws IOException {
-		List<SchoolTeacher> schoolTeacherList;
+	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() throws IOException {
+		DataFacade<List<SchoolTeacher>> schoolTeacherList;
 
 		// Check database
-		if ((schoolTeacherList = database.getSchoolTeacherList()) != null) {
+		/*if ((schoolTeacherList = database.getSchoolTeacherList()) != null) {
 			Log.v("DataSource", "schoolTeacherList: Database");
 			return schoolTeacherList;
-		}
+		}*/
 		// Check network
 		if (networkAvailable) {
 			if ((schoolTeacherList = network.getSchoolTeacherList()) != null) {
-				database.setSchoolTeacherList(schoolTeacherList);
+				database.setSchoolTeacherList(schoolTeacherList.getData());
 				Log.v("DataSource", "schoolTeacherList: Network");
 				return schoolTeacherList;
 			}
@@ -94,18 +87,18 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 	}
 
 	@Override
-	public List<SchoolRoom> getSchoolRoomList() throws IOException {
-		List<SchoolRoom> schoolRoomList;
+	public DataFacade<List<SchoolRoom>> getSchoolRoomList() throws IOException {
+		DataFacade<List<SchoolRoom>> schoolRoomList;
 
 		// Check database
-		if ((schoolRoomList = database.getSchoolRoomList()) != null) {
+		/*if ((schoolRoomList = database.getSchoolRoomList()) != null) {
 			Log.v("DataSource", "schoolRoomList: Database");
 			return schoolRoomList;
-		}
+		}*/
 		// Check network
 		if (networkAvailable) {
 			if ((schoolRoomList = network.getSchoolRoomList()) != null) {
-				database.setSchoolRoomList(schoolRoomList);
+				database.setSchoolRoomList(schoolRoomList.getData());
 				Log.v("DataSource", "schoolRoomList: Network");
 				return schoolRoomList;
 			}
@@ -115,18 +108,18 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 	}
 
 	@Override
-	public List<SchoolSubject> getSchoolSubjectList() throws IOException {
-		List<SchoolSubject> schoolSubjectList;
+	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() throws IOException {
+		DataFacade<List<SchoolSubject>> schoolSubjectList;
 
 		// Check database
-		if ((schoolSubjectList = database.getSchoolSubjectList()) != null) {
+		/*if ((schoolSubjectList = database.getSchoolSubjectList()) != null) {
 			Log.v("DataSource", "schoolSubjectList: Database");
 			return schoolSubjectList;
-		}
+		}*/
 		// Check network
 		if (networkAvailable) {
 			if ((schoolSubjectList = network.getSchoolSubjectList()) != null) {
-				database.setSchoolSubjectList(schoolSubjectList);
+				database.setSchoolSubjectList(schoolSubjectList.getData());
 				Log.v("DataSource", "schoolSubjectList: Network");
 				return schoolSubjectList;
 			}
@@ -136,18 +129,18 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 	}
 
 	@Override
-	public List<SchoolHoliday> getSchoolHolidayList() throws IOException {
-		List<SchoolHoliday> schoolHolidayList;
+	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList() throws IOException {
+		DataFacade<List<SchoolHoliday>> schoolHolidayList;
 
 		// Check database
-		if ((schoolHolidayList = database.getSchoolHolidayList()) != null) {
+		/*if ((schoolHolidayList = database.getSchoolHolidayList()) != null) {
 			Log.v("DataSource", "schoolHolidayList: Database");
 			return schoolHolidayList;
-		}
+		}*/
 		// Check network
 		if (networkAvailable) {
 			if ((schoolHolidayList = network.getSchoolHolidayList()) != null) {
-				database.setSchoolHolidayList(schoolHolidayList);
+				database.setSchoolHolidayList(schoolHolidayList.getData());
 				Log.v("DataSource", "schoolHolidayList: Network");
 				return schoolHolidayList;
 			}
@@ -155,138 +148,23 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 
 		return null;
 	}
-
+	
 	@Override
-	public List<SchoolTestType> getSchoolTestTypeList() {
-		List<SchoolTestType> schoolTestTypeList;
+	public DataFacade<Timegrid> getTimegrid() throws IOException {
+		DataFacade<Timegrid> timegrid;
 
 		// Check database
-		if ((schoolTestTypeList = database.getSchoolTestTypeList()) != null) {
-			Log.v("DataSource", "schoolTestTypeList: Database");
-			return schoolTestTypeList;
-		}
-		// Check network
-		if (networkAvailable) {
-			if ((schoolTestTypeList = network.getSchoolTestTypeList()) != null) {
-				database.setSchoolTestTypeList(schoolTestTypeList);
-				Log.v("DataSource", "schoolTestTypeList: Network");
-				return schoolTestTypeList;
-			}
-		}
-
-		return null;
-	}
-
-	@Override
-	public Timegrid getTimegrid() throws IOException {
-		Timegrid timegrid;
-
-		// Check database
-		if ((timegrid = database.getTimegrid()) != null) {
+		/*if ((timegrid = database.getTimegrid()) != null) {
 			Log.v("DataSource", "timegrid: Database");
 			return timegrid;
-		}
+		}*/
 		// Check network
 		if (networkAvailable) {
 			if ((timegrid = network.getTimegrid()) != null) {
-				database.setTimegrid(timegrid);
+				database.setTimegrid(timegrid.getData());
 				Log.v("DataSource", "timegrid: Network");
 				return timegrid;
 			}
-		}
-
-		return null;
-	}
-
-	@Override
-	public List<SchoolTest> getSchoolTestList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Lesson> getLessons(ViewType view, Calendar date) throws IOException {
-		List<Lesson> lessons;
-
-		// Check network
-		if (networkAvailable) {
-			if ((lessons = network.getLessons(view, date)) != null) {
-				database.setLessons(view, lessons);
-				Log.v("DataSource", "lessons: Network");
-				return lessons;
-			}
-		}
-
-		// Check database
-		if ((lessons = database.getLessons(view, date)) != null) {
-			Log.v("DataSource", "lessons: Database");
-			return lessons;
-		}
-
-		return null;
-	}
-
-	@Override
-	public Map<String, List<Lesson>> getLessons(ViewType view, Calendar startDate, Calendar endDate) throws IOException {
-		Map<String, List<Lesson>> lessonMap;
-
-		// Check network
-		if (networkAvailable) {
-			if ((lessonMap = network.getLessons(view, startDate, endDate)) != null) {
-				database.setLessons(view, startDate, endDate, lessonMap);
-				Log.v("DataSource", "mergedLessons: Network");
-				return lessonMap;
-			}
-		}
-
-		// Check database
-		if ((lessonMap = database.getLessons(view, startDate, endDate)) != null) {
-			Log.v("DataSource", "mergedLessons: Database");
-			return lessonMap;
-		}
-
-		return null;
-	}
-
-	@Override
-	public Map<String, List<Lesson>> getMergedLessons(ViewType view, Calendar startDate, Calendar endDate) throws IOException {
-		Map<String, List<Lesson>> mergedLessonMap;
-
-		// Check network
-		if (networkAvailable) {
-			if ((mergedLessonMap = network.getMergedLessons(view, startDate, endDate)) != null) {
-				database.setMergedLessons(view, startDate, endDate, mergedLessonMap);
-				Log.v("DataSource", "mergedLessons: Network");
-				return mergedLessonMap;
-			}
-		}
-
-		// Check database
-		if ((mergedLessonMap = database.getMergedLessons(view, startDate, endDate)) != null) {
-			Log.v("DataSource", "mergedLessons: Database");
-			return mergedLessonMap;
-		}
-
-		return null;
-	}
-
-	@Override
-	public List<Lesson> getMergedLessons(ViewType view, Calendar date) throws IOException {
-		List<Lesson> mergedLessons;
-
-		// Check network
-		if (networkAvailable) {
-			if ((mergedLessons = network.getMergedLessons(view, date)) != null) {
-				database.setMergedLessons(view, date, mergedLessons);
-				Log.v("DataSource", "mergedLessons: Network");
-				return mergedLessons;
-			}
-		}
-
-		// Check database
-		if ((mergedLessons = database.getMergedLessons(view, date)) != null) {
-			Log.v("DataSource", "mergedLessons: Database");
-			return mergedLessons;
 		}
 
 		return null;
@@ -313,7 +191,7 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 	 * @return true, wenn die Authentifizierung erfolgreich war, sonst false
 	 * @throws IOException Wenn ein Problem waehrend der Netzwerkanfrage auftritt
 	 */
-	public boolean authenticate() throws IOException {
+	public DataFacade<Boolean> authenticate() throws IOException {
 		return network.authenticate();
 	}
 
@@ -323,116 +201,44 @@ public class ExternalDataLoader implements DataProvider, InternalData {
 	 * @return Ein Objekt, das die Stammdaten, die aktualisiert wurden, enthaelt.
 	 * @throws IOException Wenn waehrend dem Abruf der Daten ein Fehler auftritt
 	 */
-	public MasterData resyncMasterData() throws IOException {
-		List<SchoolClass> schoolClassList = network.getSchoolClassList();
-		List<SchoolTeacher> schoolTeacherList = network.getSchoolTeacherList();
-		List<SchoolRoom> schoolRoomList = network.getSchoolRoomList();
-		List<SchoolSubject> schoolSubjectList = network.getSchoolSubjectList();
+	public DataFacade<MasterData> resyncMasterData() throws IOException {
+		DataFacade<List<SchoolClass>> schoolClassList = network.getSchoolClassList();
+		DataFacade<List<SchoolTeacher>> schoolTeacherList = network.getSchoolTeacherList();
+		DataFacade<List<SchoolRoom>> schoolRoomList = network.getSchoolRoomList();
+		DataFacade<List<SchoolSubject>> schoolSubjectList = network.getSchoolSubjectList();
 		
-		List<SchoolHoliday> schoolHolidayList = network.getSchoolHolidayList();
-		List<SchoolTestType> schoolTestTypeList = network.getSchoolTestTypeList();
+		DataFacade<List<SchoolHoliday>> schoolHolidayList = network.getSchoolHolidayList();
+		DataFacade<Timegrid> timegrid = network.getTimegrid();
 		
-		Timegrid timegrid = network.getTimegrid();
-				
+		DataFacade<MasterData> data = new DataFacade<MasterData>();
 		
+		if(schoolClassList.isSuccessful() && schoolHolidayList.isSuccessful() && schoolRoomList.isSuccessful() && schoolSubjectList.isSuccessful() && schoolTeacherList.isSuccessful() && timegrid.isSuccessful()) {
 		MasterData masterData = new MasterData();
-		masterData.setSchoolClassList(schoolClassList);
-		masterData.setSchoolRoomList(schoolRoomList);
-		masterData.setSchoolSubjectList(schoolSubjectList);
-		masterData.setSchoolTeacherList(schoolTeacherList);
-		masterData.setSchoolHolidayList(schoolHolidayList);
-		masterData.setSchoolTestTypeList(schoolTestTypeList);
-		masterData.setTimegrid(timegrid);
-
-		database.setSchoolClassList(schoolClassList);
-		database.setSchoolTeacherList(schoolTeacherList);
-		database.setSchoolRoomList(schoolRoomList);
-		database.setSchoolSubjectList(schoolSubjectList);
-		database.setSchoolHolidayList(schoolHolidayList);
-		database.setSchoolTestTypeList(schoolTestTypeList);
-		database.setTimegrid(timegrid);
-
-		// TODO: Weitere Stammdaten aktualisieren
-
-		return masterData;
+		masterData.setSchoolClassList(schoolClassList.getData());
+		masterData.setSchoolRoomList(schoolRoomList.getData());
+		masterData.setSchoolSubjectList(schoolSubjectList.getData());
+		masterData.setSchoolTeacherList(schoolTeacherList.getData());
+		masterData.setSchoolHolidayList(schoolHolidayList.getData());
+		masterData.setTimegrid(timegrid.getData());
+		
+		data.setData(masterData);
+		
+		database.setSchoolClassList(schoolClassList.getData());
+		database.setSchoolTeacherList(schoolTeacherList.getData());
+		database.setSchoolRoomList(schoolRoomList.getData());
+		database.setSchoolSubjectList(schoolSubjectList.getData());
+		database.setSchoolHolidayList(schoolHolidayList.getData());
+		database.setTimegrid(timegrid.getData());
+		}
+		else {
+			data.setErrorCode(254);
+		}
+		
+		return data;
 	}	
 	
 	
-	/**
-	 * Siehe {@link DataConnection#getMergedLessons(ViewType, Calendar, Calendar, boolean)}.
-	 * @param view Initialisierter ViewType, fuer den der Stundenplan abgerufen werden soll
-	 * @param startDate Das Start-Datum der Abfrage (inklusive)
-	 * @param endDate Das End-Datum der Abfrage (inklusive)
-	 * @param forceNetwork Wenn true, wird der Stundenplan direkt aus dem Netzwerk heruntergeladen
-	 * @return Eine Map mit Datum-Strings und den dazupassenden Stundenlisten
-	 * @throws IOException Wenn waehrend der Uebertragung ein Fehler auftritt
-	 */
-	public Map<String, List<Lesson>> getMergedLessons(ViewType view,
-			Calendar startDate, Calendar endDate, boolean forceNetwork)
-			throws IOException {
-		return forceNetwork ? network.getMergedLessons(view, startDate, endDate) : getMergedLessons(view, startDate, endDate);
-	}
-
-	/**
-	 * Siehe {@link DataConnection#getMergedLessons(ViewType, Calendar, boolean)}.
-	 * @param view Initialisierter ViewType, fuer den der Stundenplan abgerufen werden soll
-	 * @param date Das Datum, fuer das der Stundenplan abgefragt werden soll (inklusive)
-	 * @param forceNetwork Wenn true, wird der Stundenplan direkt aus dem Netzwerk heruntergeladen
-	 * @return Eine Map mit Datum-Strings und den dazupassenden Stundenlisten
-	 * @throws IOException Wenn waehrend der Uebertragung ein Fehler auftritt
-	 */
-	public List<Lesson> getMergedLessons(ViewType view, Calendar date,
-			boolean forceNetwork) throws IOException {
-		return forceNetwork ? network.getMergedLessons(view, date) : getMergedLessons(view, date);
-	}
-
-	@Override
-	public List<SchoolTest> getSchoolTestList(ViewType view, Calendar startDate,
-			Calendar endDate) throws IOException {
-		List<SchoolTest> schoolTestList;
-		
-		// Check network
-		if (networkAvailable) {
-			if ((schoolTestList = network.getSchoolTestList(view, startDate, endDate)) != null) {
-				database.setSchoolTestList(schoolTestList);
-				Log.v("DataSource", "schoolTests: Network");
-				return schoolTestList;
-			}
-		}
-
-		// Check database
-		if ((schoolTestList = database.getSchoolTestList(view, startDate, endDate)) != null) {
-			Log.v("DataSource", "schoolTest: Database");
-			return schoolTestList;
-		}
-
-		return null;
-	}
-
-	@Override
-	public void saveSchoolTest(SchoolTest schoolTest) {
-		database.saveSchoolTest(schoolTest);
-		network.saveSchoolTest(schoolTest);
-	}
-
-	@Override
-	public HashMap<String, Authentication> getAllPresets() {
-		return database.getAllPresets();
-	}
-
-	@Override
-	public void savePreset(String title, Authentication auth) {
-		database.savePreset(title, auth);
-	}
-
-	@Override
-	public void deletePreset(String title) {
-		database.deletePreset(title);
-		
-	}
-
 	public void setCache(Cache cache) {
-		database.setCache(cache);
 		network.setCache(cache);
 	}
 	

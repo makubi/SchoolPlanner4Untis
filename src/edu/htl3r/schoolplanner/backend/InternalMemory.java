@@ -18,18 +18,9 @@
 
 package edu.htl3r.schoolplanner.backend;
 
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import edu.htl3r.schoolplanner.CalendarUtils;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTest;
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTestType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
@@ -50,10 +41,7 @@ public class InternalMemory implements DataStore, DataProvider {
 	private List<SchoolHoliday> schoolHolidayList;
 
 	private Timegrid timegrid;
-
-	private List<SchoolTestType> schoolTestTypeList;
-	@Deprecated private List<SchoolTest> schoolTestList;
-
+	
 	private Timetable timetable = new Timetable();
 
 	@Override
@@ -91,6 +79,7 @@ public class InternalMemory implements DataStore, DataProvider {
 		return schoolRoomList;
 	}
 
+	@Override
 	public void setSchoolRoomList(List<SchoolRoom> schoolRoomList) {
 		this.schoolRoomList = schoolRoomList;
 	}
@@ -113,109 +102,5 @@ public class InternalMemory implements DataStore, DataProvider {
 	@Override
 	public void setTimegrid(Timegrid timegrid) {
 		this.timegrid = timegrid;
-	}
-
-	@Override
-	public List<SchoolTestType> getSchoolTestTypeList() {
-		return schoolTestTypeList;
-	}
-
-	@Override
-	public void setSchoolTestTypeList(List<SchoolTestType> schoolTestTypeList) {
-		this.schoolTestTypeList = schoolTestTypeList;
-	}
-
-	@Override
-	@Deprecated
-	public List<SchoolTest> getSchoolTestList() {
-		return schoolTestList;
-	}
-
-	@Override
-	public List<Lesson> getLessons(ViewType view, Calendar date)
-			throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setLessons(ViewType view, List<Lesson> lessons) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public Map<String, List<Lesson>> getLessons(ViewType view,
-			Calendar startDate, Calendar endDate) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setLessons(ViewType view, Calendar startDate, Calendar endDate,
-			Map<String, List<Lesson>> lessonList) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public List<Lesson> getMergedLessons(ViewType view, Calendar date)
-			throws IOException {
-		return timetable.get(view, CalendarUtils.getCalendarAs8601String(date));
-	}
-
-	@Override
-	public Map<String, List<Lesson>> getMergedLessons(ViewType view,
-			Calendar startDate, Calendar endDate) throws IOException {
-		Calendar tmpStartCalendar = (Calendar) startDate.clone();
-		Calendar tmpEndCalendar = (Calendar) endDate.clone();
-		tmpEndCalendar.add(Calendar.DATE, 1);
-
-		Map<String, List<Lesson>> lessonMap = new HashMap<String, List<Lesson>>();
-		while (tmpStartCalendar.before(tmpEndCalendar)) {
-			String date = CalendarUtils
-					.getCalendarAs8601String(tmpStartCalendar);
-			List<Lesson> lessonList = timetable.get(view, date);
-			if (lessonList != null) {
-				lessonMap.put(date, lessonList);
-			}
-			tmpStartCalendar.add(Calendar.DATE, 1);
-		}
-		return lessonMap.size() != 0 ? lessonMap : null;
-	}
-
-	@Override
-	public void setMergedLessons(ViewType view, Calendar date,
-			List<Lesson> lessonList) {
-		timetable.put(view, CalendarUtils.getCalendarAs8601String(date),
-				lessonList);
-	}
-
-	@Override
-	public void setMergedLessons(ViewType view, Calendar startDate,
-			Calendar endDate, Map<String, List<Lesson>> lessonMap) {
-		for (String date : lessonMap.keySet()) {
-			List<Lesson> lessonList = lessonMap.get(date);
-			timetable.put(view, date, lessonList);
-		}
-	}
-
-	@Override
-	public List<SchoolTest> getSchoolTestList(ViewType view, Calendar startDate,
-			Calendar endDate) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void saveSchoolTest(SchoolTest schoolTest) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setSchoolTestList(List<SchoolTest> schoolTestList) {
-		for(SchoolTest schoolTest : schoolTestList) {
-			saveSchoolTest(schoolTest);
-		}
 	}
 }

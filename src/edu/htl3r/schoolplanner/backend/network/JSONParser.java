@@ -58,6 +58,10 @@ public class JSONParser {
 	private final LessonCodeFactory lessonCodeCreator = new LessonCodeFactory();
 	private final LessonTypeFactory lessonTypeCreator = new LessonTypeFactory();
 	
+	private String getValueFromJSON(JSONObject jsonObject, String key, String defaultValue) throws JSONException {
+		return jsonObject.has(key) ? jsonObject.getString(key) : defaultValue;
+	}
+	
 	public List<SchoolTeacher> jsonToTeacherList(JSONArray result)
 			throws JSONException {
 		List<SchoolTeacher> schoolTeacherList = new ArrayList<SchoolTeacher>();
@@ -71,8 +75,8 @@ public class JSONParser {
 			String name = teacherObject.getString("name");
 			String foreName = teacherObject.getString("foreName");
 			String longName = teacherObject.getString("longName");
-			String foreColor = teacherObject.getString("foreColor");
-			String backColor = teacherObject.getString("backColor");			
+			String foreColor = getValueFromJSON(teacherObject, "foreColor", "");
+			String backColor = getValueFromJSON(teacherObject, "backColor", "");			
 			schoolTeacherObject.setId(id);
 			schoolTeacherObject.setName(name);
 			schoolTeacherObject.setForeName(foreName);
@@ -97,8 +101,8 @@ public class JSONParser {
 			int id = classObject.getInt("id");
 			String name = classObject.getString("name");
 			String longName = classObject.getString("longName");
-			String foreColor = classObject.getString("foreColor");
-			String backColor = classObject.getString("backColor");
+			String foreColor = getValueFromJSON(classObject, "foreColor", "");
+			String backColor = getValueFromJSON(classObject, "backColor", "");
 
 			schoolClassObject.setId(id);
 			schoolClassObject.setName(name);
@@ -123,8 +127,8 @@ public class JSONParser {
 			int id = subjectObject.getInt("id");
 			String name = subjectObject.getString("name");
 			String longName = subjectObject.getString("longName");
-			String foreColor = subjectObject.getString("foreColor");
-			String backColor = subjectObject.getString("backColor");
+			String foreColor = getValueFromJSON(subjectObject, "foreColor", "");
+			String backColor = getValueFromJSON(subjectObject, "backColor", "");
 			schoolSubjectObject.setId(id);
 			schoolSubjectObject.setName(name);
 			schoolSubjectObject.setLongName(longName);
@@ -148,8 +152,8 @@ public class JSONParser {
 			int id = roomObject.getInt("id");
 			String name = roomObject.getString("name");
 			String longName = roomObject.getString("longName");
-			String foreColor = roomObject.getString("foreColor");
-			String backColor = roomObject.getString("backColor");			
+			String foreColor = getValueFromJSON(roomObject, "foreColor", "");
+			String backColor = getValueFromJSON(roomObject, "backColor", "");
 			schoolRoomObject.setId(id);
 			schoolRoomObject.setName(name);
 			schoolRoomObject.setLongName(longName);
@@ -260,10 +264,10 @@ public class JSONParser {
 	 * @throws IOException Wird geworfen, wenn beim Abfragen der Lehrer-, Klassen-, etc.-Listen ein Fehler auftritt
 	 */
 	public Map<String, List<Lesson>> jsonToLessonMap(JSONArray result) throws JSONException, IOException {
-		List<SchoolClass> schoolClassList = cache.getSchoolClassList();
-		List<SchoolTeacher> schoolTeacherList = cache.getSchoolTeacherList();
-		List<SchoolRoom> schoolRoomList = cache.getSchoolRoomList();
-		List<SchoolSubject> schoolSubjectList = cache.getSchoolSubjectList();
+		List<SchoolClass> schoolClassList = cache.getSchoolClassList().getData();
+		List<SchoolTeacher> schoolTeacherList = cache.getSchoolTeacherList().getData();
+		List<SchoolRoom> schoolRoomList = cache.getSchoolRoomList().getData();
+		List<SchoolSubject> schoolSubjectList = cache.getSchoolSubjectList().getData();
 		
 		Map<Integer, ? extends ViewType> schoolClassIdObjectMap = initIdToSchoolObjectListMapping(schoolClassList);
 		Map<Integer, ? extends ViewType> schoolTeacherIdObjectMap = initIdToSchoolObjectListMapping(schoolTeacherList);
@@ -409,8 +413,10 @@ public class JSONParser {
 					JSONObject concreteLessonType = lessonType.getJSONObject(lsType);
 				
 					if(concreteLessonType != null) {
-						int fgColor = Color.parseColor("#" + concreteLessonType.getString("foreColor"));
-						int bgColor = Color.parseColor("#" + concreteLessonType.getString("backColor"));
+						String foreColor = getValueFromJSON(concreteLessonType, "foreColor", "");
+						String backColor = getValueFromJSON(concreteLessonType, "backColor", "");
+						int fgColor = foreColor.length() > 0 ? Color.parseColor("#" + foreColor) : 0;
+						int bgColor = backColor.length() > 0 ? Color.parseColor("#" + backColor) : 0;
 						lessonTypeCreator.setLessonTypeColor(lsType, fgColor, bgColor);
 					}
 				}
@@ -430,8 +436,10 @@ public class JSONParser {
 					JSONObject concreteLessonCode = lessonCode.getJSONObject(lsCode);
 			
 					if(concreteLessonCode != null) {
-						int fgColor = Color.parseColor("#" + concreteLessonCode.getString("foreColor"));
-						int bgColor = Color.parseColor("#" + concreteLessonCode.getString("backColor"));
+						String foreColor = getValueFromJSON(concreteLessonCode, "foreColor", "");
+						String backColor = getValueFromJSON(concreteLessonCode, "backColor", "");
+						int fgColor = foreColor.length() > 0 ? Color.parseColor("#" + foreColor) : 0;
+						int bgColor = backColor.length() > 0 ? Color.parseColor("#" + backColor) : 0;
 						lessonCodeCreator.setLessonCodeColor(lsCode, fgColor, bgColor);
 					}
 				}

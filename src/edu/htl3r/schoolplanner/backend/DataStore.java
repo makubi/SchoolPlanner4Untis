@@ -18,16 +18,10 @@
 
 package edu.htl3r.schoolplanner.backend;
 
-import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 import edu.htl3r.schoolplanner.backend.localdata.LocalData;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTest;
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTestType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
@@ -73,62 +67,9 @@ public interface DataStore {
 	public void setSchoolHolidayList(List<SchoolHoliday> holidayList);
 
 	/**
-	 * Setzt die vorhandenen Testtypen
-	 * @param testTypeList Liste mit TestTypen
-	 */
-	public void setSchoolTestTypeList(List<SchoolTestType> testTypeList);
-
-	/**
 	 * Setzt den Zeitraster.
 	 * @param timegrid Zeitraster, der gesetzt werden soll
 	 */
 	public void setTimegrid(Timegrid timegrid);
-
-	/**
-	 * Setzt die Testliste.
-	 * @param testList Liste mit Tests
-	 */
-	public void setSchoolTestList(List<SchoolTest> testList);
-
-	/**
-	 * Setzt die Liste mit Stunden.
-	 * @param view View, fuer die die Stundenliste gesetzt werden soll
-	 * @param lessons Liste von Stunden
-	 */
-	@Deprecated
-	public void setLessons(ViewType view, List<Lesson> lessons);
-	
-	/**
-	 * Setzt mehrere Listen fuer die jeweiligen Daten zwischen Start (inklusive)- und Enddatum (inklusive).<br>
-	 * Die Laenge der Liste muss genau die Differenz der Anzahl der Tage zwischen Start- und Enddatum + 1 (da inklusive letzter Tag) sein.<br> 
-	 * @param view View, fuer den die Listen gesetzt werden soll
-	 * @param startDate Anfangsdatum
-	 * @param endDate Enddatum
-	 * @param lessonList Liste mit einer Liste mit Stunden pro Tag
-	 */
-	@Deprecated
-	public void setLessons(ViewType view, Calendar startDate, Calendar endDate,
-			Map<String, List<Lesson>> lessonList);
-
-	/**
-	 * Setzt eine Liste mit Stunden fuer einen bestimmten Tag. Diese Liste ist schon fuer die Anzeige auf der GUI optimiert.
-	 * @param view View, fuer den die Stunden gesetzt werden soll
-	 * @param date Tag, fuer den die Stunden gesetzt werden sollen
-	 * @param lessonList Liste mit Stunden, die gesetzt werden sollen
-	 */
-	public void setMergedLessons(ViewType view, Calendar date,
-			List<Lesson> lessonList);
-	
-	/**
-	 * Setzt mehrere Listen fuer die jeweiligen Daten zwischen Start (inklusive)- und Enddatum (inklusive).<br>
-	 * Die Laenge der Liste muss genau die Differenz der Anzahl der Tage zwischen Start- und Enddatum + 1 (da inklusive letzter Tag) sein.<br> 
-	 * Diese Liste ist schon fuer die Anzeige auf der GUI optimiert.
-	 * @param view View, fuer den die Listen gesetzt werden soll
-	 * @param startDate Anfangsdatum
-	 * @param endDate Enddatum
-	 * @param lessonList Liste mit einer Liste mit Stunden pro Tag
-	 */
-	public void setMergedLessons(ViewType view, Calendar startDate, Calendar endDate,
-			Map<String, List<Lesson>> lessonList);
 	
 }
