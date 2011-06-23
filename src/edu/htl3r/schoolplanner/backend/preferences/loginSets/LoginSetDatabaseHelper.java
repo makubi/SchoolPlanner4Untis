@@ -24,7 +24,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class LoginSetDatabaseHelper extends SQLiteOpenHelper {
 
-	    private static final int DATABASE_VERSION = 2;
+	    private static final int DATABASE_VERSION = 3;
 	    private static final String LOGINSET_DATABASE_NAME = "db_loginSets";
 	    private static final String LOGINSET_TABLE_NAME = "loginSets";
 
@@ -40,13 +40,16 @@ public class LoginSetDatabaseHelper extends SQLiteOpenHelper {
 	        		+ Constants.schoolKey + " TEXT, "
 	        		+ Constants.usernameKey + " TEXT, "
 	        		+ Constants.passwordKey + " TEXT"
+	        		+ Constants.sslOnlyKey + " BOOLEAN"
 	        		+ ");"
 	        		);
 	    }
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			
+			if(oldVersion <= 2) {
+				db.execSQL("ALTER TABLE " + LOGINSET_TABLE_NAME + " ADD COLUMN " + Constants.sslOnlyKey + " BOOLEAN" + ";");
+			}
 		}
 
 		public String getLoginsetTableName() {

@@ -18,13 +18,11 @@
 package edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks;
 
 import android.os.AsyncTask;
-import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
 
 /**
- * Diese Klasse updated die LoginSet-Liste des WelcomeScreens, indem sie die Methode {@link WelcomeScreen#loginSetListUpdated()} aufruft und dadurch das UI aktualisiert.<br>
- * Ableitende Klassen muessen die Methode {@link #editList()} implementieren, um bestimmte Aktionen durchzufuehren. Danach wird die UI aktualisiert.<br>
- * Bekannte Implementierungen: {@link LoginSetAddAsyncTask}, {@link LoginSetRemoveAsyncTask}
+ * Diese Klasse updated die LoginSet-Liste des WelcomeScreens, indem sie die Methode {@link WelcomeScreen#loginSetListUpdated()} aufruft und dadurch die LoginSet-Liste der UI aktualisiert.<br>
+ * Implementierungen muessen die Methode {@link #doInBackground(Void...)} implementieren, um bestimmte Aktionen durchzufuehren. Danach wird die LoginSet-Liste der UI aktualisiert.<br>
  */
 public abstract class LoginSetUpdateAsyncTask extends AsyncTask<Void, Void, Void>{
 	
@@ -33,24 +31,6 @@ public abstract class LoginSetUpdateAsyncTask extends AsyncTask<Void, Void, Void
 	public LoginSetUpdateAsyncTask(WelcomeScreen parent) {
 		this.parent = parent;
 	}
-	
-	@Override
-	protected Void doInBackground(Void... params) {
-		editList();
-		publishProgress();
-		return null;
-	}
-	
-	/**
-	 * Fuehrt Operationen auf die {@link LoginSet}-Liste des {@link LoginSetManager}s aus.
-	 */
-	protected abstract void editList();
-
-	@Override
-	protected void onProgressUpdate(Void... values) {
-		super.onProgressUpdate(values);
-		parent.loginSetListUpdated();
-	}	
 
 	@Override
 	protected void onPreExecute() {
@@ -61,6 +41,7 @@ public abstract class LoginSetUpdateAsyncTask extends AsyncTask<Void, Void, Void
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
+		parent.loginSetListUpdated();
 		parent.setLoginListEnabled(true);
 	}
 

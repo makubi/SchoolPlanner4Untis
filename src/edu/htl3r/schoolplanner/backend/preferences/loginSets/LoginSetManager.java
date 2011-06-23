@@ -48,8 +48,8 @@ public class LoginSetManager {
 	}
 
 
-	public void addLoginSet(String name, String url, String school, String user, String password) {
-		addLoginSet(new LoginSet(name, url, school, user, password));
+	public void addLoginSet(String name, String url, String school, String user, String password, boolean sslOnly) {
+		addLoginSet(new LoginSet(name, url, school, user, password, sslOnly));
 	}
 
 
@@ -64,6 +64,7 @@ public class LoginSetManager {
 			loginSetMap.put(Constants.schoolKey, loginSet.getSchool());
 			loginSetMap.put(Constants.usernameKey, loginSet.getUsername());
 			loginSetMap.put(Constants.passwordKey, loginSet.getPassword());
+			loginSetMap.put(Constants.sslOnlyKey, loginSet.isSslOnly() ? "1" : "0");
 			
 			allLoginSets.add(loginSetMap);
 		}

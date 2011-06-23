@@ -15,8 +15,6 @@ import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetUpdateObserver;
-import edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks.LoginSetAddAsyncTask;
-import edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks.LoginSetRemoveAsyncTask;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.gui.listener.LoginListener;
 
@@ -67,7 +65,7 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 	    switch (item.getItemId()) {
 	    case R.id.add_login_set:
 	    	dialog = dialog == null ? new AddLoginSetDialog(this) : dialog;
-	    	dialog.setLoginSetManager(loginmanager);
+	    	dialog.setParent(this);
 	    	dialog.show();
 	        return true;
 	    default:
@@ -86,17 +84,20 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 	public boolean onContextItemSelected(MenuItem item) {
 	  final AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 	  
-	  LoginSetUpdateAsyncTask task = new LoginSetRemoveAsyncTask(this, loginmanager, (int) info.id);
-	  task.execute();
-	  
-	  return super.onContextItemSelected(item);
+	  switch (item.getItemId()) {
+	  case R.id.remove_login_set:
+		  removeLoginSet((int)info.id);
+		  return true;
+	  default:
+		  return super.onContextItemSelected(item);
+	  }
 	}
 
 	private void initList(){
 		String [] list_keys = new String[] {nameKey, urlKey, schoolKey, userKey};
 		int [] list_ids =  new int[] {R.id.txt_name, R.id.txt_url, R.id.txt_school, R.id.txt_user};
 		
-		SimpleAdapter aa = new SimpleAdapter(this, loginmanager.getAllLoginSetsForListAdapter(), R.layout.login_table_row,list_keys ,list_ids);
+		SimpleAdapter aa = new SimpleAdapter(this, loginmanager.getAllLoginSetsForListAdapter(), R.layout.login_table_row, list_keys, list_ids);
 		
 		mainListView.setAdapter(aa);
 	}
@@ -127,8 +128,7 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 
 	@Override
 	public void loginSetAdded() {
-		  LoginSetUpdateAsyncTask task = new LoginSetAddAsyncTask(this);
-		  task.execute();
+		  
 	}
 
 	public void setLoginListEnabled(boolean enabled) {
@@ -139,6 +139,32 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 		else {
 			mainListView.setBackgroundResource(R.color.disabled_element_background);
 		}
+	}
+
+	public void addLoginSet(final String name, final String serverUrl, final String school,
+			final String username, final String password, final boolean sslOnly) {
+		LoginSetUpdateAsyncTask task = new LoginSetUpdateAsyncTask(this) {
+			
+			@Override
+			protected Void doInBackground(Void... params) {
+				loginmanager.addLoginSet(name, serverUrl, school, username, password, sslOnly);
+				return null;
+			}
+		};
+		  task.execute();
+	}
+
+	private void removeLoginSet(final int id) {
+		LoginSetUpdateAsyncTask task = new LoginSetUpdateAsyncTask(this) {
+			
+			@Override
+			protected Void doInBackground(Void... params) {
+				loginmanager.removeLoginEntry(id);
+				return null;
+			}
+		};
+		  task.execute();
+		
 	}
 	
 }

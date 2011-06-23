@@ -40,6 +40,7 @@ public class LoginSetDatabase {
 		values.put(Constants.schoolKey, loginSet.getSchool());
 		values.put(Constants.usernameKey, loginSet.getUsername());
 		values.put(Constants.passwordKey, loginSet.getPassword());
+		values.put(Constants.sslOnlyKey, loginSet.isSslOnly());
 		
 		writableDatabase.insert(loginSetTableName, null, values);
 		writableDatabase.setTransactionSuccessful();
@@ -77,9 +78,10 @@ public class LoginSetDatabase {
 			String serverUrl = query.getString(1);
 			String school = query.getString(2);
 			String username = query.getString(3);
-			String password = query.getString(4);	
+			String password = query.getString(4);
+			boolean sslOnly = query.getInt(5)>0;
 			
-			LoginSet loginSet = new LoginSet(name, serverUrl, school, username, password);
+			LoginSet loginSet = new LoginSet(name, serverUrl, school, username, password, sslOnly);
 			allLoginSets.add(loginSet);
 		}
 		

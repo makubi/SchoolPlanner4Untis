@@ -14,6 +14,7 @@ public class LoginSet implements Serializable {
 	private String school;
 	private String username;
 	private String password;
+	private boolean sslOnly;
 	
 	public LoginSet(Map<String, String> data) {
 		name = data.get(Constants.nameKey);
@@ -23,14 +24,17 @@ public class LoginSet implements Serializable {
 		
 		String password = data.get(Constants.passwordKey);
 		this.password = password != null ? password : "";
+		
+		this.sslOnly = Integer.parseInt(data.get(Constants.sslOnlyKey))>0;
 	}
 	
-	public LoginSet(String name, String serverUrl, String school, String username, String password) {
+	public LoginSet(String name, String serverUrl, String school, String username, String password, boolean sslOnly) {
 		this.name = name;
 		this.serverUrl = serverUrl;
 		this.school = school;
 		this.username = username;
 		this.password = password != null ? password : "";
+		this.sslOnly = sslOnly;
 	}
 
 	public String getName() {
@@ -52,5 +56,8 @@ public class LoginSet implements Serializable {
 	public String getPassword() {
 		return password;
 	}
-	
+
+	public boolean isSslOnly() {
+		return sslOnly;
+	}
 }

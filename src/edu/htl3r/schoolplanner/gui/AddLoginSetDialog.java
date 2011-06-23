@@ -25,11 +25,8 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 
 public class AddLoginSetDialog extends Dialog{
-
-	private LoginSetManager loginSetManager;
 	
 	private EditText nameInput;
 	private EditText serverUrlInput;
@@ -39,6 +36,8 @@ public class AddLoginSetDialog extends Dialog{
 	private CheckBox sslOnly;
 	
 	private Toast errorMessage;
+
+	private WelcomeScreen parent;
 	
 	public AddLoginSetDialog(Context context) {
 		super(context);
@@ -67,7 +66,7 @@ public class AddLoginSetDialog extends Dialog{
     	    	
     	    	// TODO: Andere checks + SSL
     	    	if(name.length() > 0 && serverUrl.length() > 0 && school.length() > 0 && username.length() > 0) {
-    	    		loginSetManager.addLoginSet(name, serverUrl, school, username, password);
+    	    		parent.addLoginSet(name, serverUrl, school, username, password, sslOnly.isChecked());
     	    		dismiss();
     	    	}
     	    	else {
@@ -77,8 +76,9 @@ public class AddLoginSetDialog extends Dialog{
     	});
 	}
 	
-	public void setLoginSetManager(LoginSetManager loginSetManager) {
-		this.loginSetManager = loginSetManager;
+	
+	public void setParent(WelcomeScreen parent) {
+		this.parent = parent;
 	}
 	
 	@Override
