@@ -34,7 +34,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see InternalMemory
  * @see ExternalDataLoader
  */
-public class Cache implements DataConnection, ExtendedStatusDataProvider {
+public class Cache implements DataConnection, UnsaveDataSourceDataProvider {
 	
 	private InternalMemory internalMemory = new InternalMemory();
 	private ExternalDataLoader externalDataLoader = new ExternalDataLoader();

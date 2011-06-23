@@ -27,7 +27,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
-public interface ExtendedStatusDataProvider {
+public interface UnsaveDataSourceDataProvider {
 	/**
 	 * Liefert alle Schulklassen als Liste.
 	 * @return Alle Schulklassen als Liste oder 'null', wenn nicht

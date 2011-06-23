@@ -33,7 +33,7 @@ import org.json.JSONTokener;
 import android.util.Log;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataFacade;
-import edu.htl3r.schoolplanner.backend.ExtendedStatusDataProvider;
+import edu.htl3r.schoolplanner.backend.UnsaveDataSourceDataProvider;
 import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
@@ -47,7 +47,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 /**
  * Netzwerkzugriff fuer die Datenabfrage ueber JSON.
  */
-public class JSONNetwork implements ExtendedStatusDataProvider {
+public class JSONNetwork implements UnsaveDataSourceDataProvider {
 
 	/**
 	 * JSON-RPC Version, die der Untis-Server verwendet.

@@ -37,7 +37,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see LocalData
  * @see JSONNetwork
  */
-public class ExternalDataLoader implements ExtendedStatusDataProvider {
+public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 
 	private LocalData database = new LocalData();
 	private JSONNetwork network = new JSONNetwork();
