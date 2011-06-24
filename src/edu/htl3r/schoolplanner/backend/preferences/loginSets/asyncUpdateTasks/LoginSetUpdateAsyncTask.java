@@ -35,14 +35,14 @@ public abstract class LoginSetUpdateAsyncTask extends AsyncTask<Void, Void, Void
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
-		parent.setLoginListEnabled(false);
+		parent.setInProgress("Modifying login set...", true);
 	}
 
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
 		parent.loginSetListUpdated();
-		parent.setLoginListEnabled(true);
+		parent.setInProgress("", false);
 	}
 
 }

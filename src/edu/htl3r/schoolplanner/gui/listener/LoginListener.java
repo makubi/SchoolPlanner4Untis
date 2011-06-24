@@ -46,13 +46,13 @@ public class LoginListener implements OnItemClickListener {
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
-				welcomescreen.setOnLogin(true);
+				welcomescreen.setInProgress("Login in progress...", true);
 			}
 
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
-				welcomescreen.setOnLogin(false);
+				welcomescreen.setInProgress("", false);
 			}
 		};
 

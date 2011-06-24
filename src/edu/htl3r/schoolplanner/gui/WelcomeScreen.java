@@ -54,8 +54,6 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 		mainLayout = (RelativeLayout) findViewById(R.id.welcome_main_layout);
 		
 		
-		mainLayout.removeView(emptyListTextView);
-		
 		loginmanager = new LoginSetManager();
 		loginmanager.addSetUpdateObserver(this);
 		
@@ -138,13 +136,13 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 		
 		List<Map<String, String>> allLoginSetsForListAdapter = loginmanager.getAllLoginSetsForListAdapter();
 		
-		if (allLoginSetsForListAdapter.size() > 0 && "added".equals(emptyListTextView.getTag())) {
-				emptyListTextView.setTag("removed");
-				mainLayout.removeView(emptyListTextView);
-		}
-		else {
+		if (allLoginSetsForListAdapter.size() <= 0) {
 			emptyListTextView.setTag("added");
 			mainLayout.addView(emptyListTextView);
+		}
+		else if("added".equals(emptyListTextView.getTag())) {
+				emptyListTextView.setTag("removed");
+				mainLayout.removeView(emptyListTextView);
 		}
 		
 		String [] list_keys = new String[] {nameKey, urlKey, schoolKey, userKey};
@@ -159,10 +157,22 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 	/**
 	 * @param active 'true' if the login is currently in progress
 	 */
+	@Deprecated
 	public void setOnLogin(boolean active) {
 		setLoginListEnabled(!active);
 		if (active) {
 			loginProgressText.setText("Logging in...");
+			progressWheel.setVisibility(View.VISIBLE);
+		} else {
+			loginProgressText.setText("");
+			progressWheel.setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	public void setInProgress(String message, boolean active) {
+		setLoginListEnabled(!active);
+		if (active) {
+			loginProgressText.setText(message);
 			progressWheel.setVisibility(View.VISIBLE);
 		} else {
 			loginProgressText.setText("");
@@ -184,7 +194,7 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 		  
 	}
 
-	public void setLoginListEnabled(boolean enabled) {
+	private void setLoginListEnabled(boolean enabled) {
 		mainListView.setEnabled(enabled);
 		if (enabled) {
 			mainListView.setBackgroundResource(R.color.element_background);
