@@ -1,5 +1,8 @@
 package edu.htl3r.schoolplanner.gui;
 
+import java.util.List;
+import java.util.Map;
+
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -7,9 +10,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
@@ -32,6 +37,9 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 	private LoginSetManager loginmanager;
 	private AddLoginSetDialog dialog;
 	
+	private RelativeLayout mainLayout;
+	private TextView emptyListTextView;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +50,12 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 		loginProgressText = (TextView) findViewById(R.id.loginProgressText);
 		mainListView = (ListView) findViewById(R.id.loginList);
 		
+		buildEmptyListTextView();
+		mainLayout = (RelativeLayout) findViewById(R.id.welcome_main_layout);
+		
+		
+		mainLayout.removeView(emptyListTextView);
+		
 		loginmanager = new LoginSetManager();
 		loginmanager.addSetUpdateObserver(this);
 		
@@ -49,6 +63,33 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 		
 		initList();
 		mainListView.setOnItemClickListener(new LoginListener(this));
+	}
+	
+	private void buildEmptyListTextView() {
+		RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+		        ViewGroup.LayoutParams.WRAP_CONTENT);
+
+		// Set parent view
+		p.addRule(RelativeLayout.BELOW, R.id.welcome_title);
+		
+		emptyListTextView = new TextView(this);
+		emptyListTextView.setTextSize(14);
+		emptyListTextView.setPadding(5, 0, 0, 0);
+		emptyListTextView.setTextColor(getResources().getColor(R.color.text));
+		emptyListTextView.setText("Your list of login sets is empty!" +
+				"\n\nYou need a login set to be able to log into the app." +
+				"\n\nA login set contains of five information:" +
+				"\n - name (arbitrary): e.g. My School Login" + 
+				"\n - server url: e.g. urania.webuntis.com:1234" +
+				"\n - school name: e.g. my_school" +
+				"\n - user name: my_login_name" +
+				"\n - password (optional): my_password" +
+				"\n\n + You have to provide a name to differentiate between multiple login sets." +
+				"\n + The server url is the same url you use to log into WebUntis via a webbrowser." +
+				"\n + You have to use the same login information you use to log into the WebUntis website." +
+				"\n + If your school provides SSL, you can enforce to log in securely.");
+		emptyListTextView.setLayoutParams(p);
+		emptyListTextView.setTag("added");
 	}
 	
 	@Override
@@ -94,10 +135,22 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 	}
 
 	private void initList(){
+		
+		List<Map<String, String>> allLoginSetsForListAdapter = loginmanager.getAllLoginSetsForListAdapter();
+		
+		if (allLoginSetsForListAdapter.size() > 0 && "added".equals(emptyListTextView.getTag())) {
+				emptyListTextView.setTag("removed");
+				mainLayout.removeView(emptyListTextView);
+		}
+		else {
+			emptyListTextView.setTag("added");
+			mainLayout.addView(emptyListTextView);
+		}
+		
 		String [] list_keys = new String[] {nameKey, urlKey, schoolKey, userKey};
 		int [] list_ids =  new int[] {R.id.txt_name, R.id.txt_url, R.id.txt_school, R.id.txt_user};
 		
-		SimpleAdapter aa = new SimpleAdapter(this, loginmanager.getAllLoginSetsForListAdapter(), R.layout.login_table_row, list_keys, list_ids);
+		SimpleAdapter aa = new SimpleAdapter(this, allLoginSetsForListAdapter, R.layout.login_table_row, list_keys, list_ids);
 		
 		mainListView.setAdapter(aa);
 	}
