@@ -42,7 +42,7 @@ public class AddLoginSetDialog extends Dialog{
 	public AddLoginSetDialog(Context context) {
 		super(context);
 		
-		errorMessage = Toast.makeText(context, "Test", Toast.LENGTH_SHORT);
+		errorMessage = Toast.makeText(context, "Please enter at least name, server url, school and username", Toast.LENGTH_SHORT);
         
 		setContentView(R.layout.login_set_add_dialog);
         setTitle(R.string.login_set_add_title);
@@ -64,7 +64,7 @@ public class AddLoginSetDialog extends Dialog{
     	    	String username = usernameInput.getText().toString();
     	    	String password = passwordInput.getText().toString();
     	    	
-    	    	// TODO: Andere checks + SSL
+    	    	// TODO: Andere checks
     	    	if(name.length() > 0 && serverUrl.length() > 0 && school.length() > 0 && username.length() > 0) {
     	    		parent.addLoginSet(name, serverUrl, school, username, password, sslOnly.isChecked());
     	    		dismiss();
@@ -80,19 +80,5 @@ public class AddLoginSetDialog extends Dialog{
 	public void setParent(WelcomeScreen parent) {
 		this.parent = parent;
 	}
-	
-	@Override
-	protected void onStop() {
-		super.onStop();
-		
-		nameInput.setText("");
-		serverUrlInput.setText("");
-		schoolInput.setText("");
-		usernameInput.setText("");
-		passwordInput.setText("");
-		
-		//sslOnly.setChecked(false);
-	}
-
 	
 }

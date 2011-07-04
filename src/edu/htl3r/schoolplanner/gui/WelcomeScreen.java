@@ -103,7 +103,7 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case R.id.add_login_set:
-	    	dialog = dialog == null ? new AddLoginSetDialog(this) : dialog;
+	    	dialog = new AddLoginSetDialog(this);
 	    	dialog.setParent(this);
 	    	dialog.show();
 	        return true;
