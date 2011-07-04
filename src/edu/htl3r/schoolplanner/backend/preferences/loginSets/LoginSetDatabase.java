@@ -42,6 +42,7 @@ public class LoginSetDatabase {
 		values.put(Constants.passwordKey, loginSet.getPassword());
 		values.put(Constants.sslOnlyKey, loginSet.isSslOnly());
 		
+		writableDatabase.beginTransaction();
 		writableDatabase.insert(loginSetTableName, null, values);
 		writableDatabase.setTransactionSuccessful();
 		writableDatabase.endTransaction();
@@ -50,16 +51,7 @@ public class LoginSetDatabase {
 	}
 	
 	private SQLiteDatabase openDatabase(boolean writeable) {
-		SQLiteDatabase database;
-		if(writeable) {
-			database = databaseHelper.getWritableDatabase();
-			database.beginTransaction();
-		}
-		else {
-			database = databaseHelper.getReadableDatabase();
-		}
-		
-		return database;
+		return writeable ? databaseHelper.getWritableDatabase() : databaseHelper.getReadableDatabase();
 	}
 	
 	private void closeDatabase(SQLiteDatabase database) {
@@ -71,7 +63,7 @@ public class LoginSetDatabase {
 		
 		SQLiteDatabase readableDatabase = openDatabase(false);
 				
-		Cursor query = readableDatabase.query(loginSetTableName, null, null, null, null, null, null);		
+		Cursor query = readableDatabase.query(loginSetTableName, null, null, null, null, null, null);
 		
 		while(query.moveToNext()) {
 			String name = query.getString(0);

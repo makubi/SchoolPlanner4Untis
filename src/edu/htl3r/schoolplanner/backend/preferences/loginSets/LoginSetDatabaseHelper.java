@@ -39,7 +39,7 @@ public class LoginSetDatabaseHelper extends SQLiteOpenHelper {
 	        		+ Constants.serverUrlKey + " TEXT, "
 	        		+ Constants.schoolKey + " TEXT, "
 	        		+ Constants.usernameKey + " TEXT, "
-	        		+ Constants.passwordKey + " TEXT"
+	        		+ Constants.passwordKey + " TEXT, "
 	        		+ Constants.sslOnlyKey + " BOOLEAN"
 	        		+ ");"
 	        		);
