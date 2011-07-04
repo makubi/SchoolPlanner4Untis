@@ -85,8 +85,9 @@ public class LoginSetDatabase {
 	
 	public void removeLoginSet(LoginSet loginSet) {
 		SQLiteDatabase writableDatabase = openDatabase(true);
-		writableDatabase.delete(loginSetTableName, "name=?", new String[] {loginSet.getName()});
 		
+		writableDatabase.beginTransaction();
+		writableDatabase.delete(loginSetTableName, "name=?", new String[] {loginSet.getName()});
 		writableDatabase.setTransactionSuccessful();
 		writableDatabase.endTransaction();
 		
