@@ -38,18 +38,22 @@ public class LoginSetManager {
 		loginSets = database.getAllLoginSets();
 	}
 	
-	public void addLoginSet(LoginSet loginSet) {
+	public boolean addLoginSet(LoginSet loginSet) {
+		if(has(loginSet.getName())) {
+			return false;
+		}
 		loginSets.add(loginSet);
 		database.saveLoginSet(loginSet);
 		
 		for(LoginSetUpdateObserver observer : observers) {
 			observer.loginSetAdded();
 		}
+		return true;
 	}
 
 
-	public void addLoginSet(String name, String url, String school, String user, String password, boolean sslOnly) {
-		addLoginSet(new LoginSet(name, url, school, user, password, sslOnly));
+	public boolean addLoginSet(String name, String url, String school, String user, String password, boolean sslOnly) {
+		return addLoginSet(new LoginSet(name, url, school, user, password, sslOnly));
 	}
 
 
@@ -76,6 +80,10 @@ public class LoginSetManager {
 	public List<LoginSet> getAllLoginSets(){
 		return loginSets;
 	}
+	
+	public LoginSet getLoginSetOnPosition(int pos) {
+		return loginSets.get(pos);
+	}
 
 
 	public void removeLoginEntry(LoginSet loginSet) {
@@ -89,6 +97,44 @@ public class LoginSetManager {
 	
 	public void addSetUpdateObserver(LoginSetUpdateObserver observer) {
 		observers.add(observer);
+	}
+	
+	private boolean has(String name) {
+		for(LoginSet loginSet : loginSets) {
+			if(loginSet.getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private LoginSet getLoginSet(String name) {
+		for(LoginSet loginSet : loginSets) {
+			if(loginSet.getName().equals(name)) {
+				return loginSet;
+			}
+		}
+		return null;
+	}
+
+	public void editLoginSet(String name, String serverUrl, String school,
+			String username, String password, boolean checked) {
+		
+		if(has(name)) {
+			database.editLoginSet(name, serverUrl, school,
+					username, password, checked);
+
+			for(LoginSet loginSet : loginSets) {
+				if(loginSet.getName().equals(name)) {
+					loginSets.remove(loginSet);
+					loginSets.add(new LoginSet(name, serverUrl, school, username, password, checked));
+				}
+			}
+		}
+		else {
+			removeLoginEntry(getLoginSet(name));
+			addLoginSet(name, serverUrl, school, username, password, checked);
+		}
 	}
 	
 }

@@ -31,7 +31,7 @@ public class LoginSetDatabase {
 	private LoginSetDatabaseHelper databaseHelper;
 	private String loginSetTableName;
 	
-	public void saveLoginSet(LoginSet loginSet) {
+	public void saveLoginSet(LoginSet loginSet) {		
 		SQLiteDatabase writableDatabase = openDatabase(true);
 		
 		ContentValues values = new ContentValues();
@@ -87,7 +87,7 @@ public class LoginSetDatabase {
 		SQLiteDatabase writableDatabase = openDatabase(true);
 		
 		writableDatabase.beginTransaction();
-		writableDatabase.delete(loginSetTableName, "name=?", new String[] {loginSet.getName()});
+		writableDatabase.delete(loginSetTableName, Constants.nameKey+"=?", new String[] {loginSet.getName()});
 		writableDatabase.setTransactionSuccessful();
 		writableDatabase.endTransaction();
 		
@@ -97,6 +97,25 @@ public class LoginSetDatabase {
 	public void setContext(Context context) {
 		databaseHelper = new LoginSetDatabaseHelper(context);
 		loginSetTableName = databaseHelper.getLoginsetTableName();
+	}
+
+	public void editLoginSet(String name, String serverUrl, String school,
+			String username, String password, boolean checked) {
+		SQLiteDatabase writableDatabase = openDatabase(true);
+		
+		ContentValues values = new ContentValues();
+		values.put(Constants.serverUrlKey, serverUrl);
+		values.put(Constants.schoolKey, school);
+		values.put(Constants.usernameKey, username);
+		values.put(Constants.passwordKey, password);
+		values.put(Constants.sslOnlyKey, checked);
+		
+		writableDatabase.beginTransaction();
+		writableDatabase.update(loginSetTableName, values, Constants.nameKey+"=?", new String[]{name});
+		writableDatabase.setTransactionSuccessful();
+		writableDatabase.endTransaction();
+		
+		closeDatabase(writableDatabase);
 	}
 	
 }

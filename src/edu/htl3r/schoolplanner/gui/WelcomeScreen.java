@@ -2,6 +2,7 @@ package edu.htl3r.schoolplanner.gui;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -35,7 +36,7 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 	private ListView mainListView;
 	
 	private LoginSetManager loginmanager;
-	private AddLoginSetDialog dialog;
+	private LoginSetDialog dialog;
 	
 	private RelativeLayout mainLayout;
 	private TextView emptyListTextView;
@@ -103,7 +104,7 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case R.id.add_login_set:
-	    	dialog = new AddLoginSetDialog(this);
+	    	dialog = new LoginSetDialog(this);
 	    	dialog.setParent(this);
 	    	dialog.show();
 	        return true;
@@ -124,12 +125,21 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 	  final AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 	  
 	  switch (item.getItemId()) {
+	  case R.id.edit_login_set:
+		  editLoginSet((int)info.id);
+		  return true;
 	  case R.id.remove_login_set:
 		  removeLoginSet((int)info.id);
 		  return true;
 	  default:
 		  return super.onContextItemSelected(item);
 	  }
+	}
+
+	private void editLoginSet(int id) {
+		dialog = new LoginSetDialog(this,loginmanager.getLoginSetOnPosition(id));
+    	dialog.setParent(this);
+    	dialog.show();
 	}
 
 	private void initList(){
@@ -204,30 +214,53 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 		}
 	}
 
-	public void addLoginSet(final String name, final String serverUrl, final String school,
+	public boolean addLoginSet(final String name, final String serverUrl, final String school,
 			final String username, final String password, final boolean sslOnly) {
 		LoginSetUpdateAsyncTask task = new LoginSetUpdateAsyncTask(this) {
 			
 			@Override
-			protected Void doInBackground(Void... params) {
-				loginmanager.addLoginSet(name, serverUrl, school, username, password, sslOnly);
-				return null;
+			protected Boolean doInBackground(Void... params) {
+				return loginmanager.addLoginSet(name, serverUrl, school, username, password, sslOnly);
 			}
 		};
-		  task.execute();
+		task.execute();
+		
+		try {
+			return task.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	private void removeLoginSet(final int id) {
 		LoginSetUpdateAsyncTask task = new LoginSetUpdateAsyncTask(this) {
 			
 			@Override
-			protected Void doInBackground(Void... params) {
+			protected Boolean doInBackground(Void... params) {
 				loginmanager.removeLoginEntry(id);
-				return null;
+				return true;
 			}
 		};
 		  task.execute();
 		
+	}
+
+	public void editLoginSet(final String name, final String serverUrl, final String school,
+			final String username, final String password, final boolean checked) {
+		LoginSetUpdateAsyncTask task = new LoginSetUpdateAsyncTask(this) {
+			@Override
+			protected Boolean doInBackground(Void... params) {
+				loginmanager.editLoginSet(name, serverUrl, school, username, password, checked);
+				return true;
+			}
+		};
+		
+		task.execute();
 	}
 	
 }
