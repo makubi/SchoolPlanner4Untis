@@ -117,6 +117,9 @@ public class MonthView extends ViewActivity {
 			day.setHoliday(giveMeHoliday(currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), i + 1));
 			currentRow.addView(day);
 			daysInRow++;
+			if(day.isToday()) {
+				day.setBackgroundColor(Color.parseColor("#FF8C00"));
+			}
 			if (daysInRow > 6) {
 				table.addView(currentRow);
 				currentRow = new TableRow(this);

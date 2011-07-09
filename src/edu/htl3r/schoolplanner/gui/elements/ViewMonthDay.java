@@ -116,6 +116,10 @@ public class ViewMonthDay extends TextView {
 		cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(getText()+""));
 		return cal;
 	}
+	
+	public boolean isToday() {
+		return CalendarUtils.compareCalendarDates(Calendar.getInstance(), getCalendar());
+	}
 
 	/**
 	 * @return the previousMonth
