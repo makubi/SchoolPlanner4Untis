@@ -15,16 +15,10 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package edu.htl3r.schoolplanner.constants;
 
-package edu.htl3r.schoolplanner;
+public interface WelcomeScreenConstants {
 
-import android.app.Application;
-import android.content.Context;
-
-/**
- * Stellt den {@link Context} fuer andere Klassen zur Verfuegung.<br>
- * Der Context muss mit dem {@link Application#getApplicationContext()} initialisert werden. Zur Zeit geschieht dies in der Klasse {@link SchoolPlannerApp}.
- */
-public class SchoolplannerContext {	
-	public static Context context;
+	public final String EMPTY_LIST_TEXTVIEW_ADDED = "added";
+	public final String EMPTY_LIST_TEXTVIEW_REMOVED = "removed";
 }

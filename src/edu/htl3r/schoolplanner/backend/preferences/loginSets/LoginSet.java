@@ -3,7 +3,7 @@ package edu.htl3r.schoolplanner.backend.preferences.loginSets;
 import java.io.Serializable;
 import java.util.Map;
 
-import edu.htl3r.schoolplanner.gui.Constants;
+import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class LoginSet implements Serializable {
 	
@@ -17,15 +17,15 @@ public class LoginSet implements Serializable {
 	private boolean sslOnly;
 	
 	public LoginSet(Map<String, String> data) {
-		name = data.get(Constants.nameKey);
-		serverUrl = data.get(Constants.serverUrlKey);
-		school = data.get(Constants.schoolKey);
-		username = data.get(Constants.usernameKey);
+		name = data.get(LoginSetConstants.nameKey);
+		serverUrl = data.get(LoginSetConstants.serverUrlKey);
+		school = data.get(LoginSetConstants.schoolKey);
+		username = data.get(LoginSetConstants.usernameKey);
 		
-		String password = data.get(Constants.passwordKey);
+		String password = data.get(LoginSetConstants.passwordKey);
 		this.password = password != null ? password : "";
 		
-		this.sslOnly = Integer.parseInt(data.get(Constants.sslOnlyKey))>0;
+		this.sslOnly = Integer.parseInt(data.get(LoginSetConstants.sslOnlyKey))>0;
 	}
 	
 	public LoginSet(String name, String serverUrl, String school, String username, String password, boolean sslOnly) {

@@ -25,7 +25,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import edu.htl3r.schoolplanner.gui.Constants;
+import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class LoginSetDatabaseHelper extends SQLiteOpenHelper {
 
@@ -33,12 +33,12 @@ public class LoginSetDatabaseHelper extends SQLiteOpenHelper {
 	    private static final String LOGINSET_DATABASE_NAME = "db_loginSets";
 	    private static final String LOGINSET_TABLE_NAME = "loginSets";
 		private static final String CREATE_TABLE_STATEMENT = "CREATE TABLE " + LOGINSET_TABLE_NAME + " ("
-	        		+ Constants.nameKey + " TEXT UNIQUE, "
-	        		+ Constants.serverUrlKey + " TEXT, "
-	        		+ Constants.schoolKey + " TEXT, "
-	        		+ Constants.usernameKey + " TEXT, "
-	        		+ Constants.passwordKey + " TEXT, "
-	        		+ Constants.sslOnlyKey + " BOOLEAN"
+	        		+ LoginSetConstants.nameKey + " TEXT UNIQUE, "
+	        		+ LoginSetConstants.serverUrlKey + " TEXT, "
+	        		+ LoginSetConstants.schoolKey + " TEXT, "
+	        		+ LoginSetConstants.usernameKey + " TEXT, "
+	        		+ LoginSetConstants.passwordKey + " TEXT, "
+	        		+ LoginSetConstants.sslOnlyKey + " BOOLEAN"
 	        		+ ");";
 
 	    public LoginSetDatabaseHelper(Context context) {
@@ -79,12 +79,12 @@ public class LoginSetDatabaseHelper extends SQLiteOpenHelper {
 				
 				for(LoginSet loginSet : allLoginSets) {
 					ContentValues values = new ContentValues();
-					values.put(Constants.nameKey, loginSet.getName());
-					values.put(Constants.serverUrlKey, loginSet.getServerUrl());
-					values.put(Constants.schoolKey, loginSet.getSchool());
-					values.put(Constants.usernameKey, loginSet.getUsername());
-					values.put(Constants.passwordKey, loginSet.getPassword());
-					values.put(Constants.sslOnlyKey, loginSet.isSslOnly());
+					values.put(LoginSetConstants.nameKey, loginSet.getName());
+					values.put(LoginSetConstants.serverUrlKey, loginSet.getServerUrl());
+					values.put(LoginSetConstants.schoolKey, loginSet.getSchool());
+					values.put(LoginSetConstants.usernameKey, loginSet.getUsername());
+					values.put(LoginSetConstants.passwordKey, loginSet.getPassword());
+					values.put(LoginSetConstants.sslOnlyKey, loginSet.isSslOnly());
 					
 					db.insert(LOGINSET_TABLE_NAME, null, values);
 				}
@@ -95,7 +95,7 @@ public class LoginSetDatabaseHelper extends SQLiteOpenHelper {
 			if(oldVersion <= 2) {
 				db.beginTransaction();
 				
-				db.execSQL("ALTER TABLE " + LOGINSET_TABLE_NAME + " ADD COLUMN " + Constants.sslOnlyKey + " BOOLEAN" + ";");
+				db.execSQL("ALTER TABLE " + LOGINSET_TABLE_NAME + " ADD COLUMN " + LoginSetConstants.sslOnlyKey + " BOOLEAN" + ";");
 				
 				db.setTransactionSuccessful();
 				db.endTransaction();

@@ -22,14 +22,16 @@ import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetUpdateObserver;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks.LoginSetUpdateAsyncTask;
+import edu.htl3r.schoolplanner.constants.LoginSetConstants;
+import edu.htl3r.schoolplanner.constants.WelcomeScreenConstants;
 import edu.htl3r.schoolplanner.gui.listener.LoginListener;
 
 public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpdateObserver{
 
-	private final String nameKey = Constants.nameKey;
-	private final String urlKey = Constants.serverUrlKey;
-	private final String schoolKey = Constants.schoolKey;
-	private final String userKey = Constants.usernameKey;
+	private final String nameKey = LoginSetConstants.nameKey;
+	private final String urlKey = LoginSetConstants.serverUrlKey;
+	private final String schoolKey = LoginSetConstants.schoolKey;
+	private final String userKey = LoginSetConstants.usernameKey;
 
 	private ProgressBar progressWheel;
 	private TextView loginProgressText;
@@ -75,6 +77,7 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 		emptyListTextView.setTextSize(14);
 		emptyListTextView.setPadding(5, 0, 0, 0);
 		emptyListTextView.setTextColor(getResources().getColor(R.color.text));
+		// TODO: Text auslagern
 		emptyListTextView.setText("Your list of login sets is empty!" +
 				"\n\nYou need a login set to be able to log into the app." +
 				"\n\nA login set contains of five information:" +
@@ -88,7 +91,7 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 				"\n + You have to use the same login information you use to log into the WebUntis website." +
 				"\n + If your school provides SSL, you can enforce to log in securely.");
 		emptyListTextView.setLayoutParams(p);
-		emptyListTextView.setTag("added");
+		emptyListTextView.setTag(WelcomeScreenConstants.EMPTY_LIST_TEXTVIEW_ADDED);
 	}
 	
 	@Override
@@ -147,11 +150,11 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 		List<Map<String, String>> allLoginSetsForListAdapter = loginmanager.getAllLoginSetsForListAdapter();
 		
 		if (allLoginSetsForListAdapter.size() <= 0) {
-			emptyListTextView.setTag("added");
+			emptyListTextView.setTag(WelcomeScreenConstants.EMPTY_LIST_TEXTVIEW_ADDED);
 			mainLayout.addView(emptyListTextView);
 		}
-		else if("added".equals(emptyListTextView.getTag())) {
-				emptyListTextView.setTag("removed");
+		else if(WelcomeScreenConstants.EMPTY_LIST_TEXTVIEW_ADDED.equals(emptyListTextView.getTag())) {
+				emptyListTextView.setTag(WelcomeScreenConstants.EMPTY_LIST_TEXTVIEW_REMOVED);
 				mainLayout.removeView(emptyListTextView);
 		}
 		

@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.htl3r.schoolplanner.SchoolplannerContext;
-import edu.htl3r.schoolplanner.gui.Constants;
+import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class LoginSetManager {
 	
@@ -63,12 +63,12 @@ public class LoginSetManager {
 		for(LoginSet loginSet : loginSets) {
 			Map<String, String> loginSetMap = new HashMap<String, String>();
 			
-			loginSetMap.put(Constants.nameKey, loginSet.getName());
-			loginSetMap.put(Constants.serverUrlKey, loginSet.getServerUrl());
-			loginSetMap.put(Constants.schoolKey, loginSet.getSchool());
-			loginSetMap.put(Constants.usernameKey, loginSet.getUsername());
-			loginSetMap.put(Constants.passwordKey, loginSet.getPassword());
-			loginSetMap.put(Constants.sslOnlyKey, loginSet.isSslOnly() ? "1" : "0");
+			loginSetMap.put(LoginSetConstants.nameKey, loginSet.getName());
+			loginSetMap.put(LoginSetConstants.serverUrlKey, loginSet.getServerUrl());
+			loginSetMap.put(LoginSetConstants.schoolKey, loginSet.getSchool());
+			loginSetMap.put(LoginSetConstants.usernameKey, loginSet.getUsername());
+			loginSetMap.put(LoginSetConstants.passwordKey, loginSet.getPassword());
+			loginSetMap.put(LoginSetConstants.sslOnlyKey, loginSet.isSslOnly() ? "1" : "0");
 			
 			allLoginSets.add(loginSetMap);
 		}
