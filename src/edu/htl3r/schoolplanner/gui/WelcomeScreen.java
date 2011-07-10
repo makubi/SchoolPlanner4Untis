@@ -20,13 +20,12 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
-import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetUpdateObserver;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 import edu.htl3r.schoolplanner.constants.WelcomeScreenConstants;
 import edu.htl3r.schoolplanner.gui.listener.LoginListener;
 
-public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpdateObserver{
+public class WelcomeScreen extends SchoolPlannerActivity{
 
 	private final String nameKey = LoginSetConstants.nameKey;
 	private final String urlKey = LoginSetConstants.serverUrlKey;
@@ -58,7 +57,6 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 		
 		
 		loginmanager = new LoginSetManager();
-		loginmanager.addSetUpdateObserver(this);
 		
 		registerForContextMenu(mainListView);
 		
@@ -200,11 +198,6 @@ public class WelcomeScreen extends SchoolPlannerActivity implements LoginSetUpda
 	
 	public LoginSetManager getLoginManager(){
 		return loginmanager;
-	}
-
-	@Override
-	public void loginSetAdded() {
-		  
 	}
 
 	private void setLoginListEnabled(boolean enabled) {
