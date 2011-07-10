@@ -18,10 +18,11 @@
 package edu.htl3r.schoolplanner.gui;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import android.text.format.Time;
 
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
@@ -78,11 +79,14 @@ public class DummyBackend {
 		}
 		
 		for(int i = 1; i <= 7; i++) {
+			Time now = new Time();
+			now.setToNow();
+			
 			List<Lesson> lessonList = new ArrayList<Lesson>();
 			for(int j = 1; j <= 10; j++) {
 				
 				Lesson lesson = new Lesson();
-				lesson.setDate(Calendar.getInstance());
+				lesson.setDate(now.year, now.month, now.monthDay);
 				lesson.setStartTime(j, (j*10)%60);
 				lesson.setEndTime(j+1, (j*10)%60);
 				lesson.setId((i*10)+j);

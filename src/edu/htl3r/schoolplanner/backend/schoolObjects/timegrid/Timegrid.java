@@ -18,13 +18,11 @@
 
 package edu.htl3r.schoolplanner.backend.schoolObjects.timegrid;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.htl3r.schoolplanner.CalendarUtils;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 
@@ -78,21 +76,6 @@ public class Timegrid implements SchoolObject {
 		TimegridDay gridDay = new TimegridDay();
 		gridDay.setTimegridUnitList(timegridUnitList);
 		days.put(day,gridDay);
-	}
-	
-	@Override
-	public String toString() {
-		String out = "";
-		ArrayList<Integer> keys = new ArrayList<Integer>(days.keySet());
-		for (Integer key : keys) {
-			out += "Day: " +key +" =========================\n";
-			ArrayList<TimegridUnit> units = new ArrayList<TimegridUnit>(days.get(key).getTimegridUnitList());
-			for (TimegridUnit unit : units) {
-				out += CalendarUtils.getTimeStr(unit.getBegin(), false) +" - " +CalendarUtils.getTimeStr(unit.getEnd(), false) +"\n";
-			}
-			out +="\n";
-		}
-		return out;
 	}
 	
 }

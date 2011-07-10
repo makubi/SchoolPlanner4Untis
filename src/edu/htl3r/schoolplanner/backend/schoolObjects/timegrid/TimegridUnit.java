@@ -20,7 +20,6 @@ package edu.htl3r.schoolplanner.backend.schoolObjects.timegrid;
 
 import java.util.Calendar;
 
-import edu.htl3r.schoolplanner.CalendarUtils;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 
 public class TimegridUnit implements SchoolObject, Comparable<TimegridUnit> {
@@ -41,10 +40,6 @@ public class TimegridUnit implements SchoolObject, Comparable<TimegridUnit> {
 		this.end = end;
 	}
 	
-	@Override
-	public String toString() {
-		return getClass().getSimpleName() +": begin: " +CalendarUtils.getDateString(begin, true) +", " +CalendarUtils.getTimeStr(begin, false) +", end: " +CalendarUtils.getDateString(end, true) +", " +CalendarUtils.getTimeStr(end, false);
-	}
 	@Override
 	public int compareTo(TimegridUnit another) {
 		int start1 = (int) getBegin().getTimeInMillis();

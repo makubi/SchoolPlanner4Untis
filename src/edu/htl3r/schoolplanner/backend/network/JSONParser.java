@@ -291,11 +291,6 @@ public class JSONParser {
 			int month = Integer.parseInt(dateString.substring(4,6)) - 1;
 			int day = Integer.parseInt(dateString.substring(6,8));
 			
-			// Setze nicht verwendete Werte auf 0
-			Calendar date = Calendar.getInstance();
-			date.set(year, month, day, 0, 0, 0);
-			date.set(Calendar.MILLISECOND, 0);
-			
 			int startMinute = Integer.parseInt(getMinute(startTime));
 			int startHour = Integer.parseInt(getHour(startTime));
 			
@@ -372,7 +367,7 @@ public class JSONParser {
 			// Baue Lesson zusammen
 			Lesson lesson = new Lesson();
 			lesson.setId(id);
-			lesson.setDate(date);
+			lesson.setDate(year, month, day);
 			lesson.setStartTime(startHour, startMinute);
 			lesson.setEndTime(endHour, endMinute);
 			lesson.setSchoolClasses(klList);

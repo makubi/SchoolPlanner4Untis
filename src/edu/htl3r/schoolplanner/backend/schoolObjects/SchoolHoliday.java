@@ -20,8 +20,6 @@ package edu.htl3r.schoolplanner.backend.schoolObjects;
 
 import java.util.Calendar;
 
-import edu.htl3r.schoolplanner.CalendarUtils;
-
 
 public class SchoolHoliday implements SchoolObject{
 
@@ -60,13 +58,5 @@ public class SchoolHoliday implements SchoolObject{
 	}
 	public void setEndDate(Calendar endDate) {
 		this.endDate = endDate;
-	}
-	
-	@Override
-	public String toString() {
-		return "Name: " +name+"\n"
-		+"Longname: " +longName+"\n"
-		+"Start: " +CalendarUtils.dateToStr(startDate)+"\n"
-		+"End: " +CalendarUtils.dateToStr(endDate);
 	}
 }
