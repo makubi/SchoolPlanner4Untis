@@ -24,32 +24,31 @@ import java.util.List;
 import java.util.Map;
 
 import edu.htl3r.schoolplanner.SchoolplannerContext;
-import edu.htl3r.schoolplanner.gui.Constants;
+import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class LoginSetManager {
 	
 	private List<LoginSet> loginSets;
 	private LoginSetDatabase database = new LoginSetDatabase();
 	
-	private List<LoginSetUpdateObserver> observers = new ArrayList<LoginSetUpdateObserver>();
-	
 	public LoginSetManager() {
 		database.setContext(SchoolplannerContext.context);
 		loginSets = database.getAllLoginSets();
 	}
 	
-	public void addLoginSet(LoginSet loginSet) {
+	public boolean addLoginSet(LoginSet loginSet) {
+		if(has(loginSet.getName())) {
+			return false;
+		}
 		loginSets.add(loginSet);
 		database.saveLoginSet(loginSet);
 		
-		for(LoginSetUpdateObserver observer : observers) {
-			observer.loginSetAdded();
-		}
+		return true;
 	}
 
 
-	public void addLoginSet(String name, String url, String school, String user, String password, boolean sslOnly) {
-		addLoginSet(new LoginSet(name, url, school, user, password, sslOnly));
+	public boolean addLoginSet(String name, String url, String school, String user, String password, boolean sslOnly) {
+		return addLoginSet(new LoginSet(name, url, school, user, password, sslOnly));
 	}
 
 
@@ -59,12 +58,12 @@ public class LoginSetManager {
 		for(LoginSet loginSet : loginSets) {
 			Map<String, String> loginSetMap = new HashMap<String, String>();
 			
-			loginSetMap.put(Constants.nameKey, loginSet.getName());
-			loginSetMap.put(Constants.serverUrlKey, loginSet.getServerUrl());
-			loginSetMap.put(Constants.schoolKey, loginSet.getSchool());
-			loginSetMap.put(Constants.usernameKey, loginSet.getUsername());
-			loginSetMap.put(Constants.passwordKey, loginSet.getPassword());
-			loginSetMap.put(Constants.sslOnlyKey, loginSet.isSslOnly() ? "1" : "0");
+			loginSetMap.put(LoginSetConstants.nameKey, loginSet.getName());
+			loginSetMap.put(LoginSetConstants.serverUrlKey, loginSet.getServerUrl());
+			loginSetMap.put(LoginSetConstants.schoolKey, loginSet.getSchool());
+			loginSetMap.put(LoginSetConstants.usernameKey, loginSet.getUsername());
+			loginSetMap.put(LoginSetConstants.passwordKey, loginSet.getPassword());
+			loginSetMap.put(LoginSetConstants.sslOnlyKey, loginSet.isSslOnly() ? "1" : "0");
 			
 			allLoginSets.add(loginSetMap);
 		}
@@ -75,6 +74,10 @@ public class LoginSetManager {
 	
 	public List<LoginSet> getAllLoginSets(){
 		return loginSets;
+	}
+	
+	public LoginSet getLoginSetOnPosition(int pos) {
+		return loginSets.get(pos);
 	}
 
 
@@ -87,8 +90,42 @@ public class LoginSetManager {
 		removeLoginEntry(loginSets.get(pos));
 	}
 	
-	public void addSetUpdateObserver(LoginSetUpdateObserver observer) {
-		observers.add(observer);
+	private boolean has(String name) {
+		for(LoginSet loginSet : loginSets) {
+			if(loginSet.getName().equals(name)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private LoginSet getLoginSet(String name) {
+		for(LoginSet loginSet : loginSets) {
+			if(loginSet.getName().equals(name)) {
+				return loginSet;
+			}
+		}
+		return null;
+	}
+
+	public void editLoginSet(String name, String serverUrl, String school,
+			String username, String password, boolean checked) {
+		
+		if(has(name)) {
+			database.editLoginSet(name, serverUrl, school,
+					username, password, checked);
+
+			for(LoginSet loginSet : loginSets) {
+				if(loginSet.getName().equals(name)) {
+					loginSets.remove(loginSet);
+					loginSets.add(new LoginSet(name, serverUrl, school, username, password, checked));
+				}
+			}
+		}
+		else {
+			removeLoginEntry(getLoginSet(name));
+			addLoginSet(name, serverUrl, school, username, password, checked);
+		}
 	}
 	
 }

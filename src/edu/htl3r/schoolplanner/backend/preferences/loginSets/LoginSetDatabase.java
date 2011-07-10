@@ -24,23 +24,23 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import edu.htl3r.schoolplanner.gui.Constants;
+import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class LoginSetDatabase {
 	
 	private LoginSetDatabaseHelper databaseHelper;
 	private String loginSetTableName;
 	
-	public void saveLoginSet(LoginSet loginSet) {
+	public void saveLoginSet(LoginSet loginSet) {		
 		SQLiteDatabase writableDatabase = openDatabase(true);
 		
 		ContentValues values = new ContentValues();
-		values.put(Constants.nameKey, loginSet.getName());
-		values.put(Constants.serverUrlKey, loginSet.getServerUrl());
-		values.put(Constants.schoolKey, loginSet.getSchool());
-		values.put(Constants.usernameKey, loginSet.getUsername());
-		values.put(Constants.passwordKey, loginSet.getPassword());
-		values.put(Constants.sslOnlyKey, loginSet.isSslOnly());
+		values.put(LoginSetConstants.nameKey, loginSet.getName());
+		values.put(LoginSetConstants.serverUrlKey, loginSet.getServerUrl());
+		values.put(LoginSetConstants.schoolKey, loginSet.getSchool());
+		values.put(LoginSetConstants.usernameKey, loginSet.getUsername());
+		values.put(LoginSetConstants.passwordKey, loginSet.getPassword());
+		values.put(LoginSetConstants.sslOnlyKey, loginSet.isSslOnly());
 		
 		writableDatabase.beginTransaction();
 		writableDatabase.insert(loginSetTableName, null, values);
@@ -85,8 +85,9 @@ public class LoginSetDatabase {
 	
 	public void removeLoginSet(LoginSet loginSet) {
 		SQLiteDatabase writableDatabase = openDatabase(true);
-		writableDatabase.delete(loginSetTableName, "name=?", new String[] {loginSet.getName()});
 		
+		writableDatabase.beginTransaction();
+		writableDatabase.delete(loginSetTableName, LoginSetConstants.nameKey+"=?", new String[] {loginSet.getName()});
 		writableDatabase.setTransactionSuccessful();
 		writableDatabase.endTransaction();
 		
@@ -96,6 +97,25 @@ public class LoginSetDatabase {
 	public void setContext(Context context) {
 		databaseHelper = new LoginSetDatabaseHelper(context);
 		loginSetTableName = databaseHelper.getLoginsetTableName();
+	}
+
+	public void editLoginSet(String name, String serverUrl, String school,
+			String username, String password, boolean checked) {
+		SQLiteDatabase writableDatabase = openDatabase(true);
+		
+		ContentValues values = new ContentValues();
+		values.put(LoginSetConstants.serverUrlKey, serverUrl);
+		values.put(LoginSetConstants.schoolKey, school);
+		values.put(LoginSetConstants.usernameKey, username);
+		values.put(LoginSetConstants.passwordKey, password);
+		values.put(LoginSetConstants.sslOnlyKey, checked);
+		
+		writableDatabase.beginTransaction();
+		writableDatabase.update(loginSetTableName, values, LoginSetConstants.nameKey+"=?", new String[]{name});
+		writableDatabase.setTransactionSuccessful();
+		writableDatabase.endTransaction();
+		
+		closeDatabase(writableDatabase);
 	}
 	
 }

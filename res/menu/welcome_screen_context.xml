@@ -2,7 +2,10 @@
 <menu
   xmlns:android="http://schemas.android.com/apk/res/android">
   
+  <item
+     android:id="@+id/edit_login_set"
+     android:title="Edit Login Set" />
    <item
      android:id="@+id/remove_login_set"
-     android:title="Remove Login Set" />   
+     android:title="Remove Login Set" />
 </menu>

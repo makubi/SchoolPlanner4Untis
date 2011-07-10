@@ -1,7 +1,7 @@
 /* SchoolPlanner4Untis - Android app to manage your Untis timetable
     Copyright (C) 2011  Mathias Kub <mail@makubi.at>
-						Gerald Schreiber <mail@gerald-schreiber.at>
-						Philip Woelfel <philip@woelfel.at>
+			Sebastian Chlan <sebastian@schoolplanner.at>
+			Christian Pascher <christian@schoolplanner.at>
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -25,9 +25,6 @@ import android.content.Context;
  * Stellt den {@link Context} fuer andere Klassen zur Verfuegung.<br>
  * Der Context muss mit dem {@link Application#getApplicationContext()} initialisert werden. Zur Zeit geschieht dies in der Klasse {@link SchoolPlannerApp}.
  */
-public class SchoolplannerContext {
-	
+public class SchoolplannerContext {	
 	public static Context context;
-	
-	// No get/set
 }

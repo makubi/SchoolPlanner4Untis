@@ -24,7 +24,7 @@ import edu.htl3r.schoolplanner.gui.WelcomeScreen;
  * Diese Klasse updated die LoginSet-Liste des WelcomeScreens, indem sie die Methode {@link WelcomeScreen#loginSetListUpdated()} aufruft und dadurch die LoginSet-Liste der UI aktualisiert.<br>
  * Implementierungen muessen die Methode {@link #doInBackground(Void...)} implementieren, um bestimmte Aktionen durchzufuehren. Danach wird die LoginSet-Liste der UI aktualisiert.<br>
  */
-public abstract class LoginSetUpdateAsyncTask extends AsyncTask<Void, Void, Void>{
+public abstract class LoginSetUpdateAsyncTask extends AsyncTask<Void, Void, Boolean>{
 	
 	private WelcomeScreen parent;
 	
@@ -39,7 +39,7 @@ public abstract class LoginSetUpdateAsyncTask extends AsyncTask<Void, Void, Void
 	}
 
 	@Override
-	protected void onPostExecute(Void result) {
+	protected void onPostExecute(Boolean result) {
 		super.onPostExecute(result);
 		parent.loginSetListUpdated();
 		parent.setInProgress("", false);
