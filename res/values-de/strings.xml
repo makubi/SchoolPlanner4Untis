@@ -72,7 +72,7 @@
 	<string name="preferredSelection">Bevorzugte Auswahl</string>
 	<string name="preferredView">Standardansicht</string>
 	
-	<string name="save">Speichern</string>
+	<string name="save">Speichern (lokal)</string>
 	<string name="lessonview_error">Fehler: Keine Daten gesetzt!</string>
 	<string name="error_laoddata">Fehler beim Laden der Daten!</string>
 	
@@ -90,9 +90,9 @@
 	<string name="progress_resync_title">Bitte warten!</string>
 	<string name="progress_resync_text">Die Stammdaten werden heruntergeladen!</string>
 	
-	<string name="menu_add_test">Prüfung</string>
-	<string name="newtest">Neu</string>
-	<string name="newtest_title">Prüfung</string>
+	<string name="menu_add_test">Prüfungen</string>
+	<string name="newtest">Neu (lokal)</string>
+	<string name="newtest_title">Prüfung (lokal)</string>
 	
 	<string name="testtype">Testtyp</string>
 	

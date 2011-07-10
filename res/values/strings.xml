@@ -24,7 +24,7 @@
 	<string name="preferredSelection">Preferred Selection</string>
 	<string name="preferredView">Preferred View</string>
 	
-	<string name="save">Save</string>
+	<string name="save">Save (local)</string>
 	<string name="lessonview_error">Error: No lesson set!</string>
 	<string name="error_laoddata">Error while loading data!</string>
 	<string name="no_lessons">There are no lessons for this day!\n\<b>Be Happy! :D</b></string>
@@ -45,9 +45,9 @@
 	<string name="progress_resync_title">Please wait!</string>
 	<string name="progress_resync_text">The basedata is being downloaded!</string>
 	
-	<string name="menu_add_test">Test</string>
-	<string name="newtest">New</string>
-	<string name="newtest_title">Test</string>
+	<string name="menu_add_test">Tests</string>
+	<string name="newtest">New (local)</string>
+	<string name="newtest_title">Test (local)</string>
 	
 	<string name="testtype">Type of Test</string>
 	

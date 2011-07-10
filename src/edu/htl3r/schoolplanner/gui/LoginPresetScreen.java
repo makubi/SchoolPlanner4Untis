@@ -115,12 +115,12 @@ public class LoginPresetScreen extends SchoolplannerActivity implements OnItemSe
 			auth.setSchool(schol);
 			try {
 				auth.setServerUrl(urls);
+				app.getData().savePreset(titl, auth);
+				updateDropdown();
+				bitteToasten(getString(R.string.preset_added), 3);
 			} catch (URISyntaxException e1) {
-				e1.printStackTrace();
+				bitteToasten("Unable to parse server url", Toast.LENGTH_SHORT);
 			}
-			app.getData().savePreset(titl, auth);
-			updateDropdown();
-			bitteToasten(getString(R.string.preset_added), 3);
 		}
 		else {
 			bitteToasten(getString(R.string.preset_add_failed), 3);
