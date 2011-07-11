@@ -1,7 +1,7 @@
 /* SchoolPlanner4Untis - Android app to manage your Untis timetable
     Copyright (C) 2011  Mathias Kub <mail@makubi.at>
-						Gerald Schreiber <mail@gerald-schreiber.at>
-						Philip Woelfel <philip@woelfel.at>
+			Sebastian Chlan <sebastian@schoolplanner.at>
+			Christian Pascher <christian@schoolplanner.at>
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -15,15 +15,10 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package edu.htl3r.schoolplanner.backend.network;
 
-package edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType;
+public interface ErrorCodes {
 
-import java.io.Serializable;
-
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonType;
-
-public class LessonTypeOfficeHour extends LessonType implements Serializable {
-	
-	private static final long serialVersionUID = -7417567538329894602L;
-	
+	public static int JSON_EXCEPTION = 255;
+	public static int IO_EXCEPTION = 256;
 }

@@ -72,4 +72,5 @@ public interface MasterdataStore {
 	 */
 	public void setTimegrid(Timegrid timegrid);
 	
+	public void setStatusData(List<StatusData> statusData);
 }

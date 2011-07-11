@@ -26,7 +26,6 @@ public abstract class LessonType implements Serializable,Cloneable {
 	
 	protected int fgColor;
 	protected int bgColor;
-	protected String text;
 	
 	public int getFgColor() {
 		return fgColor;
@@ -34,10 +33,6 @@ public abstract class LessonType implements Serializable,Cloneable {
 	
 	public int getBgColor() {
 		return bgColor;
-	}
-	
-	public String getText() {
-		return text;
 	}
 	
 	protected void setFgColor(int fgColor) {

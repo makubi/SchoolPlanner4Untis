@@ -35,6 +35,7 @@ import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataFacade;
+import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceMasterdataProvider;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceTimetableDataProvider;
 import edu.htl3r.schoolplanner.backend.preferences.Authentication;
@@ -51,7 +52,8 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 /**
  * Netzwerkzugriff fuer die Datenabfrage ueber JSON.
  */
-public class JSONNetwork implements UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider {
+public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
+		UnsaveDataSourceTimetableDataProvider {
 
 	/**
 	 * JSON-RPC Version, die der Untis-Server verwendet.
@@ -186,9 +188,9 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider, UnsaveDa
 
 			}
 		} catch (JSONException e) {
-			data.setErrorCode(255);
+			data.setErrorCode(ErrorCodes.JSON_EXCEPTION);
 		} catch (IOException e) {
-			data.setErrorCode(256);
+			data.setErrorCode(ErrorCodes.IO_EXCEPTION);
 		}
 
 		return data;
@@ -233,9 +235,9 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider, UnsaveDa
 			}
 
 		} catch (JSONException e) {
-			data.setErrorCode(255);
+			data.setErrorCode(ErrorCodes.JSON_EXCEPTION);
 		} catch (IOException e) {
-			data.setErrorCode(256);
+			data.setErrorCode(ErrorCodes.IO_EXCEPTION);
 		}
 		return data;
 	}
@@ -268,9 +270,9 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider, UnsaveDa
 			}
 
 		} catch (JSONException e) {
-			data.setErrorCode(255);
+			data.setErrorCode(ErrorCodes.JSON_EXCEPTION);
 		} catch (IOException e) {
-			data.setErrorCode(256);
+			data.setErrorCode(ErrorCodes.IO_EXCEPTION);
 		}
 		return data;
 	}
@@ -285,7 +287,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider, UnsaveDa
 		DataFacade<List<SchoolTeacher>> data = new DataFacade<List<SchoolTeacher>>();
 
 		if (viewTypeList.isSuccessful()) {
-			
+
 			List<SchoolTeacher> list = new ArrayList<SchoolTeacher>();
 			for (ViewType obj : viewTypeList.getData()) {
 				if (obj instanceof SchoolTeacher) {
@@ -421,6 +423,124 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider, UnsaveDa
 		return data;
 	}
 
+	@Override
+	public DataFacade<List<StatusData>> getStatusData() {
+		DataFacade<List<StatusData>> data = new DataFacade<List<StatusData>>();
+	
+		final String id = getNextID();
+		final String method = JSONGetMethods.getStatusData;
+	
+		JSONObject response;
+		try {
+			response = requestList(id, method);
+			JSONObject result = response.getJSONObject("result");
+			List<StatusData> statusData = jsonParser.jsonToStatusData(result);
+			data.setData(statusData);
+		} catch (JSONException e) {
+			data.setErrorCode(ErrorCodes.JSON_EXCEPTION);
+		} catch (IOException e) {
+			data.setErrorCode(ErrorCodes.IO_EXCEPTION);
+		}
+	
+		return data;
+	}
+
+	@Override
+	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
+		DataFacade<List<Lesson>> data = new DataFacade<List<Lesson>>();
+	
+		DataFacade<Map<String, List<Lesson>>> tmpData = getLessons(viewType,
+				date, date);
+		if (tmpData.isSuccessful()) {
+			data.setData(tmpData.getData().get(
+					DateTimeUtils.toISO8601Date(date)));
+		} else {
+			data.setErrorCode(tmpData.getErrorCode());
+		}
+	
+		return data;
+	}
+
+	@Override
+	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType view,
+			DateTime startDate, DateTime endDate) {
+		final String id = getNextID();
+		final String method = JSONGetMethods.getTimetable;
+	
+		final JSONObject request = new JSONObject();
+		final JSONObject params = new JSONObject();
+	
+		DataFacade<Map<String, List<Lesson>>> data = new DataFacade<Map<String, List<Lesson>>>();
+	
+		Map<String, List<Lesson>> lessonMap = new HashMap<String, List<Lesson>>();
+	
+		try {
+			// Setze die ID des ViewTypes (z.B. 5AN)
+			params.put("id", view.getId());
+	
+			// Setze die Art des ViewTypes (z.B. Klasse)
+			params.put("type", viewTypeMapping.get(view.getClass()));
+	
+			// Parsen der Daten
+			String startYear = "" + startDate.year;
+			// Intern 0 - 11
+			String startMonth = "" + startDate.month + 1;
+			String startDay = "" + startDate.monthDay;
+	
+			if (startMonth.length() < 2) {
+				startMonth = "0" + startMonth;
+			}
+	
+			if (startDay.length() < 2) {
+				startDay = "0" + startDay;
+			}
+	
+			String endYear = "" + endDate.year;
+			// Intern 0 - 11
+			String endMonth = "" + endDate.month + 1;
+			String endDay = "" + startDate.monthDay;
+	
+			if (endMonth.length() < 2) {
+				endMonth = "0" + endMonth;
+			}
+	
+			if (endDay.length() < 2) {
+				endDay = "0" + endDay;
+			}
+	
+			// Setze die Daten der Abfrage
+			params.put("startDate", startYear + startMonth + startDay);
+			params.put("endDate", endYear + endMonth + endDay);
+	
+			request.put("jsonrpc", jsonrpcVersion);
+			request.put("method", method);
+			request.put("id", id);
+			request.put("params", params);
+	
+			// Netzwerkanfrage
+			JSONObject response = getJSONData(request);
+	
+			// Extrahiere Nutzdaten
+			JSONArray result = response.getJSONArray("result");
+	
+			// Parse die JSON-Response zu passender Map
+			lessonMap = jsonParser.jsonToLessonMap(result);
+	
+			// Fuege leere Listen fuer Daten ohne Stunden hinzu
+			lessonProcessor.addEmptyDaysToLessonMap(lessonMap, startDate,
+					endDate);
+	
+			data.setData(lessonMap);
+	
+		} catch (JSONException e) {
+			data.setErrorCode(ErrorCodes.JSON_EXCEPTION);
+		} catch (IOException e) {
+			data.setErrorCode(ErrorCodes.IO_EXCEPTION);
+		}
+	
+		return data;
+	}
+
 	/**
 	 * Versucht, eine Verbindung zum Server herzustellen und sich mit diesem zu
 	 * authentifizieren. Ist dies erfolgreich, wird die SessionID gesetzt, mit
@@ -480,9 +600,9 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider, UnsaveDa
 				}
 			}
 		} catch (JSONException e) {
-			data.setErrorCode(255);
+			data.setErrorCode(ErrorCodes.JSON_EXCEPTION);
 		} catch (IOException e) {
-			data.setErrorCode(256);
+			data.setErrorCode(ErrorCodes.IO_EXCEPTION);
 		}
 		return data;
 	}
@@ -492,7 +612,9 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider, UnsaveDa
 	 * 
 	 * @throws IOException
 	 *             Wenn ein Fehler bei der Uebertragung auftritt
+	 * @deprecated See {@link #getStatusData()}
 	 */
+	@Deprecated
 	public void initStatusData() throws IOException {
 		final String id = getNextID();
 		final String method = JSONGetMethods.getStatusData;
@@ -555,100 +677,6 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider, UnsaveDa
 
 	public void setCache(Cache cache) {
 		jsonParser.setCache(cache);
-	}
-
-	@Override
-	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
-		DataFacade<List<Lesson>> data = new DataFacade<List<Lesson>>();
-		
-		DataFacade<Map<String, List<Lesson>>> tmpData = getLessons(viewType, date, date);
-		if(tmpData.isSuccessful()) {
-			data.setData(tmpData.getData().get(DateTimeUtils.toISO8601Date(date)));
-		}
-		else {
-			data.setErrorCode(tmpData.getErrorCode());
-		}
-		
-		return data;
-	}
-
-	@Override
-	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType view,
-			DateTime startDate, DateTime endDate) {
-		final String id = getNextID();
-		final String method = JSONGetMethods.getTimetable;
-
-		final JSONObject request = new JSONObject();
-		final JSONObject params = new JSONObject();
-
-		DataFacade<Map<String, List<Lesson>>> data = new DataFacade<Map<String,List<Lesson>>>();
-		
-		Map<String, List<Lesson>> lessonMap = new HashMap<String, List<Lesson>>();
-
-		try {
-			// Setze die ID des ViewTypes (z.B. 5AN)
-			params.put("id", view.getId());
-
-			// Setze die Art des ViewTypes (z.B. Klasse)
-			params.put("type", viewTypeMapping.get(view.getClass()));
-
-			// Parsen der Daten
-			String startYear = ""+startDate.year;
-			// Intern 0 - 11
-			String startMonth = ""+startDate.month+1;
-			String startDay = ""+startDate.monthDay;
-
-			if(startMonth.length() < 2) {
-				startMonth = "0"+startMonth;
-			}
-
-			if(startDay.length() < 2) {
-				startDay = "0"+startDay;
-			}
-
-			String endYear = ""+endDate.year;
-			// Intern 0 - 11
-			String endMonth = ""+endDate.month+1;
-			String endDay = ""+startDate.monthDay;
-
-			if(endMonth.length() < 2) {
-				endMonth = "0"+endMonth;
-			}
-
-			if(endDay.length() < 2) {
-				endDay = "0"+endDay;
-			}
-
-			// Setze die Daten der Abfrage
-			params.put("startDate",startYear+startMonth+startDay);
-			params.put("endDate",endYear+endMonth+endDay);
-
-			request.put("jsonrpc", jsonrpcVersion);
-			request.put("method", method);
-			request.put("id", id);
-			request.put("params", params);
-
-			// Netzwerkanfrage
-			JSONObject response = getJSONData(request);
-
-			// Extrahiere Nutzdaten
-			JSONArray result = response.getJSONArray("result");
-
-			// Parse die JSON-Response zu passender Map
-			lessonMap = jsonParser.jsonToLessonMap(result);
-
-			// Fuege leere Listen fuer Daten ohne Stunden hinzu
-			lessonProcessor .addEmptyDaysToLessonMap(lessonMap, startDate, endDate);
-			
-			data.setData(lessonMap);
-
-		} catch (JSONException e) {
-			data.setErrorCode(255);
-		} catch (IOException e) {
-			data.setErrorCode(256);
-		}
-
-		return data;
 	}
 
 }

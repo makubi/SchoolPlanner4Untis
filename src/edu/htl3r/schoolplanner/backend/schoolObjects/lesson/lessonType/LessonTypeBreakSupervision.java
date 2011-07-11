@@ -20,17 +20,10 @@ package edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType;
 
 import java.io.Serializable;
 
-import android.graphics.Color;
-import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonType;
 
 public class LessonTypeBreakSupervision extends LessonType implements Serializable{
 	
 	private static final long serialVersionUID = -4959972750744561529L;
-
-	public LessonTypeBreakSupervision() {
-		bgColor = Color.rgb(0,0,80);
-		fgColor = Color.WHITE;
-	}
+	
 }

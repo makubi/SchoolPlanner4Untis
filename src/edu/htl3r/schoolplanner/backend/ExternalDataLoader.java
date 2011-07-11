@@ -174,76 +174,25 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		return null;
 	}
 
-	/**
-	 * Setzt die Preferences fuer das Netzwerk neu.
-	 * @param authentications Preferences, die gesetzt werden sollen
-	 */
-	public void setLoginCredentials(Authentication authentications) {
-		network.setLoginCredentials(authentications);
-	}
-
-	/**
-	 * Setzt den Status des Netzwerks bei Aenderung dessen.
-	 * @param networkAvailable true, wenn das Netzwerk verfuegbar ist, sonst false
-	 */
-	public void networkAvailabilityChanged(boolean networkAvailable) {
-		this.networkAvailable = networkAvailable;
-	}
-
-	/**
-	 * Authentifiziert sich mit dem Untis-Server ueber das Netzwerk.
-	 * @return true, wenn die Authentifizierung erfolgreich war, sonst false
-	 * @throws IOException Wenn ein Problem waehrend der Netzwerkanfrage auftritt
-	 */
-	public DataFacade<Boolean> authenticate() {
-		return network.authenticate();
-	}
-
-	/**
-	 * Laedt die neusten Stammdaten herunter und aktualisiert danach die Datenbank.<br>
-	 * Stammdaten, die zur Zeit aktualisiert werden: Liste der Schuklasse, Liste der Lehrer, Liste der Raeume, Liste der Faecher, Stundenraster. 
-	 * @return Ein Objekt, das die Stammdaten, die aktualisiert wurden, enthaelt.
-	 * @throws IOException Wenn waehrend dem Abruf der Daten ein Fehler auftritt
-	 */
-	public DataFacade<MasterData> resyncMasterData() {
-		DataFacade<List<SchoolClass>> schoolClassList = network.getSchoolClassList();
-		DataFacade<List<SchoolTeacher>> schoolTeacherList = network.getSchoolTeacherList();
-		DataFacade<List<SchoolRoom>> schoolRoomList = network.getSchoolRoomList();
-		DataFacade<List<SchoolSubject>> schoolSubjectList = network.getSchoolSubjectList();
-		
-		DataFacade<List<SchoolHoliday>> schoolHolidayList = network.getSchoolHolidayList();
-		DataFacade<Timegrid> timegrid = network.getTimegrid();
-		
-		DataFacade<MasterData> data = new DataFacade<MasterData>();
-		
-		if(schoolClassList.isSuccessful() && schoolHolidayList.isSuccessful() && schoolRoomList.isSuccessful() && schoolSubjectList.isSuccessful() && schoolTeacherList.isSuccessful() && timegrid.isSuccessful()) {
-		MasterData masterData = new MasterData();
-		masterData.setSchoolClassList(schoolClassList.getData());
-		masterData.setSchoolRoomList(schoolRoomList.getData());
-		masterData.setSchoolSubjectList(schoolSubjectList.getData());
-		masterData.setSchoolTeacherList(schoolTeacherList.getData());
-		masterData.setSchoolHolidayList(schoolHolidayList.getData());
-		masterData.setTimegrid(timegrid.getData());
-		
-		data.setData(masterData);
-		
-		database.setSchoolClassList(schoolClassList.getData());
-		database.setSchoolTeacherList(schoolTeacherList.getData());
-		database.setSchoolRoomList(schoolRoomList.getData());
-		database.setSchoolSubjectList(schoolSubjectList.getData());
-		database.setSchoolHolidayList(schoolHolidayList.getData());
-		database.setTimegrid(timegrid.getData());
-		}
-		else {
-			data.setErrorCode(254);
-		}
-		
-		return data;
-	}	
+	@Override
+	public DataFacade<List<StatusData>> getStatusData() {
+		DataFacade<List<StatusData>> statusData;
 	
+		// Check database
+		/*if ((schoolSubjectList = database.getSchoolSubjectList()) != null) {
+			Log.v("DataSource", "schoolSubjectList: Database");
+			return schoolSubjectList;
+		}*/
+		// Check network
+		if (networkAvailable) {
+			if ((statusData = network.getStatusData()) != null) {
+				//database.setStatusData(statusData.getData());
+				return statusData;
+			}
+		}
 	
-	public void setCache(Cache cache) {
-		network.setCache(cache);
+		return null;
+	
 	}
 
 	@Override
@@ -279,6 +228,81 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		// TODO: Check database
 		
 		return null;
+	}
+
+	/**
+	 * Authentifiziert sich mit dem Untis-Server ueber das Netzwerk.
+	 * @return true, wenn die Authentifizierung erfolgreich war, sonst false
+	 * @throws IOException Wenn ein Problem waehrend der Netzwerkanfrage auftritt
+	 */
+	public DataFacade<Boolean> authenticate() {
+		return network.authenticate();
+	}
+
+	/**
+	 * Setzt den Status des Netzwerks bei Aenderung dessen.
+	 * @param networkAvailable true, wenn das Netzwerk verfuegbar ist, sonst false
+	 */
+	public void networkAvailabilityChanged(boolean networkAvailable) {
+		this.networkAvailable = networkAvailable;
+	}
+
+	/**
+	 * Laedt die neusten Stammdaten herunter und aktualisiert danach die Datenbank.<br>
+	 * Stammdaten, die zur Zeit aktualisiert werden: Liste der Schuklasse, Liste der Lehrer, Liste der Raeume, Liste der Faecher, Stundenraster. 
+	 * @return Ein Objekt, das die Stammdaten, die aktualisiert wurden, enthaelt.
+	 * @throws IOException Wenn waehrend dem Abruf der Daten ein Fehler auftritt
+	 */
+	public DataFacade<MasterData> resyncMasterData() {
+		DataFacade<List<SchoolClass>> schoolClassList = network.getSchoolClassList();
+		DataFacade<List<SchoolTeacher>> schoolTeacherList = network.getSchoolTeacherList();
+		DataFacade<List<SchoolRoom>> schoolRoomList = network.getSchoolRoomList();
+		DataFacade<List<SchoolSubject>> schoolSubjectList = network.getSchoolSubjectList();
+		
+		DataFacade<List<SchoolHoliday>> schoolHolidayList = network.getSchoolHolidayList();
+		DataFacade<Timegrid> timegrid = network.getTimegrid();
+		DataFacade<List<StatusData>> statusData = network.getStatusData();
+		
+		DataFacade<MasterData> data = new DataFacade<MasterData>();
+		
+		if(schoolClassList.isSuccessful() && schoolHolidayList.isSuccessful() && schoolRoomList.isSuccessful() && schoolSubjectList.isSuccessful() && schoolTeacherList.isSuccessful() && timegrid.isSuccessful() && statusData.isSuccessful()) {
+			MasterData masterData = new MasterData();
+			masterData.setSchoolClassList(schoolClassList.getData());
+			masterData.setSchoolRoomList(schoolRoomList.getData());
+			masterData.setSchoolSubjectList(schoolSubjectList.getData());
+			masterData.setSchoolTeacherList(schoolTeacherList.getData());
+			masterData.setSchoolHolidayList(schoolHolidayList.getData());
+			masterData.setTimegrid(timegrid.getData());
+			masterData.setStatusData(statusData.getData());
+		
+			data.setData(masterData);
+		
+			database.setSchoolClassList(schoolClassList.getData());
+			database.setSchoolTeacherList(schoolTeacherList.getData());
+			database.setSchoolRoomList(schoolRoomList.getData());
+			database.setSchoolSubjectList(schoolSubjectList.getData());
+			database.setSchoolHolidayList(schoolHolidayList.getData());
+			database.setTimegrid(timegrid.getData());
+			database.setStatusData(statusData.getData());
+		
+		}
+		else {
+			data.setErrorCode(254);
+		}
+		
+		return data;
+	}
+
+	public void setCache(Cache cache) {
+		network.setCache(cache);
+	}
+
+	/**
+	 * Setzt die Preferences fuer das Netzwerk neu.
+	 * @param authentications Preferences, die gesetzt werden sollen
+	 */
+	public void setLoginCredentials(Authentication authentications) {
+		network.setLoginCredentials(authentications);
 	}
 	
 }

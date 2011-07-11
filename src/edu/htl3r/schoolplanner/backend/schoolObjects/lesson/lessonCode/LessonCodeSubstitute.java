@@ -20,7 +20,6 @@ package edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode;
 
 import java.io.Serializable;
 
-import android.graphics.Color;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCode;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
@@ -30,11 +29,6 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 public class LessonCodeSubstitute extends LessonCode implements Serializable {
 
 	private static final long serialVersionUID = 2973013043522940591L;
-
-	public LessonCodeSubstitute() {
-		bgColor = Color.rgb(255, 174, 0);
-		fgColor = Color.BLACK;
-	}
 	
 	@SuppressWarnings("unused")
 	private SchoolClass originSchoolClass;

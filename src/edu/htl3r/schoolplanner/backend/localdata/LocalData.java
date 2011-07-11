@@ -31,6 +31,7 @@ import android.util.Log;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.MasterdataStore;
+import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
@@ -416,6 +417,20 @@ public class LocalData implements MasterdataStore, MasterdataProvider {
 				}
 			}
 		}
+	}
+
+
+	@Override
+	public List<StatusData> getStatusData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void setStatusData(List<StatusData> statusData) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

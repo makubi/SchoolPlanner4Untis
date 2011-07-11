@@ -61,6 +61,9 @@ public interface WebUntis {
 
 	
 	// LessonTypeAbbreviation
+	/** Enthaelt das Kuerzel des LessonTypes Lesson */
+	public static final String LESSON = "ls";
+	
 	/**	Enthaelt das Kuerzel des LessonTypes OfficeHour. */
 	public static final String OFFICEHOUR = "oh";
 	

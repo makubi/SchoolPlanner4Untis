@@ -76,4 +76,6 @@ public interface UnsaveDataSourceMasterdataProvider {
 	 */
 	public DataFacade<Timegrid> getTimegrid();
 	
+	public DataFacade<List<StatusData>> getStatusData();
+	
 }

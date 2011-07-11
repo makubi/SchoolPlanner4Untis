@@ -49,6 +49,8 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 	private Timegrid timegrid;
 	
 	private Timetable timetable = new Timetable();
+	
+	private List<StatusData> statusData;
 
 	@Override
 	public List<SchoolClass> getSchoolClassList() {
@@ -153,5 +155,15 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 		
 		String date = DateTimeUtils.toISO8601Date(endDate);
 		timetable.put(view, date, lessonMap.get(date));
+	}
+
+	@Override
+	public List<StatusData> getStatusData() {
+		return statusData;
+	}
+
+	@Override
+	public void setStatusData(List<StatusData> statusData) {
+		this.statusData = statusData;
 	}
 }

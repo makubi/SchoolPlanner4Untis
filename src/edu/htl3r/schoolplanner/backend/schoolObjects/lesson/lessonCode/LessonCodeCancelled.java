@@ -20,16 +20,10 @@ package edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode;
 
 import java.io.Serializable;
 
-import android.graphics.Color;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCode;
 
 public class LessonCodeCancelled extends LessonCode implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 7325516153907914672L;
-	
-	public LessonCodeCancelled() {
-		bgColor = Color.RED;
-		fgColor = Color.BLACK;
-	}
 	
 }

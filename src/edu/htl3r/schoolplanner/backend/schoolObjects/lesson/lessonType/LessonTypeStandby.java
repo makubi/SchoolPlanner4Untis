@@ -20,18 +20,10 @@ package edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType;
 
 import java.io.Serializable;
 
-import android.graphics.Color;
-import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonType;
 
 public class LessonTypeStandby extends LessonType implements Serializable {
 	
 	private static final long serialVersionUID = -4941171247877817374L;
-
-	public LessonTypeStandby() {
-		fgColor = Color.WHITE;
-		bgColor = Color.rgb(80,0,80);
-	}
 	
 }
