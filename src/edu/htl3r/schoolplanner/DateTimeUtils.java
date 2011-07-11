@@ -21,6 +21,11 @@ import android.text.format.Time;
 
 public class DateTimeUtils {
 
+	/**
+	 * Liefert ein {@link Time}-Objekt als ISO-8601-String.
+	 * @param date {@link Time}-Objekt, von dem der String erzeugt werden soll
+	 * @return Uebergebenes {@link Time}-Objekt als ISO-8601-String
+	 */
 	public static String toISO8601Date(Time date) {
 		String month = normalizeDate(""+date.month);
 		String day = normalizeDate(""+(date.monthDay+1));

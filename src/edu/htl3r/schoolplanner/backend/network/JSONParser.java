@@ -31,7 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.graphics.Color;
-import edu.htl3r.schoolplanner.CalendarUtils;
+import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
@@ -330,7 +330,7 @@ public class JSONParser {
 	 * Diese Methode erzeugt aus dem uebergeben JSONArray eine Map mit den darin enthaltenen Stunden.
 	 * Lehrer-, Klassen-, etc.-Listen vom Cache werden verwendet, um direkt die Objekte, statt den IDs aus dem Netzwerk zuzuweisen.
 	 * @param result JSONArray, das die Daten im JSON-Format enthaelt
-	 * @return Eine Map mit Datums-String (siehe {@link CalendarUtils#getCalendarAs8601String(Calendar)}) zu Liste mit Stunden an diesem Tag
+	 * @return Eine Map mit Datums-String (siehe {@link DateTimeUtils#toISO8601Date(android.text.format.Time)}) zu Liste mit Stunden an diesem Tag
 	 * @throws JSONException Wird geworfen, wenn ein Fehler beim Abfragen der Daten aus den JSON-Objekten auftritt. Z.B. wenn ein benoetigter Parameter fehlt oder die Struktur des JSON-Objekts nicht passend ist
 	 * @throws IOException Wird geworfen, wenn beim Abfragen der Lehrer-, Klassen-, etc.-Listen ein Fehler auftritt
 	 */
