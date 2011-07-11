@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import android.text.format.Time;
+import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
@@ -36,9 +37,9 @@ public class Lesson implements Serializable {
 
 	private int id;
 
-	private Time date = new Time();
-	private Time startTime = new Time();
-	private Time endTime = new Time();
+	private DateTime date = new DateTime();
+	private DateTime startTime = new DateTime();
+	private DateTime endTime = new DateTime();
 	
 	private List<SchoolClass> schoolClasses = new ArrayList<SchoolClass>();
 	private List<SchoolTeacher> schoolTeachers = new ArrayList<SchoolTeacher>();
@@ -55,7 +56,7 @@ public class Lesson implements Serializable {
 	 * <b>ACHTUNG: Die Monatsnummer laeuft von 0 - 11!</b>
 	 * @return Datum der Stunde
 	 */
-	public Time getDate() {
+	public DateTime getDate() {
 		return date;
 	}
 

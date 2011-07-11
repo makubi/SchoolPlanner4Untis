@@ -25,10 +25,15 @@ import android.text.format.Time;
  */
 public class DateTime extends Time {
 
+
+	public DateTime() {
+		super();
+	}
+	
 	public DateTime(DateTime other) {
 		super(other);
 	}
-
+	
 	/**
 	 * Erhoeht den Tag um 1 und normalisiert danach das Datum.
 	 * {@link #normalize(boolean)}
