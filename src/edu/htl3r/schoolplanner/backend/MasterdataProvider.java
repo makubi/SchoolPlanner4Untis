@@ -1,7 +1,7 @@
 /* SchoolPlanner4Untis - Android app to manage your Untis timetable
     Copyright (C) 2011  Mathias Kub <mail@makubi.at>
-			Sebastian Chlan <sebastian@schoolplanner.at>
-			Christian Pascher <christian@schoolplanner.at>
+						Gerald Schreiber <mail@gerald-schreiber.at>
+						Philip Woelfel <philip@woelfel.at>
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -15,11 +15,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 package edu.htl3r.schoolplanner.backend;
 
 import java.io.IOException;
 import java.util.List;
 
+import edu.htl3r.schoolplanner.backend.localdata.LocalData;
+import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
@@ -27,14 +30,19 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
-public interface UnsaveDataSourceDataProvider {
+/**
+ * Interface zu den Datenabfragen, die vom Backend zur Verfuegung gestellt werden.<br>
+ * Bekannte Implementierungen: {@link JSONNetwork}, {@link LocalData}, {@link InternalMemory}, {@link ExternalDataLoader}
+ */
+public interface MasterdataProvider {
+
 	/**
 	 * Liefert alle Schulklassen als Liste.
 	 * @return Alle Schulklassen als Liste oder 'null', wenn nicht
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public DataFacade<List<SchoolClass>> getSchoolClassList() throws IOException;
+	public List<SchoolClass> getSchoolClassList() throws IOException;
 
 	/**
 	 * Liefert alle Lehrer als Liste. 
@@ -42,7 +50,7 @@ public interface UnsaveDataSourceDataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() throws IOException;
+	public List<SchoolTeacher> getSchoolTeacherList() throws IOException;
 
 	/**
 	 * Liefert alle Raume als Liste. 
@@ -50,7 +58,7 @@ public interface UnsaveDataSourceDataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public DataFacade<List<SchoolRoom>> getSchoolRoomList() throws IOException;
+	public List<SchoolRoom> getSchoolRoomList() throws IOException;
 
 	/**
 	 * Liefert alle Unterrichtsfaecher als Liste. 
@@ -58,7 +66,7 @@ public interface UnsaveDataSourceDataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() throws IOException;
+	public List<SchoolSubject> getSchoolSubjectList() throws IOException;
 
 	/**
 	 * Liefert alle freien Tage als Liste. 
@@ -66,7 +74,7 @@ public interface UnsaveDataSourceDataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList() throws IOException;
+	public List<SchoolHoliday> getSchoolHolidayList() throws IOException;
 
 	/**
 	 * Liefert den Zeitraster. 
@@ -74,6 +82,6 @@ public interface UnsaveDataSourceDataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public DataFacade<Timegrid> getTimegrid() throws IOException;
+	public Timegrid getTimegrid() throws IOException;
 	
 }

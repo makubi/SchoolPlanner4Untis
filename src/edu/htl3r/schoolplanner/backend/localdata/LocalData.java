@@ -29,8 +29,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
-import edu.htl3r.schoolplanner.backend.DataProvider;
-import edu.htl3r.schoolplanner.backend.DataStore;
+import edu.htl3r.schoolplanner.backend.MasterdataProvider;
+import edu.htl3r.schoolplanner.backend.MasterdataStore;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
@@ -43,7 +43,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 /**
  * Implementierung einer Datenbank Zugriff auf eine Datenbank per SQLite
  */
-public class LocalData implements DataStore, DataProvider {
+public class LocalData implements MasterdataStore, MasterdataProvider {
 
 	private SQLiteDatabase database;
 	

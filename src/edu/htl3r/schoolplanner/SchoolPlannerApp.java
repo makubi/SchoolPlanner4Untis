@@ -29,7 +29,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import edu.htl3r.schoolplanner.backend.Cache;
-import edu.htl3r.schoolplanner.backend.DataProvider;
+import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 
 public class SchoolPlannerApp extends Application {
@@ -79,7 +79,7 @@ public class SchoolPlannerApp extends Application {
 	}
 
 	/**
-	 * setzt den Netzwerkstatus neu und updatet die Information im {@link DataProvider}
+	 * setzt den Netzwerkstatus neu und updatet die Information im {@link MasterdataProvider}
 	 * @param hasNetwork true wenn eine Datenverbindung vorhanden ist, wenn nicht false
 	 */
 	public void setNetworkEnabled(boolean hasNetwork) {

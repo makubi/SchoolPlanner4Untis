@@ -20,12 +20,16 @@ package edu.htl3r.schoolplanner.backend;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import android.util.Log;
+import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.localdata.LocalData;
 import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
 import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
+import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
@@ -37,7 +41,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see LocalData
  * @see JSONNetwork
  */
-public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
+public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider {
 
 	private LocalData database = new LocalData();
 	private JSONNetwork network = new JSONNetwork();
@@ -45,7 +49,7 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	private boolean networkAvailable = true;
 
 	@Override
-	public DataFacade<List<SchoolClass>> getSchoolClassList() throws IOException {
+	public DataFacade<List<SchoolClass>> getSchoolClassList() {
 		DataFacade<List<SchoolClass>> schoolClassList;
 
 		// Check database
@@ -66,7 +70,7 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	}
 
 	@Override
-	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() throws IOException {
+	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() {
 		DataFacade<List<SchoolTeacher>> schoolTeacherList;
 
 		// Check database
@@ -87,7 +91,7 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	}
 
 	@Override
-	public DataFacade<List<SchoolRoom>> getSchoolRoomList() throws IOException {
+	public DataFacade<List<SchoolRoom>> getSchoolRoomList() {
 		DataFacade<List<SchoolRoom>> schoolRoomList;
 
 		// Check database
@@ -108,7 +112,7 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	}
 
 	@Override
-	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() throws IOException {
+	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() {
 		DataFacade<List<SchoolSubject>> schoolSubjectList;
 
 		// Check database
@@ -129,7 +133,7 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	}
 
 	@Override
-	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList() throws IOException {
+	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList() {
 		DataFacade<List<SchoolHoliday>> schoolHolidayList;
 
 		// Check database
@@ -150,7 +154,7 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	}
 	
 	@Override
-	public DataFacade<Timegrid> getTimegrid() throws IOException {
+	public DataFacade<Timegrid> getTimegrid() {
 		DataFacade<Timegrid> timegrid;
 
 		// Check database
@@ -191,7 +195,7 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	 * @return true, wenn die Authentifizierung erfolgreich war, sonst false
 	 * @throws IOException Wenn ein Problem waehrend der Netzwerkanfrage auftritt
 	 */
-	public DataFacade<Boolean> authenticate() throws IOException {
+	public DataFacade<Boolean> authenticate() {
 		return network.authenticate();
 	}
 
@@ -201,7 +205,7 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	 * @return Ein Objekt, das die Stammdaten, die aktualisiert wurden, enthaelt.
 	 * @throws IOException Wenn waehrend dem Abruf der Daten ein Fehler auftritt
 	 */
-	public DataFacade<MasterData> resyncMasterData() throws IOException {
+	public DataFacade<MasterData> resyncMasterData() {
 		DataFacade<List<SchoolClass>> schoolClassList = network.getSchoolClassList();
 		DataFacade<List<SchoolTeacher>> schoolTeacherList = network.getSchoolTeacherList();
 		DataFacade<List<SchoolRoom>> schoolRoomList = network.getSchoolRoomList();
@@ -240,6 +244,41 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	
 	public void setCache(Cache cache) {
 		network.setCache(cache);
+	}
+
+	@Override
+	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
+		DataFacade<List<Lesson>> data;
+		
+		// Check network
+		if (networkAvailable) {
+			if ((data = network.getLessons(viewType, date)) != null) {
+				// TODO: Set in database
+				return data;
+			}
+		}
+
+		// TODO: Check database
+		
+		return null;
+	}
+
+	@Override
+	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
+			DateTime startDate, DateTime endDate) {
+		DataFacade<Map<String, List<Lesson>>> data;
+		
+		// Check network
+		if (networkAvailable) {
+			if ((data = network.getLessons(viewType, startDate, endDate)) != null) {
+				// TODO: Set in database
+				return data;
+			}
+		}
+
+		// TODO: Check database
+		
+		return null;
 	}
 	
 }

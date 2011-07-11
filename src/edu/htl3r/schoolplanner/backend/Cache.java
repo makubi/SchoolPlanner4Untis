@@ -18,11 +18,14 @@
 
 package edu.htl3r.schoolplanner.backend;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
+import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
+import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
@@ -34,7 +37,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see InternalMemory
  * @see ExternalDataLoader
  */
-public class Cache implements DataConnection, UnsaveDataSourceDataProvider {
+public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider {
 	
 	private InternalMemory internalMemory = new InternalMemory();
 	private ExternalDataLoader externalDataLoader = new ExternalDataLoader();
@@ -45,7 +48,7 @@ public class Cache implements DataConnection, UnsaveDataSourceDataProvider {
 	}
 
 	@Override
-	public DataFacade<List<SchoolClass>> getSchoolClassList() throws IOException {
+	public DataFacade<List<SchoolClass>> getSchoolClassList() {
 		DataFacade<List<SchoolClass>> data;
 		List<SchoolClass> internalSchoolClassList = internalMemory.getSchoolClassList();
 		
@@ -65,7 +68,7 @@ public class Cache implements DataConnection, UnsaveDataSourceDataProvider {
 	}
 
 	@Override
-	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() throws IOException {
+	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() {
 		DataFacade<List<SchoolTeacher>> data;
 		List<SchoolTeacher> internalSchoolTeacherList = internalMemory.getSchoolTeacherList();
 		
@@ -84,7 +87,7 @@ public class Cache implements DataConnection, UnsaveDataSourceDataProvider {
 	}
 
 	@Override
-	public DataFacade<List<SchoolRoom>> getSchoolRoomList() throws IOException {
+	public DataFacade<List<SchoolRoom>> getSchoolRoomList() {
 		DataFacade<List<SchoolRoom>> data;
 		List<SchoolRoom> internalSchoolRoomList = internalMemory.getSchoolRoomList();
 		
@@ -103,7 +106,7 @@ public class Cache implements DataConnection, UnsaveDataSourceDataProvider {
 	}
 
 	@Override
-	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() throws IOException {
+	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() {
 		DataFacade<List<SchoolSubject>> data;
 		List<SchoolSubject> internalSchoolSubjectList = internalMemory.getSchoolSubjectList();
 		
@@ -122,7 +125,7 @@ public class Cache implements DataConnection, UnsaveDataSourceDataProvider {
 	}
 
 	@Override
-	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList() throws IOException {
+	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList() {
 		DataFacade<List<SchoolHoliday>> data;
 		List<SchoolHoliday> internalSchoolHolidayList = internalMemory.getSchoolHolidayList();
 		
@@ -141,7 +144,7 @@ public class Cache implements DataConnection, UnsaveDataSourceDataProvider {
 	}
 
 	@Override
-	public DataFacade<Timegrid> getTimegrid() throws IOException {
+	public DataFacade<Timegrid> getTimegrid() {
 		DataFacade<Timegrid> data;
 		Timegrid internalTimegrid = internalMemory.getTimegrid();
 		
@@ -170,12 +173,12 @@ public class Cache implements DataConnection, UnsaveDataSourceDataProvider {
 	}
 
 	@Override
-	public DataFacade<Boolean> authenticate() throws IOException {
+	public DataFacade<Boolean> authenticate() {
 		return externalDataLoader.authenticate();
 	}
 
 	@Override
-	public DataFacade<Boolean> resyncMasterData() throws IOException {		
+	public DataFacade<Boolean> resyncMasterData() {		
 		DataFacade<MasterData> masterData = externalDataLoader.resyncMasterData();
 		MasterData masterDataContent = masterData.getData();
 		
@@ -193,6 +196,45 @@ public class Cache implements DataConnection, UnsaveDataSourceDataProvider {
 		}
 		else {
 			data.setErrorCode(masterData.getErrorCode());
+		}
+		
+		return data;
+	}
+
+	@Override
+	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
+		DataFacade<List<Lesson>> data;
+		List<Lesson> internalTimegrid = internalMemory.getLessons(viewType, date);
+		
+		if(internalTimegrid != null) {
+			data = new DataFacade<List<Lesson>>();
+			data.setData(internalTimegrid);
+		}
+		else {
+			data = externalDataLoader.getLessons(viewType, date);
+			if(data.isSuccessful()) {
+				internalMemory.setLessons(viewType, date, data.getData());
+			}
+		}
+		
+		return data;
+	}
+
+	@Override
+	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
+			DateTime startDate, DateTime endDate) {
+		DataFacade<Map<String, List<Lesson>>> data;
+		Map<String, List<Lesson>> internalTimegrid = internalMemory.getLessons(viewType, startDate, endDate);
+		
+		if(internalTimegrid != null) {
+			data = new DataFacade<Map<String, List<Lesson>>>();
+			data.setData(internalTimegrid);
+		}
+		else {
+			data = externalDataLoader.getLessons(viewType, startDate, endDate);
+			if(data.isSuccessful()) {
+				internalMemory.setLessons(viewType, startDate, endDate, data.getData());
+			}
 		}
 		
 		return data;

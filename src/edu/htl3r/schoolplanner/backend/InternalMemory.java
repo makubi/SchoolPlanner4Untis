@@ -18,9 +18,15 @@
 
 package edu.htl3r.schoolplanner.backend;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
+import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
@@ -31,7 +37,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * Diese Klasse repraesentiert den internen, fluechtigen Speicher und haelt
  * Daten, um sie bei Gebrauch schneller und direkt aus dem RAM laden zu koennen.
  */
-public class InternalMemory implements DataStore, DataProvider {
+public class InternalMemory implements MasterdataProvider, MasterdataStore, TimetableDataProvider, TimetableDataStore {
 
 	private List<SchoolClass> schoolClassList;
 	private List<SchoolTeacher> schoolTeacherList;
@@ -102,5 +108,50 @@ public class InternalMemory implements DataStore, DataProvider {
 	@Override
 	public void setTimegrid(Timegrid timegrid) {
 		this.timegrid = timegrid;
+	}
+
+	@Override
+	public List<Lesson> getLessons(ViewType view, DateTime date) {
+		return timetable.get(view, DateTimeUtils.toISO8601Date(date));
+	}
+
+	@Override
+	public Map<String, List<Lesson>> getLessons(ViewType view, DateTime startDate,
+			DateTime endDate) {
+		Map<String, List<Lesson>> lessonMap = new HashMap<String, List<Lesson>>();
+		DateTime tmpDate = new DateTime(startDate);
+		
+		while(tmpDate.before(endDate)) {
+			String date = DateTimeUtils.toISO8601Date(tmpDate);
+			
+			lessonMap.put(date, timetable.get(view, date));
+			tmpDate.increaseDay();
+		}
+		
+		String date = DateTimeUtils.toISO8601Date(endDate);
+		lessonMap.put(date, timetable.get(view, date));
+		
+		return lessonMap;
+	}
+
+	@Override
+	public void setLessons(ViewType view, DateTime date, List<Lesson> lessons) {
+		timetable.put(view, DateTimeUtils.toISO8601Date(date), lessons);
+	}
+
+	@Override
+	public void setLessons(ViewType view, DateTime startDate, DateTime endDate,
+			Map<String, List<Lesson>> lessonMap) {
+		DateTime tmpDate = new DateTime(startDate);
+		
+		while(tmpDate.before(endDate)) {
+			String date = DateTimeUtils.toISO8601Date(tmpDate);
+			
+			timetable.put(view, date, lessonMap.get(date));
+			tmpDate.increaseDay();
+		}
+		
+		String date = DateTimeUtils.toISO8601Date(endDate);
+		timetable.put(view, date, lessonMap.get(date));
 	}
 }
