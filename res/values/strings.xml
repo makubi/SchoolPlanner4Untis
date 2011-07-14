@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="hello">Hello World, SchoolPlanner!</string>
-	<string name="app_name">SchoolPlanner4Untis Beta</string>
+	<string name="app_name">SchoolPlanner4Untis</string>
 	<string name="teacher">Teacher</string>
 	<string name="classes">Classes</string>
 	<string name="rooms">Rooms</string>
