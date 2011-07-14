@@ -249,9 +249,6 @@ public class Network implements NetworkAccess {
 			String serverUrl = authentication.getServerUrl();
 			String school = authentication.getSchool();
 			
-			oldServerUrl = new String(serverUrl);
-			oldSchool = new String(school);
-			
 			try {
 				setServerUrl(serverUrl);
 				setSchool(school);
@@ -273,6 +270,9 @@ public class Network implements NetworkAccess {
 				// Thrown, if server url can not be parsed
 				throw new IOException("Unable to parse URL");
 			}
+			
+			oldServerUrl = new String(serverUrl);
+			oldSchool = new String(school);
 		}
 	}
 
