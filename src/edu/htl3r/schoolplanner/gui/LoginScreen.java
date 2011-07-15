@@ -30,6 +30,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -90,10 +91,10 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 							break;
 
 						case INITIALIZE_FAIL:
-							bitteToasten(getString(R.string.login_failure), 10);
+							bitteToasten(getString(R.string.login_failure), Toast.LENGTH_LONG);
 							break;
 						case INITIALIZE_NETWORK_ERROR:
-							bitteToasten(getString(R.string.login_network_error), Toast.LENGTH_LONG);
+							bitteToasten("Exception: "+msg.getData().getString("errorMessage"), Toast.LENGTH_LONG);
 							break;
 						case INITIALIZE_WRONG_URL:
 							bitteToasten(getString(R.string.wrongServerUrl), Toast.LENGTH_LONG);
@@ -224,8 +225,13 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 					handler.sendEmptyMessage(INITIALIZE_FAIL);
 				}
 			} catch (IOException e) {
-				Log.e("Network", "IOException on login occured", e);
-				handler.sendEmptyMessage(INITIALIZE_NETWORK_ERROR);
+				Log.w("Network", "IOException on login occured", e);
+				Message msg = new Message();
+				Bundle bundle = new Bundle();
+				bundle.putString("errorMessage", e.getMessage());
+				msg.setData(bundle);
+				msg.what = INITIALIZE_NETWORK_ERROR;
+				handler.sendMessage(msg);
 			}
 		}
 		else {

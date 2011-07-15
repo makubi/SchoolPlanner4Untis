@@ -24,6 +24,7 @@ import java.util.List;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.MonthDisplayHelper;
 import android.view.Display;
 import android.view.Gravity;
@@ -34,6 +35,7 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.CalendarUtils;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
@@ -54,7 +56,8 @@ public class MonthView extends ViewActivity {
 		try {
 			frei = app.getData().getSchoolHolidayList();
 		} catch (IOException e) {
-			e.printStackTrace();
+			bitteToasten("Exception ("+getClass().getSimpleName()+") at holidays: "+e.getMessage(), Toast.LENGTH_LONG);
+			Log.w("Network", e.getMessage(),e);
 		}
 		// Log.d("Philip", getClass().getSimpleName() + ": frei: " + frei);
 	}

@@ -37,6 +37,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
@@ -151,8 +152,8 @@ public class SelectScreen extends SchoolplannerActivity implements OnItemSelecte
 			try {
 				app.getData().resyncMasterData();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				bitteToasten("Exception ("+getClass().getSimpleName()+") at resync: "+e.getMessage(), Toast.LENGTH_LONG);
+				Log.w("Network", e.getMessage(),e);
 			}
 		}
 		try {
@@ -161,8 +162,8 @@ public class SelectScreen extends SchoolplannerActivity implements OnItemSelecte
 			schoolSubjectList = app.getData().getSchoolSubjectList();
 			schoolRoomList = app.getData().getSchoolRoomList();
 		} catch (IOException e) {
-			// TODO: Fehlermeldung anzeigen, wenn Netzwerkproblem auftritt
-			e.printStackTrace();
+			bitteToasten("Exception ("+getClass().getSimpleName()+") at calling new lists: "+e.getMessage(), Toast.LENGTH_LONG);
+			Log.w("Network", e.getMessage(),e);
 		}
 
 		Log.d("Philip", "nachlisten");

@@ -34,6 +34,7 @@ import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.CalendarUtils;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
@@ -94,8 +95,8 @@ public class DayView extends ViewActivity {
 		try {
 			tg = app.getData().getTimegrid();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			bitteToasten("Exception ("+getClass().getSimpleName()+") at timegrid: "+e.getMessage(), Toast.LENGTH_LONG);
+			Log.w("Network", e.getMessage(),e);
 		}
 		List<TimegridUnit> tulist = null;
 		if (tg != null) {

@@ -48,6 +48,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.CalendarUtils;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
@@ -415,7 +416,8 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 				return 0;
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			bitteToasten("Exception ("+getClass().getSimpleName()+") at timegrid: "+e.getMessage(), Toast.LENGTH_LONG);
+			Log.w("Network", e.getMessage(),e);
 		}
 		if (start == null) {
 			start = (Calendar) now.clone();
@@ -493,8 +495,8 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 			Log.d("Philip", getClass().getSimpleName() + ": refresh_lessons: " + refresh_lessons);
 			return app.getData().getMergedLessons(getSelectedViewType(), datum, refresh_lessons);
 		} catch (IOException e) {
-			// TODO: Fehlermeldung anzeigen, wenn Netzwerkproblem auftritt
-			e.printStackTrace();
+			bitteToasten("Exception ("+getClass().getSimpleName()+") at lessons: "+e.getMessage(), Toast.LENGTH_LONG);
+			Log.w("Network", e.getMessage(),e);
 		}
 		return null;
 	}
@@ -616,7 +618,8 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 				selectViewTypeList = app.getData().getSchoolSubjectList();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			bitteToasten("Exception ("+getClass().getSimpleName()+") at lists: "+e.getMessage(), Toast.LENGTH_LONG);
+			Log.w("Network", e.getMessage(),e);
 		}
 
 		dialog.setItems(getElementNamesArray(selectViewTypeList, false), this);
