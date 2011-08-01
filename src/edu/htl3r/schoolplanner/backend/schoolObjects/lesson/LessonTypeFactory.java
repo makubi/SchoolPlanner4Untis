@@ -48,6 +48,7 @@ public class LessonTypeFactory {
 		return lessonTypes.get(lessonTypeString);
 	}
 	
+	@Deprecated
 	public void setLessonTypeColor(String lsType, int fgColor, int bgColor) {
 		LessonType lt = lessonTypes.get(lsType);
 		if(lt != null) {

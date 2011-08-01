@@ -27,14 +27,14 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
-public interface UnsaveDataSourceDataProvider {
+public interface UnsaveDataSourceMasterdataProvider {
 	/**
 	 * Liefert alle Schulklassen als Liste.
 	 * @return Alle Schulklassen als Liste oder 'null', wenn nicht
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public DataFacade<List<SchoolClass>> getSchoolClassList() throws IOException;
+	public DataFacade<List<SchoolClass>> getSchoolClassList();
 
 	/**
 	 * Liefert alle Lehrer als Liste. 
@@ -42,7 +42,7 @@ public interface UnsaveDataSourceDataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() throws IOException;
+	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList();
 
 	/**
 	 * Liefert alle Raume als Liste. 
@@ -50,7 +50,7 @@ public interface UnsaveDataSourceDataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public DataFacade<List<SchoolRoom>> getSchoolRoomList() throws IOException;
+	public DataFacade<List<SchoolRoom>> getSchoolRoomList();
 
 	/**
 	 * Liefert alle Unterrichtsfaecher als Liste. 
@@ -58,7 +58,7 @@ public interface UnsaveDataSourceDataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() throws IOException;
+	public DataFacade<List<SchoolSubject>> getSchoolSubjectList();
 
 	/**
 	 * Liefert alle freien Tage als Liste. 
@@ -66,7 +66,7 @@ public interface UnsaveDataSourceDataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList() throws IOException;
+	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList();
 
 	/**
 	 * Liefert den Zeitraster. 
@@ -74,6 +74,8 @@ public interface UnsaveDataSourceDataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public DataFacade<Timegrid> getTimegrid() throws IOException;
+	public DataFacade<Timegrid> getTimegrid();
+	
+	public DataFacade<List<StatusData>> getStatusData();
 	
 }

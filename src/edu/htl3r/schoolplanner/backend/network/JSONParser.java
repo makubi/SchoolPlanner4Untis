@@ -31,8 +31,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.graphics.Color;
-import edu.htl3r.schoolplanner.CalendarUtils;
+import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.Cache;
+import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
@@ -255,11 +256,81 @@ public class JSONParser {
 		return timegrid;
 	}
 
+	public List<StatusData> jsonToStatusData(JSONObject result) throws JSONException {
+		List<StatusData> statusDataList = new ArrayList<StatusData>();
+		
+		JSONArray lessonTypes = result.getJSONArray("lstypes");
+		
+		List<String> lessonTypeList = new LinkedList<String>();
+		lessonTypeList.add(WebUntis.LESSON);
+		lessonTypeList.add(WebUntis.BREAKSUPERVISION);
+		lessonTypeList.add(WebUntis.EXAMINATION);
+		lessonTypeList.add(WebUntis.OFFICEHOUR);
+		lessonTypeList.add(WebUntis.STANDBY);
+		
+		
+		for(int i = 0; i < lessonTypes.length(); i++) {
+			JSONObject lessonType = lessonTypes.getJSONObject(i);
+			
+			for(String lsType : lessonTypeList) {
+				if(lessonType.has(lsType)) {
+					JSONObject concreteLessonType = lessonType.getJSONObject(lsType);
+				
+					if(concreteLessonType != null) {
+						String foreColor = getValueFromJSON(concreteLessonType, "foreColor", "");
+						String backColor = getValueFromJSON(concreteLessonType, "backColor", "");
+						int fgColor = foreColor.length() > 0 ? Color.parseColor("#" + foreColor) : 0;
+						int bgColor = backColor.length() > 0 ? Color.parseColor("#" + backColor) : 0;
+						
+						StatusData statusData = new StatusData();
+						statusData.setCode(lsType);
+						statusData.setFgColor(fgColor);
+						statusData.setBgColor(bgColor);
+						
+						statusDataList.add(statusData);
+					}
+				}
+			}
+		}
+		
+		JSONArray lessonCodes = result.getJSONArray("codes");
+		
+		List<String> lessonCodeList = new LinkedList<String>();
+		lessonCodeList.add(WebUntis.CANCELLED);
+		lessonCodeList.add(WebUntis.IRREGULAR);
+		
+		for(int i = 0; i < lessonCodes.length(); i++) {
+			JSONObject lessonCode = lessonCodes.getJSONObject(i);
+		
+			for(String lsCode : lessonCodeList) {
+				if(lessonCode.has(lsCode)) {
+					JSONObject concreteLessonCode = lessonCode.getJSONObject(lsCode);
+			
+					if(concreteLessonCode != null) {
+						String foreColor = getValueFromJSON(concreteLessonCode, "foreColor", "");
+						String backColor = getValueFromJSON(concreteLessonCode, "backColor", "");
+						int fgColor = foreColor.length() > 0 ? Color.parseColor("#" + foreColor) : 0;
+						int bgColor = backColor.length() > 0 ? Color.parseColor("#" + backColor) : 0;
+						
+						StatusData statusData = new StatusData();
+						statusData.setCode(lsCode);
+						statusData.setFgColor(fgColor);
+						statusData.setBgColor(bgColor);
+						
+						statusDataList.add(statusData);
+					}
+				}
+			}
+		}
+		
+		return statusDataList;
+	}
+
 	/**
 	 * Diese Methode erzeugt aus dem uebergeben JSONArray eine Map mit den darin enthaltenen Stunden.
 	 * Lehrer-, Klassen-, etc.-Listen vom Cache werden verwendet, um direkt die Objekte, statt den IDs aus dem Netzwerk zuzuweisen.
 	 * @param result JSONArray, das die Daten im JSON-Format enthaelt
-	 * @return Eine Map mit Datums-String (siehe {@link CalendarUtils#getCalendarAs8601String(Calendar)}) zu Liste mit Stunden an diesem Tag
+	 * @return Eine Map mit Datums-String (siehe {@link DateTimeUtils#toISO8601Date(android.text.format.Time)}) zu Liste mit Stunden an diesem Tag
 	 * @throws JSONException Wird geworfen, wenn ein Fehler beim Abfragen der Daten aus den JSON-Objekten auftritt. Z.B. wenn ein benoetigter Parameter fehlt oder die Struktur des JSON-Objekts nicht passend ist
 	 * @throws IOException Wird geworfen, wenn beim Abfragen der Lehrer-, Klassen-, etc.-Listen ein Fehler auftritt
 	 */
@@ -290,11 +361,6 @@ public class JSONParser {
 			// Intern 0 - 11
 			int month = Integer.parseInt(dateString.substring(4,6)) - 1;
 			int day = Integer.parseInt(dateString.substring(6,8));
-			
-			// Setze nicht verwendete Werte auf 0
-			Calendar date = Calendar.getInstance();
-			date.set(year, month, day, 0, 0, 0);
-			date.set(Calendar.MILLISECOND, 0);
 			
 			int startMinute = Integer.parseInt(getMinute(startTime));
 			int startHour = Integer.parseInt(getHour(startTime));
@@ -372,7 +438,7 @@ public class JSONParser {
 			// Baue Lesson zusammen
 			Lesson lesson = new Lesson();
 			lesson.setId(id);
-			lesson.setDate(date);
+			lesson.setDate(year, month, day);
 			lesson.setStartTime(startHour, startMinute);
 			lesson.setEndTime(endHour, endMinute);
 			lesson.setSchoolClasses(klList);
@@ -394,6 +460,7 @@ public class JSONParser {
 		return lessonList;
 	}
 	
+	@Deprecated
 	public void resyncStatusData(JSONObject result) throws JSONException {
 		JSONArray lessonTypes = result.getJSONArray("lstypes");
 		

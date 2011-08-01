@@ -20,12 +20,16 @@ package edu.htl3r.schoolplanner.backend;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import android.util.Log;
+import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.localdata.LocalData;
 import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
 import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
+import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
@@ -37,7 +41,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see LocalData
  * @see JSONNetwork
  */
-public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
+public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider {
 
 	private LocalData database = new LocalData();
 	private JSONNetwork network = new JSONNetwork();
@@ -45,7 +49,7 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	private boolean networkAvailable = true;
 
 	@Override
-	public DataFacade<List<SchoolClass>> getSchoolClassList() throws IOException {
+	public DataFacade<List<SchoolClass>> getSchoolClassList() {
 		DataFacade<List<SchoolClass>> schoolClassList;
 
 		// Check database
@@ -66,7 +70,7 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	}
 
 	@Override
-	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() throws IOException {
+	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() {
 		DataFacade<List<SchoolTeacher>> schoolTeacherList;
 
 		// Check database
@@ -87,7 +91,7 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	}
 
 	@Override
-	public DataFacade<List<SchoolRoom>> getSchoolRoomList() throws IOException {
+	public DataFacade<List<SchoolRoom>> getSchoolRoomList() {
 		DataFacade<List<SchoolRoom>> schoolRoomList;
 
 		// Check database
@@ -108,7 +112,7 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	}
 
 	@Override
-	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() throws IOException {
+	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() {
 		DataFacade<List<SchoolSubject>> schoolSubjectList;
 
 		// Check database
@@ -129,7 +133,7 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	}
 
 	@Override
-	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList() throws IOException {
+	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList() {
 		DataFacade<List<SchoolHoliday>> schoolHolidayList;
 
 		// Check database
@@ -150,7 +154,7 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	}
 	
 	@Override
-	public DataFacade<Timegrid> getTimegrid() throws IOException {
+	public DataFacade<Timegrid> getTimegrid() {
 		DataFacade<Timegrid> timegrid;
 
 		// Check database
@@ -170,12 +174,69 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 		return null;
 	}
 
+	@Override
+	public DataFacade<List<StatusData>> getStatusData() {
+		DataFacade<List<StatusData>> statusData;
+	
+		// Check database
+		/*if ((schoolSubjectList = database.getSchoolSubjectList()) != null) {
+			Log.v("DataSource", "schoolSubjectList: Database");
+			return schoolSubjectList;
+		}*/
+		// Check network
+		if (networkAvailable) {
+			if ((statusData = network.getStatusData()) != null) {
+				//database.setStatusData(statusData.getData());
+				return statusData;
+			}
+		}
+	
+		return null;
+	
+	}
+
+	@Override
+	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
+		DataFacade<List<Lesson>> data;
+		
+		// Check network
+		if (networkAvailable) {
+			if ((data = network.getLessons(viewType, date)) != null) {
+				// TODO: Set in database
+				return data;
+			}
+		}
+
+		// TODO: Check database
+		
+		return null;
+	}
+
+	@Override
+	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
+			DateTime startDate, DateTime endDate) {
+		DataFacade<Map<String, List<Lesson>>> data;
+		
+		// Check network
+		if (networkAvailable) {
+			if ((data = network.getLessons(viewType, startDate, endDate)) != null) {
+				// TODO: Set in database
+				return data;
+			}
+		}
+
+		// TODO: Check database
+		
+		return null;
+	}
+
 	/**
-	 * Setzt die Preferences fuer das Netzwerk neu.
-	 * @param authentications Preferences, die gesetzt werden sollen
+	 * Authentifiziert sich mit dem Untis-Server ueber das Netzwerk.
+	 * @return true, wenn die Authentifizierung erfolgreich war, sonst false
+	 * @throws IOException Wenn ein Problem waehrend der Netzwerkanfrage auftritt
 	 */
-	public void setLoginCredentials(Authentication authentications) {
-		network.setLoginCredentials(authentications);
+	public DataFacade<Boolean> authenticate() {
+		return network.authenticate();
 	}
 
 	/**
@@ -187,21 +248,12 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 	}
 
 	/**
-	 * Authentifiziert sich mit dem Untis-Server ueber das Netzwerk.
-	 * @return true, wenn die Authentifizierung erfolgreich war, sonst false
-	 * @throws IOException Wenn ein Problem waehrend der Netzwerkanfrage auftritt
-	 */
-	public DataFacade<Boolean> authenticate() throws IOException {
-		return network.authenticate();
-	}
-
-	/**
 	 * Laedt die neusten Stammdaten herunter und aktualisiert danach die Datenbank.<br>
 	 * Stammdaten, die zur Zeit aktualisiert werden: Liste der Schuklasse, Liste der Lehrer, Liste der Raeume, Liste der Faecher, Stundenraster. 
 	 * @return Ein Objekt, das die Stammdaten, die aktualisiert wurden, enthaelt.
 	 * @throws IOException Wenn waehrend dem Abruf der Daten ein Fehler auftritt
 	 */
-	public DataFacade<MasterData> resyncMasterData() throws IOException {
+	public DataFacade<MasterData> resyncMasterData() {
 		DataFacade<List<SchoolClass>> schoolClassList = network.getSchoolClassList();
 		DataFacade<List<SchoolTeacher>> schoolTeacherList = network.getSchoolTeacherList();
 		DataFacade<List<SchoolRoom>> schoolRoomList = network.getSchoolRoomList();
@@ -209,37 +261,48 @@ public class ExternalDataLoader implements UnsaveDataSourceDataProvider {
 		
 		DataFacade<List<SchoolHoliday>> schoolHolidayList = network.getSchoolHolidayList();
 		DataFacade<Timegrid> timegrid = network.getTimegrid();
+		DataFacade<List<StatusData>> statusData = network.getStatusData();
 		
 		DataFacade<MasterData> data = new DataFacade<MasterData>();
 		
-		if(schoolClassList.isSuccessful() && schoolHolidayList.isSuccessful() && schoolRoomList.isSuccessful() && schoolSubjectList.isSuccessful() && schoolTeacherList.isSuccessful() && timegrid.isSuccessful()) {
-		MasterData masterData = new MasterData();
-		masterData.setSchoolClassList(schoolClassList.getData());
-		masterData.setSchoolRoomList(schoolRoomList.getData());
-		masterData.setSchoolSubjectList(schoolSubjectList.getData());
-		masterData.setSchoolTeacherList(schoolTeacherList.getData());
-		masterData.setSchoolHolidayList(schoolHolidayList.getData());
-		masterData.setTimegrid(timegrid.getData());
+		if(schoolClassList.isSuccessful() && schoolHolidayList.isSuccessful() && schoolRoomList.isSuccessful() && schoolSubjectList.isSuccessful() && schoolTeacherList.isSuccessful() && timegrid.isSuccessful() && statusData.isSuccessful()) {
+			MasterData masterData = new MasterData();
+			masterData.setSchoolClassList(schoolClassList.getData());
+			masterData.setSchoolRoomList(schoolRoomList.getData());
+			masterData.setSchoolSubjectList(schoolSubjectList.getData());
+			masterData.setSchoolTeacherList(schoolTeacherList.getData());
+			masterData.setSchoolHolidayList(schoolHolidayList.getData());
+			masterData.setTimegrid(timegrid.getData());
+			masterData.setStatusData(statusData.getData());
 		
-		data.setData(masterData);
+			data.setData(masterData);
 		
-		database.setSchoolClassList(schoolClassList.getData());
-		database.setSchoolTeacherList(schoolTeacherList.getData());
-		database.setSchoolRoomList(schoolRoomList.getData());
-		database.setSchoolSubjectList(schoolSubjectList.getData());
-		database.setSchoolHolidayList(schoolHolidayList.getData());
-		database.setTimegrid(timegrid.getData());
+			database.setSchoolClassList(schoolClassList.getData());
+			database.setSchoolTeacherList(schoolTeacherList.getData());
+			database.setSchoolRoomList(schoolRoomList.getData());
+			database.setSchoolSubjectList(schoolSubjectList.getData());
+			database.setSchoolHolidayList(schoolHolidayList.getData());
+			database.setTimegrid(timegrid.getData());
+			database.setStatusData(statusData.getData());
+		
 		}
 		else {
 			data.setErrorCode(254);
 		}
 		
 		return data;
-	}	
-	
-	
+	}
+
 	public void setCache(Cache cache) {
 		network.setCache(cache);
+	}
+
+	/**
+	 * Setzt die Preferences fuer das Netzwerk neu.
+	 * @param authentications Preferences, die gesetzt werden sollen
+	 */
+	public void setLoginCredentials(Authentication authentications) {
+		network.setLoginCredentials(authentications);
 	}
 	
 }

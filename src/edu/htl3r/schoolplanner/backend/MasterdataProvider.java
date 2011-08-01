@@ -34,7 +34,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * Interface zu den Datenabfragen, die vom Backend zur Verfuegung gestellt werden.<br>
  * Bekannte Implementierungen: {@link JSONNetwork}, {@link LocalData}, {@link InternalMemory}, {@link ExternalDataLoader}
  */
-public interface DataProvider {
+public interface MasterdataProvider {
 
 	/**
 	 * Liefert alle Schulklassen als Liste.
@@ -42,7 +42,7 @@ public interface DataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public List<SchoolClass> getSchoolClassList() throws IOException;
+	public List<SchoolClass> getSchoolClassList();
 
 	/**
 	 * Liefert alle Lehrer als Liste. 
@@ -50,7 +50,7 @@ public interface DataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public List<SchoolTeacher> getSchoolTeacherList() throws IOException;
+	public List<SchoolTeacher> getSchoolTeacherList();
 
 	/**
 	 * Liefert alle Raume als Liste. 
@@ -58,7 +58,7 @@ public interface DataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public List<SchoolRoom> getSchoolRoomList() throws IOException;
+	public List<SchoolRoom> getSchoolRoomList();
 
 	/**
 	 * Liefert alle Unterrichtsfaecher als Liste. 
@@ -66,7 +66,7 @@ public interface DataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public List<SchoolSubject> getSchoolSubjectList() throws IOException;
+	public List<SchoolSubject> getSchoolSubjectList();
 
 	/**
 	 * Liefert alle freien Tage als Liste. 
@@ -74,7 +74,7 @@ public interface DataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public List<SchoolHoliday> getSchoolHolidayList() throws IOException;
+	public List<SchoolHoliday> getSchoolHolidayList();
 
 	/**
 	 * Liefert den Zeitraster. 
@@ -82,6 +82,7 @@ public interface DataProvider {
 	 *         gefunden
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public Timegrid getTimegrid() throws IOException;
+	public Timegrid getTimegrid();
 	
+	public List<StatusData> getStatusData();
 }

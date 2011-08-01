@@ -1,7 +1,7 @@
 /* SchoolPlanner4Untis - Android app to manage your Untis timetable
     Copyright (C) 2011  Mathias Kub <mail@makubi.at>
-						Gerald Schreiber <mail@gerald-schreiber.at>
-						Philip Woelfel <philip@woelfel.at>
+			Sebastian Chlan <sebastian@schoolplanner.at>
+			Christian Pascher <christian@schoolplanner.at>
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -15,35 +15,31 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+package edu.htl3r.schoolplanner.backend;
 
-package edu.htl3r.schoolplanner.backend.schoolObjects.timegrid;
 
-import java.util.Calendar;
+public class StatusData {
 
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
-
-public class TimegridUnit implements SchoolObject, Comparable<TimegridUnit> {
-
-	private Calendar begin;
-	private Calendar end;
-
-	public Calendar getBegin() {
-		return begin;
-	}
-	public void setBegin(Calendar begin) {
-		this.begin = begin;
-	}
-	public Calendar getEnd() {
-		return end;
-	}
-	public void setEnd(Calendar end) {
-		this.end = end;
-	}
+	private String code;
+	private int fgColor;
+	private int bgColor;
 	
-	@Override
-	public int compareTo(TimegridUnit another) {
-		int start1 = (int) getBegin().getTimeInMillis();
-		int start2 = (int) another.getBegin().getTimeInMillis();
-		return start1 - start2;
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public int getFgColor() {
+		return fgColor;
+	}
+	public void setFgColor(int fgColor) {
+		this.fgColor = fgColor;
+	}
+	public int getBgColor() {
+		return bgColor;
+	}
+	public void setBgColor(int bgColor) {
+		this.bgColor = bgColor;
 	}
 }

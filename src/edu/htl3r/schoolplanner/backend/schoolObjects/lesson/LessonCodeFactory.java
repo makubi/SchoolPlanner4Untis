@@ -59,6 +59,7 @@ public class LessonCodeFactory {
 		return lessonCodeSubstitude;
 	}
 	
+	@Deprecated
 	public void setLessonCodeColor(String lessonCode, int fgColor, int bgColor) {
 		LessonCode lc = lessonCodes.get(lessonCode);
 		if(lc != null) {
@@ -67,6 +68,7 @@ public class LessonCodeFactory {
 		}
 	}
 	
+	@Deprecated
 	public void setLessonCodeSubstitudeColor(int fgColor, int bgColor) {
 		lessonCodeSubstitude.setFgColor(fgColor);
 		lessonCodeSubstitude.setBgColor(bgColor);

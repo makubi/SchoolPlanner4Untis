@@ -20,17 +20,10 @@ package edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType;
 
 import java.io.Serializable;
 
-import android.graphics.Color;
-import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonType;
 
 public class LessonTypeExamination extends LessonType implements Serializable {
 	
 	private static final long serialVersionUID = -273926953295334612L;
-
-	public LessonTypeExamination() {
-		bgColor = Color.GREEN;
-		fgColor = Color.BLACK;
-	}
+	
 }

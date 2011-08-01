@@ -47,12 +47,12 @@ public interface DataConnection {
 	 * @return true, wenn die Authentifizierung erfolgreich war
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public DataFacade<Boolean> authenticate() throws IOException;
+	public DataFacade<Boolean> authenticate();
 	
 	/**
 	 * Aktualisiert die Stammdaten im Backend.
 	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
 	 */
-	public DataFacade<Boolean> resyncMasterData() throws IOException;
+	public DataFacade<Boolean> resyncMasterData();
 
 }

@@ -21,7 +21,6 @@ package edu.htl3r.schoolplanner.backend.schoolObjects;
 import java.util.Calendar;
 import java.util.List;
 
-import edu.htl3r.schoolplanner.CalendarUtils;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
@@ -200,22 +199,5 @@ public class SchoolTest {
 
 	public boolean isLocal() {
 		return local;
-	}
-	
-	@Override
-	public String toString() {
-		String str = "SchoolTest (" +id +"):\n";
-		str +="title: " +title +"\n";
-		str +="desc: " +description +"\n";
-		str +="date: " +CalendarUtils.getDateString(date, true) +"\n";
-		str +="start: " +CalendarUtils.getTimeStr(start, false)+"\n";
-		str +="end: " +CalendarUtils.getTimeStr(end, false)+"\n";
-		str +="type: " +type +"\n";
-		str +="classes: " +schoolClasses +"\n";
-		str +="teachers: " +schoolTeachers +"\n";
-		str +="rooms: " +schoolRooms +"\n";
-		str +="subjects: " +schoolSubjects +"\n";
-		str +="local: " +local +"\n";
-		return str;
 	}
 }

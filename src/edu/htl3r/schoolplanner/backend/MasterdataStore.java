@@ -33,7 +33,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * Implementierende Klassen muessen bei Erhalt neuer Daten ueber diese benachrichtig werden, um sie passend verwenden zu koennen.<br>
  * Bekannte Implementierungen: {@link LocalData}, {@link InternalMemory}
  */
-public interface DataStore {
+public interface MasterdataStore {
 	
 	/**
 	 * Setzt die Schulklassenliste. Wird benoetigt, falls sie z.B. aus dem Netzwerk neu Uebertragen wurden, um sie mit dem lokalen Cache abzugleichen.
@@ -72,4 +72,5 @@ public interface DataStore {
 	 */
 	public void setTimegrid(Timegrid timegrid);
 	
+	public void setStatusData(List<StatusData> statusData);
 }

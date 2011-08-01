@@ -20,28 +20,27 @@ package edu.htl3r.schoolplanner.backend.schoolObjects.lesson;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import android.text.format.Time;
+import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
-public class Lesson implements Serializable, Comparable<Lesson> {
-
-	/**
-	 * 
-	 */
+public class Lesson implements Serializable {
+	
 	private static final long serialVersionUID = 6168669480973047866L;
 
 	private int id;
 
-	private Calendar date;
-	private Calendar startTime = Calendar.getInstance();
-	private Calendar endTime = Calendar.getInstance();
-
+	private DateTime date = new DateTime();
+	private DateTime startTime = new DateTime();
+	private DateTime endTime = new DateTime();
+	
 	private List<SchoolClass> schoolClasses = new ArrayList<SchoolClass>();
 	private List<SchoolTeacher> schoolTeachers = new ArrayList<SchoolTeacher>();
 	private List<SchoolSubject> schoolSubjects = new ArrayList<SchoolSubject>();
@@ -53,46 +52,62 @@ public class Lesson implements Serializable, Comparable<Lesson> {
 	@Deprecated private long last_update;
 
 	/**
-	 * Liefert den aktuellen Kalender (Datum) der Stunde.
-	 * 
-	 * @return das Datum der Stunde
+	 * Liefert das Datum der Stunde.<br>
+	 * <b>ACHTUNG: Die Monatsnummer laeuft von 0 - 11!</b>
+	 * @return Datum der Stunde
 	 */
-	public Calendar getDate() {
+	public DateTime getDate() {
 		return date;
 	}
 
 	/**
-	 * Setzt den Kalender (Datum) der Stunde.
-	 * 
-	 * @param date
-	 *            Kalender, der verwendet werden soll
+	 * Setzt das Datum der Stunde und der {@link Time}-Objekte, die fuer Start- und Endzeit verwendet werden.
+	 * @param year Jahr, das gesetzt werden soll
+	 * @param month Monat, der gesetzt werden soll (1-12)
+	 * @param day Tag, der gesetzt werden soll
 	 */
-	public void setDate(Calendar date) {
-		this.date = date;
+	public void setDate(int year, int month, int day) {
+		date.set(day, month-1, year);
+		startTime.set(day, month-1, year);
+		endTime.set(day, month-1, year);
 	}
-
-	public Calendar getStartTime() {
+	
+	/**
+	 * Liefert den Anfangszeitpunkt der Stunde (+ richtig gesetztem Datum).<br>
+	 * <b>ACHTUNG: Die Monatsnummer laeuft von 0 - 11!</b>
+	 * @return Datum der Stunde
+	 */
+	public Time getStartTime() {
 		return startTime;
 	}
 
+	/**
+	 * Setzt den Anfangszeitpunkt der Stunde.
+	 * @param hour Stunde, die gesetzt werden soll
+	 * @param minute Minute, die gesetzt werden soll
+	 */
 	public void setStartTime(int hour, int minute) {
-		// Setze nicht verwendete Werte auf 0
-		startTime.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH),
-				date.get(Calendar.DAY_OF_MONTH), hour, minute, 0);
-		startTime.set(Calendar.MILLISECOND, 0);
+		startTime.set(0, minute, hour, startTime.monthDay, startTime.month, startTime.year);
 	}
-
-	public Calendar getEndTime() {
+	
+	/**
+	 * Liefert den Anfangszeitpunkt der Stunde (+ richtig gesetztem Datum).<br>
+	 * <b>ACHTUNG: Die Monatsnummer laeuft von 0 - 11!</b>
+	 * @return Datum der Stunde
+	 */
+	public Time getEndTime() {
 		return endTime;
 	}
 
+	/**
+	 * Setzt den Endzeitpunkt der Stunde.
+	 * @param hour Stunde, die gesetzt werden soll
+	 * @param minute Minute, die gesetzt werden soll
+	 */
 	public void setEndTime(int hour, int minute) {
-		// Setze nicht verwendete Werte auf 0
-		endTime.set(date.get(Calendar.YEAR), date.get(Calendar.MONTH),
-				date.get(Calendar.DAY_OF_MONTH), hour, minute, 0);
-		endTime.set(Calendar.MILLISECOND, 0);
-	}
-
+		endTime.set(0, minute, hour, endTime.monthDay, endTime.month, endTime.year);
+	}	
+	
 	public LessonType getLessonType() {
 		return lessonType;
 	}
@@ -113,36 +128,52 @@ public class Lesson implements Serializable, Comparable<Lesson> {
 		return schoolClasses;
 	}
 
+	/**
+	 * Sortiert die uebergebene Liste und setzt sie dann als Liste der Klassen fuer diese Stunde.
+	 * @param schoolClasses Liste der Klassen
+	 */
 	public void setSchoolClasses(List<SchoolClass> schoolClasses) {
+		sortList(schoolClasses);
 		this.schoolClasses = schoolClasses;
-		sortLists();
 	}
 
 	public List<SchoolTeacher> getSchoolTeachers() {
 		return schoolTeachers;
 	}
 
+	/**
+	 * Sortiert die uebergebene Liste und setzt sie dann als Liste der Lehrer fuer diese Stunde.
+	 * @param schoolTeachers Liste der Lehrer
+	 */
 	public void setSchoolTeachers(List<SchoolTeacher> schoolTeachers) {
+		sortList(schoolTeachers);
 		this.schoolTeachers = schoolTeachers;
-		sortLists();
 	}
 
 	public List<SchoolSubject> getSchoolSubjects() {
 		return schoolSubjects;
 	}
 
+	/**
+	 * Sortiert die uebergebene Liste und setzt sie dann als Liste der Faecher fuer diese Stunde.
+	 * @param schoolSubjects Liste der Faecher
+	 */
 	public void setSchoolSubjects(List<SchoolSubject> schoolSubjects) {
+		sortList(schoolSubjects);
 		this.schoolSubjects = schoolSubjects;
-		sortLists();
 	}
 
 	public List<SchoolRoom> getSchoolRooms() {
 		return schoolRooms;
 	}
 
+	/**
+	 * Sortiert die uebergebene Liste und setzt sie dann als Liste der Raeume fuer diese Stunde.
+	 * @param schoolRooms Liste der Raeume
+	 */
 	public void setSchoolRooms(List<SchoolRoom> schoolRooms) {
+		sortList(schoolRooms);
 		this.schoolRooms = schoolRooms;
-		sortLists();
 	}
 
 	public int getId() {
@@ -172,20 +203,16 @@ public class Lesson implements Serializable, Comparable<Lesson> {
 				+ schoolRooms + ", lessonType=" + lessonType + ", lessonCode="
 				+ lessonCode + ", last_update=" + last_update + "]";
 	}
-
-	@Override
-	public int compareTo(Lesson another) {
-		int diff = getDate().compareTo(another.getDate());
-		return diff == 0 ? getStartTime().compareTo(another.getStartTime()) : diff;
-	}
+	
 
 	/**
 	 * Ueberprueft, ob die uebergebene Stunde am selben Datum und zur selben Zeit startet und endet wie diese Stunde.
 	 * @param another Stunde, die mit der aktuellen verglichen werden soll
 	 * @return 'true', wenn die Stunden am selben Datum und zur selben Zeit stattfinden
 	 */
+	
 	public boolean equals(Lesson another) {
-		return getDate().get(Calendar.YEAR) == another.getDate().get(Calendar.YEAR) && getDate().get(Calendar.MONTH) == another.getDate().get(Calendar.MONTH) && getDate().get(Calendar.DAY_OF_MONTH) == another.getDate().get(Calendar.DAY_OF_MONTH) && getStartTime().get(Calendar.HOUR_OF_DAY) == another.getStartTime().get(Calendar.HOUR_OF_DAY) && getStartTime().get(Calendar.MINUTE) == another.getStartTime().get(Calendar.MINUTE);
+		return dateEquals(another) && getStartTime().hour == another.getStartTime().hour && getStartTime().minute == another.getStartTime().minute;
 	}
 	
 	/**
@@ -193,89 +220,18 @@ public class Lesson implements Serializable, Comparable<Lesson> {
 	 * @param another Zu ueberpruefende Stunde
 	 * @return 'true', wenn die uebergebene Stunde am gleichen Datum und zwischen der aktuellen stattfindet
 	 */
+	
 	public boolean inLesson(Lesson another) {
-		return getDate().equals(another.getDate()) && 
+		return dateEquals(another) && 
 		(getStartTime().before(another.getStartTime()) || getStartTime().equals(another.getStartTime())) && 
 		(getEndTime().after(another.getEndTime()) || getEndTime().equals(another.getEndTime()));
-		//return getDate().get(Calendar.YEAR) == another.getDate().get(Calendar.YEAR) && getDate().get(Calendar.MONTH) == another.getDate().get(Calendar.MONTH) && getDate().get(Calendar.DAY_OF_MONTH) == another.getDate().get(Calendar.DAY_OF_MONTH) && getStartTime().get(Calendar.HOUR_OF_DAY) >= another.getStartTime().get(Calendar.HOUR_OF_DAY) && getStartTime().get(Calendar.MINUTE) >= another.getStartTime().get(Calendar.MINUTE) && getEndTime().get(Calendar.HOUR_OF_DAY) <= another.getEndTime().get(Calendar.HOUR_OF_DAY) && getEndTime().get(Calendar.MINUTE) <= another.getEndTime().get(Calendar.MINUTE);
 	}
 	
-	// TODO: Auf append(Lesson) umstellen und mit LessonCode usw. auch machen
-	
-	/**
-	 * Fuegt die Listen zusammen, erzeugt keine doppelten Eintraege.
-	 * @param schoolClasses Liste mit Schulklassen
-	 * @param schoolTeachers Liste mit Lehrern
-	 * @param schoolSubjects Liste mit Faechern
-	 * @param schoolRooms Liste mit Raeumen
-	 */
-	public void appendLists(List<SchoolClass> schoolClasses, List<SchoolTeacher> schoolTeachers, List<SchoolSubject> schoolSubjects, List<SchoolRoom> schoolRooms) {
-		for(SchoolClass schoolClass : schoolClasses) {
-			if(!containsSchoolClass(schoolClass)) {
-				this.schoolClasses.add(schoolClass);
-			}
-		}
-		
-		for(SchoolTeacher schoolTeacher : schoolTeachers) {
-			if(!containsSchoolTeacher(schoolTeacher)) {
-				this.schoolTeachers.add(schoolTeacher);
-			}
-		}
-		
-		for(SchoolSubject schoolSubject : schoolSubjects) {
-			if(!containsSchoolSubject(schoolSubject)) {
-				this.schoolSubjects.add(schoolSubject);
-			}
-		}
-		
-		for(SchoolRoom schoolRoom : schoolRooms) {
-			if(!containsSchoolRoom(schoolRoom)) {
-				this.schoolRooms.add(schoolRoom);
-			}
-		}
-		sortLists();
+	private boolean dateEquals(Lesson another) {
+		return getDate().year == another.getDate().year && getDate().month == another.getDate().month && getDate().monthDay == another.getDate().monthDay;
 	}
 	
-	private boolean containsSchoolClass(SchoolClass newSchoolClass) {
-		for(SchoolClass schoolClass : this.schoolClasses) {
-			if(schoolClass.getName().equals(newSchoolClass.getName())) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private boolean containsSchoolTeacher(SchoolTeacher newSchoolTeacher) {
-		for(SchoolTeacher schoolTeacher : this.schoolTeachers) {
-			if(schoolTeacher.getName().equals(newSchoolTeacher.getName())) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private boolean containsSchoolSubject(SchoolSubject newSchoolSubject) {
-		for(SchoolSubject schoolSubject : this.schoolSubjects) {
-			if(schoolSubject.getName().equals(newSchoolSubject.getName())) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private boolean containsSchoolRoom(SchoolRoom newSchoolRoom) {
-		for(SchoolRoom schoolRoom : this.schoolRooms) {
-			if(schoolRoom.getName().equals(newSchoolRoom.getName())) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	private void sortLists() {
-		Collections.sort(schoolClasses);
-		Collections.sort(schoolTeachers);
-		Collections.sort(schoolSubjects);
-		Collections.sort(schoolRooms);
+	private void sortList(List<? extends ViewType> viewTypeList) {
+		Collections.sort(viewTypeList);
 	}
 }

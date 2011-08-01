@@ -90,11 +90,12 @@ public class Network implements NetworkAccess {
 		HttpParams params = new BasicHttpParams();
 		
 		// TODO: Timeouts sind statisch
-		HttpConnectionParams.setConnectionTimeout(params, 210000);
-		HttpConnectionParams.setSoTimeout(params, 28000);
+		HttpConnectionParams.setConnectionTimeout(params, 20000);
+		HttpConnectionParams.setSoTimeout(params, 10000);
 		
 		HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
 		HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
+		// TODO: Testen mit "false"
 		HttpProtocolParams.setUseExpectContinue(params, true);
 		
 		SchemeRegistry registry = new SchemeRegistry();
@@ -248,9 +249,6 @@ public class Network implements NetworkAccess {
 			String serverUrl = authentication.getServerUrl();
 			String school = authentication.getSchool();
 			
-			oldServerUrl = new String(serverUrl);
-			oldSchool = new String(school);
-			
 			try {
 				setServerUrl(serverUrl);
 				setSchool(school);
@@ -272,6 +270,9 @@ public class Network implements NetworkAccess {
 				// Thrown, if server url can not be parsed
 				throw new IOException("Unable to parse URL");
 			}
+			
+			oldServerUrl = new String(serverUrl);
+			oldSchool = new String(school);
 		}
 	}
 
