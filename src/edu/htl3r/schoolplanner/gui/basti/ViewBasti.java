@@ -18,22 +18,25 @@
 package edu.htl3r.schoolplanner.gui.basti;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import edu.htl3r.schoolplanner.SchoolplannerContext;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.gui.DummyBackend;
 
 public class ViewBasti extends Activity {
 	private DummyBackend data; 
+	private WeekView weekview;
 	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		data = new DummyBackend();
-		
-		Log.d("basti", data.getNonMultipleDummyLessonsForWeek()+"");
-		setContentView(new WeekView(SchoolplannerContext.context, data));
 		super.onCreate(savedInstanceState);
+		data = new DummyBackend();
+		weekview = new WeekView(this, data);
+		setContentView(R.layout.basti_weekview);
+		
 	}
 }
