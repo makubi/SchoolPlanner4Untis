@@ -58,6 +58,10 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		
 		loginmanager = new LoginSetManager();
 		
+		// TODO: temporarily for easier login
+		if(loginmanager.getAllLoginSets().size() <= 0)
+			loginmanager.addLoginSet("WebUntis Testschule", "http://webuntis.grupet.at:8080", "demo", "user", "", false);
+		
 		registerForContextMenu(mainListView);
 		
 		initList();
