@@ -228,7 +228,7 @@ public class LoginScreen extends SchoolplannerActivity implements Runnable, OnCa
 				Log.w("Network", "IOException on login occured", e);
 				Message msg = new Message();
 				Bundle bundle = new Bundle();
-				bundle.putString("errorMessage", e.getMessage());
+				bundle.putString("errorMessage", e.toString());
 				msg.setData(bundle);
 				msg.what = INITIALIZE_NETWORK_ERROR;
 				handler.sendMessage(msg);
