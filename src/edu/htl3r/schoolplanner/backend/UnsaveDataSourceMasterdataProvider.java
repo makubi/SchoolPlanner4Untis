@@ -17,9 +17,9 @@
 */
 package edu.htl3r.schoolplanner.backend;
 
-import java.io.IOException;
 import java.util.List;
 
+import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
@@ -27,55 +27,51 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
+/**
+ * Stellt Methoden zum Abruf der Stammdaten aus unsicheren Quellen ({@link JSONNetwork}) zur Verfuegung.
+ */
 public interface UnsaveDataSourceMasterdataProvider {
+	
 	/**
-	 * Liefert alle Schulklassen als Liste.
-	 * @return Alle Schulklassen als Liste oder 'null', wenn nicht
-	 *         gefunden
-	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
+	 * Ermoeglicht den Zugriff auf die Liste der Schulklassen.<br>
+	 * @return Ein {@link DataFacade}-Objekt mit den passenden Daten.
 	 */
 	public DataFacade<List<SchoolClass>> getSchoolClassList();
 
 	/**
-	 * Liefert alle Lehrer als Liste. 
-	 * @return Alle Lehrer als Liste oder 'null', wenn nicht
-	 *         gefunden
-	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
+	 * Ermoeglicht den Zugriff auf die Liste der Lehrer.<br>
+	 * @return Ein {@link DataFacade}-Objekt mit den passenden Daten.
 	 */
 	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList();
 
 	/**
-	 * Liefert alle Raume als Liste. 
-	 * @return Alle Raume als Liste oder 'null', wenn nicht
-	 *         gefunden
-	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
+	 * Ermoeglicht den Zugriff auf die Liste der Raeume.<br>
+	 * @return Ein {@link DataFacade}-Objekt mit den passenden Daten.
 	 */
 	public DataFacade<List<SchoolRoom>> getSchoolRoomList();
 
 	/**
-	 * Liefert alle Unterrichtsfaecher als Liste. 
-	 * @return Alle Unterrichtsfaecher als Liste oder 'null', wenn nicht
-	 *         gefunden
-	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
+	 * Ermoeglicht den Zugriff auf die Liste der Faecher.<br>
+	 * @return Ein {@link DataFacade}-Objekt mit den passenden Daten.
 	 */
 	public DataFacade<List<SchoolSubject>> getSchoolSubjectList();
 
 	/**
-	 * Liefert alle freien Tage als Liste. 
-	 * @return Alle freien Tag als Liste oder 'null', wenn nicht
-	 *         gefunden
-	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
+	 * Ermoeglicht den Zugriff auf die Liste der freien Tage.<br>
+	 * @return Ein {@link DataFacade}-Objekt mit den passenden Daten.
 	 */
 	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList();
 
 	/**
-	 * Liefert den Zeitraster. 
-	 * @return Den Zeitraster oder 'null', wenn nicht
-	 *         gefunden
-	 * @throws IOException Wird geworfen, falls beim Datenabruf ein Fehler auftritt
+	 * Ermoeglicht den Zugriff auf den Zeitraster.<br>
+	 * @return Ein {@link DataFacade}-Objekt mit den passenden Daten.
 	 */
 	public DataFacade<Timegrid> getTimegrid();
 	
+	/**
+	 * Ermoeglicht den Zugriff auf die Liste der Status Daten.<br>
+	 * @return Ein {@link DataFacade}-Objekt mit den passenden Daten.
+	 */
 	public DataFacade<List<StatusData>> getStatusData();
 	
 }

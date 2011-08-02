@@ -21,12 +21,30 @@ import java.util.List;
 import java.util.Map;
 
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 
+/**
+ * Stellt Methoden zum Abruf des Stundenplans aus unsicheren Quellen ({@link JSONNetwork}) zur Verfuegung.
+ */
 public interface UnsaveDataSourceTimetableDataProvider {
-
+	
+	/**
+	 * Ermoeglicht den Zugriff auf den Stundenplan zu einem bestimmten Datum.
+	 * @param viewType Initialisierte Klasse, Lehrer, Raum oder Fach (={@link ViewType}), fuer die der Stundenplan abgerufen werden soll
+	 * @param date Datum, fuer das der Stundenplan abgerufen werden soll
+ 	 * @return Ein {@link DataFacade}-Objekt mit den passenden Daten.
+	 */
 	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date);
 	
+	
+	/**
+	 * Ermoeglicht den Zugriff auf den Stundenplan zu einem bestimmten Datum.
+	 * @param viewType Initialisierte Klasse, Lehrer, Raum oder Fach (={@link ViewType}), fuer die der Stundenplan abgerufen werden soll
+	 * @param startDate Anfangsdatum, ab dem der Stundenplan abgerufen werden soll
+	 * @param endDate Enddatum, bis zu dem der Stundenplan abgerufen werden soll
+ 	 * @return Ein {@link DataFacade}-Objekt mit den passenden Daten.
+	 */
 	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType, DateTime startDate, DateTime endDate);
 }
