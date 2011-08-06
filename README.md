@@ -83,3 +83,9 @@ Sollte die Fehlermeldung:
 	Conversion to Dalvik format failed with error 1
 		
 angezeigt werden, muss die Option '-XX:+AggressiveOpts' in der Datei 'eclipse.ini' entfernt werden
+
+WEITERE INFORMATIONEN ZUM PROJEKT
+---------------------------------
+* Android Market: https://market.android.com/details?id=edu.htl3r.schoolplanner
+* Bugtracker: http://jira.schoolplanner.at/
+* Continuous Integration System: http://jenkins.coding4coffee.org/job/SchoolPlanner4Untis/
