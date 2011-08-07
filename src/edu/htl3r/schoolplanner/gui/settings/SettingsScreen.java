@@ -18,7 +18,9 @@
 package edu.htl3r.schoolplanner.gui.settings;
 
 import android.os.Bundle;
+import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
+import android.util.Log;
 import edu.htl3r.schoolplanner.R;
 
 public class SettingsScreen extends PreferenceActivity{
@@ -26,9 +28,15 @@ public class SettingsScreen extends PreferenceActivity{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Load the preferences from an XML resource
+        
         addPreferencesFromResource(R.xml.settings);
+        
+        String[] loginSetNames = getIntent().getStringArrayExtra("loginSetNames");
+        Log.d("a",loginSetNames.toString());
+        ListPreference autologinSetSetting = (ListPreference) getPreferenceManager().findPreference(getString(R.string.settings_key_autologin_set));
+        autologinSetSetting.setEntryValues(loginSetNames);
+        autologinSetSetting.setEntries(loginSetNames);
+        
     }
 	
 }

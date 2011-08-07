@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<style name="background_layout">
+	<style name="background_layout" parent="android:Theme.Light">
 		<item name="android:background">@color/background</item>
+		<item name="android:textColor">@color/text</item>
 	</style>
 
 	<style name="header_text">

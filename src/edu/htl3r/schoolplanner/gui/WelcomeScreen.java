@@ -36,7 +36,6 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	private TextView loginProgressText;
 	private ListView mainListView;
 	
-	private LoginSetManager loginmanager;
 	private LoginSetDialog dialog;
 	
 	private RelativeLayout mainLayout;
