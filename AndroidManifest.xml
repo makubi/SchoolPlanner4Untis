@@ -14,9 +14,10 @@
 		</activity>
 
 		<activity android:name=".gui.SelectScreen" android:theme="@android:style/Theme.NoTitleBar" />
+		<activity android:name=".gui.settings.SettingsScreen" android:theme="@android:style/Theme.NoTitleBar" />
+		
 		<activity android:name=".gui.basti.ViewBasti" android:theme="@android:style/Theme.NoTitleBar" />
 		<activity android:name=".gui.chris.ViewChris" android:theme="@android:style/Theme.NoTitleBar" />
-
 	</application>
 
 

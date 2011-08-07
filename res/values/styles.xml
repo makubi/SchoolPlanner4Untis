@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="background_layout">
+		<item name="android:background">@color/background</item>
+	</style>
+
+	<style name="header_text">
+		<item name="android:textSize">25sp</item>
+		<item name="android:textColor">@color/header_text</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:paddingLeft">5dip</item>
+		<item name="android:paddingTop">3dip</item>
+		<item name="android:gravity">center_vertical|left</item>
+		<item name="android:layout_height">70dip</item>
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:background">@color/header_background</item>
+	</style>
+	
+	<style name="statusBarDelimiter">
+		<item name="android:layout_height">1dip</item>
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:background">@color/delimiter</item>
+	</style>
+	
+	<style name="statusBarText">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">15sp</item>
+		<item name="android:textColor">@color/text</item>
+		<item name="android:paddingLeft">5dip</item>
+		<item name="android:layout_gravity">left|center_vertical</item>
+	</style>
+	
+	<style name="statusBarProgress" parent="@android:style/Widget.ProgressBar.Inverse">
+		<item name="android:visibility">invisible</item>
+		<item name="android:paddingRight">5dip</item>
+		<item name="android:layout_height">20dip</item>
+		<item name="android:layout_width">25dip</item>
+	</style>
+</resources>

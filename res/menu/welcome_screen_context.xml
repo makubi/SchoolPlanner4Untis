@@ -4,8 +4,8 @@
   
   <item
      android:id="@+id/edit_login_set"
-     android:title="Edit Login Set" />
+     android:title="@string/menu_edit_login_set" />
    <item
      android:id="@+id/remove_login_set"
-     android:title="Remove Login Set" />
+     android:title="@string/menu_remove_login_set" />
 </menu>

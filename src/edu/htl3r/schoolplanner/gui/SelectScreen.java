@@ -1,6 +1,5 @@
 package edu.htl3r.schoolplanner.gui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -12,7 +11,7 @@ import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.gui.basti.ViewBasti;
 import edu.htl3r.schoolplanner.gui.chris.ViewChris;
 
-public class SelectScreen extends Activity{
+public class SelectScreen extends SchoolPlannerActivity{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
