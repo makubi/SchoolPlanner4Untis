@@ -17,11 +17,15 @@
 */
 package edu.htl3r.schoolplanner.gui.settings;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
-import android.util.Log;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.SchoolPlannerApp;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 
 public class SettingsScreen extends PreferenceActivity{
 
@@ -31,12 +35,19 @@ public class SettingsScreen extends PreferenceActivity{
         
         addPreferencesFromResource(R.xml.settings);
         
-        String[] loginSetNames = getIntent().getStringArrayExtra("loginSetNames");
-        Log.d("a",loginSetNames.toString());
+        String[] loginSetNames = getLoginSetNames();
         ListPreference autologinSetSetting = (ListPreference) getPreferenceManager().findPreference(getString(R.string.settings_key_autologin_set));
+        
         autologinSetSetting.setEntryValues(loginSetNames);
         autologinSetSetting.setEntries(loginSetNames);
-        
     }
 	
+    private String[] getLoginSetNames() {
+        List<String> loginSetNames = new ArrayList<String>();
+    	for(LoginSet loginSet : ((SchoolPlannerApp)getApplication()).getLoginManager().getAllLoginSets()) {
+    		loginSetNames.add(loginSet.getName());
+    	}
+    	return loginSetNames.toArray(new String[loginSetNames.size()]);
+    }
+    
 }

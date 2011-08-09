@@ -31,31 +31,28 @@ import android.net.NetworkInfo;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.preferences.Authentication;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 
 public class SchoolPlannerApp extends Application {
-		
-	protected Authentication loginCredentials = new Authentication();
-	protected Cache data;
-
-	protected boolean hasNetwork;
-
+	
+	private LoginSetManager loginManager;
+	
+	private Authentication loginCredentials = new Authentication();
+	private Cache data;
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+
 		initBackend();
-
-		ConnectivityManager conmgr = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo info = conmgr.getActiveNetworkInfo();
-		updateNetstat(info);
-
+		
 		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
 		registerReceiver(new BroadcastReceiver() {
 
 			@Override
 			public void onReceive(Context context, Intent intent) {
 				NetworkInfo info = intent.getParcelableExtra(ConnectivityManager.EXTRA_NETWORK_INFO);
-				updateNetstat(info);
+				setNetworkAvailable(info.isConnectedOrConnecting());
 			}
 		}, filter);
 	}
@@ -65,25 +62,13 @@ public class SchoolPlannerApp extends Application {
 		data = new Cache();
 		data.setLoginCredentials(loginCredentials);
 	}
-
-	/**
-	 * updatet den Netzwerkstatus in der DataSelection 
-	 * 
-	 * @param info
-	 *            das NetworkInfo objekt das die noetigen Info enthaelt
-	 */
-	private void updateNetstat(NetworkInfo info) {
-		if (info != null) {
-			setNetworkEnabled(info.isConnected());
-		}
-	}
-
+	
 	/**
 	 * setzt den Netzwerkstatus neu und updatet die Information im {@link MasterdataProvider}
-	 * @param hasNetwork true wenn eine Datenverbindung vorhanden ist, wenn nicht false
+	 * @param isNetworkAvailable true wenn eine Datenverbindung vorhanden ist, wenn nicht false
 	 */
-	public void setNetworkEnabled(boolean hasNetwork) {
-		data.networkAvailabilityChanged(hasNetwork);
+	public void setNetworkAvailable(boolean isNetworkAvailable) {
+		data.networkAvailabilityChanged(isNetworkAvailable);
 	}
 	
 	/**
@@ -114,4 +99,13 @@ public class SchoolPlannerApp extends Application {
 		}
 		return "";
 	}
+	
+	public LoginSetManager getLoginManager() {
+		return loginManager;
+	}
+
+	public void setLoginManager(LoginSetManager loginSetManager) {
+		loginManager = loginSetManager;
+	}
+	
 }

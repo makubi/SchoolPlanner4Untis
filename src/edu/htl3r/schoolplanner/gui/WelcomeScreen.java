@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.constants.LoginSetConstants;
@@ -41,6 +42,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	private RelativeLayout mainLayout;
 	private TextView emptyListTextView;
 	
+	private LoginSetManager loginmanager;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +56,9 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		buildEmptyListTextView();
 		mainLayout = (RelativeLayout) findViewById(R.id.welcome_main_layout);
 		
-		
 		loginmanager = new LoginSetManager();
-		
+		((SchoolPlannerApp) getApplication()).setLoginManager(loginmanager);
+				
 		// TODO: temporarily for easier login
 		if(loginmanager.getAllLoginSets().size() <= 0)
 			loginmanager.addLoginSet("WebUntis Testschule", "http://webuntis.grupet.at:8080", "demo", "user", "", false);
