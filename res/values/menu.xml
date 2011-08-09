@@ -3,6 +3,6 @@
     <string name="menu_settings">Settings</string>
     
     <string name="menu_add_login_set">Add Login Set</string>
-    <string name="menu_edit_login_set">Add Login Set</string>
+    <string name="menu_edit_login_set">Edit Login Set</string>
     <string name="menu_remove_login_set">Remove Login Set</string>
 </resources>
