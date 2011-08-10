@@ -15,11 +15,30 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.backend.network;
+package edu.htl3r.schoolplanner.backend;
 
-public interface ErrorCodes {
+public class ErrorMessage {
 
-	public static int JSON_EXCEPTION = 255;
-	public static int IO_EXCEPTION = 256;
-	public static int SERVICE_ERROR = 254;
+	private int errorCode;
+	private String additionalInfo;
+	private Throwable exception;
+	
+	public int getErrorCode() {
+		return errorCode;
+	}
+	public void setErrorCode(int errorCode) {
+		this.errorCode = errorCode;
+	}
+	public String getAdditionalInfo() {
+		return additionalInfo;
+	}
+	public void setAdditionalInfo(String additionalInfo) {
+		this.additionalInfo = additionalInfo;
+	}
+	public Throwable getException() {
+		return exception;
+	}
+	public void setException(Throwable exception) {
+		this.exception = exception;
+	}	
 }

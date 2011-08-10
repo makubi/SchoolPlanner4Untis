@@ -19,6 +19,7 @@
 package edu.htl3r.schoolplanner.backend;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -254,6 +255,8 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 	 * @throws IOException Wenn waehrend dem Abruf der Daten ein Fehler auftritt
 	 */
 	public DataFacade<MasterData> resyncMasterData() {
+		List<DataFacade<?>> requests = new ArrayList<DataFacade<?>>();
+		
 		DataFacade<List<SchoolClass>> schoolClassList = network.getSchoolClassList();
 		DataFacade<List<SchoolTeacher>> schoolTeacherList = network.getSchoolTeacherList();
 		DataFacade<List<SchoolRoom>> schoolRoomList = network.getSchoolRoomList();
@@ -265,30 +268,40 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		
 		DataFacade<MasterData> data = new DataFacade<MasterData>();
 		
-		if(schoolClassList.isSuccessful() && schoolHolidayList.isSuccessful() && schoolRoomList.isSuccessful() && schoolSubjectList.isSuccessful() && schoolTeacherList.isSuccessful() && timegrid.isSuccessful() && statusData.isSuccessful()) {
-			MasterData masterData = new MasterData();
-			masterData.setSchoolClassList(schoolClassList.getData());
-			masterData.setSchoolRoomList(schoolRoomList.getData());
-			masterData.setSchoolSubjectList(schoolSubjectList.getData());
-			masterData.setSchoolTeacherList(schoolTeacherList.getData());
-			masterData.setSchoolHolidayList(schoolHolidayList.getData());
-			masterData.setTimegrid(timegrid.getData());
-			masterData.setStatusData(statusData.getData());
+		requests.add(schoolClassList);
+		requests.add(schoolTeacherList);
+		requests.add(schoolRoomList);
+		requests.add(schoolSubjectList);
 		
-			data.setData(masterData);
+		requests.add(schoolHolidayList);
+		requests.add(timegrid);
+		requests.add(statusData);
 		
-			database.setSchoolClassList(schoolClassList.getData());
-			database.setSchoolTeacherList(schoolTeacherList.getData());
-			database.setSchoolRoomList(schoolRoomList.getData());
-			database.setSchoolSubjectList(schoolSubjectList.getData());
-			database.setSchoolHolidayList(schoolHolidayList.getData());
-			database.setTimegrid(timegrid.getData());
-			database.setStatusData(statusData.getData());
-		
+		for(DataFacade<?> dataFacade : requests) {
+			if(!dataFacade.isSuccessful()) {
+				data.setErrorMessage(dataFacade.getErrorMessage());
+				return data;
+			}
 		}
-		else {
-			data.setErrorCode(254);
-		}
+		
+		MasterData masterData = new MasterData();
+		masterData.setSchoolClassList(schoolClassList.getData());
+		masterData.setSchoolRoomList(schoolRoomList.getData());
+		masterData.setSchoolSubjectList(schoolSubjectList.getData());
+		masterData.setSchoolTeacherList(schoolTeacherList.getData());
+		masterData.setSchoolHolidayList(schoolHolidayList.getData());
+		masterData.setTimegrid(timegrid.getData());
+		masterData.setStatusData(statusData.getData());
+		
+		data.setData(masterData);
+		
+		database.setSchoolClassList(schoolClassList.getData());
+		database.setSchoolTeacherList(schoolTeacherList.getData());
+		database.setSchoolRoomList(schoolRoomList.getData());
+		database.setSchoolSubjectList(schoolSubjectList.getData());
+		database.setSchoolHolidayList(schoolHolidayList.getData());
+		database.setTimegrid(timegrid.getData());
+		database.setStatusData(statusData.getData());
 		
 		return data;
 	}

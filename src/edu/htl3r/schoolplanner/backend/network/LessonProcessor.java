@@ -36,7 +36,7 @@ public class LessonProcessor {
 	 */
 	public Map<String, List<Lesson>> addEmptyDaysToLessonMap(Map<String, List<Lesson>> lessonMap, DateTime startDate, DateTime endDate) {
 		Map<String, List<Lesson>> updatedLessonMap = lessonMap;
-		DateTime tmpDate = new DateTime(startDate);
+		DateTime tmpDate = startDate.clone();
 
 		while(tmpDate.before(endDate)) {
 			String date = DateTimeUtils.toISO8601Date(tmpDate);

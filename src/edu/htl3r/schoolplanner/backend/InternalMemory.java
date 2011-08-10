@@ -121,7 +121,7 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 	public Map<String, List<Lesson>> getLessons(ViewType view, DateTime startDate,
 			DateTime endDate) {
 		Map<String, List<Lesson>> lessonMap = new HashMap<String, List<Lesson>>();
-		DateTime tmpDate = new DateTime(startDate);
+		DateTime tmpDate = startDate.clone();
 		
 		while(tmpDate.before(endDate)) {
 			String date = DateTimeUtils.toISO8601Date(tmpDate);
@@ -144,7 +144,7 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 	@Override
 	public void setLessons(ViewType view, DateTime startDate, DateTime endDate,
 			Map<String, List<Lesson>> lessonMap) {
-		DateTime tmpDate = new DateTime(startDate);
+		DateTime tmpDate = startDate.clone();
 		
 		while(tmpDate.before(endDate)) {
 			String date = DateTimeUtils.toISO8601Date(tmpDate);

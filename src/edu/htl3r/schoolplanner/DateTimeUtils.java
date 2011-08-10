@@ -33,7 +33,25 @@ public class DateTimeUtils {
 		return date.year + "-" + month + "-" + day;
 	}
 	
+	/**
+	 * Liefert ein {@link DateTime}-Objekt als ISO-8601-String.
+	 * @param date {@link DateTime}-Objekt, von dem der String erzeugt werden soll
+	 * @return Uebergebenes {@link DateTime}-Objekt als ISO-8601-String
+	 */
+	public static String toISO8601Date(DateTime date) {
+		String month = normalizeDate(""+date.getMonth());
+		String day = normalizeDate(""+(date.getDay()));
+		
+		return date.getYear() + "-" + month + "-" + day;
+	}
+	
 	private static String normalizeDate(String datePart) {
 		return datePart.length() < 2 ? "0" + datePart : datePart;
+	}
+	
+	public static Time toTime(DateTime dateTime) {
+		Time time = new Time();
+		time.set(dateTime.getSecond(), dateTime.getMinute(), dateTime.getHour(), dateTime.getDay(), dateTime.getMonth()-1, dateTime.getYear());
+		return time;
 	}
 }

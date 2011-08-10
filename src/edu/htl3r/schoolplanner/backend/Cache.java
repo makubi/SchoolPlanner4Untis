@@ -196,7 +196,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 			data.setData(true);
 		}
 		else {
-			data.setErrorCode(masterData.getErrorCode());
+			data.setErrorMessage(masterData.getErrorMessage());
 		}
 		
 		return data;

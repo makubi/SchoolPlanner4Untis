@@ -23,15 +23,17 @@ import android.text.format.Time;
  * Diese Klasse repraesentiert ein {@link Time}-Objekt mit erweiterter Funktionalitaet.<br>
  * Es ist moeglich, den Tag dieses Objekts problemlos zu erhoehen oder verringern.
  */
-public class DateTime extends Time {
+public class DateTime implements Cloneable {
 
-
+	private Time internalTime;
+	
 	public DateTime() {
-		super();
+		internalTime = new Time();
 	}
 	
-	public DateTime(DateTime other) {
-		super(other);
+	public DateTime(Time time) {
+		internalTime = time;
+		internalTime.monthDay += 1;
 	}
 	
 	/**
@@ -39,8 +41,8 @@ public class DateTime extends Time {
 	 * {@link #normalize(boolean)}
 	 */
 	public void increaseDay() {
-		monthDay+=1;
-		normalize(true);
+		internalTime.monthDay+=1;
+		internalTime.normalize(true);
 	}
 	
 	/**
@@ -48,7 +50,97 @@ public class DateTime extends Time {
 	 * @see {@link #normalize(boolean)}
 	 */
 	public void decreaseDay() {
-		monthDay-=1;
-		normalize(true);
+		internalTime.monthDay-=1;
+		internalTime.normalize(true);
 	}
+	
+	public void set(int monthDay, int month, int year) {
+		internalTime.set(monthDay, month-1, year);
+	}
+	
+	public void set(int second, int minute, int hour, int monthDay, int month,
+			int year) {
+		internalTime.set(second, minute, hour, monthDay, month-1, year);
+	}
+	
+	public void set(int minute, int hour, int monthDay, int month, int year) {
+		set(00, minute, hour, monthDay, month, year);
+	}
+	
+	public int getYear() {
+		return internalTime.year;
+	}
+	
+	public int getMonth() {
+		return internalTime.month+1;
+	}
+	
+	public int getDay() {
+		return internalTime.monthDay;
+	}
+	
+	public int getHour() {
+		return internalTime.hour;
+	}
+	
+	public int getMinute() {
+		return internalTime.minute;
+	}
+	
+	public int getSecond() {
+		return internalTime.second;
+	}
+	
+	public void setYear(int year) {
+		internalTime.year = year;
+	}
+	
+	public void setMonth(int month) {
+		internalTime.month = month-1;
+	}
+	
+	public void setDay(int day) {
+		internalTime.monthDay = day;
+	}
+	
+	public void setHour(int hour) {
+		internalTime.hour = hour;
+	}
+	
+	public void setMinute(int minute) {
+		internalTime.minute = minute;
+	}
+	
+	public void setSecond(int second) {
+		internalTime.second = second;
+	}
+	
+	public boolean before(DateTime other) {
+		Time thisTime = DateTimeUtils.toTime(this);
+		Time otherTime = DateTimeUtils.toTime(other);
+		
+		return thisTime.before(otherTime);
+	}
+	
+	public boolean after(DateTime other) {
+		Time thisTime = DateTimeUtils.toTime(this);
+		Time otherTime = DateTimeUtils.toTime(other);
+		
+		return thisTime.after(otherTime);
+	}
+	
+	public boolean equals(DateTime other) {
+		Time thisTime = DateTimeUtils.toTime(this);
+		Time otherTime = DateTimeUtils.toTime(other);
+		
+		return thisTime.equals(otherTime);
+	}
+
+	@Override
+	public DateTime clone() {
+		DateTime dateTimeClone = new DateTime();
+		dateTimeClone.set(getSecond(), getMinute(), getHour(), getDay(), getMonth(), getYear());
+		return dateTimeClone;
+	}
+	
 }

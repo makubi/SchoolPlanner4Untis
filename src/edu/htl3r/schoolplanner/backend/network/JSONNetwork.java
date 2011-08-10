@@ -35,6 +35,7 @@ import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataFacade;
+import edu.htl3r.schoolplanner.backend.ErrorMessage;
 import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceMasterdataProvider;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceTimetableDataProvider;
@@ -164,11 +165,14 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			if (responseObject.has("error")) {
 				JSONObject errorObject = responseObject.getJSONObject("error");
 				int errorCode = errorObject.getInt("code");
-				String errorMessage = errorObject.getString("message");
+				String errorString = errorObject.getString("message");
 				Log.d("JSON", "Received error code: " + errorCode
-						+ ", message: " + errorMessage);
+						+ ", message: " + errorString);
 
-				data.setErrorCode(errorCode);
+				ErrorMessage errorMessage = new ErrorMessage();
+				errorMessage.setErrorCode(ErrorCodes.SERVICE_ERROR);
+				errorMessage.setAdditionalInfo(errorCode+": "+errorString);
+				data.setErrorMessage(errorMessage);
 			}
 
 			else {
@@ -188,9 +192,15 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 
 			}
 		} catch (JSONException e) {
-			data.setErrorCode(ErrorCodes.JSON_EXCEPTION);
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setErrorCode(ErrorCodes.JSON_EXCEPTION);
+			errorMessage.setException(e);
+			data.setErrorMessage(errorMessage);
 		} catch (IOException e) {
-			data.setErrorCode(ErrorCodes.IO_EXCEPTION);
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setErrorCode(ErrorCodes.IO_EXCEPTION);
+			errorMessage.setException(e);
+			data.setErrorMessage(errorMessage);
 		}
 
 		return data;
@@ -219,11 +229,14 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			if (responseObject.has("error")) {
 				JSONObject errorObject = responseObject.getJSONObject("error");
 				int errorCode = errorObject.getInt("code");
-				String errorMessage = errorObject.getString("message");
+				String errorString = errorObject.getString("message");
 				Log.d("JSON", "Received error code: " + errorCode
-						+ ", message: " + errorMessage);
+						+ ", message: " + errorString);
 
-				data.setErrorCode(errorCode);
+				ErrorMessage errorMessage = new ErrorMessage();
+				errorMessage.setErrorCode(ErrorCodes.SERVICE_ERROR);
+				errorMessage.setAdditionalInfo(errorCode+": "+errorString);
+				data.setErrorMessage(errorMessage);
 			}
 
 			JSONArray result = responseObject.getJSONArray("result");
@@ -235,9 +248,15 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			}
 
 		} catch (JSONException e) {
-			data.setErrorCode(ErrorCodes.JSON_EXCEPTION);
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setErrorCode(ErrorCodes.JSON_EXCEPTION);
+			errorMessage.setException(e);
+			data.setErrorMessage(errorMessage);
 		} catch (IOException e) {
-			data.setErrorCode(ErrorCodes.IO_EXCEPTION);
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setErrorCode(ErrorCodes.IO_EXCEPTION);
+			errorMessage.setException(e);
+			data.setErrorMessage(errorMessage);
 		}
 		return data;
 	}
@@ -270,9 +289,15 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			}
 
 		} catch (JSONException e) {
-			data.setErrorCode(ErrorCodes.JSON_EXCEPTION);
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setErrorCode(ErrorCodes.JSON_EXCEPTION);
+			errorMessage.setException(e);
+			data.setErrorMessage(errorMessage);
 		} catch (IOException e) {
-			data.setErrorCode(ErrorCodes.IO_EXCEPTION);
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setErrorCode(ErrorCodes.IO_EXCEPTION);
+			errorMessage.setException(e);
+			data.setErrorMessage(errorMessage);
 		}
 		return data;
 	}
@@ -296,7 +321,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			}
 			data.setData(list);
 		} else {
-			data.setErrorCode(viewTypeList.getErrorCode());
+			data.setErrorMessage(viewTypeList.getErrorMessage());
 		}
 
 		return data;
@@ -321,7 +346,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			}
 			data.setData(list);
 		} else {
-			data.setErrorCode(viewTypeList.getErrorCode());
+			data.setErrorMessage(viewTypeList.getErrorMessage());
 		}
 
 		return data;
@@ -346,7 +371,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			}
 			data.setData(list);
 		} else {
-			data.setErrorCode(viewTypeList.getErrorCode());
+			data.setErrorMessage(viewTypeList.getErrorMessage());
 		}
 		return data;
 	}
@@ -370,7 +395,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			}
 			data.setData(list);
 		} else {
-			data.setErrorCode(viewTypeList.getErrorCode());
+			data.setErrorMessage(viewTypeList.getErrorMessage());
 		}
 
 		return data;
@@ -394,7 +419,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			}
 			data.setData(list);
 		} else {
-			data.setErrorCode(schoolObjectList.getErrorCode());
+			data.setErrorMessage(schoolObjectList.getErrorMessage());
 		}
 
 		return data;
@@ -417,7 +442,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			}
 			data.setData(timegrid);
 		} else {
-			data.setErrorCode(schoolObjectList.getErrorCode());
+			data.setErrorMessage(schoolObjectList.getErrorMessage());
 		}
 
 		return data;
@@ -437,9 +462,15 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			List<StatusData> statusData = jsonParser.jsonToStatusData(result);
 			data.setData(statusData);
 		} catch (JSONException e) {
-			data.setErrorCode(ErrorCodes.JSON_EXCEPTION);
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setErrorCode(ErrorCodes.JSON_EXCEPTION);
+			errorMessage.setException(e);
+			data.setErrorMessage(errorMessage);
 		} catch (IOException e) {
-			data.setErrorCode(ErrorCodes.IO_EXCEPTION);
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setErrorCode(ErrorCodes.IO_EXCEPTION);
+			errorMessage.setException(e);
+			data.setErrorMessage(errorMessage);
 		}
 	
 		return data;
@@ -455,7 +486,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			data.setData(tmpData.getData().get(
 					DateTimeUtils.toISO8601Date(date)));
 		} else {
-			data.setErrorCode(tmpData.getErrorCode());
+			data.setErrorMessage(tmpData.getErrorMessage());
 		}
 	
 		return data;
@@ -482,10 +513,9 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			params.put("type", viewTypeMapping.get(view.getClass()));
 	
 			// Parsen der Daten
-			String startYear = "" + startDate.year;
-			// Intern 0 - 11
-			String startMonth = "" + startDate.month + 1;
-			String startDay = "" + startDate.monthDay;
+			String startYear = "" + startDate.getYear();
+			String startMonth = "" + startDate.getMonth();
+			String startDay = "" + startDate.getDay();
 	
 			if (startMonth.length() < 2) {
 				startMonth = "0" + startMonth;
@@ -495,10 +525,9 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 				startDay = "0" + startDay;
 			}
 	
-			String endYear = "" + endDate.year;
-			// Intern 0 - 11
-			String endMonth = "" + endDate.month + 1;
-			String endDay = "" + startDate.monthDay;
+			String endYear = "" + endDate.getYear();
+			String endMonth = "" + endDate.getMonth();
+			String endDay = "" + startDate.getDay();
 	
 			if (endMonth.length() < 2) {
 				endMonth = "0" + endMonth;
@@ -533,9 +562,15 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			data.setData(lessonMap);
 	
 		} catch (JSONException e) {
-			data.setErrorCode(ErrorCodes.JSON_EXCEPTION);
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setErrorCode(ErrorCodes.JSON_EXCEPTION);
+			errorMessage.setException(e);
+			data.setErrorMessage(errorMessage);
 		} catch (IOException e) {
-			data.setErrorCode(ErrorCodes.IO_EXCEPTION);
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setErrorCode(ErrorCodes.IO_EXCEPTION);
+			errorMessage.setException(e);
+			data.setErrorMessage(errorMessage);
 		}
 	
 		return data;
@@ -576,11 +611,14 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			if (response.has("error")) {
 				JSONObject errorObject = response.getJSONObject("error");
 				int errorCode = errorObject.getInt("code");
-				String errorMessage = errorObject.getString("message");
+				String errorString = errorObject.getString("message");
 				Log.d("JSON", "Received error code: " + errorCode
-						+ ", message: " + errorMessage);
+						+ ", message: " + errorString);
 
-				data.setErrorCode(errorCode);
+				ErrorMessage errorMessage = new ErrorMessage();
+				errorMessage.setErrorCode(ErrorCodes.SERVICE_ERROR);
+				errorMessage.setAdditionalInfo(errorCode+": "+errorString);
+				data.setErrorMessage(errorMessage);
 			}
 
 			else {
@@ -600,9 +638,15 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 				}
 			}
 		} catch (JSONException e) {
-			data.setErrorCode(ErrorCodes.JSON_EXCEPTION);
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setErrorCode(ErrorCodes.JSON_EXCEPTION);
+			errorMessage.setException(e);
+			data.setErrorMessage(errorMessage);
 		} catch (IOException e) {
-			data.setErrorCode(ErrorCodes.IO_EXCEPTION);
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setErrorCode(ErrorCodes.IO_EXCEPTION);
+			errorMessage.setException(e);
+			data.setErrorMessage(errorMessage);
 		}
 		return data;
 	}

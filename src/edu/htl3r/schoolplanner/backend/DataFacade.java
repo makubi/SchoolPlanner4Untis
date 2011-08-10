@@ -27,7 +27,7 @@ public class DataFacade<E> {
 	private boolean successful = false;
 	
 	private E data;
-	private int errorCode = 0;
+	private ErrorMessage errorMessage;
 	
 	
 	/**
@@ -69,22 +69,22 @@ public class DataFacade<E> {
 	}
 	
 	/**
-	 * Liefert den Error-Code zur vorher gestellten Abfrage, falls ein Fehler aufgetreten ist.<br>
+	 * Liefert die Error-Message zur vorher gestellten Abfrage, falls ein Fehler aufgetreten ist.<br>
 	 * Kann nur verwendet werden, wenn die Datenabfrage vorher erfolglos war, daher sollte vorher mit {@link #isSuccessful()} ueberprueft werden, ob dies auch zutrifft, ansonsten wird eine {@link IllegalStateException} geworfen.
-	 * @return Den Error-Code zur fehlgeschlagenen Abfrage
+	 * @return Die Error-Message zur fehlgeschlagenen Abfrage
 	 */
-	public int getErrorCode() {
+	public ErrorMessage getErrorMessage() {
 		if(successful)
 			throw new IllegalStateException("No error code provided, the previous request was successful");
-		return errorCode;
+		return errorMessage;
 	}
 	
 	/**
-	 * Setzt den Error-Code der Abfrage und den Rueckgabewert fuer {@link #isSuccessful()} auf 'false'.
-	 * @param errorCode Error-Code, der gesetzt werden sollen
+	 * Setzt die Error-Message der Abfrage und den Rueckgabewert fuer {@link #isSuccessful()} auf 'false'.
+	 * @param errorMessage Error-Message, die gesetzt werden sollen
 	 */
-	public void setErrorCode(int errorCode) {
-		this.errorCode = errorCode;
+	public void setErrorMessage(ErrorMessage errorMessage) {
+		this.errorMessage = errorMessage;
 		successful = false;
 	}
 	

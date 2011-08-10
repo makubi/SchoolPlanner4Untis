@@ -53,7 +53,7 @@ public class Lesson implements Serializable {
 
 	/**
 	 * Liefert das Datum der Stunde.<br>
-	 * <b>ACHTUNG: Die Monatsnummer laeuft von 0 - 11!</b>
+	 * <b>ACHTUNG: Die Monatsnummer laeuft von 1 - 12!</b>
 	 * @return Datum der Stunde
 	 */
 	public DateTime getDate() {
@@ -67,17 +67,17 @@ public class Lesson implements Serializable {
 	 * @param day Tag, der gesetzt werden soll
 	 */
 	public void setDate(int year, int month, int day) {
-		date.set(day, month-1, year);
-		startTime.set(day, month-1, year);
-		endTime.set(day, month-1, year);
+		date.set(day, month, year);
+		startTime.set(day, month, year);
+		endTime.set(day, month, year);
 	}
 	
 	/**
 	 * Liefert den Anfangszeitpunkt der Stunde (+ richtig gesetztem Datum).<br>
-	 * <b>ACHTUNG: Die Monatsnummer laeuft von 0 - 11!</b>
+	 * <b>ACHTUNG: Die Monatsnummer laeuft von 1 - 12!</b>
 	 * @return Datum der Stunde
 	 */
-	public Time getStartTime() {
+	public DateTime getStartTime() {
 		return startTime;
 	}
 
@@ -87,15 +87,15 @@ public class Lesson implements Serializable {
 	 * @param minute Minute, die gesetzt werden soll
 	 */
 	public void setStartTime(int hour, int minute) {
-		startTime.set(0, minute, hour, startTime.monthDay, startTime.month, startTime.year);
+		startTime.set(0, minute, hour, startTime.getDay(), startTime.getMonth(), startTime.getYear());
 	}
 	
 	/**
 	 * Liefert den Anfangszeitpunkt der Stunde (+ richtig gesetztem Datum).<br>
-	 * <b>ACHTUNG: Die Monatsnummer laeuft von 0 - 11!</b>
+	 * <b>ACHTUNG: Die Monatsnummer laeuft von 1 - 12!</b>
 	 * @return Datum der Stunde
 	 */
-	public Time getEndTime() {
+	public DateTime getEndTime() {
 		return endTime;
 	}
 
@@ -105,7 +105,7 @@ public class Lesson implements Serializable {
 	 * @param minute Minute, die gesetzt werden soll
 	 */
 	public void setEndTime(int hour, int minute) {
-		endTime.set(0, minute, hour, endTime.monthDay, endTime.month, endTime.year);
+		endTime.set(0, minute, hour, endTime.getDay(), endTime.getMonth(), endTime.getYear());
 	}	
 	
 	public LessonType getLessonType() {
@@ -212,7 +212,7 @@ public class Lesson implements Serializable {
 	 */
 	
 	public boolean equals(Lesson another) {
-		return dateEquals(another) && getStartTime().hour == another.getStartTime().hour && getStartTime().minute == another.getStartTime().minute;
+		return dateEquals(another) && getStartTime().getHour() == another.getStartTime().getHour() && getStartTime().getMinute() == another.getStartTime().getMinute();
 	}
 	
 	/**
@@ -228,7 +228,7 @@ public class Lesson implements Serializable {
 	}
 	
 	private boolean dateEquals(Lesson another) {
-		return getDate().year == another.getDate().year && getDate().month == another.getDate().month && getDate().monthDay == another.getDate().monthDay;
+		return getDate().getYear() == another.getDate().getYear() && getDate().getMonth() == another.getDate().getMonth() && getDate().getDay() == another.getDate().getDay();
 	}
 	
 	private void sortList(List<? extends ViewType> viewTypeList) {
