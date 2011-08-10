@@ -133,8 +133,8 @@ public class Lesson implements Serializable {
 	 * @param schoolClasses Liste der Klassen
 	 */
 	public void setSchoolClasses(List<SchoolClass> schoolClasses) {
-		sortList(schoolClasses);
 		this.schoolClasses = schoolClasses;
+		sortList(this.schoolClasses);
 	}
 
 	public List<SchoolTeacher> getSchoolTeachers() {
@@ -146,8 +146,8 @@ public class Lesson implements Serializable {
 	 * @param schoolTeachers Liste der Lehrer
 	 */
 	public void setSchoolTeachers(List<SchoolTeacher> schoolTeachers) {
-		sortList(schoolTeachers);
 		this.schoolTeachers = schoolTeachers;
+		sortList(this.schoolTeachers);
 	}
 
 	public List<SchoolSubject> getSchoolSubjects() {
@@ -159,8 +159,8 @@ public class Lesson implements Serializable {
 	 * @param schoolSubjects Liste der Faecher
 	 */
 	public void setSchoolSubjects(List<SchoolSubject> schoolSubjects) {
-		sortList(schoolSubjects);
 		this.schoolSubjects = schoolSubjects;
+		sortList(this.schoolSubjects);
 	}
 
 	public List<SchoolRoom> getSchoolRooms() {
@@ -172,8 +172,8 @@ public class Lesson implements Serializable {
 	 * @param schoolRooms Liste der Raeume
 	 */
 	public void setSchoolRooms(List<SchoolRoom> schoolRooms) {
-		sortList(schoolRooms);
 		this.schoolRooms = schoolRooms;
+		sortList(this.schoolRooms);
 	}
 
 	public int getId() {
@@ -223,8 +223,8 @@ public class Lesson implements Serializable {
 	
 	public boolean inLesson(Lesson another) {
 		return dateEquals(another) && 
-		(getStartTime().before(another.getStartTime()) || getStartTime().equals(another.getStartTime())) && 
-		(getEndTime().after(another.getEndTime()) || getEndTime().equals(another.getEndTime()));
+		(getStartTime().getAndroidTime().before(another.getStartTime().getAndroidTime()) || getStartTime().getAndroidTime().equals(another.getStartTime().getAndroidTime())) && 
+		(getEndTime().getAndroidTime().after(another.getEndTime().getAndroidTime()) || getEndTime().getAndroidTime().equals(another.getEndTime().getAndroidTime()));
 	}
 	
 	private boolean dateEquals(Lesson another) {

@@ -54,17 +54,25 @@ public class DateTime implements Cloneable {
 		internalTime.normalize(true);
 	}
 	
-	public void set(int monthDay, int month, int year) {
-		internalTime.set(monthDay, month-1, year);
+	public void set(int day, int month, int year) {
+		internalTime.set(day, month-1, year);
 	}
 	
-	public void set(int second, int minute, int hour, int monthDay, int month,
+	public void set(int second, int minute, int hour, int day, int month,
 			int year) {
-		internalTime.set(second, minute, hour, monthDay, month-1, year);
+		internalTime.set(second, minute, hour, day, month-1, year);
 	}
 	
-	public void set(int minute, int hour, int monthDay, int month, int year) {
-		set(00, minute, hour, monthDay, month, year);
+	/**
+	 * Setzt die uebergebenen Werte und die Sekunde auf 0.
+	 * @param minute
+	 * @param hour
+	 * @param monthDay
+	 * @param month
+	 * @param year
+	 */
+	public void set(int minute, int hour, int day, int month, int year) {
+		set(00, minute, hour, day, month, year);
 	}
 	
 	public int getYear() {
@@ -115,31 +123,15 @@ public class DateTime implements Cloneable {
 		internalTime.second = second;
 	}
 	
-	public boolean before(DateTime other) {
-		Time thisTime = DateTimeUtils.toTime(this);
-		Time otherTime = DateTimeUtils.toTime(other);
-		
-		return thisTime.before(otherTime);
-	}
-	
-	public boolean after(DateTime other) {
-		Time thisTime = DateTimeUtils.toTime(this);
-		Time otherTime = DateTimeUtils.toTime(other);
-		
-		return thisTime.after(otherTime);
-	}
-	
-	public boolean equals(DateTime other) {
-		Time thisTime = DateTimeUtils.toTime(this);
-		Time otherTime = DateTimeUtils.toTime(other);
-		
-		return thisTime.equals(otherTime);
+	public Time getAndroidTime() {
+		return internalTime;
 	}
 
 	@Override
 	public DateTime clone() {
 		DateTime dateTimeClone = new DateTime();
 		dateTimeClone.set(getSecond(), getMinute(), getHour(), getDay(), getMonth(), getYear());
+		
 		return dateTimeClone;
 	}
 	
