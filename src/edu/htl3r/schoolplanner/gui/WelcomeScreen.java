@@ -21,23 +21,17 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Dialog;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-
-import com.tani.app.ui.IconContextMenu;
-
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
@@ -45,6 +39,7 @@ import edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks.Lo
 import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 import edu.htl3r.schoolplanner.constants.WelcomeScreenConstants;
 import edu.htl3r.schoolplanner.gui.listener.LoginListener;
+import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenContextMenu;
 
 public class WelcomeScreen extends SchoolPlannerActivity{
 
@@ -65,10 +60,8 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	private LoginSetManager loginmanager;
 	
 	private final int CONTEXT_MENU_ID = 1;
-	private final int CONTEXT_MENU_EDIT = 1;
-	private final int CONTEXT_MENU_REMOVE = 2;
 	
-	private IconContextMenu contextMenu;
+	private WelcomeScreenContextMenu contextMenu;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +142,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	
 	
 
-	private void editLoginSet(int id) {
+	public void editLoginSet(int id) {
 		dialog = new LoginSetDialog(this,loginmanager.getLoginSetOnPosition(id));
     	dialog.setParent(this);
     	dialog.show();
@@ -245,7 +238,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		return false;
 	}
 
-	private void removeLoginSet(final int id) {
+	public void removeLoginSet(final int id) {
 		LoginSetUpdateAsyncTask task = new LoginSetUpdateAsyncTask(this) {
 			
 			@Override
@@ -280,38 +273,9 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	}
 	
 	private void initContextMenu() {
-		contextMenu = new IconContextMenu(this,CONTEXT_MENU_ID);
-		contextMenu.setOnClickListener(new IconContextMenu.IconContextMenuOnClickListener() {
-
-			@Override
-			public void onClick(int menuId) {
-				switch(menuId) {
-				case CONTEXT_MENU_EDIT:
-					editLoginSet((int) contextMenu.getSelectedItem());
-					break;
-				case CONTEXT_MENU_REMOVE:
-					removeLoginSet((int) contextMenu.getSelectedItem());
-					break;
-				}
-			}
-			
-		});
-		
-		mainListView.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				contextMenu.setSelectedItem(id);
-				showDialog(CONTEXT_MENU_ID);
-				return true;
-			}
-		});
-		
-		Resources resources = getResources();
-		
-		contextMenu.addItem(resources, getString(R.string.menu_edit_login_set), R.drawable.ic_menu_preferences, CONTEXT_MENU_EDIT);
-		contextMenu.addItem(resources, getString(R.string.menu_remove_login_set), R.drawable.ic_menu_preferences,  CONTEXT_MENU_REMOVE);
+		contextMenu = new WelcomeScreenContextMenu(this,CONTEXT_MENU_ID);
+		contextMenu.setListView(mainListView);
+		contextMenu.init();
 	}
 	
 }
