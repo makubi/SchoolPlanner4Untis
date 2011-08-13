@@ -48,6 +48,8 @@ public class IconContextMenu implements DialogInterface.OnCancelListener,
 	
 	private IconContextMenuOnClickListener clickHandler = null;
 	
+	private long selectedItem;
+	
 	/**
 	 * constructor
 	 * @param parent
@@ -254,5 +256,13 @@ public class IconContextMenu implements DialogInterface.OnCancelListener,
 			}
 			this.actionTag = actionTag;
 		}
+	}
+
+    public long getSelectedItem() {
+    	return selectedItem;
+    }
+    
+	public void setSelectedItem(long id) {
+		selectedItem = id;		
 	}
 }
