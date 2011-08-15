@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_sets_list_empty">
+    Your list of login sets is empty!
+	\n\n
+	You need a login set to be able to log into the app.
+	\n\n
+	A login set contains of five information:
+	\n\t- name (arbitrary): e.g. My School Login
+	\n\t- server url: e.g. urania.webuntis.com:1234
+	\n\t- school name: e.g. my_school
+	\n\t- user name: my_login_name
+	\n\t- password (optional): my_password
+	\n\n	
+	+ You have to provide a name to differentiate between multiple login sets.
+	\n+ The server url is the same url you use to log into WebUntis via a webbrowser.
+	\n+ You have to use the same login information you use to log into the WebUntis website.
+	\n+ If your school provides SSL, you can enforce to log in securely.
+    </string>
+    
+</resources>

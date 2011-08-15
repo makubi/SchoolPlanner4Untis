@@ -72,8 +72,8 @@ public class WelcomeScreenContextMenu extends IconContextMenu{
 		
 		Resources resources = parentActivity.getResources();
 		
-		addItem(resources, parentActivity.getString(R.string.menu_edit_login_set), R.drawable.ic_menu_preferences, CONTEXT_MENU_EDIT);
-		addItem(resources, parentActivity.getString(R.string.menu_remove_login_set), R.drawable.ic_menu_preferences,  CONTEXT_MENU_REMOVE);
+		addItem(resources, parentActivity.getString(R.string.menu_edit_login_set), R.drawable.ic_menu_edit, CONTEXT_MENU_EDIT);
+		addItem(resources, parentActivity.getString(R.string.menu_remove_login_set), R.drawable.ic_menu_delete,  CONTEXT_MENU_REMOVE);
 	}
 	
 	public void setListView(ListView listView) {

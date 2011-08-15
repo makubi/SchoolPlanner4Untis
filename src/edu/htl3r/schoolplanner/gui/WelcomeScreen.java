@@ -101,19 +101,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		emptyListTextView.setTextSize(14);
 		emptyListTextView.setPadding(5, 0, 0, 0);
 		emptyListTextView.setTextColor(getResources().getColor(R.color.text));
-		// TODO: Text auslagern
-		emptyListTextView.setText("Your list of login sets is empty!" +
-				"\n\nYou need a login set to be able to log into the app." +
-				"\n\nA login set contains of five information:" +
-				"\n - name (arbitrary): e.g. My School Login" + 
-				"\n - server url: e.g. urania.webuntis.com:1234" +
-				"\n - school name: e.g. my_school" +
-				"\n - user name: my_login_name" +
-				"\n - password (optional): my_password" +
-				"\n\n + You have to provide a name to differentiate between multiple login sets." +
-				"\n + The server url is the same url you use to log into WebUntis via a webbrowser." +
-				"\n + You have to use the same login information you use to log into the WebUntis website." +
-				"\n + If your school provides SSL, you can enforce to log in securely.");
+		emptyListTextView.setText(R.string.login_sets_list_empty);
 		emptyListTextView.setLayoutParams(p);
 		emptyListTextView.setTag(WelcomeScreenConstants.EMPTY_LIST_TEXTVIEW_ADDED);
 	}
@@ -267,7 +255,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		if (id == CONTEXT_MENU_ID) {
-			return contextMenu.createMenu("Manage Login Sets");
+			return contextMenu.createMenu(getString(R.string.context_menu_loginsets));
 		}
 		return super.onCreateDialog(id);
 	}
