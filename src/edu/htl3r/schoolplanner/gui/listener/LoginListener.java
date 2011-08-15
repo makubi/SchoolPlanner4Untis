@@ -45,7 +45,10 @@ public class LoginListener implements OnItemClickListener, Serializable {
 		AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
 
 			@Override
-			protected Void doInBackground(Void... params) {				
+			protected Void doInBackground(Void... params) {
+				
+				// TODO: Do login here
+				
 				Intent t = new Intent(welcomescreen, SelectScreen.class);
 				welcomescreen.startActivity(t);
 			

@@ -156,22 +156,6 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		
 		mainListView.setAdapter(aa);
 	}
-
-	
-	/**
-	 * @param active 'true' if the login is currently in progress
-	 */
-	@Deprecated
-	public void setOnLogin(boolean active) {
-		setLoginListEnabled(!active);
-		if (active) {
-			loginProgressText.setText("Logging in...");
-			progressWheel.setVisibility(View.VISIBLE);
-		} else {
-			loginProgressText.setText("");
-			progressWheel.setVisibility(View.INVISIBLE);
-		}
-	}
 	
 	public void setInProgress(String message, boolean active) {
 		setLoginListEnabled(!active);
@@ -203,6 +187,16 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		}
 	}
 
+	
+	/**
+	 * @param name
+	 * @param serverUrl
+	 * @param school
+	 * @param username
+	 * @param password
+	 * @param sslOnly
+	 * @return 'true', wenn das Speichern erfolgreich war, 'false', wenn es zum Namen des Login-Sets schon ein anderes Login-Set gibt.
+	 */
 	public boolean addLoginSet(final String name, final String serverUrl, final String school,
 			final String username, final String password, final boolean sslOnly) {
 		LoginSetUpdateAsyncTask task = new LoginSetUpdateAsyncTask(this) {

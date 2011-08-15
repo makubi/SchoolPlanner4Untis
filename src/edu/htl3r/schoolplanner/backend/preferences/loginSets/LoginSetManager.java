@@ -37,6 +37,11 @@ public class LoginSetManager {
 		loginSets = database.getAllLoginSets();
 	}
 	
+	/**
+	 * Diese Methode speichert ein neues Login-Set, wenn es noch keines zum Namen gibt, der darin gesetzt ist. 
+	 * @param loginSet Login-Set, das gespeichert werden soll
+	 * @return 'true', wenn das Speichern erfolgreich war, 'false', wenn es zum Namen des Login-Sets schon ein anderes Login-Set gibt.
+	 */
 	public boolean addLoginSet(LoginSet loginSet) {
 		if(has(loginSet.getName())) {
 			return false;
@@ -48,6 +53,15 @@ public class LoginSetManager {
 	}
 
 
+	/**
+	 * @param name
+	 * @param url
+	 * @param school
+	 * @param user
+	 * @param password
+	 * @param sslOnly
+	 * @return 'true', wenn das Speichern erfolgreich war, 'false', wenn es zum Namen des Login-Sets schon ein anderes Login-Set gibt.
+	 */
 	public boolean addLoginSet(String name, String url, String school, String user, String password, boolean sslOnly) {
 		return addLoginSet(new LoginSet(name, url, school, user, password, sslOnly));
 	}
