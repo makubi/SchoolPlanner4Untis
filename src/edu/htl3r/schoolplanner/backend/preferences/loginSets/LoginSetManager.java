@@ -30,6 +30,8 @@ public class LoginSetManager {
 	private List<LoginSet> loginSets;
 	private LoginSetDatabase database = new LoginSetDatabase();
 	
+	private WebUntisUrlParser urlParser = new WebUntisUrlParser();
+	
 	public LoginSetManager() {
 		database.setContext(SchoolplannerContext.context);
 		loginSets = database.getAllLoginSets();
@@ -111,7 +113,7 @@ public class LoginSetManager {
 			String username, String password, boolean checked) {
 		
 		if(has(name)) {
-			database.editLoginSet(name, serverUrl, school,
+			database.editLoginSet(name, urlParser.parseUrl(serverUrl), school,
 					username, password, checked);
 
 			for(LoginSet loginSet : loginSets) {

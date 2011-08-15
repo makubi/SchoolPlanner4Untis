@@ -27,7 +27,7 @@ import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.localdata.LocalData;
 import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
-import edu.htl3r.schoolplanner.backend.preferences.Authentication;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
@@ -41,6 +41,10 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * Laedt Daten aus externen Datenquellen, wie der lokalen Datenbank oder dem Netzwerk.
  * @see LocalData
  * @see JSONNetwork
+ */
+/**
+ * @author makubi
+ *
  */
 public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider {
 
@@ -311,11 +315,12 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 	}
 
 	/**
-	 * Setzt die Preferences fuer das Netzwerk neu.
-	 * @param authentications Preferences, die gesetzt werden sollen
+	 * Setzt das LoginSet mit den Login-Daten, die im Netzwerk verwendet werden sollen.
+	 * @param loginSet
+	 * @see JSONNetwork#authenticate()
 	 */
-	public void setLoginCredentials(Authentication authentications) {
-		network.setLoginCredentials(authentications);
+	public void setLoginCredentials(LoginSet loginSet) {
+		network.setLoginCredentials(loginSet);
 	}
 	
 }

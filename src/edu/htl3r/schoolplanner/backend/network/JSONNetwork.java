@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.prefs.Preferences;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +38,7 @@ import edu.htl3r.schoolplanner.backend.ErrorMessage;
 import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceMasterdataProvider;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceTimetableDataProvider;
-import edu.htl3r.schoolplanner.backend.preferences.Authentication;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
@@ -61,10 +60,10 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	 */
 	private final String jsonrpcVersion = "2.0";
 
-	private final NetworkAccess network = new Network();
+	private final Network network = new Network();
 	private final JSONParser jsonParser = new JSONParser();
 
-	private Authentication authentication;
+	private LoginSet loginCredentials;
 
 	private int id = 0;
 
@@ -90,18 +89,6 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		viewTypeMapping.put(SchoolTeacher.class, WebUntis.SCHOOLTEACHER);
 		viewTypeMapping.put(SchoolSubject.class, WebUntis.SCHOOLSUBJECT);
 		viewTypeMapping.put(SchoolRoom.class, WebUntis.SCHOOLROOM);
-	}
-
-	/**
-	 * Setzt die Server-URL und den Schulnamen im Netzwerk sowie den
-	 * Benutzernamen und das Passwort fuer die Authentifizierung.
-	 * 
-	 * @param authentication
-	 *            {@link Preferences} die verwendet werden sollen
-	 */
-	public void setLoginCredentials(Authentication authentication) {
-		this.authentication = authentication;
-		network.setLoginCredentials(authentication);
 	}
 
 	/**
@@ -598,8 +585,8 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		data.setData(false);
 
 		try {
-			params.put("user", authentication.getUsername());
-			params.put("password", authentication.getPassword());
+			params.put("user", loginCredentials.getUsername());
+			params.put("password", loginCredentials.getPassword());
 
 			request.put("jsonrpc", jsonrpcVersion);
 			request.put("method", method);
@@ -721,6 +708,11 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 
 	public void setCache(Cache cache) {
 		jsonParser.setCache(cache);
+	}
+
+	public void setLoginCredentials(LoginSet loginSet) {
+		this.loginCredentials = loginSet;
+		network.setLoginCredentials(loginSet);
 	}
 
 }

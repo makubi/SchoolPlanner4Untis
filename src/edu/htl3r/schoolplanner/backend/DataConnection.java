@@ -20,19 +20,14 @@ package edu.htl3r.schoolplanner.backend;
 
 import java.io.IOException;
 
-import edu.htl3r.schoolplanner.backend.preferences.Authentication;
+import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 
 /**
  * Stellt das Interface zum Backend und die benoetigten Methoden zur Verfuegung.
  * Bekannte Implementierungen: {@link Cache}
  */
 public interface DataConnection {
-	
-	/**
-	 * Setzt die Preferences. Diese muessen neu gesetzt werden, wenn sie upgedatet wurden.
-	 * @param prefs Einstellungen, die gesetzt werden sollen
-	 */
-	public void setLoginCredentials(Authentication prefs);
 
 	/**
 	 * Setzt den Status des Netzwerkes, wenn sich dieser aendert.
@@ -55,4 +50,10 @@ public interface DataConnection {
 	 */
 	public DataFacade<Boolean> resyncMasterData();
 
+	/**
+	 * Setzt das LoginSet mit den Login-Daten, die im Backend verwendet werden sollen.
+	 * @param loginSet
+	 * @see JSONNetwork#authenticate()
+	 */
+	public void setLoginCredentials(LoginSet loginSet);
 }

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.htl3r.schoolplanner.DateTime;
-import edu.htl3r.schoolplanner.backend.preferences.Authentication;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
@@ -163,11 +163,6 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	}
 
 	@Override
-	public void setLoginCredentials(Authentication authentication) {
-		externalDataLoader.setLoginCredentials(authentication);
-	}
-
-	@Override
 	public void networkAvailabilityChanged(boolean networkAvailable) {
 		externalDataLoader.networkAvailabilityChanged(networkAvailable);
 	}
@@ -258,5 +253,10 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		}
 		
 		return data;
+	}
+
+	@Override
+	public void setLoginCredentials(LoginSet loginSet) {
+		externalDataLoader.setLoginCredentials(loginSet);
 	}
 }

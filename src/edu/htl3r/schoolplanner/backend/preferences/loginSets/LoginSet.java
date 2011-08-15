@@ -25,6 +25,8 @@ public class LoginSet implements Serializable {
 	
 	private static final long serialVersionUID = 6417138756120086971L;
 
+	private WebUntisUrlParser urlParser = new WebUntisUrlParser();
+	
 	private String name;
 	private String serverUrl;
 	private String school;
@@ -32,9 +34,19 @@ public class LoginSet implements Serializable {
 	private String password;
 	private boolean sslOnly;
 	
+	public LoginSet(LoginSet loginSet) {
+		name = loginSet.getName();
+		serverUrl = urlParser.parseUrl(loginSet.getServerUrl());
+		school = loginSet.getSchool();
+		username = loginSet.getUsername();
+		password = loginSet.getPassword();
+		sslOnly = loginSet.isSslOnly();
+	}
+	
 	public LoginSet(Map<String, String> data) {
 		name = data.get(LoginSetConstants.nameKey);
-		serverUrl = data.get(LoginSetConstants.serverUrlKey);
+
+		serverUrl = urlParser.parseUrl(data.get(LoginSetConstants.serverUrlKey));
 		school = data.get(LoginSetConstants.schoolKey);
 		username = data.get(LoginSetConstants.usernameKey);
 		
@@ -46,7 +58,7 @@ public class LoginSet implements Serializable {
 	
 	public LoginSet(String name, String serverUrl, String school, String username, String password, boolean sslOnly) {
 		this.name = name;
-		this.serverUrl = serverUrl;
+		this.serverUrl = urlParser.parseUrl(serverUrl);
 		this.school = school;
 		this.username = username;
 		this.password = password != null ? password : "";

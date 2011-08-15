@@ -28,16 +28,15 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import edu.htl3r.schoolplanner.backend.Cache;
+import edu.htl3r.schoolplanner.backend.DataConnection;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
-import edu.htl3r.schoolplanner.backend.preferences.Authentication;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 
 public class SchoolPlannerApp extends Application {
 	
 	private LoginSetManager loginManager;
 	
-	private Authentication loginCredentials = new Authentication();
-	private Cache data;
+	private DataConnection data;
 	
 	@Override
 	public void onCreate() {
@@ -59,7 +58,6 @@ public class SchoolPlannerApp extends Application {
 	private void initBackend() {
 		SchoolplannerContext.context = getApplicationContext();
 		data = new Cache();
-		data.setLoginCredentials(loginCredentials);
 	}
 	
 	/**
@@ -105,6 +103,10 @@ public class SchoolPlannerApp extends Application {
 
 	public void setLoginManager(LoginSetManager loginSetManager) {
 		loginManager = loginSetManager;
+	}
+	
+	public DataConnection getData() {
+		return data;
 	}
 	
 }

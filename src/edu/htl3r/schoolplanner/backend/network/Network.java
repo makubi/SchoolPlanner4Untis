@@ -55,21 +55,21 @@ import org.springframework.web.util.UriUtils;
 import android.util.Log;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
-import edu.htl3r.schoolplanner.backend.preferences.Authentication;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 
 /**
  * 
  * Direkter Netzwerkzugriff ueber URL.
  * 
  */
-public class Network implements NetworkAccess {
+public class Network {
 	
 	private String oldServerUrl = "";
 	private String oldSchool = "";
 	
 	private HttpClient client;
 	
-	private Authentication authentication;
+	private LoginSet loginCredentials;
 	
 	private URI serverUrl;
 	private URI httpsServerUrl;
@@ -199,7 +199,6 @@ public class Network implements NetworkAccess {
 		}
 	}
 
-	@Override
 	public String getResponse(String request) throws IOException {		
 		return executeRequest(request);
 	}
@@ -241,13 +240,13 @@ public class Network implements NetworkAccess {
 	}
 	
 	private boolean preferencesChanged() {
-		return !(authentication.getServerUrl().equals(oldServerUrl) && authentication.getSchool().equals(oldSchool));
+		return !(loginCredentials.getServerUrl().equals(oldServerUrl) && loginCredentials.getSchool().equals(oldSchool));
 	}
 	
 	private void checkPreferenceChange() throws IOException {
 		if(preferencesChanged()) {
-			String serverUrl = authentication.getServerUrl();
-			String school = authentication.getSchool();
+			String serverUrl = loginCredentials.getServerUrl();
+			String school = loginCredentials.getSchool();
 			
 			try {
 				setServerUrl(serverUrl);
@@ -290,7 +289,6 @@ public class Network implements NetworkAccess {
 			Log.d("Network", "Setting url: "+usedUrl.toString());
 	}
 
-	@Override
 	public void setJsessionid(String jsessionid) {
 		this.jsessionid = jsessionid;
 	}
@@ -320,10 +318,11 @@ public class Network implements NetworkAccess {
 	        throw new AssertionError(e);
 	    }
 	}
-
-	@Override
-	public void setLoginCredentials(Authentication preferences) {
-		this.authentication = preferences;
+	
+	public void setLoginCredentials(LoginSet loginSet) {
+		this.loginCredentials = loginSet;
 	}
+	
+	
 	
 }
