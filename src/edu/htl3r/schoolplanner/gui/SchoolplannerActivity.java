@@ -22,20 +22,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.Preferences;
@@ -81,6 +83,10 @@ public abstract class SchoolplannerActivity extends Activity implements Runnable
 					bitteToasten(msg.getData().getString("message"),Toast.LENGTH_LONG);
 					return;
 				}
+				else if(msg.getData().containsKey("errorMessage")) {
+					showOKDialog(msg.getData().getString("errorMessage"));
+					return;
+				}
 			}
 		};
 	}
@@ -102,6 +108,14 @@ public abstract class SchoolplannerActivity extends Activity implements Runnable
 		Message msg = new Message();
 		Bundle data = new Bundle();
 		data.putString("message", message);
+		msg.setData(data);
+		handler.sendMessage(msg);
+	}
+	
+	protected void sendErrorMessageToHandler(String message) {
+		Message msg = new Message();
+		Bundle data = new Bundle();
+		data.putString("errorMessage", message);
 		msg.setData(data);
 		handler.sendMessage(msg);
 	}
@@ -428,6 +442,21 @@ public abstract class SchoolplannerActivity extends Activity implements Runnable
 	public void bitteToasten(String denToastBitte, int wieGutDurch) {
 		Toast toast = Toast.makeText(getApplicationContext(), denToastBitte, wieGutDurch);
 		toast.show();
+	}
+	
+	public void showOKDialog(String message) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(message)
+		       .setCancelable(false).setNeutralButton("OK", new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+		    	   
+		       });
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 	
 }

@@ -77,6 +77,10 @@ public class SelectScreen extends SchoolplannerActivity implements OnItemSelecte
 					bitteToasten(msg.getData().getString("message"),Toast.LENGTH_LONG);
 					return;
 				}
+				else if(msg.getData().containsKey("errorMessage")) {
+					showOKDialog(msg.getData().getString("errorMessage"));
+					return;
+				}
 				switch (msg.what) {
 					case 0:
 						createLayout();
@@ -157,7 +161,7 @@ public class SelectScreen extends SchoolplannerActivity implements OnItemSelecte
 			try {
 				app.getData().resyncMasterData();
 			} catch (IOException e) {
-				sendMessageToHandler("Exception ("+getClass().getSimpleName()+") at resync: "+e.getMessage());
+				sendErrorMessageToHandler("Exception ("+getClass().getSimpleName()+") at resync: "+e.getMessage());
 				Log.w("Network", e.getMessage(),e);
 			}
 		}
@@ -167,7 +171,7 @@ public class SelectScreen extends SchoolplannerActivity implements OnItemSelecte
 			schoolSubjectList = app.getData().getSchoolSubjectList();
 			schoolRoomList = app.getData().getSchoolRoomList();
 		} catch (IOException e) {
-			sendMessageToHandler("Exception ("+getClass().getSimpleName()+") at calling new lists: "+e.getMessage());
+			sendErrorMessageToHandler("Exception ("+getClass().getSimpleName()+") at calling new lists: "+e.getMessage());
 			Log.w("Network", e.getMessage(),e);
 		}
 

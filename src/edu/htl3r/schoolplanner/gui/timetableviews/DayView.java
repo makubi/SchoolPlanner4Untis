@@ -94,7 +94,7 @@ public class DayView extends ViewActivity {
 		try {
 			tg = app.getData().getTimegrid();
 		} catch (IOException e) {
-			sendMessageToHandler("Exception (" + getClass().getSimpleName()
+			sendErrorMessageToHandler("Exception (" + getClass().getSimpleName()
 					+ ") at timegrid: " + e.getMessage());
 			Log.w("Network", e.getMessage(), e);
 		}
