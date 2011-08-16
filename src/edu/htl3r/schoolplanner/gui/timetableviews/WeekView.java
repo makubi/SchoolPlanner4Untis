@@ -91,7 +91,7 @@ public class WeekView extends ViewActivity {
 		try {
 			lessons = app.getData().getMergedLessons(getSelectedViewType(), week[0], week[week.length - 1], refresh_lessons);
 		} catch (IOException e) {
-			sendMessageToHandler("Exception ("+getClass().getSimpleName()+") at lessons: "+e.getMessage());
+			sendErrorMessageToHandler("Exception ("+getClass().getSimpleName()+") at lessons: "+e.getMessage());
 			Log.w("Network", e.getMessage(),e);
 		}
 		if (lessons != null) {
@@ -115,7 +115,7 @@ public class WeekView extends ViewActivity {
 				try {
 					tg = app.getData().getTimegrid();
 				} catch (IOException e) {
-					sendMessageToHandler("Exception ("+getClass().getSimpleName()+") at timegrid: "+e.getMessage());
+					sendErrorMessageToHandler("Exception ("+getClass().getSimpleName()+") at timegrid: "+e.getMessage());
 					Log.w("Network", e.getMessage(),e);
 				}
 				List<TimegridUnit> tulist = null;

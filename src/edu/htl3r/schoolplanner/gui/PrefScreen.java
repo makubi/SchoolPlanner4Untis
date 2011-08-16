@@ -87,9 +87,14 @@ public class PrefScreen extends PreferenceActivity implements OnPreferenceChange
 	protected Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
 			if(msg.getData().containsKey("message")) {
-				bitteToasten(msg.getData().getString("message"),Toast.LENGTH_LONG);
+				bitteToasten(msg.getData().getString("message"), Toast.LENGTH_LONG);
 				return;
 			}
+			else if(msg.getData().containsKey("errorMessage")) {
+				showOKDialog(msg.getData().getString("errorMessage"));
+				return;
+			}			
+			
 			dismissDialog(DIALOG_REFRESH);
 			
 			switch (msg.what) {
@@ -457,5 +462,20 @@ public class PrefScreen extends PreferenceActivity implements OnPreferenceChange
 		Intent inth = new Intent();
 		inth.putExtra(ExtrasStrings.UPDATESELSCR, true);
 		setResult(RESULT_OK, inth);
+	}
+	
+	public void showOKDialog(String message) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(message)
+		       .setCancelable(false).setNeutralButton("OK", new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+		    	   
+		       });
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 }
