@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Display;
@@ -90,7 +91,7 @@ public class WeekView extends ViewActivity {
 		try {
 			lessons = app.getData().getMergedLessons(getSelectedViewType(), week[0], week[week.length - 1], refresh_lessons);
 		} catch (IOException e) {
-			bitteToasten("Exception ("+getClass().getSimpleName()+") at lessons: "+e.getMessage(), Toast.LENGTH_LONG);
+			sendMessageToHandler("Exception ("+getClass().getSimpleName()+") at lessons: "+e.getMessage());
 			Log.w("Network", e.getMessage(),e);
 		}
 		if (lessons != null) {
@@ -114,7 +115,7 @@ public class WeekView extends ViewActivity {
 				try {
 					tg = app.getData().getTimegrid();
 				} catch (IOException e) {
-					bitteToasten("Exception ("+getClass().getSimpleName()+") at timegrid: "+e.getMessage(), Toast.LENGTH_LONG);
+					sendMessageToHandler("Exception ("+getClass().getSimpleName()+") at timegrid: "+e.getMessage());
 					Log.w("Network", e.getMessage(),e);
 				}
 				List<TimegridUnit> tulist = null;

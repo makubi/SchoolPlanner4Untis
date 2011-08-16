@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -71,6 +72,10 @@ public class SelectScreen extends SchoolplannerActivity implements OnItemSelecte
 			public void handleMessage(android.os.Message msg) {
 				if (!canceled) {
 					dismissDialog(SchoolplannerActivity.DIALOG_PROGRESS_CANCELABLE);
+				}
+				if(msg.getData().containsKey("message")) {
+					bitteToasten(msg.getData().getString("message"),Toast.LENGTH_LONG);
+					return;
 				}
 				switch (msg.what) {
 					case 0:
@@ -145,14 +150,14 @@ public class SelectScreen extends SchoolplannerActivity implements OnItemSelecte
 		// Do nothing methode
 
 	}
-
+	
 	@Override
 	public void run() {
 		if (resync_data) {
 			try {
 				app.getData().resyncMasterData();
 			} catch (IOException e) {
-				bitteToasten("Exception ("+getClass().getSimpleName()+") at resync: "+e.getMessage(), Toast.LENGTH_LONG);
+				sendMessageToHandler("Exception ("+getClass().getSimpleName()+") at resync: "+e.getMessage());
 				Log.w("Network", e.getMessage(),e);
 			}
 		}
@@ -162,7 +167,7 @@ public class SelectScreen extends SchoolplannerActivity implements OnItemSelecte
 			schoolSubjectList = app.getData().getSchoolSubjectList();
 			schoolRoomList = app.getData().getSchoolRoomList();
 		} catch (IOException e) {
-			bitteToasten("Exception ("+getClass().getSimpleName()+") at calling new lists: "+e.getMessage(), Toast.LENGTH_LONG);
+			sendMessageToHandler("Exception ("+getClass().getSimpleName()+") at calling new lists: "+e.getMessage());
 			Log.w("Network", e.getMessage(),e);
 		}
 

@@ -36,6 +36,7 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolTest;
@@ -89,14 +90,6 @@ public class TestView extends SchoolplannerActivity implements OnItemSelectedLis
 		if (getIntent().hasExtra(ExtrasStrings.LESSON)) {
 			lesson = (Lesson) extras.get(ExtrasStrings.LESSON);
 		}
-
-		handler = new Handler() {
-			@Override
-			public void handleMessage(Message msg) {
-				dismissDialog(SchoolplannerActivity.DIALOG_PROGRESS);
-				createLayout();
-			}
-		};
 
 		startDialogAction(getString(R.string.progress_schoolObjectList_title), getString(R.string.progress_schoolObjectList_text));
 	}
@@ -195,8 +188,7 @@ public class TestView extends SchoolplannerActivity implements OnItemSelectedLis
 			testTypeList = app.getData().getSchoolTestTypeList();
 			Log.d("Philip", "done");
 		} catch (IOException e) {
-			// TODO: Fehlermeldung anzeigen, wenn Netzwerkproblem auftritt
-			bitteToasten(getString(R.string.error_laoddata), 3);
+			sendMessageToHandler(getString(R.string.error_laoddata));
 			e.printStackTrace();
 		}
 		handler.sendEmptyMessage(0);

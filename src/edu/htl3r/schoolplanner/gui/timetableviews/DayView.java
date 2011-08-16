@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package edu.htl3r.schoolplanner.gui.timetableviews;
 
@@ -26,6 +26,7 @@ import java.util.List;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -82,8 +83,6 @@ public class DayView extends ViewActivity {
 				showSelectViewTypePopup();
 			}
 		});
-		
-		
 
 		boolean showInfo = prefs.isTimegridEnabled();
 		boolean showZero = prefs.zerohourEnabled();
@@ -95,22 +94,28 @@ public class DayView extends ViewActivity {
 		try {
 			tg = app.getData().getTimegrid();
 		} catch (IOException e) {
-			bitteToasten("Exception ("+getClass().getSimpleName()+") at timegrid: "+e.getMessage(), Toast.LENGTH_LONG);
-			Log.w("Network", e.getMessage(),e);
+			sendMessageToHandler("Exception (" + getClass().getSimpleName()
+					+ ") at timegrid: " + e.getMessage());
+			Log.w("Network", e.getMessage(), e);
 		}
 		List<TimegridUnit> tulist = null;
 		if (tg != null) {
-			tulist = tg.getTimegridForCalendarDay(currentDate.get(Calendar.DAY_OF_WEEK));
+			tulist = tg.getTimegridForCalendarDay(currentDate
+					.get(Calendar.DAY_OF_WEEK));
 		}
 
-		
-		if (!showZero && leslist != null && leslist.size() > 0 && tulist != null && tulist.size() > 0) {
+		if (!showZero && leslist != null && leslist.size() > 0
+				&& tulist != null && tulist.size() > 0) {
 			Collections.sort(leslist);
 			Lesson nulltestunde = leslist.get(0);
 			TimegridUnit nulltezeit = tulist.get(0);
-			boolean what = (nulltestunde.getStartTime().get(Calendar.HOUR_OF_DAY)==nulltezeit.getBegin().get(Calendar.HOUR_OF_DAY) && nulltestunde.getStartTime().get(Calendar.MINUTE)==nulltezeit.getBegin().get(Calendar.MINUTE));
+			boolean what = (nulltestunde.getStartTime().get(
+					Calendar.HOUR_OF_DAY) == nulltezeit.getBegin().get(
+					Calendar.HOUR_OF_DAY) && nulltestunde.getStartTime().get(
+					Calendar.MINUTE) == nulltezeit.getBegin().get(
+					Calendar.MINUTE));
 			if (what) {
-				showZero=true;
+				showZero = true;
 			}
 		}
 
@@ -123,26 +128,29 @@ public class DayView extends ViewActivity {
 			infoList.setOrientation(LinearLayout.VERTICAL);
 
 			List<ViewHourInfo> views = new ArrayList<ViewHourInfo>();
-			// Log.d("Philip", getClass().getSimpleName() + ": tulist: " + tulist);
+			// Log.d("Philip", getClass().getSimpleName() + ": tulist: " +
+			// tulist);
 			for (int i = 0; i < tulist.size(); i++) {
 				TimegridUnit tu = tulist.get(i);
 				ViewHourInfo vi = new ViewHourInfo(this);
 				vi.setTu(tu);
 				views.add(vi);
 
-				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+				LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+						LinearLayout.LayoutParams.FILL_PARENT,
+						LinearLayout.LayoutParams.WRAP_CONTENT);
 				if (i > 0) {
-					int margin = getMarginBetweenCalendars(views.get(i - 1).getTu().getEnd(), tu.getBegin());
+					int margin = getMarginBetweenCalendars(views.get(i - 1)
+							.getTu().getEnd(), tu.getBegin());
 					params.setMargins(0, margin, 0, 0);
 					infoList.addView(vi, params);
-				}
-				else {
-					if(showZero){
+				} else {
+					if (showZero) {
 						params.setMargins(0, 0, 0, 0);
 						infoList.addView(vi, params);
 					}
 				}
-				
+
 			}
 
 			containerV.addView(header);
@@ -150,8 +158,7 @@ public class DayView extends ViewActivity {
 			containerH.addView(infoList);
 			containerH.addView(lessonList);
 			sv.addView(containerV);
-		}
-		else {
+		} else {
 			lessonList.addView(header);
 			sv.addView(lessonList);
 		}
@@ -162,10 +169,10 @@ public class DayView extends ViewActivity {
 				TextView tv = new TextView(this);
 				tv.setText(getString(R.string.no_lessons));
 				lessonList.addView(tv);
-			}
-			else {
+			} else {
 				Collections.sort(leslist);
-				// Log.d("Philip", getClass().getSimpleName() + ": leslist: " + leslist);
+				// Log.d("Philip", getClass().getSimpleName() + ": leslist: " +
+				// leslist);
 				List<ViewLesson> vlist = new ArrayList<ViewLesson>();
 
 				for (int i = 0; i < leslist.size(); i++) {
@@ -175,18 +182,23 @@ public class DayView extends ViewActivity {
 					vl.setLesson(leslist.get(i), getSelectedViewType());
 					vl.setId(i + 1);
 
-					// vl.setPadding(0, getPaddingSinceStart(leslist.get(i).getStartTime()) + 50 + 50/* <--fuer header */, 0, 0);
-					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
+					// vl.setPadding(0,
+					// getPaddingSinceStart(leslist.get(i).getStartTime()) + 50
+					// + 50/* <--fuer header */, 0, 0);
+					LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+							LinearLayout.LayoutParams.FILL_PARENT,
+							LinearLayout.LayoutParams.FILL_PARENT);
 					int margin;
 					if (i > 0) {
-						margin = getMarginBetweenCalendars(leslist.get(i - 1).getEndTime(), leslist.get(i).getStartTime());
-					}
-					else {
-						if(showZero){
-							margin = getMarginSinceStart(leslist.get(i).getStartTime(), 0);
-						}
-						else{
-							margin = getMarginSinceStart(leslist.get(i).getStartTime(), 1);
+						margin = getMarginBetweenCalendars(leslist.get(i - 1)
+								.getEndTime(), leslist.get(i).getStartTime());
+					} else {
+						if (showZero) {
+							margin = getMarginSinceStart(leslist.get(i)
+									.getStartTime(), 0);
+						} else {
+							margin = getMarginSinceStart(leslist.get(i)
+									.getStartTime(), 1);
 						}
 					}
 					params.setMargins(0, margin, 0, 0);
@@ -196,8 +208,7 @@ public class DayView extends ViewActivity {
 				}
 			}
 
-		}
-		else {
+		} else {
 			TextView tv = new TextView(this);
 			tv.setText(getString(R.string.error_laoddata));
 			tv.setTextColor(Color.RED);
@@ -213,10 +224,9 @@ public class DayView extends ViewActivity {
 	public void nextDate() {
 		getDate().add(Calendar.DAY_OF_MONTH, 1);
 		int dayofweek = getDate().get(Calendar.DAY_OF_WEEK);
-		if(dayofweek==Calendar.SATURDAY && !prefs.isSaturdayEnabled()){
+		if (dayofweek == Calendar.SATURDAY && !prefs.isSaturdayEnabled()) {
 			getDate().add(Calendar.DAY_OF_MONTH, 2);
-		}
-		else if (dayofweek == Calendar.SUNDAY) {
+		} else if (dayofweek == Calendar.SUNDAY) {
 			getDate().add(Calendar.DAY_OF_MONTH, 1);
 		}
 	}
@@ -226,10 +236,9 @@ public class DayView extends ViewActivity {
 		getDate().add(Calendar.DAY_OF_MONTH, -1);
 		int dayofweek = getDate().get(Calendar.DAY_OF_WEEK);
 		if (dayofweek == Calendar.SUNDAY) {
-			if(prefs.isSaturdayEnabled()){
+			if (prefs.isSaturdayEnabled()) {
 				getDate().add(Calendar.DAY_OF_MONTH, -1);
-			}
-			else{
+			} else {
 				getDate().add(Calendar.DAY_OF_MONTH, -2);
 			}
 		}

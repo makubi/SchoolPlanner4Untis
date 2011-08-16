@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -73,6 +74,15 @@ public abstract class SchoolplannerActivity extends Activity implements Runnable
 		super.onCreate(savedInstanceState);
 		app = (SchoolPlannerApp) getApplication();
 		prefs = app.getPrefs();
+		handler = new Handler() {
+			public void handleMessage(android.os.Message msg) {
+
+				if(msg.getData().containsKey("message")) {
+					bitteToasten(msg.getData().getString("message"),Toast.LENGTH_LONG);
+					return;
+				}
+			}
+		};
 	}
 	
 	@Override
@@ -87,7 +97,14 @@ public abstract class SchoolplannerActivity extends Activity implements Runnable
 	}
 
 	
-	
+
+	protected void sendMessageToHandler(String message) {
+		Message msg = new Message();
+		Bundle data = new Bundle();
+		data.putString("message", message);
+		msg.setData(data);
+		handler.sendMessage(msg);
+	}
 
 	/**
 	 * erstellt das Menue

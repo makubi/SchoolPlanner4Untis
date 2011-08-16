@@ -140,6 +140,11 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 		handler = new Handler() {
 			public void handleMessage(android.os.Message msg) {
 
+				if(msg.getData().containsKey("message")) {
+					bitteToasten(msg.getData().getString("message"),Toast.LENGTH_LONG);
+					return;
+				}
+				
 				switch (msg.what) {
 					case HANDLER_UPDATEVIEW:
 						viewFlipper.removeAllViews();
@@ -203,11 +208,11 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 		switch (requestCode) {
 			case MENU_ADD_TEST:
 				if (resultCode == RESULT_OK) {
-					bitteToasten(getString(R.string.addtest_success), 3);
+					sendMessageToHandler(getString(R.string.addtest_success));
 
 				}
 				else {
-					bitteToasten(getString(R.string.addtest_failed), 3);
+					sendMessageToHandler(getString(R.string.addtest_failed));
 				}
 				break;
 
@@ -356,7 +361,7 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 					app.setCurrentView(DateListView.class);
 					break;
 			}
-			bitteToasten(getString(R.string.view_changed), 3); // TODO nur anzeigen wenn wirklich geaendert
+			sendMessageToHandler(getString(R.string.view_changed)); // TODO nur anzeigen wenn wirklich geaendert
 			checkCurrentView();
 		}
 	}
@@ -416,7 +421,7 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 				return 0;
 			}
 		} catch (IOException e) {
-			bitteToasten("Exception ("+getClass().getSimpleName()+") at timegrid: "+e.getMessage(), Toast.LENGTH_LONG);
+			sendMessageToHandler("Exception ("+getClass().getSimpleName()+") at timegrid: "+e.getMessage());
 			Log.w("Network", e.getMessage(),e);
 		}
 		if (start == null) {
@@ -495,7 +500,7 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 			Log.d("Philip", getClass().getSimpleName() + ": refresh_lessons: " + refresh_lessons);
 			return app.getData().getMergedLessons(getSelectedViewType(), datum, refresh_lessons);
 		} catch (IOException e) {
-			bitteToasten("Exception ("+getClass().getSimpleName()+") at lessons: "+e.getMessage(), Toast.LENGTH_LONG);
+			sendMessageToHandler("Exception ("+getClass().getSimpleName()+") at lessons: "+e.getMessage());
 			Log.w("Network", e.getMessage(),e);
 		}
 		return null;
@@ -618,7 +623,7 @@ public abstract class ViewActivity extends SchoolplannerActivity implements Runn
 				selectViewTypeList = app.getData().getSchoolSubjectList();
 			}
 		} catch (IOException e) {
-			bitteToasten("Exception ("+getClass().getSimpleName()+") at lists: "+e.getMessage(), Toast.LENGTH_LONG);
+			sendMessageToHandler("Exception ("+getClass().getSimpleName()+") at lists: "+e.getMessage());
 			Log.w("Network", e.getMessage(),e);
 		}
 

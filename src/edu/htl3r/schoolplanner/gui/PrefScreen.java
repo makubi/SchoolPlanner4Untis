@@ -32,6 +32,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -85,7 +86,12 @@ public class PrefScreen extends PreferenceActivity implements OnPreferenceChange
 	protected Thread thisThread;
 	protected Handler handler = new Handler() {
 		public void handleMessage(android.os.Message msg) {
+			if(msg.getData().containsKey("message")) {
+				bitteToasten(msg.getData().getString("message"),Toast.LENGTH_LONG);
+				return;
+			}
 			dismissDialog(DIALOG_REFRESH);
+			
 			switch (msg.what) {
 				case SYNC_FAILED:
 					bitteToasten(getString(R.string.prefs_resync_popup_failed), 5);
@@ -98,6 +104,14 @@ public class PrefScreen extends PreferenceActivity implements OnPreferenceChange
 
 		};
 	};
+	
+	protected void sendMessageToHandler(String message) {
+		Message msg = new Message();
+		Bundle data = new Bundle();
+		data.putString("message", message);
+		msg.setData(data);
+		handler.sendMessage(msg);
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -181,20 +195,20 @@ public class PrefScreen extends PreferenceActivity implements OnPreferenceChange
 		}
 		else if(preference == urlInput){
 			if(newValue.equals("")){
-				bitteToasten(getString(R.string.settingsempty), Toast.LENGTH_SHORT);
+				sendMessageToHandler(getString(R.string.settingsempty));
 				return false;
 			}
 			else {
 				try {
 					prefs.setServerUrl((String) newValue);
 				} catch (URISyntaxException e) {
-					bitteToasten(getString(R.string.wrongServerUrl), Toast.LENGTH_LONG);
+					sendMessageToHandler(getString(R.string.wrongServerUrl));
 				}
 			}
 		}
 		else if(preference == userInput) {
 			if(newValue.equals("")){
-				bitteToasten(getString(R.string.settingsempty), Toast.LENGTH_SHORT);
+				sendMessageToHandler(getString(R.string.settingsempty));
 				return false;
 			}
 			else {
@@ -203,7 +217,7 @@ public class PrefScreen extends PreferenceActivity implements OnPreferenceChange
 		}
 		else if(preference == schoolInput) {
 			if(newValue.equals("")){
-				bitteToasten(getString(R.string.settingsempty), Toast.LENGTH_SHORT);
+				sendMessageToHandler(getString(R.string.settingsempty));
 				return false;
 			}
 			else {
@@ -294,7 +308,7 @@ public class PrefScreen extends PreferenceActivity implements OnPreferenceChange
 							prefs.setTouchColor(Color.YELLOW);
 							prefs.setBorderColor(Color.WHITE);
 							prefs.setHeaderColor(Color.GRAY);
-							bitteToasten(getString(R.string.prefs_color_reset_msg), 5);
+							sendMessageToHandler(getString(R.string.prefs_color_reset_msg));
 							setUpdateView();
 							break;
 						case AlertDialog.BUTTON_NEGATIVE: // cancel
@@ -320,7 +334,7 @@ public class PrefScreen extends PreferenceActivity implements OnPreferenceChange
 				dialog.show();
 			}
 			else {
-				bitteToasten(getString(R.string.no_network_message), 10);
+				sendMessageToHandler(getString(R.string.no_network_message));
 			}
 		}
 		else if (preference == showDate || preference == showDaynames || preference == showSaturday || preference == showTimegrid || preference == showZerohour) {
@@ -377,7 +391,7 @@ public class PrefScreen extends PreferenceActivity implements OnPreferenceChange
 
 		Log.d("Philip", "color: " + color);
 		colorPopup = 0;
-		bitteToasten(getString(R.string.prefs_color_set), 5);
+		sendMessageToHandler(getString(R.string.prefs_color_set));
 
 	}
 

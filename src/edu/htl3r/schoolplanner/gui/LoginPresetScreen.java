@@ -98,7 +98,7 @@ public class LoginPresetScreen extends SchoolplannerActivity implements OnItemSe
 		app.getData().deletePreset(titl);
 		updateDropdown();
 		setData("","","","","");
-		bitteToasten(getString(R.string.preset_deleted), Toast.LENGTH_SHORT);
+		sendMessageToHandler(getString(R.string.preset_deleted));
 	}
 
 	private void savePreset() {
@@ -117,13 +117,13 @@ public class LoginPresetScreen extends SchoolplannerActivity implements OnItemSe
 				auth.setServerUrl(urls);
 				app.getData().savePreset(titl, auth);
 				updateDropdown();
-				bitteToasten(getString(R.string.preset_added), 3);
+				sendMessageToHandler(getString(R.string.preset_added));
 			} catch (URISyntaxException e1) {
-				bitteToasten("Unable to parse server url", Toast.LENGTH_SHORT);
+				sendMessageToHandler("Unable to parse server url");
 			}
 		}
 		else {
-			bitteToasten(getString(R.string.preset_add_failed), 3);
+			sendMessageToHandler(getString(R.string.preset_add_failed));
 		}
 
 	}
@@ -189,10 +189,10 @@ public class LoginPresetScreen extends SchoolplannerActivity implements OnItemSe
 			try {
 				prefs.setServerUrl(urls);
 			} catch (URISyntaxException e1) {
-				bitteToasten(getString(R.string.wrongServerUrl), Toast.LENGTH_LONG);
+				sendMessageToHandler(getString(R.string.wrongServerUrl));
 				return;
 			}
-			bitteToasten(getString(R.string.preset_prefs_updated), Toast.LENGTH_SHORT);
+			sendMessageToHandler(getString(R.string.preset_prefs_updated));
 			setResult(PrefScreen.RES_UPDATELOGIN);
 		}
 	}

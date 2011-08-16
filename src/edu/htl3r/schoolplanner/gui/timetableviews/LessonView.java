@@ -23,11 +23,13 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.CalendarUtils;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
@@ -52,6 +54,7 @@ public class LessonView extends SchoolplannerActivity implements OnClickListener
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.lesson);
+		
 		if (getIntent().hasExtra("lesson")) {
 			lesson = (Lesson) getIntent().getExtras().get("lesson");
 			// TextView alles = (TextView) findViewById(R.id.lesson_ganz);
@@ -132,7 +135,7 @@ public class LessonView extends SchoolplannerActivity implements OnClickListener
 			}
 		}
 		else {
-			bitteToasten(getString(R.string.lessonview_error), 5);
+			sendMessageToHandler(getString(R.string.lessonview_error));
 		}
 	}
 	
@@ -167,11 +170,11 @@ public class LessonView extends SchoolplannerActivity implements OnClickListener
 		switch (requestCode) {
 			case NEW_TEST:
 				if (resultCode == RESULT_OK) {
-					bitteToasten(getString(R.string.addtest_success), 3);
+					sendMessageToHandler(getString(R.string.addtest_success));
 
 				}
 				else {
-					bitteToasten(getString(R.string.addtest_failed), 3);
+					sendMessageToHandler(getString(R.string.addtest_failed));
 				}
 				break;
 		}
