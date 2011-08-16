@@ -64,11 +64,12 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		}*/
 		// Check network
 		if (networkAvailable) {
-			if ((schoolClassList = network.getSchoolClassList()) != null) {
+			if ((schoolClassList = network.getSchoolClassList()).isSuccessful()) {
 				database.setSchoolClassList(schoolClassList.getData());
 				Log.v("DataSource", "schoolClassList: Network");
-				return schoolClassList;
 			}
+			// TODO: Andere Methoden
+			return schoolClassList;
 		}
 
 		return null;

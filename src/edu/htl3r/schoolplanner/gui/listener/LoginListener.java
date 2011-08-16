@@ -48,6 +48,29 @@ public class LoginListener implements OnItemClickListener, Serializable {
 			protected Void doInBackground(Void... params) {
 				
 				// TODO: Do login here
+				/*SchoolPlannerApp app = (SchoolPlannerApp) welcomescreen.getApplication();
+				
+				app.getData().setLoginCredentials(selectedEntry);
+				DataFacade<Boolean> authenticate = app.getData().authenticate();
+				if(authenticate.isSuccessful()) {
+					boolean auth = authenticate.getData();
+					if(auth) {
+						Log.d("Misc","Authentication successful");
+					}
+					else {
+						Log.d("Misc","Authentication not successful");
+					}
+				}
+				else {
+					ErrorMessage error = authenticate.getErrorMessage();
+					String additionalInfo = error.getAdditionalInfo();
+					int errorCode = error.getErrorCode();
+					Throwable exception = error.getException();
+					Log.d("Misc","info: "+additionalInfo);
+					Log.d("Misc","code: "+errorCode);
+					Log.d("Misc","e: "+exception.getMessage());
+				}*/
+				
 				
 				Intent t = new Intent(welcomescreen, SelectScreen.class);
 				welcomescreen.startActivity(t);

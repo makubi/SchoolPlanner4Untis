@@ -128,6 +128,7 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 			
 			lessonMap.put(date, timetable.get(view, date));
 			tmpDate.increaseDay();
+			// TODO: before... letzter Tag?
 		}
 		
 		String date = DateTimeUtils.toISO8601Date(endDate);

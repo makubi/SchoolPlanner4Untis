@@ -16,6 +16,8 @@
 */
 package edu.htl3r.schoolplanner;
 
+import java.util.Calendar;
+
 import android.text.format.Time;
 
 public class DateTimeUtils {
@@ -52,5 +54,11 @@ public class DateTimeUtils {
 		Time time = new Time();
 		time.set(dateTime.getSecond(), dateTime.getMinute(), dateTime.getHour(), dateTime.getDay(), dateTime.getMonth()-1, dateTime.getYear());
 		return time;
+	}
+	
+	public static DateTime toDateTime(Calendar calendar) {
+		DateTime dateTime = new DateTime();
+		dateTime.set(calendar.get(Calendar.MINUTE), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR));
+		return dateTime;
 	}
 }

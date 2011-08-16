@@ -36,7 +36,7 @@ public class SchoolPlannerApp extends Application {
 	
 	private LoginSetManager loginManager;
 	
-	private DataConnection data;
+	private Cache data;
 	
 	@Override
 	public void onCreate() {
@@ -105,7 +105,7 @@ public class SchoolPlannerApp extends Application {
 		loginManager = loginSetManager;
 	}
 	
-	public DataConnection getData() {
+	public Cache getData() {
 		return data;
 	}
 	

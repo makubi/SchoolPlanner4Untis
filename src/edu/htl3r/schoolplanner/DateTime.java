@@ -32,7 +32,6 @@ public class DateTime implements Cloneable {
 	
 	public DateTime(Time time) {
 		internalTime = time;
-		internalTime.monthDay += 1;
 	}
 	
 	/**
@@ -55,11 +54,13 @@ public class DateTime implements Cloneable {
 	
 	public void set(int day, int month, int year) {
 		internalTime.set(day, month-1, year);
+		internalTime.normalize(true);
 	}
 	
 	public void set(int second, int minute, int hour, int day, int month,
 			int year) {
 		internalTime.set(second, minute, hour, day, month-1, year);
+		internalTime.normalize(true);
 	}
 	
 	/**
@@ -100,26 +101,32 @@ public class DateTime implements Cloneable {
 	
 	public void setYear(int year) {
 		internalTime.year = year;
+		internalTime.normalize(true);
 	}
 	
 	public void setMonth(int month) {
 		internalTime.month = month-1;
+		internalTime.normalize(true);
 	}
 	
 	public void setDay(int day) {
 		internalTime.monthDay = day;
+		internalTime.normalize(true);
 	}
 	
 	public void setHour(int hour) {
 		internalTime.hour = hour;
+		internalTime.normalize(true);
 	}
 	
 	public void setMinute(int minute) {
 		internalTime.minute = minute;
+		internalTime.normalize(true);
 	}
 	
 	public void setSecond(int second) {
 		internalTime.second = second;
+		internalTime.normalize(true);
 	}
 	
 	public Time getAndroidTime() {

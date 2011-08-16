@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.text.format.Time;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 
@@ -34,6 +35,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 public class Timegrid implements SchoolObject {
 
 	private Map<Integer, Integer> staticCalendarDayMapping = new HashMap<Integer, Integer>();
+	private Map<Integer, Integer> staticTimeDayMapping = new HashMap<Integer, Integer>();
 	
 	private Map<Integer, TimegridDay> days = new HashMap<Integer, TimegridDay>();
 	
@@ -45,6 +47,14 @@ public class Timegrid implements SchoolObject {
 		staticCalendarDayMapping.put(Calendar.THURSDAY, WebUntis.THURSDAY);
 		staticCalendarDayMapping.put(Calendar.FRIDAY, WebUntis.FRIDAY);
 		staticCalendarDayMapping.put(Calendar.SATURDAY, WebUntis.SATURDAY);
+		
+		staticTimeDayMapping.put(Time.SUNDAY, WebUntis.SUNDAY);
+		staticTimeDayMapping.put(Time.MONDAY, WebUntis.MONDAY);
+		staticTimeDayMapping.put(Time.TUESDAY, WebUntis.TUESDAY);
+		staticTimeDayMapping.put(Time.WEDNESDAY, WebUntis.WEDNESDAY);
+		staticTimeDayMapping.put(Time.THURSDAY, WebUntis.THURSDAY);
+		staticTimeDayMapping.put(Time.FRIDAY, WebUntis.FRIDAY);
+		staticTimeDayMapping.put(Time.SATURDAY, WebUntis.SATURDAY);
 	}
 	
 	/**
@@ -66,6 +76,14 @@ public class Timegrid implements SchoolObject {
 		return getTimegridForDay(staticCalendarDayMapping.get(staticCalendarDay));
 	}
 	
+	/**
+	 * Liefert eine Liste von TimegridUnits fuer den angebenenen Tag.
+	 * @param dateTimeDay Time-Tag, fuer den die Liste geliefert werden soll (z.B. {@link Time#MONDAY})
+	 * @return Liste zu angegebenem Tag
+	 */
+	public List<TimegridUnit> getTimegridForDateTimeDay(int dateTimeDay) {
+		return getTimegridForDay(staticTimeDayMapping.get(dateTimeDay));
+	}
 	
 	/**
 	 * Setzt die Liste fuer einen bestimmten WebUntis-Tag.
