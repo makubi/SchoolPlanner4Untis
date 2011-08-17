@@ -18,12 +18,10 @@
 
 package edu.htl3r.schoolplanner.backend;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.localdata.LocalData;
 import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
@@ -55,191 +53,207 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 
 	@Override
 	public DataFacade<List<SchoolClass>> getSchoolClassList() {
-		DataFacade<List<SchoolClass>> schoolClassList;
+		DataFacade<List<SchoolClass>> schoolClassList = new DataFacade<List<SchoolClass>>();
 
 		// Check database
-		/*if ((schoolClassList = database.getSchoolClassList()) != null) {
-			Log.v("DataSource", "schoolClassList: Database");
-			return schoolClassList;
-		}*/
+		/*List<SchoolClass> data = database.getSchoolClassList();
+		if (data != null) {
+			schoolClassList.setData(data);
+		}
 		// Check network
-		if (networkAvailable) {
+		else*/ if (networkAvailable) {
 			if ((schoolClassList = network.getSchoolClassList()).isSuccessful()) {
 				database.setSchoolClassList(schoolClassList.getData());
-				Log.v("DataSource", "schoolClassList: Network");
 			}
-			// TODO: Andere Methoden
-			return schoolClassList;
+		}
+		else {
+			schoolClassList.setErrorMessage(getUnableToLoadDataErrorMessage());
 		}
 
-		return null;
+		return schoolClassList;
 	}
 
 	@Override
 	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() {
-		DataFacade<List<SchoolTeacher>> schoolTeacherList;
+		DataFacade<List<SchoolTeacher>> schoolTeacherList = new DataFacade<List<SchoolTeacher>>();
 
 		// Check database
-		/*if ((schoolTeacherList = database.getSchoolTeacherList()) != null) {
-			Log.v("DataSource", "schoolTeacherList: Database");
-			return schoolTeacherList;
-		}*/
+		/*List<SchoolTeacher> data = database.getSchoolTeacherList();
+		if (data != null) {
+			schoolTeacherList.setData(data);
+		}
 		// Check network
-		if (networkAvailable) {
-			if ((schoolTeacherList = network.getSchoolTeacherList()) != null) {
+		else*/ if (networkAvailable) {
+			if ((schoolTeacherList = network.getSchoolTeacherList()).isSuccessful()) {
 				database.setSchoolTeacherList(schoolTeacherList.getData());
-				Log.v("DataSource", "schoolTeacherList: Network");
-				return schoolTeacherList;
 			}
 		}
+		else {
+			schoolTeacherList.setErrorMessage(getUnableToLoadDataErrorMessage());
+		}
 
-		return null;
+		return schoolTeacherList;
 	}
 
 	@Override
 	public DataFacade<List<SchoolRoom>> getSchoolRoomList() {
-		DataFacade<List<SchoolRoom>> schoolRoomList;
+		DataFacade<List<SchoolRoom>> schoolRoomList = new DataFacade<List<SchoolRoom>>();
 
 		// Check database
-		/*if ((schoolRoomList = database.getSchoolRoomList()) != null) {
-			Log.v("DataSource", "schoolRoomList: Database");
-			return schoolRoomList;
-		}*/
+		/*List<SchoolRoom> data = database.getSchoolRoomList();
+		if (data != null) {
+			schoolRoomList.setData(data);
+		}
 		// Check network
-		if (networkAvailable) {
-			if ((schoolRoomList = network.getSchoolRoomList()) != null) {
+		else*/ if (networkAvailable) {
+			if ((schoolRoomList = network.getSchoolRoomList()).isSuccessful()) {
 				database.setSchoolRoomList(schoolRoomList.getData());
-				Log.v("DataSource", "schoolRoomList: Network");
-				return schoolRoomList;
 			}
 		}
+		else {
+			schoolRoomList.setErrorMessage(getUnableToLoadDataErrorMessage());
+		}
 
-		return null;
+		return schoolRoomList;
 	}
 
 	@Override
 	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() {
-		DataFacade<List<SchoolSubject>> schoolSubjectList;
+		DataFacade<List<SchoolSubject>> schoolSubjectList = new DataFacade<List<SchoolSubject>>();
 
 		// Check database
-		/*if ((schoolSubjectList = database.getSchoolSubjectList()) != null) {
-			Log.v("DataSource", "schoolSubjectList: Database");
-			return schoolSubjectList;
-		}*/
+		/*List<SchoolSubject> data = database.getSchoolSubjectList();
+		if (data != null) {
+			schoolSubjectList.setData(data);
+		}
 		// Check network
-		if (networkAvailable) {
-			if ((schoolSubjectList = network.getSchoolSubjectList()) != null) {
+		else*/ if (networkAvailable) {
+			if ((schoolSubjectList = network.getSchoolSubjectList()).isSuccessful()) {
 				database.setSchoolSubjectList(schoolSubjectList.getData());
-				Log.v("DataSource", "schoolSubjectList: Network");
-				return schoolSubjectList;
 			}
 		}
+		else {
+			schoolSubjectList.setErrorMessage(getUnableToLoadDataErrorMessage());
+		}
 
-		return null;
+		return schoolSubjectList;
 	}
 
 	@Override
 	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList() {
-		DataFacade<List<SchoolHoliday>> schoolHolidayList;
+		DataFacade<List<SchoolHoliday>> schoolHolidayList = new DataFacade<List<SchoolHoliday>>();
 
 		// Check database
-		/*if ((schoolHolidayList = database.getSchoolHolidayList()) != null) {
-			Log.v("DataSource", "schoolHolidayList: Database");
-			return schoolHolidayList;
-		}*/
+		/*List<SchoolHoliday> data = database.getSchoolHolidayList();
+		if (data != null) {
+			schoolHolidayList.setData(data);
+		}
 		// Check network
-		if (networkAvailable) {
-			if ((schoolHolidayList = network.getSchoolHolidayList()) != null) {
+		else*/ if (networkAvailable) {
+			if ((schoolHolidayList = network.getSchoolHolidayList()).isSuccessful()) {
 				database.setSchoolHolidayList(schoolHolidayList.getData());
-				Log.v("DataSource", "schoolHolidayList: Network");
-				return schoolHolidayList;
 			}
 		}
+		else {
+			schoolHolidayList.setErrorMessage(getUnableToLoadDataErrorMessage());
+		}
 
-		return null;
+		return schoolHolidayList;
 	}
 	
 	@Override
 	public DataFacade<Timegrid> getTimegrid() {
-		DataFacade<Timegrid> timegrid;
+		DataFacade<Timegrid> timegrid = new DataFacade<Timegrid>();
 
 		// Check database
-		/*if ((timegrid = database.getTimegrid()) != null) {
-			Log.v("DataSource", "timegrid: Database");
-			return timegrid;
-		}*/
+		/*Timegrid data = database.getTimegrid();
+		if (data != null) {
+			timegrid.setData(data);
+		}
 		// Check network
-		if (networkAvailable) {
-			if ((timegrid = network.getTimegrid()) != null) {
+		else*/ if (networkAvailable) {
+			if ((timegrid= network.getTimegrid()).isSuccessful()) {
 				database.setTimegrid(timegrid.getData());
-				Log.v("DataSource", "timegrid: Network");
-				return timegrid;
 			}
 		}
+		else {
+			timegrid.setErrorMessage(getUnableToLoadDataErrorMessage());
+		}
 
-		return null;
+		return timegrid;
 	}
 
 	@Override
 	public DataFacade<List<StatusData>> getStatusData() {
-		DataFacade<List<StatusData>> statusData;
-	
+		DataFacade<List<StatusData>> statusDataList = new DataFacade<List<StatusData>>();
+
 		// Check database
-		/*if ((schoolSubjectList = database.getSchoolSubjectList()) != null) {
-			Log.v("DataSource", "schoolSubjectList: Database");
-			return schoolSubjectList;
-		}*/
+		/*List<StatusData> data = database.getStatusData();
+		if (data != null) {
+			statusDataList.setData(data);
+		}
 		// Check network
-		if (networkAvailable) {
-			if ((statusData = network.getStatusData()) != null) {
-				//database.setStatusData(statusData.getData());
-				return statusData;
+		else*/ if (networkAvailable) {
+			if ((statusDataList = network.getStatusData()).isSuccessful()) {
+				database.setStatusData(statusDataList.getData());
 			}
 		}
-	
-		return null;
+		else {
+			statusDataList.setErrorMessage(getUnableToLoadDataErrorMessage());
+		}
+
+		return statusDataList;
 	
 	}
 
 	@Override
 	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
-		DataFacade<List<Lesson>> data;
-		
+		DataFacade<List<Lesson>> lessonList = new DataFacade<List<Lesson>>();
+
+		// Check database
+		/*List<Lesson> data = database.getLessons(viewType, date);
+		if (data != null) {
+			lessonList.setData(data);
+		}
 		// Check network
-		if (networkAvailable) {
-			if ((data = network.getLessons(viewType, date)) != null) {
-				// TODO: Set in database
-				return data;
+		else*/ if (networkAvailable) {
+			if ((lessonList = network.getLessons(viewType, date)).isSuccessful()) {
+				//database.setLessons(lessonList.getData());
 			}
 		}
+		else {
+			lessonList.setErrorMessage(getUnableToLoadDataErrorMessage());
+		}
 
-		// TODO: Check database
-		
-		return null;
+		return lessonList;
 	}
 
 	@Override
 	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
 			DateTime startDate, DateTime endDate) {
-		DataFacade<Map<String, List<Lesson>>> data;
-		
+		DataFacade<Map<String, List<Lesson>>> lessonMap = new DataFacade<Map<String, List<Lesson>>>();
+
+		// Check database
+		/*List<Lesson> data = database.getLessons(viewType, startDate, endDate);
+		if (data != null) {
+			lessonList.setData(data);
+		}
 		// Check network
-		if (networkAvailable) {
-			if ((data = network.getLessons(viewType, startDate, endDate)) != null) {
-				// TODO: Set in database
-				return data;
+		else*/ if (networkAvailable) {
+			if ((lessonMap = network.getLessons(viewType, startDate, endDate)).isSuccessful()) {
+				//database.setLessons(lessonList.getData());
 			}
 		}
+		else {
+			lessonMap.setErrorMessage(getUnableToLoadDataErrorMessage());
+		}
 
-		// TODO: Check database
-		
-		return null;
+		return lessonMap;
 	}
 
 	/**
 	 * Authentifiziert sich mit dem Untis-Server ueber das Netzwerk.
 	 * @return true, wenn die Authentifizierung erfolgreich war, sonst false
-	 * @throws IOException Wenn ein Problem waehrend der Netzwerkanfrage auftritt
 	 */
 	public DataFacade<Boolean> authenticate() {
 		return network.authenticate();
@@ -257,11 +271,11 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 	 * Laedt die neusten Stammdaten herunter und aktualisiert danach die Datenbank.<br>
 	 * Stammdaten, die zur Zeit aktualisiert werden: Liste der Schuklasse, Liste der Lehrer, Liste der Raeume, Liste der Faecher, Stundenraster. 
 	 * @return Ein Objekt, das die Stammdaten, die aktualisiert wurden, enthaelt.
-	 * @throws IOException Wenn waehrend dem Abruf der Daten ein Fehler auftritt
 	 */
 	public DataFacade<MasterData> resyncMasterData() {
 		List<DataFacade<?>> requests = new ArrayList<DataFacade<?>>();
 		
+		// Load data from network
 		DataFacade<List<SchoolClass>> schoolClassList = network.getSchoolClassList();
 		DataFacade<List<SchoolTeacher>> schoolTeacherList = network.getSchoolTeacherList();
 		DataFacade<List<SchoolRoom>> schoolRoomList = network.getSchoolRoomList();
@@ -271,8 +285,7 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		DataFacade<Timegrid> timegrid = network.getTimegrid();
 		DataFacade<List<StatusData>> statusData = network.getStatusData();
 		
-		DataFacade<MasterData> data = new DataFacade<MasterData>();
-		
+		// Collect data
 		requests.add(schoolClassList);
 		requests.add(schoolTeacherList);
 		requests.add(schoolRoomList);
@@ -282,6 +295,8 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		requests.add(timegrid);
 		requests.add(statusData);
 		
+		// check for errors
+		DataFacade<MasterData> data = new DataFacade<MasterData>();
 		for(DataFacade<?> dataFacade : requests) {
 			if(!dataFacade.isSuccessful()) {
 				data.setErrorMessage(dataFacade.getErrorMessage());
@@ -289,6 +304,7 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 			}
 		}
 		
+		// build object
 		MasterData masterData = new MasterData();
 		masterData.setSchoolClassList(schoolClassList.getData());
 		masterData.setSchoolRoomList(schoolRoomList.getData());
@@ -300,6 +316,8 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		
 		data.setData(masterData);
 		
+		/*
+		// update database
 		database.setSchoolClassList(schoolClassList.getData());
 		database.setSchoolTeacherList(schoolTeacherList.getData());
 		database.setSchoolRoomList(schoolRoomList.getData());
@@ -307,7 +325,7 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		database.setSchoolHolidayList(schoolHolidayList.getData());
 		database.setTimegrid(timegrid.getData());
 		database.setStatusData(statusData.getData());
-		
+		*/
 		return data;
 	}
 
@@ -322,6 +340,17 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 	 */
 	public void setLoginCredentials(LoginSet loginSet) {
 		network.setLoginCredentials(loginSet);
+	}
+
+	/**
+	 * Liefert eine {@link ErrorMessage} mit der Nachricht, dass keine Daten aus externen Quellen geladen werden konnten.
+	 * @return
+	 */
+	private ErrorMessage getUnableToLoadDataErrorMessage() {
+		ErrorMessage errorMessage = new ErrorMessage();
+		errorMessage.setErrorCode(-1);
+		errorMessage.setAdditionalInfo("Unable to load data from external data sources");
+		return errorMessage;
 	}
 	
 }
