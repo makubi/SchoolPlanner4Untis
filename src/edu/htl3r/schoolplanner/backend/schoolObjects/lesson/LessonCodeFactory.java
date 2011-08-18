@@ -21,7 +21,6 @@ package edu.htl3r.schoolplanner.backend.schoolObjects.lesson;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.util.Log;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeCancelled;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeIrregular;
@@ -41,9 +40,14 @@ public class LessonCodeFactory {
 		try {
 			return lessonCodes.get(lessonCode) != null ? (LessonCode) lessonCodes.get(lessonCode).clone() : null;
 		} catch (CloneNotSupportedException e) {
-			Log.w("Misc", "Unable to clone lessonCode",e);
+			if(WebUntis.CANCELLED.equals(lessonCode)) {
+				return new LessonCodeCancelled();
+			}
+			else if(WebUntis.IRREGULAR.equals(lessonCode)) {
+				return new LessonCodeIrregular();
+			}
+			throw new UnsupportedOperationException("Unable to clone object for LessonCode: "+lessonCode);
 		}
-		return lessonCodes.get(lessonCode);
 	}
 	
 	/**
@@ -54,9 +58,8 @@ public class LessonCodeFactory {
 		try {
 			return (LessonCodeSubstitute) lessonCodeSubstitude.clone();
 		} catch (CloneNotSupportedException e) {
-			Log.w("Misc", "Unable to clone lessonCodeSubstitude",e);
+			return new LessonCodeSubstitute();
 		}
-		return lessonCodeSubstitude;
 	}
 	
 	@Deprecated

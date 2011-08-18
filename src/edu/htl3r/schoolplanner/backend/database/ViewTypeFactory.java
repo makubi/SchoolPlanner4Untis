@@ -38,18 +38,18 @@ public class ViewTypeFactory {
 	
 	public ViewType get(String table) {
 		try {
-			return (ViewType) viewTypeTableObjectMapping.get(table).clone();
+			return (ViewType) (viewTypeTableObjectMapping.get(table) != null ? viewTypeTableObjectMapping.get(table).clone() : null);
 		} catch (CloneNotSupportedException e) {
-			if(table.equals(DatabaseViewTypeConstants.TABLE_SCHOOL_CLASSES_NAME)) {
+			if(DatabaseViewTypeConstants.TABLE_SCHOOL_CLASSES_NAME.equals(table)) {
 				return new SchoolClass();
 			}
-			else if(table.equals(DatabaseViewTypeConstants.TABLE_SCHOOL_TEACHER_NAME)) {
+			else if(DatabaseViewTypeConstants.TABLE_SCHOOL_TEACHER_NAME.equals(table)) {
 				return new SchoolTeacher();
 			}
-			else if(table.equals(DatabaseViewTypeConstants.TABLE_SCHOOL_ROOMS_NAME)) {
+			else if(DatabaseViewTypeConstants.TABLE_SCHOOL_ROOMS_NAME.equals(table)) {
 				return new SchoolRoom();
 			}
-			else if(table.equals(DatabaseViewTypeConstants.TABLE_SCHOOL_SUBJECTS_NAME)) {
+			else if(DatabaseViewTypeConstants.TABLE_SCHOOL_SUBJECTS_NAME.equals(table)) {
 				return new SchoolSubject();
 			}
 		}

@@ -21,7 +21,6 @@ package edu.htl3r.schoolplanner.backend.schoolObjects.lesson;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.util.Log;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeBreakSupervision;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeExamination;
@@ -43,9 +42,20 @@ public class LessonTypeFactory {
 		try {
 			return lessonTypes.get(lessonTypeString) != null ? (LessonType) lessonTypes.get(lessonTypeString).clone() : null;
 		} catch (CloneNotSupportedException e) {
-			Log.w("Misc", "Unable to clone lessonType",e);
+			if(WebUntis.OFFICEHOUR.equals(lessonTypeString)) {
+				return new LessonTypeOfficeHour();
+			}
+			else if(WebUntis.STANDBY.equals(lessonTypeString)) {
+				return new LessonTypeStandby();
+			}
+			else if(WebUntis.BREAKSUPERVISION.equals(lessonTypeString)) {
+				return new LessonTypeBreakSupervision();
+			}
+			else if(WebUntis.EXAMINATION.equals(lessonTypeString)) {
+				return new LessonTypeExamination();
+			}
+			throw new UnsupportedOperationException("Unable to clone object for LessonType: "+lessonTypeString);
 		}
-		return lessonTypes.get(lessonTypeString);
 	}
 	
 	@Deprecated
