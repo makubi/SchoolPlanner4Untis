@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.htl3r.schoolplanner.DateTime;
-import edu.htl3r.schoolplanner.backend.localdata.LocalData;
+import edu.htl3r.schoolplanner.backend.database.Database;
 import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
@@ -37,16 +37,12 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
 /**
  * Laedt Daten aus externen Datenquellen, wie der lokalen Datenbank oder dem Netzwerk.
- * @see LocalData
+ * @see Database
  * @see JSONNetwork
- */
-/**
- * @author makubi
- *
  */
 public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider {
 
-	private LocalData database = new LocalData();
+	private Database database = new Database();
 	private JSONNetwork network = new JSONNetwork();
 
 	private boolean networkAvailable = true;
@@ -56,12 +52,12 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		DataFacade<List<SchoolClass>> schoolClassList = new DataFacade<List<SchoolClass>>();
 
 		// Check database
-		/*List<SchoolClass> data = database.getSchoolClassList();
-		if (data != null) {
+		List<SchoolClass> data = database.getSchoolClassList();
+		if (data != null && data.size() > 0) {
 			schoolClassList.setData(data);
 		}
 		// Check network
-		else*/ if (networkAvailable) {
+		else if (networkAvailable) {
 			if ((schoolClassList = network.getSchoolClassList()).isSuccessful()) {
 				database.setSchoolClassList(schoolClassList.getData());
 			}
@@ -78,12 +74,12 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		DataFacade<List<SchoolTeacher>> schoolTeacherList = new DataFacade<List<SchoolTeacher>>();
 
 		// Check database
-		/*List<SchoolTeacher> data = database.getSchoolTeacherList();
-		if (data != null) {
+		List<SchoolTeacher> data = database.getSchoolTeacherList();
+		if (data != null && data.size() > 0) {
 			schoolTeacherList.setData(data);
 		}
 		// Check network
-		else*/ if (networkAvailable) {
+		else if (networkAvailable) {
 			if ((schoolTeacherList = network.getSchoolTeacherList()).isSuccessful()) {
 				database.setSchoolTeacherList(schoolTeacherList.getData());
 			}
@@ -100,12 +96,12 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		DataFacade<List<SchoolRoom>> schoolRoomList = new DataFacade<List<SchoolRoom>>();
 
 		// Check database
-		/*List<SchoolRoom> data = database.getSchoolRoomList();
-		if (data != null) {
+		List<SchoolRoom> data = database.getSchoolRoomList();
+		if (data != null && data.size() > 0) {
 			schoolRoomList.setData(data);
 		}
 		// Check network
-		else*/ if (networkAvailable) {
+		else if (networkAvailable) {
 			if ((schoolRoomList = network.getSchoolRoomList()).isSuccessful()) {
 				database.setSchoolRoomList(schoolRoomList.getData());
 			}
@@ -122,12 +118,12 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		DataFacade<List<SchoolSubject>> schoolSubjectList = new DataFacade<List<SchoolSubject>>();
 
 		// Check database
-		/*List<SchoolSubject> data = database.getSchoolSubjectList();
-		if (data != null) {
+		List<SchoolSubject> data = database.getSchoolSubjectList();
+		if (data != null && data.size() > 0) {
 			schoolSubjectList.setData(data);
 		}
 		// Check network
-		else*/ if (networkAvailable) {
+		else if (networkAvailable) {
 			if ((schoolSubjectList = network.getSchoolSubjectList()).isSuccessful()) {
 				database.setSchoolSubjectList(schoolSubjectList.getData());
 			}
@@ -144,12 +140,12 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		DataFacade<List<SchoolHoliday>> schoolHolidayList = new DataFacade<List<SchoolHoliday>>();
 
 		// Check database
-		/*List<SchoolHoliday> data = database.getSchoolHolidayList();
-		if (data != null) {
+		List<SchoolHoliday> data = database.getSchoolHolidayList();
+		if (data != null && data.size() > 0) {
 			schoolHolidayList.setData(data);
 		}
 		// Check network
-		else*/ if (networkAvailable) {
+		else if (networkAvailable) {
 			if ((schoolHolidayList = network.getSchoolHolidayList()).isSuccessful()) {
 				database.setSchoolHolidayList(schoolHolidayList.getData());
 			}
@@ -166,12 +162,12 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		DataFacade<Timegrid> timegrid = new DataFacade<Timegrid>();
 
 		// Check database
-		/*Timegrid data = database.getTimegrid();
+		Timegrid data = database.getTimegrid();
 		if (data != null) {
 			timegrid.setData(data);
 		}
 		// Check network
-		else*/ if (networkAvailable) {
+		else if (networkAvailable) {
 			if ((timegrid= network.getTimegrid()).isSuccessful()) {
 				database.setTimegrid(timegrid.getData());
 			}
@@ -188,12 +184,12 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		DataFacade<List<StatusData>> statusDataList = new DataFacade<List<StatusData>>();
 
 		// Check database
-		/*List<StatusData> data = database.getStatusData();
-		if (data != null) {
+		List<StatusData> data = database.getStatusData();
+		if (data != null && data.size() > 0) {
 			statusDataList.setData(data);
 		}
 		// Check network
-		else*/ if (networkAvailable) {
+		else if (networkAvailable) {
 			if ((statusDataList = network.getStatusData()).isSuccessful()) {
 				database.setStatusData(statusDataList.getData());
 			}

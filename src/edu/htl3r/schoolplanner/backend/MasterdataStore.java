@@ -20,7 +20,7 @@ package edu.htl3r.schoolplanner.backend;
 
 import java.util.List;
 
-import edu.htl3r.schoolplanner.backend.localdata.LocalData;
+import edu.htl3r.schoolplanner.backend.database.Database;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
@@ -31,7 +31,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 /**
  * Interface zum Setzen der Daten.<br>
  * Implementierende Klassen muessen bei Erhalt neuer Daten ueber diese benachrichtig werden, um sie passend verwenden zu koennen.<br>
- * Bekannte Implementierungen: {@link LocalData}, {@link InternalMemory}
+ * Bekannte Implementierungen: {@link Database}, {@link InternalMemory}
  */
 public interface MasterdataStore {
 	

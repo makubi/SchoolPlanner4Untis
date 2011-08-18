@@ -71,7 +71,6 @@ public class LoginListener implements OnItemClickListener, Serializable {
 					Log.d("Misc","e: "+exception.getMessage());
 				}*/
 				
-				
 				Intent t = new Intent(welcomescreen, SelectScreen.class);
 				welcomescreen.startActivity(t);
 			

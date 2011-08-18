@@ -21,7 +21,7 @@ package edu.htl3r.schoolplanner.backend;
 import java.io.IOException;
 import java.util.List;
 
-import edu.htl3r.schoolplanner.backend.localdata.LocalData;
+import edu.htl3r.schoolplanner.backend.database.Database;
 import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
@@ -32,7 +32,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
 /**
  * Interface zu den Datenabfragen, die vom Backend zur Verfuegung gestellt werden.<br>
- * Bekannte Implementierungen: {@link JSONNetwork}, {@link LocalData}, {@link InternalMemory}, {@link ExternalDataLoader}
+ * Bekannte Implementierungen: {@link JSONNetwork}, {@link Database}, {@link InternalMemory}, {@link ExternalDataLoader}
  */
 public interface MasterdataProvider {
 

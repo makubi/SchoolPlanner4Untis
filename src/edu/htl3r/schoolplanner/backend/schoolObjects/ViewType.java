@@ -25,7 +25,7 @@ import java.io.Serializable;
  * Implementierungen, wie oben genannte, enthalten jeweils konkrete Angaben, wie z.B. Klasse: 5AN.
  *
  */
-public abstract class ViewType implements Serializable, Comparable<ViewType> {
+public abstract class ViewType implements Serializable, Comparable<ViewType>, Cloneable {
 	
 	private static final long serialVersionUID = 4424283163744496080L;
 	
@@ -103,5 +103,9 @@ public abstract class ViewType implements Serializable, Comparable<ViewType> {
 		return getName().compareTo(another.getName());
 	}
 	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
 	
 }
