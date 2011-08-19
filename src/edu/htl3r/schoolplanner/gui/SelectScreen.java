@@ -16,24 +16,37 @@
 */
 package edu.htl3r.schoolplanner.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.SchoolPlannerApp;
+import edu.htl3r.schoolplanner.backend.Cache;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.gui.basti.ViewBasti;
 import edu.htl3r.schoolplanner.gui.chris.ViewChris;
 import edu.htl3r.schoolplanner.gui.selectScreen.AnimatedOnClickListener;
 
 public class SelectScreen extends SchoolPlannerActivity{
 	
+	private Cache data;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.select_screen);
 		
+		data = ((SchoolPlannerApp)getApplication()).getData();
+		
+		initSpinner();
 		addOnClickListener();
 		
 		/*GridView gridview = (GridView) findViewById(R.id.gridview);
@@ -67,6 +80,16 @@ public class SelectScreen extends SchoolPlannerActivity{
 	    });*/
 	}
 	
+	private void initSpinner() {
+		Spinner roomSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerRoom);
+		List<String> roomList = new ArrayList<String>();
+		for(SchoolRoom schoolRoom : data.getSchoolRoomList().getData()) {
+			roomList.add(schoolRoom.getName());
+		}
+		ArrayAdapter<String> roomAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, roomList);
+		roomSpinner.setAdapter(roomAdapter);
+	}
+
 	private void addOnClickListener() {
 		ImageView imageClass = (ImageView) findViewById(R.id.selectScreen_imageClass);
 		ImageView imageTeacher = (ImageView) findViewById(R.id.selectScreen_imageTeacher);

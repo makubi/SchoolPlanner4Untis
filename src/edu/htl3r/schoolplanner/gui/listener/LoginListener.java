@@ -23,6 +23,9 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import edu.htl3r.schoolplanner.SchoolPlannerApp;
+import edu.htl3r.schoolplanner.backend.DataFacade;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.gui.SelectScreen;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
 
@@ -40,7 +43,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		//final LoginSet selectedEntry = welcomescreen.getLoginManager().getLoginSetOnPosition(position);
+		final LoginSet selectedEntry = welcomescreen.getLoginManager().getLoginSetOnPosition(position);
 
 		AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
 
@@ -48,11 +51,11 @@ public class LoginListener implements OnItemClickListener, Serializable {
 			protected Void doInBackground(Void... params) {
 				
 				// TODO: Do login here
-				/*SchoolPlannerApp app = (SchoolPlannerApp) welcomescreen.getApplication();
+				SchoolPlannerApp app = (SchoolPlannerApp) welcomescreen.getApplication();
 				
 				app.getData().setLoginCredentials(selectedEntry);
-				DataFacade<Boolean> authenticate = app.getData().authenticate();
-				if(authenticate.isSuccessful()) {
+				//DataFacade<Boolean> authenticate = app.getData().authenticate();
+				/*if(authenticate.isSuccessful()) {
 					boolean auth = authenticate.getData();
 					if(auth) {
 						Log.d("Misc","Authentication successful");

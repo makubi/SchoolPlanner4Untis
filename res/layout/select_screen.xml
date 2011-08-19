@@ -58,6 +58,7 @@
     style="@style/selectScreenBoxImage"
     android:src="@drawable/ic_door" />
 	<Spinner
+	android:id="@+id/selectScreen_spinnerRoom"
     style="@style/selectScreenBoxSpinner"
     />
     </LinearLayout>
