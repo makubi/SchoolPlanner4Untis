@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.database.Database;
 import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
@@ -54,11 +55,13 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		// Check database
 		List<SchoolClass> data = database.getSchoolClassList();
 		if (data != null && data.size() > 0) {
+			Log.v("data_source","class list: database");
 			schoolClassList.setData(data);
 		}
 		// Check network
 		else if (networkAvailable) {
 			if ((schoolClassList = network.getSchoolClassList()).isSuccessful()) {
+				Log.v("data_source","class list: network");
 				database.setSchoolClassList(schoolClassList.getData());
 			}
 		}
@@ -76,11 +79,13 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		// Check database
 		List<SchoolTeacher> data = database.getSchoolTeacherList();
 		if (data != null && data.size() > 0) {
+			Log.v("data_source","teacher list: database");
 			schoolTeacherList.setData(data);
 		}
 		// Check network
 		else if (networkAvailable) {
 			if ((schoolTeacherList = network.getSchoolTeacherList()).isSuccessful()) {
+				Log.v("data_source","teacher list: network");
 				database.setSchoolTeacherList(schoolTeacherList.getData());
 			}
 		}
@@ -98,11 +103,13 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		// Check database
 		List<SchoolRoom> data = database.getSchoolRoomList();
 		if (data != null && data.size() > 0) {
+			Log.v("data_source","room list: database");
 			schoolRoomList.setData(data);
 		}
 		// Check network
 		else if (networkAvailable) {
 			if ((schoolRoomList = network.getSchoolRoomList()).isSuccessful()) {
+				Log.v("data_source","room list: network");
 				database.setSchoolRoomList(schoolRoomList.getData());
 			}
 		}
@@ -120,11 +127,13 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		// Check database
 		List<SchoolSubject> data = database.getSchoolSubjectList();
 		if (data != null && data.size() > 0) {
+			Log.v("data_source","subject list: database");
 			schoolSubjectList.setData(data);
 		}
 		// Check network
 		else if (networkAvailable) {
 			if ((schoolSubjectList = network.getSchoolSubjectList()).isSuccessful()) {
+				Log.v("data_source","subject list: network");
 				database.setSchoolSubjectList(schoolSubjectList.getData());
 			}
 		}
@@ -142,11 +151,13 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		// Check database
 		List<SchoolHoliday> data = database.getSchoolHolidayList();
 		if (data != null && data.size() > 0) {
+			Log.v("data_source","holiday list: database");
 			schoolHolidayList.setData(data);
 		}
 		// Check network
 		else if (networkAvailable) {
 			if ((schoolHolidayList = network.getSchoolHolidayList()).isSuccessful()) {
+				Log.v("data_source","holiday list: network");
 				database.setSchoolHolidayList(schoolHolidayList.getData());
 			}
 		}
@@ -164,11 +175,13 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		// Check database
 		Timegrid data = database.getTimegrid();
 		if (data != null) {
+			Log.v("data_source","timegrid: database");
 			timegrid.setData(data);
 		}
 		// Check network
 		else if (networkAvailable) {
-			if ((timegrid= network.getTimegrid()).isSuccessful()) {
+			if ((timegrid = network.getTimegrid()).isSuccessful()) {
+				Log.v("data_source","timegrid: network");
 				database.setTimegrid(timegrid.getData());
 			}
 		}
@@ -186,11 +199,13 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		// Check database
 		List<StatusData> data = database.getStatusData();
 		if (data != null && data.size() > 0) {
+			Log.v("data_source","status data: database");
 			statusDataList.setData(data);
 		}
 		// Check network
 		else if (networkAvailable) {
 			if ((statusDataList = network.getStatusData()).isSuccessful()) {
+				Log.v("data_source","status data: network");
 				database.setStatusData(statusDataList.getData());
 			}
 		}

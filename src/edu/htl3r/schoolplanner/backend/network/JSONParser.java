@@ -20,7 +20,6 @@ package edu.htl3r.schoolplanner.backend.network;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -231,18 +230,15 @@ public class JSONParser {
 				int endHour = Integer.parseInt(getHour(endtime));
 				
 				
-				// Setze nicht verwendete Werte auf 0
-				Calendar startCalendar = Calendar.getInstance();
-				startCalendar.set(0, 0, 0, startHour, startMinute, 0);
-				startCalendar.set(Calendar.MILLISECOND, 0);
-				Calendar endCalendar = Calendar.getInstance();
-				endCalendar.set(0, 0, 0, endHour, endMinute, 0);
-				endCalendar.set(Calendar.MILLISECOND, 0);
+				DateTime startTime = new DateTime();
+				startTime.set(startMinute, startHour, startTime.getDay(), startTime.getMonth(), startTime.getYear());
+				DateTime endTime = new DateTime();
+				endTime.set(endMinute, endHour, endTime.getDay(), endTime.getMonth(), endTime.getYear());
 				
 				// Setze aktuelle Unit
 				TimegridUnit timegridUnit = new TimegridUnit();
-				timegridUnit.setBegin(startCalendar);
-				timegridUnit.setEnd(endCalendar);
+				timegridUnit.setStart(startTime);
+				timegridUnit.setEnd(endTime);
 								
 				// Hinzufuegen zu Unit-Liste
 				timegridUnitList.add(timegridUnit);

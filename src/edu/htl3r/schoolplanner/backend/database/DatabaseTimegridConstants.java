@@ -16,13 +16,12 @@
 */
 package edu.htl3r.schoolplanner.backend.database;
 
+public interface DatabaseTimegridConstants {
 
-public interface DatabaseSchoolHolidayConstants {	
-	public static final String TABLE_SCHOOL_HOLIDAYS_NAME = "schoolHolidays";
+	public static final String TABLE_TIMEGRID_NAME = "timegrid";
 	
-	public static final String ID = "id";
-	public static final String NAME = "name";
-	public static final String LONG_NAME = "longName";
-	public static final String START_DATE = "startDate";
-	public static final String END_DATE = "endDate";
+	public static final String DAY = "day";
+	public static final String START_TIME = "startTime";
+	public static final String END_TIME = "endTime";
+	
 }

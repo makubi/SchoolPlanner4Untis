@@ -18,32 +18,34 @@
 
 package edu.htl3r.schoolplanner.backend.schoolObjects.timegrid;
 
-import java.util.Calendar;
-
+import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 
 public class TimegridUnit implements SchoolObject, Comparable<TimegridUnit> {
 
-	private Calendar begin;
-	private Calendar end;
+	private DateTime start;
+	private DateTime end;
 
-	public Calendar getBegin() {
-		return begin;
+	public DateTime getStart() {
+		return start;
 	}
-	public void setBegin(Calendar begin) {
-		this.begin = begin;
+
+	public void setStart(DateTime start) {
+		this.start = start;
 	}
-	public Calendar getEnd() {
+
+	public DateTime getEnd() {
 		return end;
 	}
-	public void setEnd(Calendar end) {
+
+	public void setEnd(DateTime end) {
 		this.end = end;
 	}
-	
+
 	@Override
 	public int compareTo(TimegridUnit another) {
-		int start1 = (int) getBegin().getTimeInMillis();
-		int start2 = (int) another.getBegin().getTimeInMillis();
-		return start1 - start2;
+		long start1 = getStart().getAndroidTime().toMillis(true);
+		long start2 = another.getStart().getAndroidTime().toMillis(true);
+		return (int) (start1 - start2);
 	}
 }

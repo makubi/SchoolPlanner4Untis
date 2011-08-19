@@ -24,8 +24,7 @@ import java.util.Map;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQuery;
-import android.database.sqlite.SQLiteQueryBuilder;
+import android.text.format.Time;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.MasterdataStore;
@@ -33,6 +32,7 @@ import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
+import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
@@ -114,14 +114,62 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 
 	@Override
 	public Timegrid getTimegrid() {
-		// TODO Auto-generated method stub
-		return null;
+		Timegrid timegrid = new Timegrid();
+		
+		SQLiteDatabase database = this.database.openDatabase(false);
+		
+		Cursor query = this.database.query(database, DatabaseTimegridConstants.TABLE_TIMEGRID_NAME);
+		
+		int indexDay = query.getColumnIndex(DatabaseTimegridConstants.DAY);
+		int indexStartTime = query.getColumnIndex(DatabaseTimegridConstants.START_TIME);
+		int indexEndTime = query.getColumnIndex(DatabaseTimegridConstants.END_TIME);
+		
+		while(query.moveToNext()) {
+			int day = query.getInt(indexDay);
+			long startTime = query.getLong(indexStartTime);
+			long endTime = query.getLong(indexEndTime);
+			
+			TimegridUnit timegridUnit = new TimegridUnit();
+			timegridUnit.setStart(millisToDateTime(startTime));
+			timegridUnit.setEnd(millisToDateTime(endTime));
+			
+			timegrid.putTimegridUnit(day, timegridUnit);
+		}
+		query.close();
+		this.database.closeDatabase(database);
+		
+		return query.getCount() > 0 ? timegrid : null;
+		
 	}
 
 	@Override
 	public List<StatusData> getStatusData() {
-		// TODO Auto-generated method stub
-		return null;
+		List<StatusData> statusDataList = new ArrayList<StatusData>();
+		
+		SQLiteDatabase database = this.database.openDatabase(false);
+		
+		Cursor query = this.database.query(database, DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME);
+		
+		int indexCode = query.getColumnIndex(DatabaseStatusDataConstants.CODE);
+		int indexForeColor = query.getColumnIndex(DatabaseStatusDataConstants.FORE_COLOR);
+		int indexBackColor = query.getColumnIndex(DatabaseStatusDataConstants.BACK_COLOR);
+		
+		while(query.moveToNext()) {
+			String code = query.getString(indexCode);
+			int foreColor = query.getInt(indexForeColor);
+			int backColor = query.getInt(indexBackColor);
+			
+			StatusData statusData = new StatusData();
+			statusData.setCode(code);
+			statusData.setFgColor(foreColor);
+			statusData.setBgColor(backColor);
+			
+			statusDataList.add(statusData);
+		}
+		query.close();
+		this.database.closeDatabase(database);
+		
+		return statusDataList;
 	}
 	
 	private <E> List<E> getViewTypeList(String table) {
@@ -223,9 +271,9 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 			
 			this.database.insert(database, table, values);
 		}
-		database.setTransactionSuccessful();;
+		database.setTransactionSuccessful();
 		database.endTransaction();
-		this.database.closeDatabase(database);;
+		this.database.closeDatabase(database);
 	}
 	
 	private long dateTimeToMillis(DateTime dateTime) {
@@ -240,13 +288,58 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 
 	@Override
 	public void setTimegrid(Timegrid timegrid) {
-		// TODO Auto-generated method stub
-		
+		writeTimegrid(timegrid, DatabaseTimegridConstants.TABLE_TIMEGRID_NAME);
 	}
+
+	private void writeTimegrid(Timegrid timegrid, String table) {
+		SQLiteDatabase database = this.database.openDatabase(true);
+		
+		final int[] timeWeekDays = new int[] {Time.SUNDAY, Time.MONDAY, Time.TUESDAY, Time.WEDNESDAY, Time.THURSDAY, Time.FRIDAY, Time.SATURDAY, Time.SUNDAY };
+		
+		database.beginTransaction();
+		for(int day : timeWeekDays) {
+			
+			List<TimegridUnit> timegridUnitList = timegrid.getTimegridForDateTimeDay(day);
+			
+			// This can happen, if there is no timegrid for a day (e.g. sunday).
+			if(timegridUnitList != null) {
+			
+				for(TimegridUnit timegridUnit : timegridUnitList) {
+					ContentValues values = new ContentValues();
+					values.put(DatabaseTimegridConstants.DAY, day);
+					values.put(DatabaseTimegridConstants.START_TIME, dateTimeToMillis(timegridUnit.getStart()));
+					values.put(DatabaseTimegridConstants.END_TIME, dateTimeToMillis(timegridUnit.getEnd()));
+					
+					this.database.insert(database, table, values);
+				}
+			}
+		}
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		this.database.closeDatabase(database);
+	}
+
+
 
 	@Override
 	public void setStatusData(List<StatusData> statusData) {
-		// TODO Auto-generated method stub
+		writeStatusData(statusData, DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME);
+	}
+
+	private void writeStatusData(List<StatusData> statusDataList, String table) {
+		SQLiteDatabase database = this.database.openDatabase(true);
 		
+		database.beginTransaction();
+		for(StatusData statusData : statusDataList) {
+			ContentValues values = new ContentValues();
+			values.put(DatabaseStatusDataConstants.CODE, statusData.getCode());
+			values.put(DatabaseStatusDataConstants.FORE_COLOR, statusData.getFgColor());
+			values.put(DatabaseStatusDataConstants.BACK_COLOR, statusData.getBgColor());
+			
+			this.database.insert(database, table, values);
+		}
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		this.database.closeDatabase(database);
 	}
 }

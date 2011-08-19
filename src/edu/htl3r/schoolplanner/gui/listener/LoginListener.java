@@ -20,9 +20,14 @@ import java.io.Serializable;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import edu.htl3r.schoolplanner.SchoolPlannerApp;
+import edu.htl3r.schoolplanner.backend.DataFacade;
+import edu.htl3r.schoolplanner.backend.ErrorMessage;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.gui.SelectScreen;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
 
@@ -40,7 +45,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		//final LoginSet selectedEntry = welcomescreen.getLoginManager().getLoginSetOnPosition(position);
+		final LoginSet selectedEntry = welcomescreen.getLoginManager().getLoginSetOnPosition(position);
 
 		AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
 
@@ -48,7 +53,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 			protected Void doInBackground(Void... params) {
 				
 				// TODO: Do login here
-				/*SchoolPlannerApp app = (SchoolPlannerApp) welcomescreen.getApplication();
+				SchoolPlannerApp app = (SchoolPlannerApp) welcomescreen.getApplication();
 				
 				app.getData().setLoginCredentials(selectedEntry);
 				DataFacade<Boolean> authenticate = app.getData().authenticate();
@@ -56,6 +61,12 @@ public class LoginListener implements OnItemClickListener, Serializable {
 					boolean auth = authenticate.getData();
 					if(auth) {
 						Log.d("Misc","Authentication successful");
+						/*app.getData().getSchoolClassList();
+						app.getData().getSchoolTeacherList();
+						app.getData().getSchoolRoomList();
+						app.getData().getSchoolSubjectList();
+						app.getData().getSchoolHolidayList();*/
+						Log.d("Misc",app.getData().getStatusData().getData().toString());
 					}
 					else {
 						Log.d("Misc","Authentication not successful");
@@ -69,7 +80,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 					Log.d("Misc","info: "+additionalInfo);
 					Log.d("Misc","code: "+errorCode);
 					Log.d("Misc","e: "+exception.getMessage());
-				}*/
+				}
 				
 				Intent t = new Intent(welcomescreen, SelectScreen.class);
 				welcomescreen.startActivity(t);

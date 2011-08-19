@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.text.format.Time;
+import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 
@@ -95,5 +96,29 @@ public class Timegrid implements SchoolObject {
 		gridDay.setTimegridUnitList(timegridUnitList);
 		days.put(day,gridDay);
 	}
+	
+	public void putTimegridUnit(int day, TimegridUnit timegridUnit) {
+		if(!days.containsKey(day)) days.put(day, new TimegridDay());
+		
+		days.get(day).addTimegridUnit(timegridUnit);
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for(int day : days.keySet()) {
+			sb.append("======= "+day+"\n");
+			for(TimegridUnit timegridUnit : days.get(day).getTimegridUnitList()) {
+				DateTime start = timegridUnit.getStart();
+				DateTime end = timegridUnit.getEnd();
+				sb.append(start.getHour()+":"+start.getMinute()+", ");
+				sb.append(end.getHour()+":"+end.getMinute()+"\n");
+			}
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
+	
+	
 	
 }

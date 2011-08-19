@@ -13,11 +13,39 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.htl3r.schoolplanner.backend.database;
 
 public interface DatabaseCreateConstants {
 
-	
-	public static final String TABLE_VIEW_TYPE_COLUMN_DEFINITIONS = DatabaseViewTypeConstants.ID+" INT, "+DatabaseViewTypeConstants.NAME+" TEXT, "+DatabaseViewTypeConstants.LONG_NAME+" TEXT, "+DatabaseViewTypeConstants.FORE_COLOR+" TEXT, "+DatabaseViewTypeConstants.BACK_COLOR+" TEXT";
+	public static final String TABLE_VIEW_TYPE_COLUMN_DEFINITIONS = DatabaseViewTypeConstants.ID
+			+ " INTEGER, "
+			+ DatabaseViewTypeConstants.NAME
+			+ " TEXT, "
+			+ DatabaseViewTypeConstants.LONG_NAME
+			+ " TEXT, "
+			+ DatabaseViewTypeConstants.FORE_COLOR
+			+ " TEXT, "
+			+ DatabaseViewTypeConstants.BACK_COLOR + " TEXT";
+
+	public static final String TABLE_SCHOOL_HOLIDAY_COLUMN_DEFINITIONS = DatabaseSchoolHolidayConstants.ID
+			+ " INTEGER, "
+			+ DatabaseSchoolHolidayConstants.NAME
+			+ " TEXT, "
+			+ DatabaseSchoolHolidayConstants.LONG_NAME
+			+ " TEXT, "
+			+ DatabaseSchoolHolidayConstants.START_DATE
+			+ " INTEGER, "
+			+ DatabaseSchoolHolidayConstants.END_DATE + " INTEGER";
+
+	public static final String TABLE_TIMEGRID_COLUMN_DEFINITIONS = DatabaseTimegridConstants.DAY
+			+ " INTEGER, "
+			+ DatabaseTimegridConstants.START_TIME
+			+ " INTEGER, " + DatabaseTimegridConstants.END_TIME + " INTEGER";
+
+	public static final String TABLE_STATUS_DATA_COLUMN_DEFINITIONS = DatabaseStatusDataConstants.CODE
+			+ " TEXT, "
+			+ DatabaseStatusDataConstants.FORE_COLOR
+			+ " INTEGER, "
+			+ DatabaseStatusDataConstants.BACK_COLOR + " INTEGER";
 }

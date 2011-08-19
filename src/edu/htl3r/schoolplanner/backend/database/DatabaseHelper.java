@@ -17,7 +17,9 @@
 package edu.htl3r.schoolplanner.backend.database;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -39,16 +41,18 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	
 	private List<String> getCreateViewTypeTables() {
 		final List<String> createStatements = new ArrayList<String>();
-		final String columnDefinitions = "("+DatabaseCreateConstants.TABLE_VIEW_TYPE_COLUMN_DEFINITIONS+");";
 		
-		final List<String> tableNames = new ArrayList<String>();
-		tableNames.add(DatabaseViewTypeConstants.TABLE_SCHOOL_CLASSES_NAME);
-		tableNames.add(DatabaseViewTypeConstants.TABLE_SCHOOL_TEACHER_NAME);
-		tableNames.add(DatabaseViewTypeConstants.TABLE_SCHOOL_ROOMS_NAME);
-		tableNames.add(DatabaseViewTypeConstants.TABLE_SCHOOL_SUBJECTS_NAME);
+		final Map<String, String> coloumnDefinitions = new HashMap<String, String>();
+		coloumnDefinitions.put(DatabaseViewTypeConstants.TABLE_SCHOOL_CLASSES_NAME, "("+DatabaseCreateConstants.TABLE_VIEW_TYPE_COLUMN_DEFINITIONS+");");
+		coloumnDefinitions.put(DatabaseViewTypeConstants.TABLE_SCHOOL_TEACHER_NAME, "("+DatabaseCreateConstants.TABLE_VIEW_TYPE_COLUMN_DEFINITIONS+");");
+		coloumnDefinitions.put(DatabaseViewTypeConstants.TABLE_SCHOOL_ROOMS_NAME, "("+DatabaseCreateConstants.TABLE_VIEW_TYPE_COLUMN_DEFINITIONS+");");
+		coloumnDefinitions.put(DatabaseViewTypeConstants.TABLE_SCHOOL_SUBJECTS_NAME, "("+DatabaseCreateConstants.TABLE_VIEW_TYPE_COLUMN_DEFINITIONS+");");
+		coloumnDefinitions.put(DatabaseSchoolHolidayConstants.TABLE_SCHOOL_HOLIDAYS_NAME, "("+DatabaseCreateConstants.TABLE_SCHOOL_HOLIDAY_COLUMN_DEFINITIONS+");");
+		coloumnDefinitions.put(DatabaseTimegridConstants.TABLE_TIMEGRID_NAME, "("+DatabaseCreateConstants.TABLE_TIMEGRID_COLUMN_DEFINITIONS+");");
+		coloumnDefinitions.put(DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME, "("+DatabaseCreateConstants.TABLE_STATUS_DATA_COLUMN_DEFINITIONS+");");
 		
-		for(String tableName : tableNames) {
-			createStatements.add(CREATE_TABLE_SQL+" "+tableName+" "+columnDefinitions);
+		for(String tableName : coloumnDefinitions.keySet()) {
+			createStatements.add(CREATE_TABLE_SQL+" "+tableName+" "+coloumnDefinitions.get(tableName));
 		}
 		
 		return createStatements;

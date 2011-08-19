@@ -41,4 +41,11 @@ public class StatusData {
 	public void setBgColor(int bgColor) {
 		this.bgColor = bgColor;
 	}
+	
+	@Override
+	public String toString() {
+		return "StatusData [code=" + code + ", fgColor=" + fgColor
+				+ ", bgColor=" + bgColor + "]";
+	}
+	
 }
