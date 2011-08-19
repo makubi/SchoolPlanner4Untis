@@ -16,6 +16,7 @@
 */
 package edu.htl3r.schoolplanner.gui;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,64 +29,31 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.SchoolPlannerApp;
-import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 import edu.htl3r.schoolplanner.gui.basti.ViewBasti;
 import edu.htl3r.schoolplanner.gui.chris.ViewChris;
 import edu.htl3r.schoolplanner.gui.selectScreen.AnimatedOnClickListener;
 
 public class SelectScreen extends SchoolPlannerActivity{
 	
-	private Cache data;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.select_screen);
 		
-		data = ((SchoolPlannerApp)getApplication()).getData();
-		
-		initSpinner(savedInstanceState);
+		//initSpinner();
 		addOnClickListener();
-		
-		/*GridView gridview = (GridView) findViewById(R.id.gridview);
-	    gridview.setAdapter(new ImageAdapter(this));
-	    
-	    gridview.setOnItemClickListener(new OnItemClickListener() {
-	        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-	        	String text = "Selected ";
-	        	switch (position) {
-				case 0:
-					Intent chris = new Intent(SelectScreen.this, ViewChris.class);
-					startActivity(chris);
-					text+="Chris";
-					break;
-				case 1:
-					text+="teacher";
-					break;
-				case 2:
-					text+="rooms";
-					break;
-				case 3:
-					Intent basti = new Intent(SelectScreen.this, ViewBasti.class);
-					startActivity(basti);
-					text+="Basti";
-					break;
-				default:
-					break;
-				}
-	            Toast.makeText(SelectScreen.this, text, Toast.LENGTH_SHORT).show();
-	        }
-	    });*/
 	}
 	
-	private void initSpinner(Bundle bundle) {
+	private void initSpinner() {
 		Spinner classSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerClass);
-		DataFacade<List<SchoolClass>> classData = this.data.getSchoolClassList();
+		// TODO: Konstanten fuer das Bundle
+		DataFacade<List<SchoolClass>> classData = (DataFacade<List<SchoolClass>>) getIntent().getExtras().getSerializable("schoolClassList");
 		if(classData.isSuccessful()) {
 			initViewTypeSpinner(classSpinner, classData.getData());
 		}
@@ -95,13 +63,31 @@ public class SelectScreen extends SchoolPlannerActivity{
 			classSpinner.setEnabled(false);
 		}
 		
+		Spinner teacherSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerTeacher);
+		DataFacade<List<SchoolTeacher>> teacherData = (DataFacade<List<SchoolTeacher>>) getIntent().getExtras().getSerializable("schoolTeacherList");
+		if(teacherData.isSuccessful()) {
+			initViewTypeSpinner(teacherSpinner, teacherData.getData());
+		}
+		else {
+			teacherSpinner.setEnabled(false);
+		}
+		
 		Spinner roomSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerRoom);
-		DataFacade<List<SchoolRoom>> roomData = this.data.getSchoolRoomList();
+		DataFacade<List<SchoolRoom>> roomData = (DataFacade<List<SchoolRoom>>) getIntent().getExtras().getSerializable("schoolRoomList");
 		if(roomData.isSuccessful()) {
 			initViewTypeSpinner(roomSpinner, roomData.getData());
 		}
 		else {
 			roomSpinner.setEnabled(false);
+		}
+		
+		Spinner subjectSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerSubject);
+		DataFacade<List<SchoolSubject>> subjectData = (DataFacade<List<SchoolSubject>>) getIntent().getExtras().getSerializable("schoolSubjectList");
+		if(subjectData.isSuccessful()) {
+			initViewTypeSpinner(subjectSpinner, subjectData.getData());
+		}
+		else {
+			subjectSpinner.setEnabled(false);
 		}
 		
 	}

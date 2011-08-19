@@ -16,8 +16,12 @@
 */
 package edu.htl3r.schoolplanner.backend;
 
-public class ErrorMessage {
+import java.io.Serializable;
 
+public class ErrorMessage implements Serializable {
+	
+	private static final long serialVersionUID = 520186038684346500L;
+	
 	private int errorCode;
 	private String additionalInfo;
 	private Throwable exception;

@@ -16,12 +16,16 @@
 */
 package edu.htl3r.schoolplanner.backend;
 
+import java.io.Serializable;
+
 /**
  * Diese Klasse wird verwendet, um Datenabfragen aus unsicheren Quellen zu behandeln.<br>
  * Sie dient als Schnittstelle zu den Daten, um im Fehlerfall ueber einen Error-Code diesen bekannt zu geben.
  * @param <E> Art der Daten, die abgerufen werden
  */
-public class DataFacade<E> {
+public class DataFacade<E> implements Serializable {
+	
+	private static final long serialVersionUID = 2483072108698652076L;
 
 	private boolean successful = false;
 	
