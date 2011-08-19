@@ -35,6 +35,8 @@
     android:id="@+id/selectScreen_imageTeacher"
     style="@style/selectScreenBoxImage"
     android:src="@drawable/ic_teacher" />
+    <View 
+			style="@style/statusBarDelimiter" />
     <Spinner
     style="@style/selectScreenBoxSpinner"
     />
@@ -66,14 +68,20 @@
     <LinearLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
 	style="@style/selectScreenBox"
+	android:layout_width="220px"
     >
     <ImageView 
     xmlxmlns="http://schemas.android.com/apk/res/android"
     android:id="@+id/selectScreen_imageSubject"
     style="@style/selectScreenBoxImage"
     android:src="@drawable/ic_subject" />
-    <Spinner
-    style="@style/selectScreenBoxSpinner"
+        <View
+        style="@style/statusBarDelimiter" />
+    <TextView
+    android:id="@+id/selectScreen_spinnerSubject"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="Test"
     />
     </LinearLayout>
     

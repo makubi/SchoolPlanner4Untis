@@ -23,9 +23,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
@@ -86,8 +88,23 @@ public class SelectScreen extends SchoolPlannerActivity{
 		for(SchoolRoom schoolRoom : data.getSchoolRoomList().getData()) {
 			roomList.add(schoolRoom.getName());
 		}
-		ArrayAdapter<String> roomAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, roomList);
+		ArrayAdapter<String> roomAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, roomList);
+		roomAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		roomSpinner.setAdapter(roomAdapter);
+		
+		final Spinner subjectSpinner = new Spinner(this);
+		ArrayAdapter<String> subjectAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, roomList);
+		subjectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		subjectSpinner.setAdapter(subjectAdapter);
+		
+		TextView tv = (TextView) findViewById(R.id.selectScreen_spinnerSubject);
+		tv.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				subjectSpinner.performClick();
+			}
+		});
 	}
 
 	private void addOnClickListener() {

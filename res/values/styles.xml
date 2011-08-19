@@ -52,11 +52,12 @@
     	<item name="android:layout_width">wrap_content</item>
     	<item name="android:layout_height">wrap_content</item>
     	<item name="android:background">@drawable/border</item>
-    	<item name="android:paddingTop">20dip</item>
-    	<item name="android:paddingBottom">10dip</item>
-    	<item name="android:paddingLeft">20dip</item>
-    	<item name="android:paddingRight">20dip</item>
+    	<item name="android:paddingTop">35dip</item>
+    	<item name="android:paddingBottom">0dip</item>
+    	<!-- <item name="android:paddingLeft">20dip</item>
+    	<item name="android:paddingRight">20dip</item> -->
     	<item name="android:layout_margin">10dip</item>
+    	<item name="android:gravity">center</item>
 	</style>
 	
 	<style name="selectScreenBoxImage">
@@ -67,9 +68,9 @@
 	
 	<style name="selectScreenBoxSpinner">
 	    <item name="android:layout_gravity">center</item>
-    	<item name="android:layout_width">fill_parent</item>
-    	<item name="android:layout_height">45px</item>
-    	<item name="android:textSize">8px</item>
+    	<item name="android:layout_width">200px</item>
+    	<item name="android:layout_height">55px</item>
+    	<item name="android:textSize">6px</item>
 	</style>
 	
 </resources>
