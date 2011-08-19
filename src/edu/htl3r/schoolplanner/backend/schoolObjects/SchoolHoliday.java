@@ -18,7 +18,7 @@
 
 package edu.htl3r.schoolplanner.backend.schoolObjects;
 
-import java.util.Calendar;
+import edu.htl3r.schoolplanner.DateTime;
 
 
 public class SchoolHoliday implements SchoolObject{
@@ -26,8 +26,8 @@ public class SchoolHoliday implements SchoolObject{
 	private int id;
 	private String name;
 	private String longName;
-	private Calendar startDate;
-	private Calendar endDate;
+	private DateTime startDate;
+	private DateTime endDate;
 
 	public int getId() {
 		return id;
@@ -47,16 +47,20 @@ public class SchoolHoliday implements SchoolObject{
 	public void setLongName(String longName) {
 		this.longName = longName;
 	}
-	public Calendar getStartDate() {
+	
+	public DateTime getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(Calendar startDate) {
+	
+	public void setStartDate(DateTime startDate) {
 		this.startDate = startDate;
 	}
-	public Calendar getEndDate() {
+	
+	public DateTime getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(Calendar endDate) {
+	
+	public void setEndDate(DateTime endDate) {
 		this.endDate = endDate;
 	}
 }

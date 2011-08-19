@@ -16,20 +16,13 @@
 */
 package edu.htl3r.schoolplanner.backend.database;
 
-public interface DatabaseViewTypeConstants {
-	
-	public static final String TABLE_SCHOOL_CLASSES_NAME = "schoolClasses";
-	public static final String TABLE_SCHOOL_TEACHER_NAME = "schoolTeacher";
-	public static final String TABLE_SCHOOL_ROOMS_NAME = "schoolRooms";
-	public static final String TABLE_SCHOOL_SUBJECTS_NAME = "schoolSubjects";
+
+public interface DatabaseSchoolHolidayConstants {	
+	public static final String TABLE_SCHOOL_HOLIDAYS_NAME = "schoolHolidays";
 	
 	public static final String ID = "id";
-	public static final String NAME = "name";
-	public static final String LONG_NAME = "longName";
-	public static final String FORE_COLOR = "foreColor";
-	public static final String BACK_COLOR = "backColor";
-	
-	// SchoolTeacher
-	public static final String FORE_NAME = "foreName";
-
+	public static final String NAME = "id";
+	public static final String LONG_NAME = "id";
+	public static final String START_DATE = "id";
+	public static final String END_DATE = "id";
 }

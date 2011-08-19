@@ -31,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.graphics.Color;
+import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.StatusData;
@@ -183,22 +184,19 @@ public class JSONParser {
 			int id = holidayObject.getInt("id");
 			String name = holidayObject.getString("name");
 			String longName = holidayObject.getString("longName");
-			String startDate = ""+holidayObject.getInt("startDate");
-			String endDate = ""+holidayObject.getInt("endDate");
+			String startDateString = ""+holidayObject.getInt("startDate");
+			String endDateString = ""+holidayObject.getInt("endDate");
 			
-			// Setze nicht verwendete Werte auf 0
-			Calendar startCalendar = Calendar.getInstance();
-			startCalendar.set(Integer.parseInt(startDate.substring(0, 4)), Integer.parseInt(startDate.substring(4, 6))-1, Integer.parseInt(startDate.substring(6, 8)), 0, 0, 0);
-			startCalendar.set(Calendar.MILLISECOND, 0);
-			Calendar endCalendar = Calendar.getInstance();
-			endCalendar.set(Integer.parseInt(endDate.substring(0, 4)), Integer.parseInt(endDate.substring(4, 6))-1, Integer.parseInt(endDate.substring(6, 8)), 0, 0, 0);
-			endCalendar.set(Calendar.MILLISECOND, 0);
+			DateTime startDate = new DateTime();
+			startDate.set(Integer.parseInt(startDateString.substring(6, 8)), Integer.parseInt(startDateString.substring(4, 6)), Integer.parseInt(startDateString.substring(0, 4)));
+			DateTime endDate = new DateTime();
+			endDate.set(Integer.parseInt(endDateString.substring(6, 8)), Integer.parseInt(endDateString.substring(4, 6)), Integer.parseInt(endDateString.substring(0, 4)));
 			
 			schoolHolidayObject.setId(id);
 			schoolHolidayObject.setName(name);
 			schoolHolidayObject.setLongName(longName);
-			schoolHolidayObject.setStartDate(startCalendar);
-			schoolHolidayObject.setEndDate(endCalendar);
+			schoolHolidayObject.setStartDate(startDate);
+			schoolHolidayObject.setEndDate(endDate);
 			
 			schoolHolidayList.add(schoolHolidayObject);
 		}

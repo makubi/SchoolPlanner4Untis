@@ -24,6 +24,9 @@ import java.util.Map;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQuery;
+import android.database.sqlite.SQLiteQueryBuilder;
+import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.MasterdataStore;
 import edu.htl3r.schoolplanner.backend.StatusData;
@@ -75,8 +78,38 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 
 	@Override
 	public List<SchoolHoliday> getSchoolHolidayList() {
-		// TODO Auto-generated method stub
-		return null;
+		List<SchoolHoliday> schoolHolidayList = new ArrayList<SchoolHoliday>();
+		
+		SQLiteDatabase database = this.database.openDatabase(false);
+		
+		Cursor query = this.database.query(database, DatabaseSchoolHolidayConstants.TABLE_SCHOOL_HOLIDAYS_NAME);
+		
+		int indexID = query.getColumnIndex(DatabaseSchoolHolidayConstants.ID);
+		int indexName = query.getColumnIndex(DatabaseSchoolHolidayConstants.NAME);
+		int indexLongName = query.getColumnIndex(DatabaseSchoolHolidayConstants.LONG_NAME);
+		int indexStartDate = query.getColumnIndex(DatabaseSchoolHolidayConstants.START_DATE);
+		int indexEndDate = query.getColumnIndex(DatabaseSchoolHolidayConstants.END_DATE);
+		
+		while(query.moveToNext()) {
+			int id = query.getInt(indexID);
+			String name = query.getString(indexName);
+			String longName = query.getString(indexLongName);
+			long startDate = query.getLong(indexStartDate);
+			long endDate = query.getLong(indexEndDate);
+			
+			SchoolHoliday schoolHoliday = new SchoolHoliday();
+			schoolHoliday.setId(id);
+			schoolHoliday.setName(name);
+			schoolHoliday.setLongName(longName);
+			schoolHoliday.setStartDate(millisToDateTime(startDate));
+			schoolHoliday.setEndDate(millisToDateTime(endDate));
+			
+			schoolHolidayList.add(schoolHoliday);
+		}
+		query.close();
+		this.database.closeDatabase(database);
+		
+		return schoolHolidayList;
 	}
 
 	@Override
@@ -172,8 +205,37 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 
 	@Override
 	public void setSchoolHolidayList(List<SchoolHoliday> holidayList) {
-		// TODO Auto-generated method stub
+		writeSchoolHolidayList(holidayList, DatabaseSchoolHolidayConstants.TABLE_SCHOOL_HOLIDAYS_NAME);
+	}
+
+	private void writeSchoolHolidayList(List<SchoolHoliday> holidayList, String table) {
+		SQLiteDatabase database = this.database.openDatabase(true);
 		
+		database.beginTransaction();
+		for(SchoolHoliday schoolHoliday : holidayList) {
+			ContentValues values = new ContentValues();
+			values.put(DatabaseSchoolHolidayConstants.ID, schoolHoliday.getId());
+			values.put(DatabaseSchoolHolidayConstants.NAME, schoolHoliday.getName());
+			values.put(DatabaseSchoolHolidayConstants.LONG_NAME, schoolHoliday.getLongName());
+			
+			values.put(DatabaseSchoolHolidayConstants.START_DATE, dateTimeToMillis(schoolHoliday.getStartDate()));
+			values.put(DatabaseSchoolHolidayConstants.END_DATE, dateTimeToMillis(schoolHoliday.getEndDate()));
+			
+			this.database.insert(database, table, values);
+		}
+		database.setTransactionSuccessful();;
+		database.endTransaction();
+		this.database.closeDatabase(database);;
+	}
+	
+	private long dateTimeToMillis(DateTime dateTime) {
+		return dateTime.getAndroidTime().toMillis(true);
+	}
+	
+	private DateTime millisToDateTime(long millis) {
+		DateTime dateTime = new DateTime();
+		dateTime.getAndroidTime().set(millis);
+		return dateTime;
 	}
 
 	@Override
