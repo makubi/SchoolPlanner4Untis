@@ -23,6 +23,8 @@ public class StatusData {
 	private int fgColor;
 	private int bgColor;
 	
+	// TODO: Farbe als String speichern
+	
 	public String getCode() {
 		return code;
 	}
