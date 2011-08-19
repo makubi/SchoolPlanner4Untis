@@ -19,6 +19,7 @@ package edu.htl3r.schoolplanner.backend.database;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.htl3r.schoolplanner.backend.database.constants.DatabaseViewTypeConstants;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
