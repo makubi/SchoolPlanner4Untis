@@ -16,8 +16,16 @@
 */
 package edu.htl3r.schoolplanner.gui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.gui.basti.ViewBasti;
+import edu.htl3r.schoolplanner.gui.chris.ViewChris;
+import edu.htl3r.schoolplanner.gui.selectScreen.AnimatedOnClickListener;
 
 public class SelectScreen extends SchoolPlannerActivity{
 	
@@ -26,7 +34,7 @@ public class SelectScreen extends SchoolPlannerActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.select_screen);
 		
-		
+		addOnClickListener();
 		
 		/*GridView gridview = (GridView) findViewById(R.id.gridview);
 	    gridview.setAdapter(new ImageAdapter(this));
@@ -57,5 +65,53 @@ public class SelectScreen extends SchoolPlannerActivity{
 	            Toast.makeText(SelectScreen.this, text, Toast.LENGTH_SHORT).show();
 	        }
 	    });*/
+	}
+	
+	private void addOnClickListener() {
+		ImageView imageClass = (ImageView) findViewById(R.id.selectScreen_imageClass);
+		ImageView imageTeacher = (ImageView) findViewById(R.id.selectScreen_imageTeacher);
+		ImageView imageRoom = (ImageView) findViewById(R.id.selectScreen_imageRoom);
+		ImageView imageSubject = (ImageView) findViewById(R.id.selectScreen_imageSubject);
+
+		imageClass.setOnClickListener(new AnimatedOnClickListener(getApplicationContext()) {
+			@Override
+			public void onClick(View v) {
+				super.onClick(v);
+				Intent chris = new Intent(SelectScreen.this, ViewChris.class);
+				startActivity(chris);
+				Toast.makeText(SelectScreen.this, "Selected chris", Toast.LENGTH_SHORT).show();
+				Log.d("Misc","selected chris' gui ");
+			}
+		});
+		
+		imageTeacher.setOnClickListener(new AnimatedOnClickListener(getApplicationContext()) {
+			@Override
+			public void onClick(View v) {
+				super.onClick(v);
+				Toast.makeText(SelectScreen.this, "Selected teacher", Toast.LENGTH_SHORT).show();
+				Log.d("Misc","selected teacher");
+			}
+		});
+		
+		imageRoom.setOnClickListener(new AnimatedOnClickListener(getApplicationContext()) {
+			@Override
+			public void onClick(View v) {
+				super.onClick(v);
+				Toast.makeText(SelectScreen.this, "Selected rooms", Toast.LENGTH_SHORT).show();
+				Log.d("Misc","selected rooms");
+			}
+		});
+		
+		imageSubject.setOnClickListener(new AnimatedOnClickListener(getApplicationContext()) {
+			@Override
+			public void onClick(View v) {
+				super.onClick(v);
+				Intent basti = new Intent(SelectScreen.this, ViewBasti.class);
+				startActivity(basti);
+				Toast.makeText(SelectScreen.this, "Selected basti", Toast.LENGTH_SHORT).show();
+				Log.d("Misc","selected bastis gui ");
+			}
+		});
+		
 	}
 }

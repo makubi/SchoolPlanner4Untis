@@ -57,6 +57,7 @@
 	<style name="selectScreenBoxImage">
     	<item name="android:layout_width">100px</item>
     	<item name="android:layout_height">120px</item>
+    	<item name="android:clickable">true</item>
 	</style>
 	
 	<style name="selectScreenBoxSpinner">

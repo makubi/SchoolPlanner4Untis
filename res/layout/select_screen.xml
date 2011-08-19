@@ -16,7 +16,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/selectScreenBox"
     >
-    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" xmlxmlns="http://schemas.android.com/apk/res/android" android:src="@drawable/ic_class" />
+    <ImageView
+    xmlxmlns="http://schemas.android.com/apk/res/android"
+    android:id="@+id/selectScreen_imageClass"
+    style="@style/selectScreenBoxImage"
+    android:src="@drawable/ic_class" />
     <Spinner
     style="@style/selectScreenBoxSpinner"
     />
@@ -26,14 +30,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
 	style="@style/selectScreenBox"
     >
-    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" xmlxmlns="http://schemas.android.com/apk/res/android" android:src="@drawable/ic_teacher" />
+    <ImageView
+    xmlxmlns="http://schemas.android.com/apk/res/android"
+    android:id="@+id/selectScreen_imageTeacher"
+    style="@style/selectScreenBoxImage"
+    android:src="@drawable/ic_teacher" />
     <Spinner
     style="@style/selectScreenBoxSpinner"
     />
     </LinearLayout>
     
     </LinearLayout>
-    
     
     <!-- row two -->
     <LinearLayout 
@@ -47,6 +54,7 @@
     >
     <ImageView
     xmlxmlns="http://schemas.android.com/apk/res/android"
+    android:id="@+id/selectScreen_imageRoom"
     style="@style/selectScreenBoxImage"
     android:src="@drawable/ic_door" />
 	<Spinner
@@ -60,6 +68,7 @@
     >
     <ImageView 
     xmlxmlns="http://schemas.android.com/apk/res/android"
+    android:id="@+id/selectScreen_imageSubject"
     style="@style/selectScreenBoxImage"
     android:src="@drawable/ic_subject" />
     <Spinner
