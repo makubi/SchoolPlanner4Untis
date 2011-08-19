@@ -23,15 +23,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.Cache;
+import edu.htl3r.schoolplanner.backend.DataFacade;
+import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.gui.basti.ViewBasti;
 import edu.htl3r.schoolplanner.gui.chris.ViewChris;
@@ -48,7 +49,7 @@ public class SelectScreen extends SchoolPlannerActivity{
 		
 		data = ((SchoolPlannerApp)getApplication()).getData();
 		
-		initSpinner();
+		initSpinner(savedInstanceState);
 		addOnClickListener();
 		
 		/*GridView gridview = (GridView) findViewById(R.id.gridview);
@@ -82,29 +83,37 @@ public class SelectScreen extends SchoolPlannerActivity{
 	    });*/
 	}
 	
-	private void initSpinner() {
-		Spinner roomSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerRoom);
-		List<String> roomList = new ArrayList<String>();
-		for(SchoolRoom schoolRoom : data.getSchoolRoomList().getData()) {
-			roomList.add(schoolRoom.getName());
+	private void initSpinner(Bundle bundle) {
+		Spinner classSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerClass);
+		DataFacade<List<SchoolClass>> classData = this.data.getSchoolClassList();
+		if(classData.isSuccessful()) {
+			initViewTypeSpinner(classSpinner, classData.getData());
 		}
-		ArrayAdapter<String> roomAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, roomList);
-		roomAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		roomSpinner.setAdapter(roomAdapter);
+		else {
+			ImageView imageClass = (ImageView) findViewById(R.id.selectScreen_imageClass);
+			imageClass.setEnabled(false);
+			classSpinner.setEnabled(false);
+		}
 		
-		final Spinner subjectSpinner = new Spinner(this);
-		ArrayAdapter<String> subjectAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, roomList);
-		subjectAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		subjectSpinner.setAdapter(subjectAdapter);
+		Spinner roomSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerRoom);
+		DataFacade<List<SchoolRoom>> roomData = this.data.getSchoolRoomList();
+		if(roomData.isSuccessful()) {
+			initViewTypeSpinner(roomSpinner, roomData.getData());
+		}
+		else {
+			roomSpinner.setEnabled(false);
+		}
 		
-		TextView tv = (TextView) findViewById(R.id.selectScreen_spinnerSubject);
-		tv.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				subjectSpinner.performClick();
-			}
-		});
+	}
+	
+	private void initViewTypeSpinner(Spinner spinner, List<? extends ViewType> list) {
+		List<String> spinnerList = new ArrayList<String>();
+		for(ViewType schoolRoom : list) {
+			spinnerList.add(schoolRoom.getName());
+		}
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, spinnerList);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(adapter);
 	}
 
 	private void addOnClickListener() {
