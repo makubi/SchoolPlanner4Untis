@@ -70,8 +70,7 @@
 	<style name="selectScreenBoxSpinner">
 	    <item name="android:layout_gravity">center</item>
     	<item name="android:layout_width">200px</item>
-    	<item name="android:layout_height">55px</item>
-    	<item name="android:textSize">6px</item>
+    	<item name="android:layout_height">60px</item>
 	</style>
 	
 </resources>

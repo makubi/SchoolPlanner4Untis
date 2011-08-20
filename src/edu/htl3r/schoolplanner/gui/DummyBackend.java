@@ -22,7 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 import android.text.format.Time;
-
+import edu.htl3r.schoolplanner.backend.DataFacade;
+import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
@@ -99,5 +100,64 @@ public class DummyBackend {
 			data.put(i, lessonList);
 		}
 		return data;
+	}
+
+	public DataFacade<List<SchoolClass>> getSchoolClassList() {
+		DataFacade<List<SchoolClass>> data = new DataFacade<List<SchoolClass>>();
+		data.setData((List<SchoolClass>) getViewTypeList(SchoolClass.class));
+		return data;
+	}
+	
+	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() {
+		DataFacade<List<SchoolTeacher>> data = new DataFacade<List<SchoolTeacher>>();
+		data.setData((List<SchoolTeacher>) getViewTypeList(SchoolTeacher.class));
+		return data;
+	}
+	
+	public DataFacade<List<SchoolRoom>> getSchoolRoomList() {
+		DataFacade<List<SchoolRoom>> data = new DataFacade<List<SchoolRoom>>();
+		data.setData((List<SchoolRoom>) getViewTypeList(SchoolRoom.class));
+		return data;
+	}
+	
+	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() {
+		DataFacade<List<SchoolSubject>> data = new DataFacade<List<SchoolSubject>>();
+		data.setData((List<SchoolSubject>) getViewTypeList(SchoolSubject.class));
+		return data;
+	}
+	
+	private List<? extends ViewType> getViewTypeList(Class<? extends ViewType> viewTypeClass) {
+		List<ViewType> list = new ArrayList<ViewType>();
+		ViewType viewType = null;
+		if(viewTypeClass == SchoolClass.class) {
+			viewType = new SchoolClass();
+		}
+		else if(viewTypeClass == SchoolTeacher.class) {
+			viewType = new SchoolTeacher();
+		}
+		else if(viewTypeClass == SchoolRoom.class) {
+			viewType = new SchoolRoom();
+		}
+		else if(viewTypeClass == SchoolSubject.class) {
+			viewType = new SchoolSubject();
+		}
+		try {
+		for(int i = 0; i < 50; i++) {
+			viewType = (ViewType) viewType.clone();
+			
+			viewType.setId(i);
+			viewType.setName("#"+i);
+			viewType.setLongName("Number "+i);
+			viewType.setForeColor("#FFFFFF");
+			viewType.setBackColor("#000000");
+			
+			list.add(viewType);
+		}
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 }

@@ -20,9 +20,16 @@ import java.io.Serializable;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import edu.htl3r.schoolplanner.SchoolPlannerApp;
+import edu.htl3r.schoolplanner.backend.DataFacade;
+import edu.htl3r.schoolplanner.backend.ErrorMessage;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
+import edu.htl3r.schoolplanner.gui.DummyBackend;
 import edu.htl3r.schoolplanner.gui.SelectScreen;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
 
@@ -69,21 +76,28 @@ public class LoginListener implements OnItemClickListener, Serializable {
 					Log.d("Misc","info: "+additionalInfo);
 					Log.d("Misc","code: "+errorCode);
 					Log.d("Misc","e: "+exception.getMessage());
-				}
-				*/
+				}*/
+				
 				Intent t = new Intent(welcomescreen, SelectScreen.class);
-				/*Bundle bundle = new Bundle();
-				
+				Bundle bundle = new Bundle();
+				DummyBackend dummy = new DummyBackend();
 				publishProgress("Retrieving school classes...");
-				bundle.putSerializable("schoolClassList", app.getData().getSchoolClassList());
-				publishProgress("Retrieving school teacher...");
-				bundle.putSerializable("schoolTeacherList", app.getData().getSchoolTeacherList());
-				publishProgress("Retrieving school rooms...");
-				bundle.putSerializable("schoolRoomList", app.getData().getSchoolRoomList());
-				publishProgress("Retrieving school subjects...");
-				bundle.putSerializable("schoolSubjectList", app.getData().getSchoolSubjectList());
+				//bundle.putSerializable("schoolClassList", app.getData().getSchoolClassList());
+				bundle.putSerializable("schoolClassList", dummy.getSchoolClassList());
 				
-				t.putExtras(bundle);*/
+				publishProgress("Retrieving school teacher...");
+				//bundle.putSerializable("schoolTeacherList", app.getData().getSchoolTeacherList());
+				bundle.putSerializable("schoolTeacherList", dummy.getSchoolTeacherList());
+
+				publishProgress("Retrieving school rooms...");
+				//bundle.putSerializable("schoolRoomList", app.getData().getSchoolRoomList());
+				bundle.putSerializable("schoolRoomList", dummy.getSchoolRoomList());
+				
+				publishProgress("Retrieving school subjects...");
+				//bundle.putSerializable("schoolSubjectList", app.getData().getSchoolSubjectList());
+				bundle.putSerializable("schoolSubjectList", dummy.getSchoolSubjectList());
+				
+				t.putExtras(bundle);
 				welcomescreen.startActivity(t);
 			
 				return null;
