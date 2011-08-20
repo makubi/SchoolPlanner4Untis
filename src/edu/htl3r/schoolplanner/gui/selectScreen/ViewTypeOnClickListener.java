@@ -18,15 +18,14 @@ package edu.htl3r.schoolplanner.gui.selectScreen;
 
 import java.util.List;
 
-import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
-import edu.htl3r.schoolplanner.gui.BundleConstants;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Spinner;
 import android.widget.Toast;
+import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.gui.BundleConstants;
 
 public class ViewTypeOnClickListener extends AnimatedOnClickListener{
 	

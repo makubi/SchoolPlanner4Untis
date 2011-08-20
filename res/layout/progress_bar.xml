@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>   
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	 	android:id="@+id/welcome_footer"
+		android:layout_width="fill_parent" android:layout_alignParentBottom="true"
+		android:layout_height="wrap_content"
+		android:background="@color/element_background">
+
+		<View android:id="@+id/welcome_footer_border"
+			style="@style/statusBarDelimiter" />
+
+		<TextView android:id="@+id/loginProgressText"
+			android:layout_below="@id/welcome_footer_border"
+			android:layout_alignParentLeft="true"
+			style="@style/statusBarText" />
+
+		<ProgressBar android:id="@+id/loginProgress"
+			android:layout_below="@id/welcome_footer_border"
+			android:layout_alignParentRight="true"
+			style="@style/statusBarProgress" />
+
+	</RelativeLayout>
