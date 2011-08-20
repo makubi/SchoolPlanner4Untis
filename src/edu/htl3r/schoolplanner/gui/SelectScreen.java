@@ -47,6 +47,11 @@ public class SelectScreen extends SchoolPlannerActivity{
 	private List<SchoolRoom> roomList;
 	private List<SchoolSubject> subjectList;
 	
+	private Spinner classSpinner;
+	private Spinner teacherSpinner;
+	private Spinner roomSpinner;
+	private Spinner subjectSpinner;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -57,9 +62,8 @@ public class SelectScreen extends SchoolPlannerActivity{
 	}
 	
 	private void initSpinner() {
-		Spinner classSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerClass);
-		// TODO: Konstanten fuer das Bundle
-		DataFacade<List<SchoolClass>> classData = (DataFacade<List<SchoolClass>>) getIntent().getExtras().getSerializable("schoolClassList");
+		classSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerClass);
+		DataFacade<List<SchoolClass>> classData = (DataFacade<List<SchoolClass>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_CLASS_LIST);
 		if(classData.isSuccessful()) {
 			classList = classData.getData();
 			initViewTypeSpinner(classSpinner, classList);
@@ -70,8 +74,8 @@ public class SelectScreen extends SchoolPlannerActivity{
 			classSpinner.setEnabled(false);
 		}
 		
-		Spinner teacherSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerTeacher);
-		DataFacade<List<SchoolTeacher>> teacherData = (DataFacade<List<SchoolTeacher>>) getIntent().getExtras().getSerializable("schoolTeacherList");
+		teacherSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerTeacher);
+		DataFacade<List<SchoolTeacher>> teacherData = (DataFacade<List<SchoolTeacher>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_TEACHER_LIST);
 		if(teacherData.isSuccessful()) {
 			teacherList = teacherData.getData();
 			initViewTypeSpinner(teacherSpinner, teacherList);
@@ -82,8 +86,8 @@ public class SelectScreen extends SchoolPlannerActivity{
 			teacherSpinner.setEnabled(false);
 		}
 		
-		Spinner roomSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerRoom);
-		DataFacade<List<SchoolRoom>> roomData = (DataFacade<List<SchoolRoom>>) getIntent().getExtras().getSerializable("schoolRoomList");
+		roomSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerRoom);
+		DataFacade<List<SchoolRoom>> roomData = (DataFacade<List<SchoolRoom>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_ROOM_LIST);
 		if(roomData.isSuccessful()) {
 			roomList = roomData.getData();
 			initViewTypeSpinner(roomSpinner, roomList);
@@ -94,8 +98,8 @@ public class SelectScreen extends SchoolPlannerActivity{
 			roomSpinner.setEnabled(false);
 		}
 		
-		Spinner subjectSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerSubject);
-		DataFacade<List<SchoolSubject>> subjectData = (DataFacade<List<SchoolSubject>>) getIntent().getExtras().getSerializable("schoolSubjectList");
+		subjectSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerSubject);
+		DataFacade<List<SchoolSubject>> subjectData = (DataFacade<List<SchoolSubject>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_SUBJECT_LIST);
 		if(subjectData.isSuccessful()) {
 			subjectList = subjectData.getData();
 			initViewTypeSpinner(subjectSpinner, subjectList);
@@ -114,8 +118,6 @@ public class SelectScreen extends SchoolPlannerActivity{
 	
 	private void initViewTypeSpinner(Spinner spinner, List<? extends ViewType> list) {
 		List<String> spinnerList = new ArrayList<String>();
-		// Leeritem hinzufuegen, damit bei onCreate nicht direkt onItemSelected von Spinner ausgeloest wird
-		spinnerList.add("");
 		for(ViewType schoolRoom : list) {
 			spinnerList.add(schoolRoom.getName());
 		}
@@ -129,10 +131,9 @@ public class SelectScreen extends SchoolPlannerActivity{
 		ImageView imageTeacher = (ImageView) findViewById(R.id.selectScreen_imageTeacher);
 		ImageView imageRoom = (ImageView) findViewById(R.id.selectScreen_imageRoom);
 		ImageView imageSubject = (ImageView) findViewById(R.id.selectScreen_imageSubject);
-
 		
 		Intent chris = new Intent(SelectScreen.this, ViewChris.class);
-		imageClass.setOnClickListener(new ViewTypeOnClickListener(this,chris));
+		imageClass.setOnClickListener(new ViewTypeOnClickListener(this, chris, classList, classSpinner));
 		
 		// TODO: umstellung auf ViewTypeOnClickListener
 		imageTeacher.setOnClickListener(new AnimatedOnClickListener(getApplicationContext()) {
@@ -155,7 +156,7 @@ public class SelectScreen extends SchoolPlannerActivity{
 		});
 		
 		Intent basti = new Intent(SelectScreen.this, ViewBasti.class);
-		imageSubject.setOnClickListener(new ViewTypeOnClickListener(this, basti));
+		imageSubject.setOnClickListener(new ViewTypeOnClickListener(this, basti, subjectList, subjectSpinner));
 		
 	}
 	

@@ -16,26 +16,39 @@
 */
 package edu.htl3r.schoolplanner.gui.selectScreen;
 
+import java.util.List;
+
+import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
+import edu.htl3r.schoolplanner.gui.BundleConstants;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 public class ViewTypeOnClickListener extends AnimatedOnClickListener{
 	
 	private Activity parent;
 	private Intent intent;
+	private List<? extends ViewType> list;
+	private Spinner spinner;
 	
-	public ViewTypeOnClickListener(Activity parent, Intent intent) {
+	public ViewTypeOnClickListener(Activity parent, Intent intent, List<? extends ViewType> list, Spinner spinner) {
 		super(parent.getApplicationContext());
 		this.parent = parent;
 		this.intent = intent;
+		this.list = list;
+		this.spinner = spinner;
 	}
 	
 	@Override
 	public void onClick(View v) {
 		super.onClick(v);
-		
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(BundleConstants.SELECTED_VIEW_TYPE, list.get(spinner.getSelectedItemPosition()));
+		intent.putExtras(bundle);
 		parent.startActivity(intent);
 		Toast.makeText(parent.getApplicationContext(), "Selected "+intent, Toast.LENGTH_SHORT).show();
 	}

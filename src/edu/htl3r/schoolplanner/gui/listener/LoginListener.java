@@ -29,6 +29,7 @@ import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.ErrorMessage;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
+import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.DummyBackend;
 import edu.htl3r.schoolplanner.gui.SelectScreen;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
@@ -83,19 +84,19 @@ public class LoginListener implements OnItemClickListener, Serializable {
 				DummyBackend dummy = new DummyBackend();
 				publishProgress("Retrieving school classes...");
 				//bundle.putSerializable("schoolClassList", app.getData().getSchoolClassList());
-				bundle.putSerializable("schoolClassList", dummy.getSchoolClassList());
+				bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, dummy.getSchoolClassList());
 				
 				publishProgress("Retrieving school teacher...");
 				//bundle.putSerializable("schoolTeacherList", app.getData().getSchoolTeacherList());
-				bundle.putSerializable("schoolTeacherList", dummy.getSchoolTeacherList());
+				bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, dummy.getSchoolTeacherList());
 
 				publishProgress("Retrieving school rooms...");
 				//bundle.putSerializable("schoolRoomList", app.getData().getSchoolRoomList());
-				bundle.putSerializable("schoolRoomList", dummy.getSchoolRoomList());
+				bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, dummy.getSchoolRoomList());
 				
 				publishProgress("Retrieving school subjects...");
 				//bundle.putSerializable("schoolSubjectList", app.getData().getSchoolSubjectList());
-				bundle.putSerializable("schoolSubjectList", dummy.getSchoolSubjectList());
+				bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, dummy.getSchoolSubjectList());
 				
 				t.putExtras(bundle);
 				welcomescreen.startActivity(t);

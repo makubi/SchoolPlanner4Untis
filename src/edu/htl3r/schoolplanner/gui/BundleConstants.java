@@ -14,8 +14,17 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.gui.selectScreen;
+package edu.htl3r.schoolplanner.gui;
 
-public class SelectScreenInitializer {
-
+public interface BundleConstants {
+	
+	// LoginListener --> SelectScreen
+	public static final String SCHOOL_CLASS_LIST = "schoolClassList";
+	public static final String SCHOOL_TEACHER_LIST = "schoolTeacherList";
+	public static final String SCHOOL_ROOM_LIST = "schoolRoomList";
+	public static final String SCHOOL_SUBJECT_LIST = "schoolSubjectList";
+	
+	// SelectScreen --> TimetableView
+	public static final String SELECTED_VIEW_TYPE = "selectedViewType";
+	
 }

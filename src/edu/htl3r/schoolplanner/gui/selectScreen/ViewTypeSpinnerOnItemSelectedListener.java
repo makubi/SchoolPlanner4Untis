@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Spinner;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 
@@ -32,6 +33,7 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 	private Intent intent;
 	private List<? extends ViewType> list;
 	
+	/** Wird benoetigt, damit beim Laden der Activity nicht automatisch die Action ausgefuehrt wird, da die Klasse {@link Spinner} bzw. der {@link OnItemSelectedListener} schon zu diesem Zeitpunkt gecalled werden. */
 	private boolean init = true;
 
 	public ViewTypeSpinnerOnItemSelectedListener(Activity parent, Intent intent, List<? extends ViewType> list) {
@@ -43,7 +45,7 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		// Pruefung auf Leeritem
+		// Hack, damit beim Initialisieren des Spinners nicht automatisch eine Action ausgefuehrt wird
 		if (!init) {			
 			ViewType item = getViewType(position);
 			Toast.makeText(this.parent.getApplicationContext(), "Selected "+item.toString(), Toast.LENGTH_LONG).show();
@@ -57,13 +59,17 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 	}
 
 	protected ViewType getViewType(int position) {
-		return list.get(position-1);
+		return list.get(position);
 	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {}
 
 
+	/**
+	 * Veranlaesst den {@link OnItemSelectedListener} dazu, die naechste Action zu ignorieren.
+	 * @param init 'true', wenn die naechste Action ignoriert werden soll
+	 */
 	public void setSkipNextAction(boolean init) {
 		this.init = init;
 	}
