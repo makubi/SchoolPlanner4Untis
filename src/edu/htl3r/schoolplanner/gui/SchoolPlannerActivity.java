@@ -18,13 +18,37 @@ package edu.htl3r.schoolplanner.gui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.gui.settings.SettingsScreen;
 
 public abstract class SchoolPlannerActivity extends Activity {
+	
+	private ProgressBar progressWheel;
+	private TextView loginProgressText;
+	
+	public void setInProgress(String message, boolean active) {
+		if (active) {
+			loginProgressText.setText(message);
+			progressWheel.setVisibility(View.VISIBLE);
+		} else {
+			loginProgressText.setText("");
+			progressWheel.setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		progressWheel = (ProgressBar) findViewById(R.id.loginProgress);
+		loginProgressText = (TextView) findViewById(R.id.loginProgressText);
+	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

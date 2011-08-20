@@ -25,10 +25,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -48,8 +46,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	private final String schoolKey = LoginSetConstants.schoolKey;
 	private final String userKey = LoginSetConstants.usernameKey;
 
-	private ProgressBar progressWheel;
-	private TextView loginProgressText;
+	
 	private ListView mainListView;
 	
 	private LoginSetDialog dialog;
@@ -68,8 +65,6 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.welcome_screen);
 		
-		progressWheel = (ProgressBar) findViewById(R.id.loginProgress);
-		loginProgressText = (TextView) findViewById(R.id.loginProgressText);
 		mainListView = (ListView) findViewById(R.id.loginList);
 		
 		buildEmptyListTextView();
@@ -157,15 +152,10 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		mainListView.setAdapter(aa);
 	}
 	
+	@Override
 	public void setInProgress(String message, boolean active) {
+		super.setInProgress(message, active);
 		setLoginListEnabled(!active);
-		if (active) {
-			loginProgressText.setText(message);
-			progressWheel.setVisibility(View.VISIBLE);
-		} else {
-			loginProgressText.setText("");
-			progressWheel.setVisibility(View.INVISIBLE);
-		}
 	}
 	
 	public void loginSetListUpdated() {
