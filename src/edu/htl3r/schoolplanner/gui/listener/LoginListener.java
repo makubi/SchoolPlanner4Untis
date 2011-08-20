@@ -17,6 +17,7 @@
 package edu.htl3r.schoolplanner.gui.listener;
 
 import java.io.Serializable;
+import java.util.List;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -29,6 +30,7 @@ import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.ErrorMessage;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.DummyBackend;
 import edu.htl3r.schoolplanner.gui.SelectScreen;
@@ -48,55 +50,59 @@ public class LoginListener implements OnItemClickListener, Serializable {
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		final LoginSet selectedEntry = welcomescreen.getLoginManager().getLoginSetOnPosition(position);
+//		final LoginSet selectedEntry = welcomescreen.getLoginManager().getLoginSetOnPosition(position);
 
 		AsyncTask<Void, String, Void> task = new AsyncTask<Void, String, Void>() {
 
 			@Override
 			protected Void doInBackground(Void... params) {
 				
-				// TODO: Do login here
-				SchoolPlannerApp app = (SchoolPlannerApp) welcomescreen.getApplication();
-				
-				app.getData().setLoginCredentials(selectedEntry);
-				DataFacade<Boolean> authenticate = app.getData().authenticate();
-				if(authenticate.isSuccessful()) {
-					boolean auth = authenticate.getData();
-					if(auth) {
-						Log.d("Misc","Authentication successful");
-					}
-					else {
-						Log.d("Misc","Authentication not successful");
-					}
-				}
-				else {
-					ErrorMessage error = authenticate.getErrorMessage();
-					String additionalInfo = error.getAdditionalInfo();
-					int errorCode = error.getErrorCode();
-					Throwable exception = error.getException();
-					Log.d("Misc","info: "+additionalInfo);
-					Log.d("Misc","code: "+errorCode);
-					Log.d("Misc","e: "+exception.getMessage());
-				}
+//				// TODO: Do login here
+//				SchoolPlannerApp app = (SchoolPlannerApp) welcomescreen.getApplication();
+//				
+//				app.getData().setLoginCredentials(selectedEntry);
+//				DataFacade<Boolean> authenticate = app.getData().authenticate();
+//				if(authenticate.isSuccessful()) {
+//					boolean auth = authenticate.getData();
+//					if(auth) {
+//						Log.d("Misc","Authentication successful");
+//					}
+//					else {
+//						Log.d("Misc","Authentication not successful");
+//					}
+//				}
+//				else {
+//					ErrorMessage error = authenticate.getErrorMessage();
+//					String additionalInfo = error.getAdditionalInfo();
+//					int errorCode = error.getErrorCode();
+//					Throwable exception = error.getException();
+//					Log.d("Misc","info: "+additionalInfo);
+//					Log.d("Misc","code: "+errorCode);
+//					Log.d("Misc","e: "+exception.getMessage());
+//				}
 				
 				Intent t = new Intent(welcomescreen, SelectScreen.class);
 				Bundle bundle = new Bundle();
 				DummyBackend dummy = new DummyBackend();
 				publishProgress("Retrieving school classes...");
-				bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, app.getData().getSchoolClassList());
-				//bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, dummy.getSchoolClassList());
+//				bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, app.getData().getSchoolClassList());
+				bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, dummy.getSchoolClassList());
 				
 				publishProgress("Retrieving school teacher...");
-				bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, app.getData().getSchoolTeacherList());
-//				bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, dummy.getSchoolTeacherList());
+//				bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, app.getData().getSchoolTeacherList());
+				DataFacade<List<SchoolTeacher>> schoolTeacherList = dummy.getSchoolTeacherList();
+				ErrorMessage errorMessage = new ErrorMessage();
+				errorMessage.setAdditionalInfo("dummy error");
+				schoolTeacherList.setErrorMessage(errorMessage);
+				bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, schoolTeacherList);
 
 				publishProgress("Retrieving school rooms...");
-				bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, app.getData().getSchoolRoomList());
-//				bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, dummy.getSchoolRoomList());
+//				bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, app.getData().getSchoolRoomList());
+				bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, dummy.getSchoolRoomList());
 				
 				publishProgress("Retrieving school subjects...");
-				bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, app.getData().getSchoolSubjectList());
-//				bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, dummy.getSchoolSubjectList());
+//				bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, app.getData().getSchoolSubjectList());
+				bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, dummy.getSchoolSubjectList());
 				
 				t.putExtras(bundle);
 				welcomescreen.startActivity(t);
