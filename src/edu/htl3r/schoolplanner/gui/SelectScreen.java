@@ -20,11 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -49,9 +47,6 @@ public class SelectScreen extends SchoolPlannerActivity{
 	private List<SchoolRoom> roomList;
 	private List<SchoolSubject> subjectList;
 	
-	/** Wird benoetigt, damit die Listener der Spinner nicht auf die voreingestellte Auswahl reagiern und die Aktionen der Methode {@link OnItemSelectedListener#onItemSelected(android.widget.AdapterView, View, int, long)} nur ausgefuehrt werden, wenn der Benutzer eine aktion setzt. */
-	private List<ViewTypeSpinnerOnItemSelectedListener> viewTypeSpinnerOnItemSelectedListeners = new ArrayList<ViewTypeSpinnerOnItemSelectedListener>();
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -111,16 +106,10 @@ public class SelectScreen extends SchoolPlannerActivity{
 			subjectSpinner.setEnabled(false);
 		}
 		
-		addViewTypeSpinnerOnItemSelectedListener(classSpinner, new Intent(), classList);
-		addViewTypeSpinnerOnItemSelectedListener(teacherSpinner, new Intent(), teacherList);
-		addViewTypeSpinnerOnItemSelectedListener(roomSpinner, new Intent(), roomList);
-		addViewTypeSpinnerOnItemSelectedListener(subjectSpinner, new Intent(), subjectList);
-	}
-	
-	private void addViewTypeSpinnerOnItemSelectedListener(Spinner spinner, Intent intent, List<? extends ViewType> list) {
-		ViewTypeSpinnerOnItemSelectedListener listener = new ViewTypeSpinnerOnItemSelectedListener(this, intent, list);
-		viewTypeSpinnerOnItemSelectedListeners.add(listener);
-		spinner.setOnItemSelectedListener(listener);		
+		classSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, new Intent(), classList));
+		teacherSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, new Intent(), teacherList));
+		roomSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, new Intent(), roomList));
+		subjectSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, new Intent(), subjectList));
 	}
 	
 	private void initViewTypeSpinner(Spinner spinner, List<? extends ViewType> list) {
@@ -168,22 +157,6 @@ public class SelectScreen extends SchoolPlannerActivity{
 		Intent basti = new Intent(SelectScreen.this, ViewBasti.class);
 		imageSubject.setOnClickListener(new ViewTypeOnClickListener(this, basti));
 		
-	}
-	
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		//ignoreFirstActionOnListeners();
-		Log.d("Misc","called");
-	}
-	
-	/**
-	 * Hack to stop application from selecting automatically item by non-user action (e.g. on create or on rotate).
-	 */
-	private void ignoreFirstActionOnListeners() {
-		for(ViewTypeSpinnerOnItemSelectedListener listener : viewTypeSpinnerOnItemSelectedListeners) {
-			listener.setSkipNextAction(true);
-		}
 	}
 	
 }

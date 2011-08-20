@@ -37,7 +37,7 @@ public class ViewTypeOnClickListener extends AnimatedOnClickListener{
 		super.onClick(v);
 		
 		parent.startActivity(intent);
-		Toast.makeText(parent.getApplicationContext(), intent.getAction(), Toast.LENGTH_SHORT).show();
+		Toast.makeText(parent.getApplicationContext(), "Selected "+intent, Toast.LENGTH_SHORT).show();
 	}
 
 }
