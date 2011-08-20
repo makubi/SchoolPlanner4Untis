@@ -20,6 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -70,7 +73,7 @@ public class SelectScreen extends SchoolPlannerActivity{
 		}
 		else {
 			ImageView imageClass = (ImageView) findViewById(R.id.selectScreen_imageClass);
-			imageClass.setEnabled(false);
+			setListImageNotAvailable(imageClass);
 			classSpinner.setEnabled(false);
 		}
 		
@@ -81,8 +84,8 @@ public class SelectScreen extends SchoolPlannerActivity{
 			initViewTypeSpinner(teacherSpinner, teacherList);
 		}
 		else {
-			ImageView imageClass = (ImageView) findViewById(R.id.selectScreen_imageTeacher);
-			imageClass.setEnabled(false);
+			ImageView imageTeacher = (ImageView) findViewById(R.id.selectScreen_imageTeacher);
+			setListImageNotAvailable(imageTeacher);
 			teacherSpinner.setEnabled(false);
 		}
 		
@@ -93,8 +96,8 @@ public class SelectScreen extends SchoolPlannerActivity{
 			initViewTypeSpinner(roomSpinner, roomList);
 		}
 		else {
-			ImageView imageClass = (ImageView) findViewById(R.id.selectScreen_imageRoom);
-			imageClass.setEnabled(false);
+			ImageView imageRoom = (ImageView) findViewById(R.id.selectScreen_imageRoom);
+			setListImageNotAvailable(imageRoom);
 			roomSpinner.setEnabled(false);
 		}
 		
@@ -105,8 +108,8 @@ public class SelectScreen extends SchoolPlannerActivity{
 			initViewTypeSpinner(subjectSpinner, subjectList);
 		}
 		else {
-			ImageView imageClass = (ImageView) findViewById(R.id.selectScreen_imageSubject);
-			imageClass.setEnabled(false);
+			ImageView imageSubject = (ImageView) findViewById(R.id.selectScreen_imageSubject);
+			setListImageNotAvailable(imageSubject);
 			subjectSpinner.setEnabled(false);
 		}
 		
@@ -124,6 +127,12 @@ public class SelectScreen extends SchoolPlannerActivity{
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, spinnerList);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
+	}
+	
+	private void setListImageNotAvailable(ImageView imageView) {
+		Drawable[] layers = new Drawable[] { imageView.getDrawable(), getResources().getDrawable(R.drawable.ic_not) };
+		imageView.setImageDrawable(new LayerDrawable(layers));
+		imageView.setEnabled(false);
 	}
 
 	private void addOnClickListener() {

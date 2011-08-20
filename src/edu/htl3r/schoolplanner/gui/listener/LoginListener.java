@@ -48,7 +48,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		//final LoginSet selectedEntry = welcomescreen.getLoginManager().getLoginSetOnPosition(position);
+		final LoginSet selectedEntry = welcomescreen.getLoginManager().getLoginSetOnPosition(position);
 
 		AsyncTask<Void, String, Void> task = new AsyncTask<Void, String, Void>() {
 
@@ -56,7 +56,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 			protected Void doInBackground(Void... params) {
 				
 				// TODO: Do login here
-				/*SchoolPlannerApp app = (SchoolPlannerApp) welcomescreen.getApplication();
+				SchoolPlannerApp app = (SchoolPlannerApp) welcomescreen.getApplication();
 				
 				app.getData().setLoginCredentials(selectedEntry);
 				DataFacade<Boolean> authenticate = app.getData().authenticate();
@@ -77,26 +77,26 @@ public class LoginListener implements OnItemClickListener, Serializable {
 					Log.d("Misc","info: "+additionalInfo);
 					Log.d("Misc","code: "+errorCode);
 					Log.d("Misc","e: "+exception.getMessage());
-				}*/
+				}
 				
 				Intent t = new Intent(welcomescreen, SelectScreen.class);
 				Bundle bundle = new Bundle();
 				DummyBackend dummy = new DummyBackend();
 				publishProgress("Retrieving school classes...");
-				//bundle.putSerializable("schoolClassList", app.getData().getSchoolClassList());
-				bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, dummy.getSchoolClassList());
+				bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, app.getData().getSchoolClassList());
+				//bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, dummy.getSchoolClassList());
 				
 				publishProgress("Retrieving school teacher...");
-				//bundle.putSerializable("schoolTeacherList", app.getData().getSchoolTeacherList());
-				bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, dummy.getSchoolTeacherList());
+				bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, app.getData().getSchoolTeacherList());
+//				bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, dummy.getSchoolTeacherList());
 
 				publishProgress("Retrieving school rooms...");
-				//bundle.putSerializable("schoolRoomList", app.getData().getSchoolRoomList());
-				bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, dummy.getSchoolRoomList());
+				bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, app.getData().getSchoolRoomList());
+//				bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, dummy.getSchoolRoomList());
 				
 				publishProgress("Retrieving school subjects...");
-				//bundle.putSerializable("schoolSubjectList", app.getData().getSchoolSubjectList());
-				bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, dummy.getSchoolSubjectList());
+				bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, app.getData().getSchoolSubjectList());
+//				bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, dummy.getSchoolSubjectList());
 				
 				t.putExtras(bundle);
 				welcomescreen.startActivity(t);

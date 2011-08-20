@@ -28,11 +28,20 @@ import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.gui.settings.SettingsScreen;
 
+/**
+ * Diese Klasse erweitert die Standard Android-{@link Activity} um weitere Funktionalitaeten.
+ * Dazu zaehlt unter Anderem das Hinzufuegen des Standard-Menues oder der Zugriff auf die ProgressBar am unteren Bildschirmrand.
+ */
 public abstract class SchoolPlannerActivity extends Activity {
 	
 	private ProgressBar progressWheel;
 	private TextView loginProgressText;
 	
+	/**
+	 * Zeigt einen Text und den Lade-Kreis in der ProgressBar am unteren Bildschirmrand an oder versteckt beides.
+	 * @param message Text, der angezeigt werden soll
+	 * @param active Wenn 'true', wird der Text angezeigt, ansonsten wird er versteckt
+	 */
 	public void setInProgress(String message, boolean active) {
 		if (active) {
 			loginProgressText.setText(message);
