@@ -102,7 +102,16 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	 */
 	private JSONObject getJSONData(final JSONObject request)
 			throws IOException, JSONException {
-		return parseData(network.getResponse(request.toString()));
+		JSONObject response = parseData(network.getResponse(request.toString()));
+		if(response.has("error")) {
+			JSONObject errorObject = response.getJSONObject("error");
+			if(errorObject.getInt("code") == 0 && errorObject.getString("message").equals("not authenticated")) {
+				Log.i("Network", "Reauthenticating");
+				authenticate();
+				response = parseData(network.getResponse(request.toString()));
+			}
+		}
+		return response;
 	}
 
 	/**
