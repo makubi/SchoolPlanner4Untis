@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.graphics.Color;
+import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.Cache;
@@ -354,6 +355,7 @@ public class JSONParser {
 			
 			// Verarbeite Datumsstring
 			String rawDateString = ""+lessonObject.getInt("date");
+			Log.d("Misc",rawDateString);
 			
 			String rawYear = rawDateString.substring(0,4);
 			String rawMonth = rawDateString.substring(4,6);

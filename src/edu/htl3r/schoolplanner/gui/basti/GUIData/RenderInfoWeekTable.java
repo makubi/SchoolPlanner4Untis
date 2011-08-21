@@ -51,7 +51,7 @@ public class RenderInfoWeekTable {
 	}
 	
 	private void analyseDay(DateTime date, List<Lesson> lessons){
-		Log.d("basti",DateTimeUtils.toISO8601Date(date) + ": " + lessons+"");
+		Log.d("basti",DateTimeUtils.toISO8601Date(date) + ": " + lessons+" " + lessons.size());
 	}
 	
 	

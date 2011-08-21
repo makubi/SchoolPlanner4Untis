@@ -39,7 +39,7 @@ public class GUIContentManager {
 		if(viewlength == WEEK){
 			RenderInfoWeekTable weekinfo = new RenderInfoWeekTable();
 			DateTime end = new DateTime();
-			end.set(26, 9, 2011);
+			end.set(23, 9, 2011);
 			weekinfo.setWeekData(datacenter.getLessonsForSomeTime(viewtype, start, end));
 			weekinfo.analyse();
 		}
