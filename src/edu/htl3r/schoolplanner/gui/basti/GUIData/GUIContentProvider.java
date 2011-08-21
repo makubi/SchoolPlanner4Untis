@@ -12,6 +12,7 @@ import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataFacade;
+import edu.htl3r.schoolplanner.backend.ErrorMessage;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
@@ -109,8 +110,9 @@ public class GUIContentProvider implements GUIContentProviderSpez{
 		if(facade.isSuccessful()){
 			return facade.getData();
 		}else{
-			Log.d("basti","error" + facade.getErrorMessage().toString());
-			toastError(facade.getErrorMessage().toString());
+			ErrorMessage errorMessage = facade.getErrorMessage();
+			Log.i("basti","error" + errorMessage.getAdditionalInfo(),errorMessage.getException());
+			toastError(errorMessage.toString());
 			return new HashMap<String, List<Lesson>>();	
 		}
 	}
