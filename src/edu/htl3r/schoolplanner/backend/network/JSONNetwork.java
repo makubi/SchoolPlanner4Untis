@@ -523,7 +523,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	
 			String endYear = "" + endDate.getYear();
 			String endMonth = "" + endDate.getMonth();
-			String endDay = "" + startDate.getDay();
+			String endDay = "" + endDate.getDay();
 	
 			if (endMonth.length() < 2) {
 				endMonth = "0" + endMonth;
