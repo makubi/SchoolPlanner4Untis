@@ -20,7 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
-import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
@@ -61,7 +66,7 @@ public class SelectScreen extends SchoolPlannerActivity{
 		setContentView(R.layout.select_screen);
 		
 		initSpinner();
-		addOnClickListener();
+		addImageOnClickListener();
 	}
 	
 	private void initSpinner() {
@@ -129,13 +134,29 @@ public class SelectScreen extends SchoolPlannerActivity{
 		spinner.setAdapter(adapter);
 	}
 	
-	private void setListImageNotAvailable(ImageView imageView) {
-		Drawable[] layers = new Drawable[] { imageView.getDrawable(), getResources().getDrawable(R.drawable.ic_not) };
+	private void setListImageNotAvailable(ImageView imageView) {		
+		Drawable[] layers = new Drawable[] {toGrayscale(imageView.getDrawable()), getResources().getDrawable(R.drawable.ic_not) };
 		imageView.setImageDrawable(new LayerDrawable(layers));
 		imageView.setEnabled(false);
 	}
+	
+	private Drawable toGrayscale(Drawable original) {
+		return new BitmapDrawable(toGrayscale(((BitmapDrawable)original).getBitmap()));
+	}
+	
+	private Bitmap toGrayscale(Bitmap bmpOriginal) {
+	    Bitmap bmpGrayscale = Bitmap.createBitmap(bmpOriginal.getWidth(), bmpOriginal.getHeight(), Bitmap.Config.ARGB_8888);
+	    Canvas c = new Canvas(bmpGrayscale);
+	    Paint paint = new Paint();
+	    ColorMatrix cm = new ColorMatrix();
+	    cm.setSaturation(0);
+	    ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+	    paint.setColorFilter(f);
+	    c.drawBitmap(bmpOriginal, 0, 0, paint);
+	    return bmpGrayscale;
+	}
 
-	private void addOnClickListener() {
+	private void addImageOnClickListener() {
 		ImageView imageClass = (ImageView) findViewById(R.id.selectScreen_imageClass);
 		ImageView imageTeacher = (ImageView) findViewById(R.id.selectScreen_imageTeacher);
 		ImageView imageRoom = (ImageView) findViewById(R.id.selectScreen_imageRoom);
