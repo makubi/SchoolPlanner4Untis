@@ -53,7 +53,7 @@ public class DateTimeUtils {
 	 */
 	public static DateTime iso8601StringToDateTime(String dateString) {
 		DateTime dateTime = new DateTime();
-		dateTime.set(Integer.parseInt(dateString.substring(6,8)), Integer.parseInt(dateString.substring(4,6)),Integer.parseInt( dateString.substring(0,4)));
+		dateTime.set(Integer.parseInt(dateString.substring(7,8)), Integer.parseInt(dateString.substring(5,6)),Integer.parseInt( dateString.substring(0,3)));
 		return dateTime;
 	}
 	
