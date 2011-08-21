@@ -348,12 +348,19 @@ public class JSONParser {
 			
 			// Verarbeite Datumsstring
 			String dateString = ""+lessonObject.getInt("date");
+			
 			String startTime = ""+lessonObject.getInt("startTime");
 			String endTime = ""+lessonObject.getInt("endTime");
 			
 			int year = Integer.parseInt(dateString.substring(0,4));
 			int month = Integer.parseInt(dateString.substring(4,6));
 			int day = Integer.parseInt(dateString.substring(6,8));
+			
+			// TODO TESTING
+			
+			dateString = year+"-"+month+"-"+day;
+			
+			// TODO /TESTING
 			
 			int startMinute = Integer.parseInt(getMinute(startTime));
 			int startHour = Integer.parseInt(getHour(startTime));
