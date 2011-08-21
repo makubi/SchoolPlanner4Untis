@@ -123,12 +123,11 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 		Map<String, List<Lesson>> lessonMap = new HashMap<String, List<Lesson>>();
 		DateTime tmpDate = startDate.clone();
 		
-		while(tmpDate.getAndroidTime().before(endDate.getAndroidTime())) {
+		while(tmpDate.beforeOrEquals(endDate)) {
 			String date = DateTimeUtils.toISO8601Date(tmpDate);
 			
 			lessonMap.put(date, timetable.get(view, date));
 			tmpDate.increaseDay();
-			// TODO: before... letzter Tag?
 		}
 		
 		String date = DateTimeUtils.toISO8601Date(endDate);
@@ -147,7 +146,7 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 			Map<String, List<Lesson>> lessonMap) {
 		DateTime tmpDate = startDate.clone();
 		
-		while(tmpDate.getAndroidTime().before(endDate.getAndroidTime())) {
+		while(tmpDate.beforeOrEquals(endDate)) {
 			String date = DateTimeUtils.toISO8601Date(tmpDate);
 			
 			timetable.put(view, date, lessonMap.get(date));

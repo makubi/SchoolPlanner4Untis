@@ -37,7 +37,7 @@ public class LessonProcessor {
 		Map<String, List<Lesson>> updatedLessonMap = lessonMap;
 		DateTime tmpDate = startDate.clone();
 
-		while(tmpDate.getAndroidTime().before(endDate.getAndroidTime())) {
+		while(tmpDate.beforeOrEquals(endDate)) {
 			String date = DateTimeUtils.toISO8601Date(tmpDate);
 			if(!updatedLessonMap.containsKey(date)) {
 				updatedLessonMap.put(date, new ArrayList<Lesson>());
