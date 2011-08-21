@@ -38,16 +38,15 @@ public abstract class SchoolPlannerActivity extends Activity {
 	private TextView loginProgressText;
 	
 	/**
-	 * Zeigt einen Text und den Lade-Kreis in der ProgressBar am unteren Bildschirmrand an oder versteckt beides.
+	 * Zeigt einen Text und den Lade-Kreis in der ProgressBar am unteren Bildschirmrand an oder versteckt den Lade-Kreis.
 	 * @param message Text, der angezeigt werden soll
-	 * @param active Wenn 'true', wird der Text angezeigt, ansonsten wird er versteckt
+	 * @param active Wenn 'true', wird der Lade-Kreis angezeigt, ansonsten wird er versteckt
 	 */
 	public void setInProgress(String message, boolean active) {
+		loginProgressText.setText(message);
 		if (active) {
-			loginProgressText.setText(message);
 			progressWheel.setVisibility(View.VISIBLE);
 		} else {
-			loginProgressText.setText("");
 			progressWheel.setVisibility(View.INVISIBLE);
 		}
 	}

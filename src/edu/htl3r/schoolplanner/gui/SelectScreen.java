@@ -167,33 +167,12 @@ public class SelectScreen extends SchoolPlannerActivity{
 		
 		Intent basti = new Intent(SelectScreen.this, ViewBasti.class);
 		imageSubject.setOnClickListener(new ViewTypeOnClickListener(this, basti, subjectList, subjectSpinner));
+		
 		Intent basti2 = new Intent(SelectScreen.this, ViewBasti.class);
 		imageRoom.setOnClickListener(new ViewTypeOnClickListener(this, basti2, roomList, roomSpinner));
+		
 		Intent basti3 = new Intent(SelectScreen.this, ViewBasti.class);
-		imageTeacher.setOnClickListener(new ViewTypeOnClickListener(this, basti3, teacherList, teacherSpinner));
-		
-		// TODO: umstellung auf ViewTypeOnClickListener
-//		imageTeacher.setOnClickListener(new AnimatedOnClickListener(getApplicationContext()) {
-//			@Override
-//			public void onClick(View v) {
-//				super.onClick(v);
-//				Toast.makeText(SelectScreen.this, "Selected teacher", Toast.LENGTH_SHORT).show();
-//				Log.d("Misc","selected teacher");
-//			}
-//		});
-//		
-//		// TODO: umstellung auf ViewTypeOnClickListener
-//		imageRoom.setOnClickListener(new AnimatedOnClickListener(getApplicationContext()) {
-//			@Override
-//			public void onClick(View v) {
-//				super.onClick(v);
-//				Toast.makeText(SelectScreen.this, "Selected rooms", Toast.LENGTH_SHORT).show();
-//				Log.d("Misc","selected rooms");
-//			}
-//		});
-		
-		
-		
+		imageTeacher.setOnClickListener(new ViewTypeOnClickListener(this, basti3, teacherList, teacherSpinner));		
 	}
 	
 }
