@@ -200,11 +200,15 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	@Override
 	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
 		DataFacade<List<Lesson>> data;
-		List<Lesson> internalTimegrid = internalMemory.getLessons(viewType, date);
+		List<Lesson> internalLessons = internalMemory.getLessons(viewType, date);
 		
-		if(internalTimegrid != null) {
+		// TODO TESTING
+		internalLessons = null;
+		// TODO /TESTING
+		
+		if(internalLessons != null) {
 			data = new DataFacade<List<Lesson>>();
-			data.setData(internalTimegrid);
+			data.setData(internalLessons);
 		}
 		else {
 			data = externalDataLoader.getLessons(viewType, date);
@@ -220,11 +224,15 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
 			DateTime startDate, DateTime endDate) {
 		DataFacade<Map<String, List<Lesson>>> data;
-		Map<String, List<Lesson>> internalTimegrid = internalMemory.getLessons(viewType, startDate, endDate);
+		Map<String, List<Lesson>> internalLessons = internalMemory.getLessons(viewType, startDate, endDate);
 		
-		if(internalTimegrid != null) {
+		// TODO TESTING
+		internalLessons = null;
+		// TODO /TESTING
+		
+		if(internalLessons != null) {
 			data = new DataFacade<Map<String, List<Lesson>>>();
-			data.setData(internalTimegrid);
+			data.setData(internalLessons);
 		}
 		else {
 			data = externalDataLoader.getLessons(viewType, startDate, endDate);
