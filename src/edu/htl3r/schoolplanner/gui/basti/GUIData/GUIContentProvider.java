@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.Cache;
@@ -102,6 +103,7 @@ public class GUIContentProvider implements GUIContentProviderSpez{
 	@Override
 	public Map<String, List<Lesson>> getLessonsForSomeTime(ViewType vt, DateTime start, DateTime end) {
 		if(cache.getLessons(vt, start,end).isSuccessful()){
+			Log.d("basti",cache.getLessons(vt, start,end).getData()+"");
 			return cache.getLessons(vt, start,end).getData();
 		}else{
 			toastError(cache.getLessons(vt, start,end).getErrorMessage().toString());

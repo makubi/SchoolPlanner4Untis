@@ -1,7 +1,6 @@
 package edu.htl3r.schoolplanner.gui.basti.GUIData;
 
 import android.content.Context;
-import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;

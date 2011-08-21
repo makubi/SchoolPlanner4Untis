@@ -23,7 +23,7 @@ import android.text.format.Time;
 public class DateTimeUtils {
 
 	/**
-	 * Liefert ein {@link Time}-Objekt als ISO-8601-String.
+	 * Liefert ein {@link Time}-Objekt als ISO-8601-String (Form: YYYY-MM-DD).
 	 * @param date {@link Time}-Objekt, von dem der String erzeugt werden soll
 	 * @return Uebergebenes {@link Time}-Objekt als ISO-8601-String
 	 */
@@ -35,7 +35,7 @@ public class DateTimeUtils {
 	}
 	
 	/**
-	 * Liefert ein {@link DateTime}-Objekt als ISO-8601-String.
+	 * Liefert ein {@link DateTime}-Objekt als ISO-8601-String (Form: YYYY-MM-DD).
 	 * @param date {@link DateTime}-Objekt, von dem der String erzeugt werden soll
 	 * @return Uebergebenes {@link DateTime}-Objekt als ISO-8601-String
 	 */
@@ -48,12 +48,14 @@ public class DateTimeUtils {
 	
 	/**
 	 * Wandelt einen {@link #toISO8601Date(DateTime)}-String in ein DateTime-Objekt um.
-	 * @param dateString
+	 * @param dateString String, der umgewandelt werden soll
 	 * @return Das initialisierte {@link DateTime}-Objekt
 	 */
 	public static DateTime iso8601StringToDateTime(String dateString) {
 		DateTime dateTime = new DateTime();
-		dateTime.set(Integer.parseInt(dateString.substring(7,8)), Integer.parseInt(dateString.substring(5,6)),Integer.parseInt( dateString.substring(0,3)));
+		final String dateSeparator = "-";
+		String[] date = dateString.split(dateSeparator);
+		dateTime.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]));
 		return dateTime;
 	}
 	

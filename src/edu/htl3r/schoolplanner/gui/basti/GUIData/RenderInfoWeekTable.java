@@ -1,11 +1,12 @@
 package edu.htl3r.schoolplanner.gui.basti.GUIData;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
+import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
@@ -33,13 +34,24 @@ public class RenderInfoWeekTable {
 	}
 	
 	public void analyse(){
+
 		Set<String> keySet = weekdata.keySet();
-		ArrayList<DateTime> datum = new ArrayList<DateTime>();
-		
+		TreeSet<DateTime> datum = new TreeSet<DateTime>();
+
 		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
 			String string = (String) iterator.next();
 			datum.add(DateTimeUtils.iso8601StringToDateTime(string));
 		}
+		
+		for (Iterator iterator = datum.iterator(); iterator.hasNext();) {
+			DateTime dateTime = (DateTime) iterator.next();
+			analyseDay(dateTime, weekdata.get(DateTimeUtils.toISO8601Date(dateTime)));
+		}
+		
+		
+	}
+	
+	private void analyseDay(DateTime date, List<Lesson> lessons){
 		
 	}
 	

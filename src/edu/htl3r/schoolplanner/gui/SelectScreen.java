@@ -165,28 +165,32 @@ public class SelectScreen extends SchoolPlannerActivity{
 		Intent chris = new Intent(SelectScreen.this, ViewChris.class);
 		imageClass.setOnClickListener(new ViewTypeOnClickListener(this, chris, classList, classSpinner));
 		
-		// TODO: umstellung auf ViewTypeOnClickListener
-		imageTeacher.setOnClickListener(new AnimatedOnClickListener(getApplicationContext()) {
-			@Override
-			public void onClick(View v) {
-				super.onClick(v);
-				Toast.makeText(SelectScreen.this, "Selected teacher", Toast.LENGTH_SHORT).show();
-				Log.d("Misc","selected teacher");
-			}
-		});
-		
-		// TODO: umstellung auf ViewTypeOnClickListener
-		imageRoom.setOnClickListener(new AnimatedOnClickListener(getApplicationContext()) {
-			@Override
-			public void onClick(View v) {
-				super.onClick(v);
-				Toast.makeText(SelectScreen.this, "Selected rooms", Toast.LENGTH_SHORT).show();
-				Log.d("Misc","selected rooms");
-			}
-		});
-		
 		Intent basti = new Intent(SelectScreen.this, ViewBasti.class);
 		imageSubject.setOnClickListener(new ViewTypeOnClickListener(this, basti, subjectList, subjectSpinner));
+		imageRoom.setOnClickListener(new ViewTypeOnClickListener(this, basti, roomList, roomSpinner));
+		imageTeacher.setOnClickListener(new ViewTypeOnClickListener(this, basti, teacherList, teacherSpinner));
+		
+		// TODO: umstellung auf ViewTypeOnClickListener
+//		imageTeacher.setOnClickListener(new AnimatedOnClickListener(getApplicationContext()) {
+//			@Override
+//			public void onClick(View v) {
+//				super.onClick(v);
+//				Toast.makeText(SelectScreen.this, "Selected teacher", Toast.LENGTH_SHORT).show();
+//				Log.d("Misc","selected teacher");
+//			}
+//		});
+//		
+//		// TODO: umstellung auf ViewTypeOnClickListener
+//		imageRoom.setOnClickListener(new AnimatedOnClickListener(getApplicationContext()) {
+//			@Override
+//			public void onClick(View v) {
+//				super.onClick(v);
+//				Toast.makeText(SelectScreen.this, "Selected rooms", Toast.LENGTH_SHORT).show();
+//				Log.d("Misc","selected rooms");
+//			}
+//		});
+		
+		
 		
 	}
 	
