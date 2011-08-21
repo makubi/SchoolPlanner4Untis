@@ -167,8 +167,10 @@ public class SelectScreen extends SchoolPlannerActivity{
 		
 		Intent basti = new Intent(SelectScreen.this, ViewBasti.class);
 		imageSubject.setOnClickListener(new ViewTypeOnClickListener(this, basti, subjectList, subjectSpinner));
-		imageRoom.setOnClickListener(new ViewTypeOnClickListener(this, basti, roomList, roomSpinner));
-		imageTeacher.setOnClickListener(new ViewTypeOnClickListener(this, basti, teacherList, teacherSpinner));
+		Intent basti2 = new Intent(SelectScreen.this, ViewBasti.class);
+		imageRoom.setOnClickListener(new ViewTypeOnClickListener(this, basti2, roomList, roomSpinner));
+		Intent basti3 = new Intent(SelectScreen.this, ViewBasti.class);
+		imageTeacher.setOnClickListener(new ViewTypeOnClickListener(this, basti3, teacherList, teacherSpinner));
 		
 		// TODO: umstellung auf ViewTypeOnClickListener
 //		imageTeacher.setOnClickListener(new AnimatedOnClickListener(getApplicationContext()) {
