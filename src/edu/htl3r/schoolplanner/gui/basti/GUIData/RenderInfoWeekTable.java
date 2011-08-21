@@ -37,7 +37,6 @@ public class RenderInfoWeekTable {
 
 		Set<String> keySet = weekdata.keySet();
 		TreeSet<DateTime> datum = new TreeSet<DateTime>();
-
 		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
 			String string = (String) iterator.next();
 			datum.add(DateTimeUtils.iso8601StringToDateTime(string));
@@ -52,7 +51,7 @@ public class RenderInfoWeekTable {
 	}
 	
 	private void analyseDay(DateTime date, List<Lesson> lessons){
-		
+		Log.d("basti",DateTimeUtils.toISO8601Date(date) + ": " + lessons+"");
 	}
 	
 	

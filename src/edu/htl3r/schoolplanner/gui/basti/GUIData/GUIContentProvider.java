@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.Cache;
+import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
@@ -102,11 +103,11 @@ public class GUIContentProvider implements GUIContentProviderSpez{
 
 	@Override
 	public Map<String, List<Lesson>> getLessonsForSomeTime(ViewType vt, DateTime start, DateTime end) {
-		if(cache.getLessons(vt, start,end).isSuccessful()){
-			Log.d("basti",cache.getLessons(vt, start,end).getData()+"");
-			return cache.getLessons(vt, start,end).getData();
+		DataFacade<Map<String, List<Lesson>>> facade = cache.getLessons(vt, start,end);
+		if(facade.isSuccessful()){
+			return facade.getData();
 		}else{
-			toastError(cache.getLessons(vt, start,end).getErrorMessage().toString());
+			toastError(facade.getErrorMessage().toString());
 			return new HashMap<String, List<Lesson>>();	
 		}
 	}
