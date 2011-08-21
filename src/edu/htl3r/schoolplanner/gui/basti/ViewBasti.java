@@ -1,6 +1,7 @@
 /* SchoolPlanner4Untis - Android app to manage your Untis timetable
     Copyright (C) 2011  Mathias Kub <mail@makubi.at>
 			Sebastian Chlan <sebastian@schoolplanner.at>
+			Christian Pascher <christian@schoolplanner.at>
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -16,26 +17,28 @@
 */
 package edu.htl3r.schoolplanner.gui.basti;
 
-import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.gui.DummyBackend;
+import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.SchoolPlannerApp;
+import edu.htl3r.schoolplanner.backend.Cache;
+import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.gui.BundleConstants;
+import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
+import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIContentManager;
 
-public class ViewBasti extends Activity {
-	private DummyBackend data; 
-	private WeekView weekview;
+public class ViewBasti extends SchoolPlannerActivity {
 	
+	private Cache cache;
+	private GUIContentManager contentmanager = new GUIContentManager();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		DateTime date = new DateTime();
+		date.set(19, 9, 2011);
+		cache = ((SchoolPlannerApp)getApplication()).getData();
+		contentmanager.setNeededData(this, cache);
+		contentmanager.setViewType((ViewType)getIntent().getExtras().getSerializable(BundleConstants.SELECTED_VIEW_TYPE));
+		contentmanager.getTimeTable4GUI(date);
 		super.onCreate(savedInstanceState);
-		data = new DummyBackend();
-		weekview = new WeekView(this, data);
-		setContentView(R.layout.basti_weekview);
-		
 	}
 }
