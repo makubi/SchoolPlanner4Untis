@@ -18,7 +18,7 @@
                 android:dependency="@string/settings_key_autologin" />
 
     </PreferenceCategory>
-    
+    <!--
     <PreferenceCategory
             android:title="@string/settings_autoselect_header">
 
@@ -31,8 +31,8 @@
                 android:key="@string/settings_key_autoselect_type"
                 android:title="@string/settings_autoselect_type_title"
                 android:summary="@string/settings_autoselect_type_summary"
-                android:entries="@array/entries_list_preference"
-                android:entryValues="@array/entryvalues_list_preference"
+                android:entries="@array/settings_autoselect_type_entries"
+                android:entryValues="@array/settings_autoselect_type_entryvalues"
                 android:dialogTitle="dialog_title_list_preference"
                 android:dependency="@string/settings_key_autoselect" />
                 
@@ -40,12 +40,10 @@
                 android:key="@string/settings_key_autoselect_value"
                 android:title="@string/settings_autoselect_value_title"
                 android:summary="@string/settings_autoselect_value_summary"
-                android:entries="@array/entries_list_preference"
-                android:entryValues="@array/entryvalues_list_preference"
                 android:dialogTitle="dialog_title_list_preference"
                 android:dependency="@string/settings_key_autoselect" />
     </PreferenceCategory>
-
+	-->
     <PreferenceCategory
             android:title="@string/settings_display_header">
 
@@ -53,8 +51,8 @@
                 android:key="@string/settings_key_default_view"
                 android:title="@string/settings_display_default_view_title"
                 android:summary="@string/settings_display_default_view_summary"
-                android:entries="@array/entries_list_preference"
-                android:entryValues="@array/entryvalues_list_preference"
+                android:entries="@array/settings_default_view_entries"
+                android:entryValues="@array/settings_default_view_entryvalues"
                 android:dialogTitle="dialog_title_list_preference" />
 
 		<CheckBoxPreference

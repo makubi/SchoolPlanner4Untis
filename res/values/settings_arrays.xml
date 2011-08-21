@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="settings_autoselect_type_entries">
+		<item>Class</item>
+		<item>Teacher</item>
+		<item>Room</item>
+		<item>Subject</item>
+	</string-array>
+	<string-array name="settings_autoselect_type_entryvalues">
+		<item>@string/settings_autoselect_type_class</item>
+		<item>@string/settings_autoselect_type_teacher</item>
+		<item>@string/settings_autoselect_type_room</item>
+		<item>@string/settings_autoselect_type_subject</item>
+	</string-array>
+	
+	<string-array name="settings_default_view_entries">
+		<item>Day</item>
+		<item>Week</item>
+		<item>Month</item>
+	</string-array>
+	<string-array name="settings_default_view_entryvalues">
+		<item>@string/settings_default_view_day</item>
+		<item>@string/settings_default_view_week</item>
+		<item>@string/settings_default_view_month</item>
+	</string-array>
+</resources>
