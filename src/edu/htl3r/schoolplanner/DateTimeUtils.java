@@ -17,6 +17,10 @@
 package edu.htl3r.schoolplanner;
 
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.http.ParseException;
 
 import android.text.format.Time;
 
@@ -50,13 +54,17 @@ public class DateTimeUtils {
 	 * Wandelt einen {@link #toISO8601Date(DateTime)}-String in ein DateTime-Objekt um.
 	 * @param dateString String, der umgewandelt werden soll
 	 * @return Das initialisierte {@link DateTime}-Objekt
+	 * @throws ParseException Falls der String nicht geparst werden kann
 	 */
-	public static DateTime iso8601StringToDateTime(String dateString) {
-		DateTime dateTime = new DateTime();
-		final String dateSeparator = "-";
-		String[] date = dateString.split(dateSeparator);
-		dateTime.set(Integer.parseInt(date[2]), Integer.parseInt(date[1]), Integer.parseInt(date[0]));
-		return dateTime;
+	public static DateTime iso8601StringToDateTime(String dateString) throws ParseException {
+		Pattern p = Pattern.compile("^([0-9]{4})-([0-9]{1,2})-([0-9]{1,2})$");
+		Matcher m = p.matcher(dateString);
+		if(m.matches()) {
+			DateTime dateTime = new DateTime();
+			dateTime.set(Integer.parseInt(m.group(3)), Integer.parseInt(m.group(2)), Integer.parseInt(m.group(1)));
+			return dateTime;
+		}
+		throw new ParseException("Unable to parse String "+dateString+" to date.");
 	}
 	
 	private static String normalizeDate(String datePart) {
