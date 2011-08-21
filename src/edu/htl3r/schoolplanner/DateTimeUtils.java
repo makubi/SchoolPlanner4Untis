@@ -46,6 +46,17 @@ public class DateTimeUtils {
 		return date.getYear() + "-" + month + "-" + day;
 	}
 	
+	/**
+	 * Wandelt einen {@link #toISO8601Date(DateTime)}-String in ein DateTime-Objekt um.
+	 * @param dateString
+	 * @return Das initialisierte {@link DateTime}-Objekt
+	 */
+	public static DateTime iso8601StringToDateTime(String dateString) {
+		DateTime dateTime = new DateTime();
+		dateTime.set(Integer.parseInt(dateString.substring(6,8)), Integer.parseInt(dateString.substring(4,6)),Integer.parseInt( dateString.substring(0,4)));
+		return dateTime;
+	}
+	
 	private static String normalizeDate(String datePart) {
 		return datePart.length() < 2 ? "0" + datePart : datePart;
 	}
