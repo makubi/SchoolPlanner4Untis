@@ -331,6 +331,8 @@ public class JSONParser {
 	public Map<String, List<Lesson>> jsonToLessonMap(JSONArray result) throws JSONException, IOException {
 		//TODO HOTFIX wenn untis muell wieder geht ersetzen
 		//List<SchoolClass> schoolClassList = cache.getSchoolClassList().getData();
+
+		// TODO Reagieren auf nicht-verfuegbare Listen
 		// TODO TESTING
 		List<SchoolClass> schoolClassList = new ArrayList<SchoolClass>();
 		// TODO /TESTING
@@ -351,20 +353,21 @@ public class JSONParser {
 			int id = lessonObject.getInt("id");
 			
 			// Verarbeite Datumsstring
-			String dateString = ""+lessonObject.getInt("date");
+			String rawDateString = ""+lessonObject.getInt("date");
+			
+			String rawYear = rawDateString.substring(0,4);
+			String rawMonth = rawDateString.substring(4,6);
+			String rawDay = rawDateString.substring(6,8);
 			
 			String startTime = ""+lessonObject.getInt("startTime");
 			String endTime = ""+lessonObject.getInt("endTime");
 			
-			int year = Integer.parseInt(dateString.substring(0,4));
-			int month = Integer.parseInt(dateString.substring(4,6));
-			int day = Integer.parseInt(dateString.substring(6,8));
+			int year = Integer.parseInt(rawYear);
+			int month = Integer.parseInt(rawMonth);
+			int day = Integer.parseInt(rawDay);
 			
-			// TODO TESTING
-			
-			dateString = year+"-"+month+"-"+day;
-			
-			// TODO /TESTING
+			// WebUntis date string --> ISO8601 date string
+			String dateString = rawYear+"-"+rawMonth+"-"+rawDay;
 			
 			int startMinute = Integer.parseInt(getMinute(startTime));
 			int startHour = Integer.parseInt(getHour(startTime));
