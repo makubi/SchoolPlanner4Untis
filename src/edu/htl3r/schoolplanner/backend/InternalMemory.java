@@ -130,9 +130,6 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 			tmpDate.increaseDay();
 		}
 		
-		String date = DateTimeUtils.toISO8601Date(endDate);
-		lessonMap.put(date, timetable.get(view, date));
-		
 		return lessonMap;
 	}
 
@@ -152,9 +149,6 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 			timetable.put(view, date, lessonMap.get(date));
 			tmpDate.increaseDay();
 		}
-		
-		String date = DateTimeUtils.toISO8601Date(endDate);
-		timetable.put(view, date, lessonMap.get(date));
 	}
 
 	@Override

@@ -202,11 +202,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		DataFacade<List<Lesson>> data;
 		List<Lesson> internalLessons = internalMemory.getLessons(viewType, date);
 		
-		// TODO TESTING
-		internalLessons = null;
-		// TODO /TESTING
-		
-		if(internalLessons != null) {
+		if(internalLessons != null && internalLessons.size() > 0) {
 			data = new DataFacade<List<Lesson>>();
 			data.setData(internalLessons);
 		}
@@ -226,11 +222,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		DataFacade<Map<String, List<Lesson>>> data;
 		Map<String, List<Lesson>> internalLessons = internalMemory.getLessons(viewType, startDate, endDate);
 		
-		// TODO TESTING
-		internalLessons = null;
-		// TODO /TESTING
-		
-		if(internalLessons != null) {
+		if(internalLessons != null && internalLessons.size() > 0) {
 			data = new DataFacade<Map<String, List<Lesson>>>();
 			data.setData(internalLessons);
 		}
