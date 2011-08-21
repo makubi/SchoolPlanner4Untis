@@ -105,7 +105,8 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		JSONObject response = parseData(network.getResponse(request.toString()));
 		if(response.has("error")) {
 			JSONObject errorObject = response.getJSONObject("error");
-			if(errorObject.getInt("code") == 0 && errorObject.getString("message").equals("not authenticated")) {
+			//if(errorObject.getInt("code") == -8520 && errorObject.getString("message").equals("not authenticated")) {
+			if(errorObject.getInt("code") == -8520 || errorObject.getString("message").equals("not authenticated")) {
 				Log.i("Network", "Reauthenticating");
 				authenticate();
 				response = parseData(network.getResponse(request.toString()));
