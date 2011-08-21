@@ -1,4 +1,4 @@
-package edu.htl3r.schoolplanner.gui.basti;
+package edu.htl3r.schoolplanner.gui.basti.Lessons;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -14,14 +14,10 @@ public class LessonView extends View{
 	private Lesson lesson;
 	private Paint paint;
 	private int width,height;
-	private int color;
 	private String name;
 	
-	public LessonView(Context context, Lesson l, int color, String name) {
+	public LessonView(Context context) {
 		super(context);
-		lesson = l;
-		this.color = color;
-		this.name = name;
 		
 		paint = new Paint();
 		paint.setColor(Color.RED);
@@ -36,7 +32,6 @@ public class LessonView extends View{
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
-		setBackgroundColor(color);
 		
 	}
 	
@@ -48,5 +43,8 @@ public class LessonView extends View{
 		setMeasuredDimension(width, height);
 	}
 	
+	public void setLesson(Lesson l){
+		lesson = l;
+	}
 	
 }
