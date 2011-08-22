@@ -18,4 +18,6 @@
 	\n+ If your school provides SSL, you can enforce to log in securely.
     </string>
     
+    <string name="login_set_edit_title">Edit login set</string>
+    
 </resources>

@@ -128,6 +128,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	public void editLoginSet(int id) {
 		dialog = new LoginSetDialog(this,loginmanager.getLoginSetOnPosition(id));
     	dialog.setParent(this);
+    	dialog.setTitle(getString(R.string.login_set_edit_title));
     	dialog.show();
 	}
 

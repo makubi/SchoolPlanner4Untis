@@ -22,6 +22,9 @@
     <string name="settings_login_autologin_summary">Do you want to login automatically?</string>
     <string name="settings_login_autologin_set_title">Login set</string>
     <string name="settings_login_autologin_set_summary">Select login set for auto login</string>
+    <string name="settings_login_autologin_set_dialog_title">Login set</string>
+    
+    
     
     <string name="settings_autoselect_header">Autoselect options</string>
     <string name="settings_autoselect_enabled_title">Autoselect timetable</string>
@@ -34,6 +37,7 @@
     <string name="settings_display_header">Display options</string>
     <string name="settings_display_default_view_title">Default view</string>
     <string name="settings_display_default_view_summary">Select default timetable view</string>
+    <string name="settings_display_default_view_dialog_title">Default view</string>
     <string name="settings_display_show_saturday_title">Display saturday</string>
     <string name="settings_display_show_saturday_summary">Display saturday in timetable</string>
     <string name="settings_display_show_date_title">Display date</string>
