@@ -163,6 +163,66 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	}
 
 	@Override
+	public DataFacade<List<StatusData>> getStatusData() {
+		DataFacade<List<StatusData>> data;
+		List<StatusData> internalSchoolSubjectList = internalMemory.getStatusData();
+		
+		if(internalSchoolSubjectList != null) {
+			data = new DataFacade<List<StatusData>>();
+			data.setData(internalSchoolSubjectList);
+		}
+		else {
+			data = externalDataLoader.getStatusData();
+			if(data.isSuccessful()) {
+				internalMemory.setStatusData(data.getData());
+			}
+		}
+		
+		return data;
+	}
+
+	@Override
+	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
+		DataFacade<List<Lesson>> data;
+		List<Lesson> internalLessons = internalMemory.getLessons(viewType, date);
+	
+		if(internalLessons != null) {
+			data = new DataFacade<List<Lesson>>();
+			data.setData(internalLessons);
+		}
+		else {
+			data = externalDataLoader.getLessons(viewType, date);
+			if(data.isSuccessful()) {
+				internalMemory.setLessons(viewType, date, data.getData());
+			}
+		}
+		
+		return data;
+	}
+
+	@Override
+	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
+			DateTime startDate, DateTime endDate) {
+		
+		DataFacade<Map<String, List<Lesson>>> data;
+		Map<String, List<Lesson>> internalLessons = internalMemory.getLessons(viewType, startDate, endDate);
+		
+		if(internalLessons != null) {
+			
+			data = new DataFacade<Map<String, List<Lesson>>>();
+			data.setData(internalLessons);
+		}
+		else {
+			data = externalDataLoader.getLessons(viewType, startDate, endDate);
+			if(data.isSuccessful()) {
+				internalMemory.setLessons(viewType, startDate, endDate, data.getData());
+			}
+		}
+		
+		return data;
+	}
+
+	@Override
 	public void networkAvailabilityChanged(boolean networkAvailable) {
 		externalDataLoader.networkAvailabilityChanged(networkAvailable);
 	}
@@ -192,65 +252,6 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		}
 		else {
 			data.setErrorMessage(masterData.getErrorMessage());
-		}
-		
-		return data;
-	}
-
-	@Override
-	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
-		DataFacade<List<Lesson>> data;
-		List<Lesson> internalLessons = internalMemory.getLessons(viewType, date);
-		internalLessons = null;		//TODO FIX IT
-
-		if(internalLessons != null && internalLessons.size() > 0) {
-			data = new DataFacade<List<Lesson>>();
-			data.setData(internalLessons);
-		}
-		else {
-			data = externalDataLoader.getLessons(viewType, date);
-			if(data.isSuccessful()) {
-				internalMemory.setLessons(viewType, date, data.getData());
-			}
-		}
-		
-		return data;
-	}
-
-	@Override
-	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
-			DateTime startDate, DateTime endDate) {
-		DataFacade<Map<String, List<Lesson>>> data;
-		Map<String, List<Lesson>> internalLessons = internalMemory.getLessons(viewType, startDate, endDate);
-		internalLessons = null;		//TODO FIX IT
-		if(internalLessons != null && internalLessons.size() > 0) {
-			data = new DataFacade<Map<String, List<Lesson>>>();
-			data.setData(internalLessons);
-		}
-		else {
-			data = externalDataLoader.getLessons(viewType, startDate, endDate);
-			if(data.isSuccessful()) {
-				internalMemory.setLessons(viewType, startDate, endDate, data.getData());
-			}
-		}
-		
-		return data;
-	}
-
-	@Override
-	public DataFacade<List<StatusData>> getStatusData() {
-		DataFacade<List<StatusData>> data;
-		List<StatusData> internalSchoolSubjectList = internalMemory.getStatusData();
-		
-		if(internalSchoolSubjectList != null) {
-			data = new DataFacade<List<StatusData>>();
-			data.setData(internalSchoolSubjectList);
-		}
-		else {
-			data = externalDataLoader.getStatusData();
-			if(data.isSuccessful()) {
-				internalMemory.setStatusData(data.getData());
-			}
 		}
 		
 		return data;

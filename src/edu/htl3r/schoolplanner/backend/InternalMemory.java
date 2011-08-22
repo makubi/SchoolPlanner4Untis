@@ -125,8 +125,15 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 		
 		while(tmpDate.beforeOrEquals(endDate)) {
 			String date = DateTimeUtils.toISO8601Date(tmpDate);
+			List<Lesson> list = timetable.get(view, date);
 			
-			lessonMap.put(date, timetable.get(view, date));
+			// If any day was not set yet, return null.
+			// This can happen, if e.g. you retrieved timetable for
+			// monday, tuesday, wednesday, thursday and then
+			// request the timetable for the whole week.
+			if(list == null) return null;
+			
+			lessonMap.put(date, list);
 			tmpDate.increaseDay();
 		}
 		

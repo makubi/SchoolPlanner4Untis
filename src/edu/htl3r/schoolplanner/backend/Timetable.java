@@ -30,12 +30,10 @@ public class Timetable {
 	private Map<ViewType, Map<String, List<Lesson>>> viewTypeLessonMap = new HashMap<ViewType, Map<String,List<Lesson>>>();
 	
 	public void put(ViewType viewType, String date, List<Lesson> lessonList) {
-			Map<String, List<Lesson>> lessonMap = viewTypeLessonMap.get(viewType);
-			lessonMap = lessonMap == null ? new HashMap<String, List<Lesson>>() : lessonMap;
-			
-			lessonMap.put(date, lessonList);
-			
-			viewTypeLessonMap.put(viewType, lessonMap);
+		Map<String, List<Lesson>> lessonMap = viewTypeLessonMap.containsKey(viewType) ? viewTypeLessonMap.get(viewType) : new HashMap<String, List<Lesson>>();
+		
+		lessonMap.put(date, lessonList);
+		viewTypeLessonMap.put(viewType, lessonMap);
 	}
 	
 	public List<Lesson> get(ViewType viewType, String date) {

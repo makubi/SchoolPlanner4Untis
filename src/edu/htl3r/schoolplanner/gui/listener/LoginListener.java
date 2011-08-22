@@ -25,13 +25,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Toast;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.ErrorMessage;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
-import edu.htl3r.schoolplanner.gui.DummyBackend;
 import edu.htl3r.schoolplanner.gui.SelectScreen;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
 

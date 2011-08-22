@@ -90,13 +90,6 @@ public abstract class ViewType implements Serializable, Comparable<ViewType>, Cl
 	public void setBackColor(String backColor) {
 		this.backColor = backColor;
 	}
-
-	@Override
-	public String toString() {
-		return "ViewType [id=" + id + ", name=" + name + ", longName="
-				+ longName + ", foreColor=" + foreColor + ", backColor="
-				+ backColor + "]";
-	}
 	
 	@Override
 	public int compareTo(ViewType another) {
@@ -107,5 +100,56 @@ public abstract class ViewType implements Serializable, Comparable<ViewType>, Cl
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((backColor == null) ? 0 : backColor.hashCode());
+		result = prime * result
+				+ ((foreColor == null) ? 0 : foreColor.hashCode());
+		result = prime * result + id;
+		result = prime * result
+				+ ((longName == null) ? 0 : longName.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ViewType other = (ViewType) obj;
+		if (backColor == null) {
+			if (other.backColor != null)
+				return false;
+		} else if (!backColor.equals(other.backColor))
+			return false;
+		if (foreColor == null) {
+			if (other.foreColor != null)
+				return false;
+		} else if (!foreColor.equals(other.foreColor))
+			return false;
+		if (id != other.id)
+			return false;
+		if (longName == null) {
+			if (other.longName != null)
+				return false;
+		} else if (!longName.equals(other.longName))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
+	
+	
 	
 }
