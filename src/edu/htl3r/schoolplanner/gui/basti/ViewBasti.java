@@ -34,7 +34,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		DateTime date = new DateTime();
-		date.set(19, 9, 2011);
+		date.set(9, 5, 2011);
 		cache = ((SchoolPlannerApp)getApplication()).getData();
 		contentmanager.setNeededData(this, cache);
 		contentmanager.setViewType((ViewType)getIntent().getExtras().getSerializable(BundleConstants.SELECTED_VIEW_TYPE));

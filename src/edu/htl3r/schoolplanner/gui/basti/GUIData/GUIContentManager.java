@@ -30,8 +30,6 @@ public class GUIContentManager {
 		viewlength = len;
 	}
 	
-	
-	
 	public GUIWeek getTimeTable4GUI(DateTime start){
 		if(viewtype == null || datacenter == null || context == null)
 			return null;	//TODO Nice Error Message
@@ -39,8 +37,9 @@ public class GUIContentManager {
 		if(viewlength == WEEK){
 			RenderInfoWeekTable weekinfo = new RenderInfoWeekTable();
 			DateTime end = new DateTime();
-			end.set(23, 9, 2011);
+			end.set(start.getDay()+4, 9, 2011);
 			weekinfo.setWeekData(datacenter.getLessonsForSomeTime(viewtype, start, end));
+			weekinfo.setTimeGrid(datacenter.getTimeGrid());
 			weekinfo.analyse();
 		}
 		

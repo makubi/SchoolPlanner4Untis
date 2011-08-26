@@ -56,7 +56,7 @@ public class Timegrid implements SchoolObject {
 		staticTimeDayMapping.put(Time.THURSDAY, WebUntis.THURSDAY);
 		staticTimeDayMapping.put(Time.FRIDAY, WebUntis.FRIDAY);
 		staticTimeDayMapping.put(Time.SATURDAY, WebUntis.SATURDAY);
-	}
+	} 
 	
 	/**
 	 * Liefert eine Liste von TimegridUnits fuer den angebenenen Tag.

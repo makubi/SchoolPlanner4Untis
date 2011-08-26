@@ -158,8 +158,8 @@ public class SelectScreen extends SchoolPlannerActivity{
 		ImageView imageRoom = (ImageView) findViewById(R.id.selectScreen_imageRoom);
 		ImageView imageSubject = (ImageView) findViewById(R.id.selectScreen_imageSubject);
 		
-		Intent chris = new Intent(SelectScreen.this, ViewChris.class);
-		imageClass.setOnClickListener(new ViewTypeOnClickListener(this, chris, classList, classSpinner));
+		Intent basti4 = new Intent(SelectScreen.this, ViewBasti.class);
+		imageClass.setOnClickListener(new ViewTypeOnClickListener(this, basti4, classList, classSpinner));
 		
 		Intent basti = new Intent(SelectScreen.this, ViewBasti.class);
 		imageSubject.setOnClickListener(new ViewTypeOnClickListener(this, basti, subjectList, subjectSpinner));

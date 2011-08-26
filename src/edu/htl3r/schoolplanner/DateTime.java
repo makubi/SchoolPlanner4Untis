@@ -150,4 +150,9 @@ public class DateTime implements Cloneable,Comparable<DateTime> {
 		return Time.compare(getAndroidTime(), o.getAndroidTime());
 	}
 	
+	@Override
+	public String toString() {
+		return getDay() +"."+getMonth()+"."+getYear() + " " + getHour()+":"+getMinute()+":"+getSecond();
+	}
+	
 }

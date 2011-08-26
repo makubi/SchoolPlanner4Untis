@@ -6,13 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.DateTime;
-import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataFacade;
-import edu.htl3r.schoolplanner.backend.ErrorMessage;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
@@ -34,85 +31,89 @@ public class GUIContentProvider implements GUIContentProviderSpez{
 
 	@Override
 	public List<SchoolRoom> getAllSchoolRooms() {
-		if(cache.getSchoolRoomList().isSuccessful()){
-			return cache.getSchoolRoomList().getData();
+		DataFacade<List<SchoolRoom>> data = cache.getSchoolRoomList();
+		if(data.isSuccessful()){
+			return data.getData();
 		}else{
-			toastError(cache.getSchoolRoomList().getErrorMessage().toString());
-			return new ArrayList<SchoolRoom>();
+			toastError(data.getErrorMessage().getAdditionalInfo());
+		return new ArrayList<SchoolRoom>();
 		}
 			
 	}
 
 	@Override
 	public List<SchoolClass> getAllSchoolClasses() {
-		if(cache.getSchoolClassList().isSuccessful()){
-			return cache.getSchoolClassList().getData();
+		DataFacade<List<SchoolClass>> data = cache.getSchoolClassList();
+		if(data.isSuccessful()){
+			return data.getData();
 		}else{
-			toastError(cache.getSchoolClassList().getErrorMessage().toString());
+			toastError(data.getErrorMessage().getAdditionalInfo());
 			return new ArrayList<SchoolClass>();
 		}
 	}
 
 	@Override
 	public List<SchoolSubject> getAllSchoolSubjects() {
-		if(cache.getSchoolSubjectList().isSuccessful()){
-			return cache.getSchoolSubjectList().getData();
+		DataFacade<List<SchoolSubject>> data = cache.getSchoolSubjectList();
+		if(data.isSuccessful()){
+			return data.getData();
 		}else{
-			toastError(cache.getSchoolSubjectList().getErrorMessage().toString());
+			toastError(data.getErrorMessage().getAdditionalInfo());
 			return new ArrayList<SchoolSubject>();
 		}
 	}
 
 	@Override
 	public List<SchoolTeacher> getAllSchoolTeachers() {
-		if(cache.getSchoolTeacherList().isSuccessful()){
-			return cache.getSchoolTeacherList().getData();
+		DataFacade<List<SchoolTeacher>> data = cache.getSchoolTeacherList();
+		if(data.isSuccessful()){
+			return data.getData();
 		}else{
-			toastError(cache.getSchoolTeacherList().getErrorMessage().toString());
+			toastError(data.getErrorMessage().getAdditionalInfo());
 			return new ArrayList<SchoolTeacher>();
 		}
 	}
 
 	@Override
 	public List<SchoolHoliday> getAllSchoolHolidays() {
-		if(cache.getSchoolHolidayList().isSuccessful()){
-			return cache.getSchoolHolidayList().getData();
+		DataFacade<List<SchoolHoliday>> data = cache.getSchoolHolidayList();
+		if(data.isSuccessful()){
+			return data.getData();
 		}else{
-			toastError(cache.getSchoolHolidayList().getErrorMessage().toString());
-			return new ArrayList<SchoolHoliday>();			
+			toastError(data.getErrorMessage().getAdditionalInfo());
+			return new ArrayList<SchoolHoliday>();
 		}
 	}
 
 	@Override
 	public Timegrid getTimeGrid() {
-		if(cache.getTimegrid().isSuccessful()){
-			return cache.getTimegrid().getData();
+		DataFacade<Timegrid> data = cache.getTimegrid();
+		if(data.isSuccessful()){
+			return data.getData();
 		}else{
-			toastError(cache.getSchoolHolidayList().getErrorMessage().toString());
-			return new Timegrid();	
+			toastError(data.getErrorMessage().getAdditionalInfo());
+			return new Timegrid();
 		}
 	}
 
 	@Override
 	public List<Lesson> getLessonsForDate(ViewType vt, DateTime start) {
-		if(cache.getLessons(vt, start).isSuccessful()){
-			return cache.getLessons(vt, start).getData();
+		DataFacade<List<Lesson>> data = cache.getLessons(vt, start);
+		if(data.isSuccessful()){
+			return data.getData();
 		}else{
-			toastError(cache.getLessons(vt, start).getErrorMessage().toString());
-			return new ArrayList<Lesson>();	
+			toastError(data.getErrorMessage().getAdditionalInfo());
+			return new ArrayList<Lesson>();
 		}
 	}
 
 	@Override
 	public Map<String, List<Lesson>> getLessonsForSomeTime(ViewType vt, DateTime start, DateTime end) {
-		Log.d("basti", DateTimeUtils.toISO8601Date(start) + " " + DateTimeUtils.toISO8601Date(end));
-		DataFacade<Map<String, List<Lesson>>> facade = cache.getLessons(vt, start,end);
-		if(facade.isSuccessful()){
-			return facade.getData();
+		DataFacade<Map<String, List<Lesson>>> data = cache.getLessons(vt, start,end);
+		if(data.isSuccessful()){
+			return data.getData();
 		}else{
-			ErrorMessage errorMessage = facade.getErrorMessage();
-			Log.i("basti","error" + errorMessage.getAdditionalInfo(),errorMessage.getException());
-			toastError(errorMessage.toString());
+			toastError(data.getErrorMessage().getAdditionalInfo());
 			return new HashMap<String, List<Lesson>>();	
 		}
 	}
