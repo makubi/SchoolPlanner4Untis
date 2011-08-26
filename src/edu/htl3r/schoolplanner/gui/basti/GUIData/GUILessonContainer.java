@@ -51,5 +51,19 @@ public class GUILessonContainer {
 	public String toString() {
 		return lessons.toString();
 	}
+
+	public DateTime getStart() {
+		return start;
+	}
+
+	public DateTime getEnd() {
+		return end;
+	}
+
+	public List<Lesson> getLessons() {
+		return lessons;
+	}
+	
+	
 		
 }

@@ -40,7 +40,7 @@ public class GUIContentManager {
 			end.set(start.getDay()+4, 9, 2011);
 			weekinfo.setWeekData(datacenter.getLessonsForSomeTime(viewtype, start, end));
 			weekinfo.setTimeGrid(datacenter.getTimeGrid());
-			weekinfo.analyse();
+			return weekinfo.analyse();
 		}
 		
 		return null;

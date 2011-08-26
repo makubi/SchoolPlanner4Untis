@@ -5,7 +5,7 @@ import java.util.Map;
 
 import edu.htl3r.schoolplanner.DateTime;
 
-public class GUIWeek implements GUIDataStatics{
+public class GUIWeek implements DataGUItoGraphicGUI{
 	
 	
 	private Map<DateTime, GUIDay> week = new HashMap<DateTime, GUIDay>();
@@ -13,5 +13,12 @@ public class GUIWeek implements GUIDataStatics{
 	public void setGUIDay(DateTime day, GUIDay g){
 		week.put(day, g);
 	}
+	
+	
+	public int getCountDays(){
+		return week.size();
+	}
+	
+	
 	
 }

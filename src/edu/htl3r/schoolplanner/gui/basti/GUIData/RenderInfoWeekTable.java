@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
+import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
@@ -47,10 +48,8 @@ public class RenderInfoWeekTable {
 		timegrid = t;
 	}
 	
-	public void analyse(){
+	public GUIWeek analyse(){
 
-		
-		
 		Set<String> keySet = weekdata.keySet();
 		TreeSet<DateTime> datum = new TreeSet<DateTime>();
 		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
@@ -62,8 +61,11 @@ public class RenderInfoWeekTable {
 		
 		for (Iterator iterator = datum.iterator(); iterator.hasNext();) {
 			DateTime dateTime = (DateTime) iterator.next();
-			Log.d("basti", "day: " +analyseDay(dateTime, weekdata.get(DateTimeUtils.toISO8601Date(dateTime)))+"");
+			GUIDay gday = analyseDay(dateTime, weekdata.get(DateTimeUtils.toISO8601Date(dateTime)));
+			week.setGUIDay(dateTime, gday);
+
 		}
+		return week;
 	}
 	
 	List<TimegridUnit> timegridForDateTimeDay;
@@ -72,10 +74,8 @@ public class RenderInfoWeekTable {
 		GUIDay day = new GUIDay();
 		day.setDate(date);
 		
-		Log.d("basti",lessons.toString());
-		
-		if(timegridForDateTimeDay == null){
-			timegridForDateTimeDay = timegrid.getTimegridForDateTimeDay(date.getDay());
+		if(timegridForDateTimeDay == null){ //TODO Das WochenGRID wird auf Montag gesynct
+			timegridForDateTimeDay = timegrid.getTimegridForDay(WebUntis.MONDAY);
 		}
 		
 		
@@ -83,10 +83,8 @@ public class RenderInfoWeekTable {
 			GUILessonContainer lessoncon = new GUILessonContainer();
 			lessoncon.setTime(timegridUnit.getStart(), timegridUnit.getEnd());
 			
-			Log.d("basti", "Timgrid: "+ timegridUnit.getStart().toString());
 			
 			for(Lesson lesson : lessons){
-				Log.d("basti", "Lesson: "+lesson.getStartTime().toString());
 				
 				if(lesson.getStartTime().getMinute() == timegridUnit.getStart().getMinute()
 						&& lesson.getStartTime().getHour() == timegridUnit.getStart().getHour()
