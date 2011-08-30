@@ -106,15 +106,15 @@ public class LoginSetDatabaseHelper extends SQLiteOpenHelper {
 		
 		private void transferLoginDataToLoginSet(SQLiteDatabase db) {
 			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SchoolplannerContext.context);
-			String pref_key_serverurl = "serverURL";
-			String pref_key_school = "school";
-			String pref_key_username = "username";
-			String pref_key_password = "password";
+			final String v1_pref_key_serverurl = "serverURL";
+			final String v1_pref_key_school = "school";
+			final String v1_pref_key_username = "username";
+			final String v1_pref_key_password = "password";
 			
-			String url = preferences.getString(pref_key_serverurl, "");
-			String school = preferences.getString(pref_key_school, "");
-			String username = preferences.getString(pref_key_username, "");
-			String password = preferences.getString(pref_key_password, "");
+			String url = preferences.getString(v1_pref_key_serverurl, "");
+			String school = preferences.getString(v1_pref_key_school, "");
+			String username = preferences.getString(v1_pref_key_username, "");
+			String password = preferences.getString(v1_pref_key_password, "");
 			
 			if(url.length() > 0 && school.length() > 0 && username.length() > 0) {
 				ContentValues values = new ContentValues();

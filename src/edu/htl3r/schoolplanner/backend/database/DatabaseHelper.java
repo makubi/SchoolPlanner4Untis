@@ -22,10 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.ContextWrapper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.preference.PreferenceManager;
+import android.util.Log;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseCreateConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseSchoolHolidayConstants;
@@ -67,8 +67,14 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	}
 
 	@Override
-	public void onCreate(SQLiteDatabase db) {
-		// TODO remove old database
+	public void onCreate(SQLiteDatabase db) {		
+		final String v1_DatabaseName = "HTL3R_SchoolPlanner";
+		ContextWrapper c = new ContextWrapper(SchoolplannerContext.context);
+		for(String name : c.databaseList()) {
+			if(v1_DatabaseName.equals(name)) {
+				Log.i("database","Deleted old database: "+c.deleteDatabase(name));
+			}
+		}
 		for(String sqlStatement : CREATE_TABLE_STATEMENTS) {
 			db.execSQL(sqlStatement);
 		}
@@ -76,7 +82,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
 		
 	}
 
