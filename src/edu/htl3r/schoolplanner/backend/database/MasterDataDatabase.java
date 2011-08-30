@@ -298,7 +298,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 	private void writeTimegrid(Timegrid timegrid, String table) {
 		SQLiteDatabase database = this.database.openDatabase(true);
 		
-		final int[] timeWeekDays = new int[] {Time.SUNDAY, Time.MONDAY, Time.TUESDAY, Time.WEDNESDAY, Time.THURSDAY, Time.FRIDAY, Time.SATURDAY, Time.SUNDAY };
+		final int[] timeWeekDays = new int[] {Time.SUNDAY, Time.MONDAY, Time.TUESDAY, Time.WEDNESDAY, Time.THURSDAY, Time.FRIDAY, Time.SATURDAY};
 		
 		database.beginTransaction();
 		for(int day : timeWeekDays) {
