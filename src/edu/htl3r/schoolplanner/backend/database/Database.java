@@ -36,7 +36,7 @@ public class Database implements MasterdataStore, MasterdataProvider {
 	
 	private DatabaseHelper databaseHelper = new DatabaseHelper(SchoolplannerContext.context);
 
-	public MasterDataDatabase masterDataDatabase = new MasterDataDatabase(this);
+	private MasterDataDatabase masterDataDatabase = new MasterDataDatabase(this);
 	
 	public SQLiteDatabase openDatabase(boolean writeable) {
 		return writeable ? databaseHelper.getWritableDatabase() : databaseHelper.getReadableDatabase();
@@ -133,4 +133,5 @@ public class Database implements MasterdataStore, MasterdataProvider {
 	public void setStatusData(List<StatusData> statusData) {
 		masterDataDatabase.setStatusData(statusData);
 	}
+	
 }

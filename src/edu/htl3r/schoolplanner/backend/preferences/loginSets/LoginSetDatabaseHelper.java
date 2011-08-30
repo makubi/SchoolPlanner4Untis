@@ -21,9 +21,12 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
+import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class LoginSetDatabaseHelper extends SQLiteOpenHelper {
@@ -46,10 +49,10 @@ public class LoginSetDatabaseHelper extends SQLiteOpenHelper {
 
 	    @Override
 	    public void onCreate(SQLiteDatabase db) {
-	        db.execSQL(CREATE_TABLE_STATEMENT
-	        		);
+	        db.execSQL(CREATE_TABLE_STATEMENT);
+	        transferLoginDataToLoginSet(db);
 	    }
-
+	    
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			if(oldVersion <= 3) {				
@@ -100,6 +103,38 @@ public class LoginSetDatabaseHelper extends SQLiteOpenHelper {
 				db.endTransaction();
 			}
 		}
+		
+		private void transferLoginDataToLoginSet(SQLiteDatabase db) {
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SchoolplannerContext.context);
+			String pref_key_serverurl = "serverURL";
+			String pref_key_school = "school";
+			String pref_key_username = "username";
+			String pref_key_password = "password";
+			
+			String url = preferences.getString(pref_key_serverurl, "");
+			String school = preferences.getString(pref_key_school, "");
+			String username = preferences.getString(pref_key_username, "");
+			String password = preferences.getString(pref_key_password, "");
+			
+			if(url.length() > 0 && school.length() > 0 && username.length() > 0) {
+				ContentValues values = new ContentValues();
+				values.put(LoginSetConstants.nameKey, school);
+				values.put(LoginSetConstants.serverUrlKey, url);
+				values.put(LoginSetConstants.schoolKey, school);
+				values.put(LoginSetConstants.usernameKey, username);
+				values.put(LoginSetConstants.passwordKey, password);
+				values.put(LoginSetConstants.sslOnlyKey, false);
+				
+				db.beginTransaction();
+				db.insert(LOGINSET_TABLE_NAME, null, values);
+				db.setTransactionSuccessful();
+				db.endTransaction();
+			}
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.clear();
+			editor.commit();
+		}
+
 
 		public String getLoginsetTableName() {
 			return LOGINSET_TABLE_NAME;

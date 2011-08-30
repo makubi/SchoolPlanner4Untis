@@ -21,15 +21,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
+import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseCreateConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseSchoolHolidayConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseStatusDataConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseTimegridConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseViewTypeConstants;
-
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
 
@@ -66,11 +68,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
+		// TODO remove old database
 		for(String sqlStatement : CREATE_TABLE_STATEMENTS) {
 			db.execSQL(sqlStatement);
 		}
 	}
-
+	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Auto-generated method stub
