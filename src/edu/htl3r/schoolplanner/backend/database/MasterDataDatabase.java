@@ -57,8 +57,6 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 		viewTypeClassTableMapping.put(SchoolRoom.class, DatabaseViewTypeConstants.TABLE_SCHOOL_ROOMS_NAME);
 	}
 	
-	
-	
 	@Override
 	public List<SchoolClass> getSchoolClassList() {
 		return getViewTypeList(DatabaseViewTypeConstants.TABLE_SCHOOL_CLASSES_NAME);
@@ -218,6 +216,8 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 	private void setViewTypeList(List<? extends ViewType> viewTypeList, String table) {
 		SQLiteDatabase database = this.database.openDatabase(true);
 		
+		this.database.deleteAllRows(database, table);
+		
 		database.beginTransaction();
 		for(ViewType viewType: viewTypeList) {
 			ContentValues values = new ContentValues();
@@ -263,6 +263,8 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 	private void writeSchoolHolidayList(List<SchoolHoliday> holidayList, String table) {
 		SQLiteDatabase database = this.database.openDatabase(true);
 		
+		this.database.deleteAllRows(database, table);
+		
 		database.beginTransaction();
 		for(SchoolHoliday schoolHoliday : holidayList) {
 			ContentValues values = new ContentValues();
@@ -298,6 +300,8 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 	private void writeTimegrid(Timegrid timegrid, String table) {
 		SQLiteDatabase database = this.database.openDatabase(true);
 		
+		this.database.deleteAllRows(database, table);
+		
 		final int[] timeWeekDays = new int[] {Time.SUNDAY, Time.MONDAY, Time.TUESDAY, Time.WEDNESDAY, Time.THURSDAY, Time.FRIDAY, Time.SATURDAY};
 		
 		database.beginTransaction();
@@ -332,6 +336,8 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 
 	private void writeStatusData(List<StatusData> statusDataList, String table) {
 		SQLiteDatabase database = this.database.openDatabase(true);
+		
+		this.database.deleteAllRows(database, table);
 		
 		database.beginTransaction();
 		for(StatusData statusData : statusDataList) {

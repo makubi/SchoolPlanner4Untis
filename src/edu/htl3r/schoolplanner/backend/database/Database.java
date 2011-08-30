@@ -63,6 +63,10 @@ public class Database implements MasterdataStore, MasterdataProvider {
 	public Cursor query(SQLiteDatabase database, String table) {
 		return database.query(table, null, null, null, null, null, null);
 	}
+	
+	public void deleteAllRows(SQLiteDatabase database, String table) {
+		database.delete(table, null, null);
+	}
 
 	@Override
 	public List<SchoolClass> getSchoolClassList() {
