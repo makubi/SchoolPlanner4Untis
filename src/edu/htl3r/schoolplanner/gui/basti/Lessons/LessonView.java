@@ -7,11 +7,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.util.Log;
 import android.view.View;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUILessonContainer;
 
 public class LessonView extends View{
@@ -39,18 +41,44 @@ public class LessonView extends View{
 	@Override
 	protected void onDraw(Canvas canvas) {
 		
-		canvas.drawText(getTime().toString(), 8, 10, paint);
+	/*	canvas.drawText(getTime().toString(), 8, 10, paint);
 		canvas.drawText(lesson.getStart().toString(), 8, 25, paint);
-		canvas.drawText(lesson.getEnd().toString(), 8, 40, paint);
+		canvas.drawText(lesson.getEnd().toString(), 8, 40, paint);*/
 		
-		if(lesson.getLessonsCount() == 1){
-			List<SchoolSubject> schoolSubjects = lesson.getLessons().get(0).getSchoolSubjects();
-			if(schoolSubjects.size() != 0){
-				SchoolSubject schoolClass = schoolSubjects.get(0);
-				canvas.drawText(schoolClass.getName(), 8, 55, paint);
-				canvas.drawText(schoolClass.getLongName(), 8, 70, paint);
-
+		List<Lesson> lessons = lesson.getLessons();
+		
+		for(Lesson l : lessons){
+			List<SchoolRoom> schoolRooms = l.getSchoolRooms();
+			List<SchoolClass> schoolClasses = l.getSchoolClasses();
+			List<SchoolSubject> schoolSubjects = l.getSchoolSubjects();
+			List<SchoolTeacher> schoolTeachers = l.getSchoolTeachers();
+			
+			StringBuilder sb  = new StringBuilder();
+			for(SchoolClass sc : schoolClasses){
+				sb.append(sc.getName() + " ");
 			}
+			canvas.drawText(sb.toString(), 8, 10, paint);
+			sb  = new StringBuilder();
+			
+			for(SchoolRoom sr : schoolRooms){
+				sb.append(sr.getName() + " ");
+			}
+			canvas.drawText(sb.toString(), 8, 25, paint);
+			sb  = new StringBuilder();
+			
+			for(SchoolSubject ss : schoolSubjects){
+				sb.append(ss.getName() + " ");
+			}	
+			canvas.drawText(sb.toString(), 8, 40, paint);
+			sb  = new StringBuilder();
+			
+			for(SchoolTeacher st : schoolTeachers){
+				sb.append(st.getName() + " ");
+			}	
+			canvas.drawText(sb.toString(), 8, 55, paint);
+			sb  = new StringBuilder();
+
+			break;
 		}
 	}
 	

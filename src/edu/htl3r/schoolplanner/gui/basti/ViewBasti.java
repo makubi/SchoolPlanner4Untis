@@ -39,7 +39,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 		
 		
 		DateTime date = new DateTime();
-		date.set(12, 9, 2011);
+		date.set(16, 5, 2011);
 
 		
 		cache = ((SchoolPlannerApp)getApplication()).getData();
