@@ -38,7 +38,8 @@ public class ViewBasti extends SchoolPlannerActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+		super.onCreate(savedInstanceState);    
+
 		
 		DateTime date = new DateTime();
 		date.set(16, 5, 2011);
@@ -52,7 +53,6 @@ public class ViewBasti extends SchoolPlannerActivity {
 		WeekView weekview = new WeekView(this);
 		Log.d("basti",week.toString());
 		weekview.setWeekData(week);
-		super.onCreate(savedInstanceState);    
 		setContentView(R.layout.basti_weekview);
 		
 		

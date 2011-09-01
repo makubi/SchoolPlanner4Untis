@@ -42,8 +42,8 @@ public class WeekView extends ViewGroup {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		zeichneGatter(canvas);
 		super.onDraw(canvas);
+		zeichneGatter(canvas);
 	}
 
 	@Override

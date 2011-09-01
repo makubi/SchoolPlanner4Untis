@@ -48,7 +48,7 @@ public class LessonView extends View{
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
-		
+		super.onDraw(canvas);
 		List<Lesson> lessons = lessoncontainer.getLessons();
 		String color = "";
 		float [] radiin = {5,5,5,5,5,5,5,5};
@@ -64,7 +64,8 @@ public class LessonView extends View{
 				RoundRectShape rrs = new RoundRectShape(radiout, new RectF(1, 1, 1, 1), radiin);
 				Log.d("basti",color);
 				LessonShape ls = new LessonShape(rrs,Color.parseColor("#"+color),getResources().getColor(R.color.background_stundenplan));
-				setBackgroundDrawable(ls);
+				// TODO setBackgroundDrawable ruft anscheinend invalidate auf --> onDraw wird erneut ausgefuehrt
+				//setBackgroundDrawable(ls);
 				
 				String blub = "";
 				for(SchoolSubject s : schoolClasses){
@@ -72,13 +73,12 @@ public class LessonView extends View{
 				}
 				
 				canvas.drawText(blub,8, (height/2)+10,paint);
-				
 			}
-			if(viewtype instanceof SchoolRoom){
+			else if(viewtype instanceof SchoolRoom){
 			}
-			if(viewtype instanceof SchoolSubject){
+			else if(viewtype instanceof SchoolSubject){
 			}
-			if(viewtype instanceof SchoolTeacher){
+			else if(viewtype instanceof SchoolTeacher){
 				List<SchoolClass> schoolClasses = l.getSchoolClasses();
 				if(schoolClasses.size() != 0){
 					color = schoolClasses.get(0).getBackColor();
