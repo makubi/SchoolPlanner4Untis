@@ -1,7 +1,6 @@
 package edu.htl3r.schoolplanner.gui.basti.Week;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import android.R;
 import android.content.Context;
@@ -27,7 +26,7 @@ public class WeekView extends ViewGroup {
 	private int days, hours;
 	private float widthlesson, heightlesson;
 	private Context context;
-	private final int border = 4;
+	private final int BORDERWIDTH = 2;
 
 	public WeekView(Context context) {
 		super(context);
@@ -51,10 +50,10 @@ public class WeekView extends ViewGroup {
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		width = MeasureSpec.getSize(widthMeasureSpec);
-		height = MeasureSpec.getSize(heightMeasureSpec);
 		widthlesson = width / days;
 		heightlesson = (widthlesson / 5) * 4;
-		setMeasuredDimension(width, 1500);
+		height = (int) (heightlesson * hours);
+		setMeasuredDimension(width, height);
 	}
 
 	@Override
@@ -89,10 +88,8 @@ public class WeekView extends ViewGroup {
 				}
 			}
 
-			c.measure(MeasureSpec.makeMeasureSpec((int) widthlesson - 4,
-					MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(
-					(int) heightlesson - 4, MeasureSpec.EXACTLY));
-			c.layout(l + 2, t + 2, r - 2, b - 2);
+			c.measure(MeasureSpec.makeMeasureSpec((int) widthlesson - 4,MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) heightlesson - 4, MeasureSpec.EXACTLY));
+			c.layout(l + (BORDERWIDTH/2), t + (BORDERWIDTH/2), r - (BORDERWIDTH/2), b - (BORDERWIDTH/2));
 
 		}
 	}
@@ -116,7 +113,7 @@ public class WeekView extends ViewGroup {
 		setBackgroundColor(getResources().getColor(R.color.background_light));
 		paint = new Paint();
 		paint.setColor(Color.BLACK);
-		paint.setStrokeWidth(border);
+		paint.setStrokeWidth(BORDERWIDTH);
 		paint.setStyle(Style.STROKE);
 	}
 
@@ -133,10 +130,10 @@ public class WeekView extends ViewGroup {
 			ArrayList<DateTime> sortDates = day.getSortDates();
 
 			for (int j = 0; j < sortDates.size(); j++) {
-				GUILessonContainer lessonsContainer = day
-						.getLessonsContainer(sortDates.get(j));
+				GUILessonContainer lessonsContainer = day.getLessonsContainer(sortDates.get(j));
 				LessonView lv = new LessonView(context);
 				lv.setLesson(lessonsContainer);
+				lv.setViewType(week.getViewType());
 				this.addView(lv);
 			}
 		}
