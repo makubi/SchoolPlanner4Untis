@@ -12,6 +12,7 @@ import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
+import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
@@ -23,12 +24,12 @@ public class RenderInfoWeekTable {
 	private boolean dispsat, dispdate, dispweekdaynames, dispzerolesson;
 	private Timegrid timegrid;
 	private List<SchoolHoliday> holidays;
-	
+	private ViewType viewtype;
 	
 	
 	public RenderInfoWeekTable(){
 		
-		//TODO Lese das aus den Preffernces aus!!!!
+		//TODO Lese das aus den Prefernces aus!!!!
 		dispsat = true;
 		dispdate = true;
 		dispweekdaynames = true;
@@ -48,8 +49,12 @@ public class RenderInfoWeekTable {
 		timegrid = t;
 	}
 	
+	public void setViewType(ViewType vt){
+		viewtype = vt;
+	}
+	
 	public GUIWeek analyse(){
-
+		//TODO Alles da?
 		Set<String> keySet = weekdata.keySet();
 		TreeSet<DateTime> dates = new TreeSet<DateTime>();
 		
@@ -68,6 +73,7 @@ public class RenderInfoWeekTable {
 			GUIDay d = analyseDay(dateTime, lessons);
 			week.setGUIDay(dateTime, d);
 		}
+		week.setViewType(viewtype);
 		return week;
 	}
 	

@@ -9,16 +9,24 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 
 public class GUIWeek implements DataGUItoGraphicGUI{
 	
 	
 	private Map<DateTime, GUIDay> week = new HashMap<DateTime, GUIDay>();
+	private ViewType viewtype;
 	
 	public void setGUIDay(DateTime day, GUIDay g){
 		week.put(day, g);
 	}
 	
+	public void setViewType(ViewType vt){
+		viewtype = vt;
+	}
+	public ViewType getViewType(){
+		return viewtype;
+	}
 	
 	public int getCountDays(){
 		return week.keySet().size();

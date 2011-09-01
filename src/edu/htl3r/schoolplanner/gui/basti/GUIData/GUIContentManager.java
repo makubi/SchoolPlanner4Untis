@@ -40,6 +40,7 @@ public class GUIContentManager {
 			end.set(20, 5, 2011);
 			weekinfo.setWeekData(datacenter.getLessonsForSomeTime(viewtype, start, end));
 			weekinfo.setTimeGrid(datacenter.getTimeGrid());
+			weekinfo.setViewType(viewtype);
 			return weekinfo.analyse();
 		}
 		

@@ -19,7 +19,9 @@ package edu.htl3r.schoolplanner.gui.basti;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.RelativeLayout;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
@@ -50,7 +52,11 @@ public class ViewBasti extends SchoolPlannerActivity {
 		WeekView weekview = new WeekView(this);
 		Log.d("basti",week.toString());
 		weekview.setWeekData(week);
-		super.onCreate(savedInstanceState);
-		setContentView(weekview);
+		super.onCreate(savedInstanceState);    
+		setContentView(R.layout.basti_weekview);
+		
+		
+		RelativeLayout r = (RelativeLayout)findViewById(R.id.week_rel);
+		r.addView(weekview);
 	}
 }
