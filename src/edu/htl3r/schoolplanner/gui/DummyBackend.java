@@ -30,6 +30,11 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
+/**
+ * Dummy-Backend, das Daten generiert und zur Verfuegung stellt.
+ * @deprecated Wird nicht mehr gepflegt, bitte Echtdaten verwenden
+ */
+@Deprecated
 public class DummyBackend {
 
 	public Map<Integer, List<Lesson>> getNonMultipleDummyLessonsForWeek() {
