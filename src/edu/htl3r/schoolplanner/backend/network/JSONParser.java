@@ -277,6 +277,7 @@ public class JSONParser {
 						int bgColor = backColor.length() > 0 ? Color.parseColor("#" + backColor) : 0;
 						
 						StatusData statusData = new StatusData();
+						statusData.setRelatedStatusDataClass(lessonTypeCreator.createLessonType(lsType).getClass());
 						statusData.setCode(lsType);
 						statusData.setFgColor(fgColor);
 						statusData.setBgColor(bgColor);
@@ -308,6 +309,7 @@ public class JSONParser {
 						
 						StatusData statusData = new StatusData();
 						statusData.setCode(lsCode);
+						statusData.setRelatedStatusDataClass(lessonCodeCreator.createLessonCode(lsCode).getClass());
 						statusData.setFgColor(fgColor);
 						statusData.setBgColor(bgColor);
 						

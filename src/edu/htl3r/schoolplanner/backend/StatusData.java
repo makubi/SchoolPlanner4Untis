@@ -19,6 +19,7 @@ package edu.htl3r.schoolplanner.backend;
 
 public class StatusData {
 
+	private Class<?> relatedStatusDataClass;
 	private String code;
 	private int fgColor;
 	private int bgColor;
@@ -42,6 +43,12 @@ public class StatusData {
 	}
 	public void setBgColor(int bgColor) {
 		this.bgColor = bgColor;
+	}
+	public Class<?> getRelatedStatusDataClass() {
+		return relatedStatusDataClass;
+	}
+	public void setRelatedStatusDataClass(Class<?> relatedStatusDataClass) {
+		this.relatedStatusDataClass = relatedStatusDataClass;
 	}
 	
 	@Override
