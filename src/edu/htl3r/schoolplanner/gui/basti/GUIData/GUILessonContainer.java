@@ -27,8 +27,16 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 public class GUILessonContainer {
 	
 	
-	private DateTime start, end;
+	private DateTime start, end,date;
 	
+	public DateTime getDate() {
+		return date;
+	}
+
+	public void setDate(DateTime date) {
+		this.date = date;
+	}
+
 	private List<Lesson> lessons = new ArrayList<Lesson>();
 	
 

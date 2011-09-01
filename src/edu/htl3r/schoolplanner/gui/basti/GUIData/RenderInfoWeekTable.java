@@ -51,19 +51,22 @@ public class RenderInfoWeekTable {
 	public GUIWeek analyse(){
 
 		Set<String> keySet = weekdata.keySet();
-		TreeSet<DateTime> datum = new TreeSet<DateTime>();
+		TreeSet<DateTime> dates = new TreeSet<DateTime>();
+		
+		
 		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
 			String string = (String) iterator.next();
-			datum.add(DateTimeUtils.iso8601StringToDateTime(string));
+			dates.add(DateTimeUtils.iso8601StringToDateTime(string));
 		}
 		
 		GUIWeek week = new GUIWeek();
-		
-		for (Iterator iterator = datum.iterator(); iterator.hasNext();) {
-			DateTime dateTime = (DateTime) iterator.next();
-			GUIDay gday = analyseDay(dateTime, weekdata.get(DateTimeUtils.toISO8601Date(dateTime)));
-			week.setGUIDay(dateTime, gday);
 
+		
+		for (Iterator iterator = dates.iterator(); iterator.hasNext();) {
+			DateTime dateTime = (DateTime) iterator.next();
+			List<Lesson> lessons =  weekdata.get(DateTimeUtils.toISO8601Date(dateTime));
+			GUIDay d = analyseDay(dateTime, lessons);
+			week.setGUIDay(dateTime, d);
 		}
 		return week;
 	}
@@ -79,9 +82,22 @@ public class RenderInfoWeekTable {
 		}
 		
 		
+		if(lessons.size() == 0){
+			for (TimegridUnit timegridUnit : timegridForDateTimeDay) {
+				GUILessonContainer lessoncon = new GUILessonContainer();
+				lessoncon.setTime(timegridUnit.getStart(), timegridUnit.getEnd());
+				lessoncon.setDate(date);
+				day.addLessonContainer(timegridUnit.getStart(),lessoncon);
+			}
+			return day;
+		}
+		
+		
+		
 		for (TimegridUnit timegridUnit : timegridForDateTimeDay) {
 			GUILessonContainer lessoncon = new GUILessonContainer();
 			lessoncon.setTime(timegridUnit.getStart(), timegridUnit.getEnd());
+			lessoncon.setDate(date);
 			
 			
 			for(Lesson lesson : lessons){
