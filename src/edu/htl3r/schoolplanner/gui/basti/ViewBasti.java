@@ -18,6 +18,7 @@
 package edu.htl3r.schoolplanner.gui.basti;
 
 import android.os.Bundle;
+import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.Cache;
@@ -25,6 +26,8 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIContentManager;
+import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIWeek;
+import edu.htl3r.schoolplanner.gui.basti.Week.WeekView;
 
 public class ViewBasti extends SchoolPlannerActivity {
 	
@@ -33,12 +36,21 @@ public class ViewBasti extends SchoolPlannerActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		
 		DateTime date = new DateTime();
-		date.set(9, 5, 2011);
+		date.set(16, 5, 2011);
+
+		
 		cache = ((SchoolPlannerApp)getApplication()).getData();
 		contentmanager.setNeededData(this, cache);
 		contentmanager.setViewType((ViewType)getIntent().getExtras().getSerializable(BundleConstants.SELECTED_VIEW_TYPE));
-		contentmanager.getTimeTable4GUI(date);
+		
+		GUIWeek week = contentmanager.getTimeTable4GUI(date);
+		WeekView weekview = new WeekView(this);
+		Log.d("basti",week.toString());
+		weekview.setWeekData(week);
 		super.onCreate(savedInstanceState);
+		setContentView(weekview);
 	}
 }

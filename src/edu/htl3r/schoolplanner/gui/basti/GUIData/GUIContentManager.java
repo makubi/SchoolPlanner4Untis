@@ -37,7 +37,7 @@ public class GUIContentManager {
 		if(viewlength == WEEK){
 			RenderInfoWeekTable weekinfo = new RenderInfoWeekTable();
 			DateTime end = new DateTime();
-			end.set(start.getDay()+4, 9, 2011);
+			end.set(20, 5, 2011);
 			weekinfo.setWeekData(datacenter.getLessonsForSomeTime(viewtype, start, end));
 			weekinfo.setTimeGrid(datacenter.getTimeGrid());
 			return weekinfo.analyse();

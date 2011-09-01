@@ -1,39 +1,38 @@
 package edu.htl3r.schoolplanner.gui.basti.Week;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import android.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ViewGroup;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
-import edu.htl3r.schoolplanner.gui.DummyBackend;
+import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIDay;
+import edu.htl3r.schoolplanner.gui.basti.GUIData.GUILessonContainer;
+import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIWeek;
 import edu.htl3r.schoolplanner.gui.basti.Lessons.LessonView;
 
 public class WeekView extends ViewGroup {
 
-	private DummyBackend data;
+	private GUIWeek weekdata;
+
 	private Paint paint;
 
 	private int width, height;
 	private int days, hours;
 	private float widthlesson, heightlesson;
-
+	private Context context;
 	private final int border = 4;
 
-	public WeekView(Context context, AttributeSet attrs) {
+	public WeekView(Context context) {
 		super(context);
-		data = new DummyBackend();
-		init();
-	}
-
-	public WeekView(Context context, DummyBackend d) {
-		super(context);
-		data = d;
-		init();
+		this.context = context;
+		initDrawingStuff();
 	}
 
 	@Override
@@ -59,27 +58,42 @@ public class WeekView extends ViewGroup {
 	}
 
 	@Override
-	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+	protected void onLayout(boolean changed, int left, int top, int right,
+			int bottom) {
 
 		int l = 0;
 		int t = 0;
 		int r = (int) (l + widthlesson);
 		int b = (int) (t + heightlesson);
+		DateTime now = null;
+		DateTime old = null;
 		for (int i = 0; i < getChildCount(); i++) {
 
 			LessonView c = (LessonView) getChildAt(i);
-			c.measure(MeasureSpec.makeMeasureSpec((int) widthlesson - 4, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) heightlesson - 4, MeasureSpec.EXACTLY));
 
-			c.layout(l + 2, t + 2, r - 2, b - 2);
-			if ((i % days) == 0 && i != 0) {
-				l = 0;
-				t += heightlesson;
-				b += heightlesson;
-				r = (int) (l + widthlesson);
+			now = c.getTime();
+			
+			if (old == null) {
+				old = c.getTime();
 			} else {
-				l += widthlesson;
-				r = (int) (l + widthlesson);
+
+				if (old.compareTo(now) == 0) {
+					t += heightlesson;
+					b += heightlesson;
+				} else {
+					old = now;
+					l += widthlesson;
+					r += widthlesson;
+					t = 0;
+					b = (int) (t + heightlesson);
+				}
 			}
+
+			c.measure(MeasureSpec.makeMeasureSpec((int) widthlesson - 4,
+					MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(
+					(int) heightlesson - 4, MeasureSpec.EXACTLY));
+			c.layout(l + 2, t + 2, r - 2, b - 2);
+
 		}
 	}
 
@@ -98,18 +112,35 @@ public class WeekView extends ViewGroup {
 		}
 	}
 
-	private void init() {
+	private void initDrawingStuff() {
 		setBackgroundColor(getResources().getColor(R.color.background_light));
-
 		paint = new Paint();
 		paint.setColor(Color.BLACK);
 		paint.setStrokeWidth(border);
 		paint.setStyle(Style.STROKE);
-		days = data.getNonMultipleDummyLessonsForWeek().size();
-		hours = 20;
+	}
 
-		addView(new LessonView(getContext()));
-		
+	public void setWeekData(GUIWeek week) {
+		weekdata = week;
+		days = weekdata.getCountDays();
+		hours = weekdata.getMaxHours();
+
+		ArrayList<DateTime> datum = weekdata.getSortDates();
+
+		for (int i = 0; i < datum.size(); i++) {
+			GUIDay day = week.getDay(datum.get(i));
+
+			ArrayList<DateTime> sortDates = day.getSortDates();
+
+			for (int j = 0; j < sortDates.size(); j++) {
+				GUILessonContainer lessonsContainer = day
+						.getLessonsContainer(sortDates.get(j));
+				LessonView lv = new LessonView(context);
+				lv.setLesson(lessonsContainer);
+				this.addView(lv);
+			}
+		}
+
 	}
 
 }

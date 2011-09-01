@@ -330,11 +330,11 @@ public class JSONParser {
 	 */
 	public Map<String, List<Lesson>> jsonToLessonMap(JSONArray result) throws JSONException, IOException {
 		//TODO HOTFIX wenn untis muell wieder geht ersetzen
-		//List<SchoolClass> schoolClassList = cache.getSchoolClassList().getData();
+		List<SchoolClass> schoolClassList = cache.getSchoolClassList().getData();
 
 		// TODO Reagieren auf nicht-verfuegbare Listen
 		// TODO TESTING
-		List<SchoolClass> schoolClassList = new ArrayList<SchoolClass>();
+		//List<SchoolClass> schoolClassList = new ArrayList<SchoolClass>();
 		// TODO /TESTING
 		List<SchoolTeacher> schoolTeacherList = cache.getSchoolTeacherList().getData();
 		List<SchoolRoom> schoolRoomList = cache.getSchoolRoomList().getData();
