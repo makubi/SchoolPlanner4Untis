@@ -56,4 +56,10 @@ public interface DataConnection {
 	 * @see JSONNetwork#authenticate()
 	 */
 	public void setLoginCredentials(LoginSet loginSet);
+	
+	
+	/**
+	 * Setzt den internen Cache (Memory) zurueck und loescht alle Daten daraus.
+	 */
+	public void clearInternalCache();
 }

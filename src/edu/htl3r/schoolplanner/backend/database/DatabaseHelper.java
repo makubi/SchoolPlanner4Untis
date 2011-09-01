@@ -35,7 +35,7 @@ import edu.htl3r.schoolplanner.backend.database.constants.DatabaseViewTypeConsta
 
 public class DatabaseHelper extends SQLiteOpenHelper{
 
-	private final static int DATABASE_VERSION = 2;
+	private final static int DATABASE_VERSION = 3;
 	private final static String DATABASE_NAME = "db_schoolplanner_data";
 	
 	private final List<String> CREATE_TABLE_STATEMENTS = new ArrayList<String>();
@@ -82,7 +82,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		
+		// TODO Bei Release entfernen
+		throw new RuntimeException("Database scheme changed. Please reinstall the app. It is currently under heavy development.");
 	}
 
 }

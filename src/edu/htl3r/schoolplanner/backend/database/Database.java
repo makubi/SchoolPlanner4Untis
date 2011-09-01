@@ -16,6 +16,8 @@
 */
 package edu.htl3r.schoolplanner.backend.database;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -25,6 +27,8 @@ import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.MasterdataStore;
 import edu.htl3r.schoolplanner.backend.StatusData;
+import edu.htl3r.schoolplanner.backend.database.constants.DatabaseCreateConstants;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
@@ -37,6 +41,8 @@ public class Database implements MasterdataStore, MasterdataProvider {
 	private DatabaseHelper databaseHelper = new DatabaseHelper(SchoolplannerContext.context);
 
 	private MasterDataDatabase masterDataDatabase = new MasterDataDatabase(this);
+	
+	private String loginSetKey;
 	
 	public SQLiteDatabase openDatabase(boolean writeable) {
 		return writeable ? databaseHelper.getWritableDatabase() : databaseHelper.getReadableDatabase();
@@ -62,6 +68,10 @@ public class Database implements MasterdataStore, MasterdataProvider {
 	 */
 	public Cursor query(SQLiteDatabase database, String table) {
 		return database.query(table, null, null, null, null, null, null);
+	}
+	
+	public Cursor queryWithLoginSetKey(SQLiteDatabase database, String table) {
+		return database.query(table, null, DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=?", new String[]{loginSetKey}, null, null, null);
 	}
 	
 	public void deleteAllRows(SQLiteDatabase database, String table) {
@@ -136,6 +146,43 @@ public class Database implements MasterdataStore, MasterdataProvider {
 	@Override
 	public void setStatusData(List<StatusData> statusData) {
 		masterDataDatabase.setStatusData(statusData);
+	}
+
+	public void setActiveLoginSet(LoginSet activeLoginSet) {
+		loginSetKey = md5(activeLoginSet.getServerUrl()+activeLoginSet.getSchool());
+	}
+	
+	public String getLoginSetKeyForTable() {
+		return loginSetKey;
+	}
+	
+	/**
+	 * Generiert einen MD5 Hash
+	 * @param s der zu verhasende String
+	 * @return Hash
+	 */
+	private String md5(final String s) {
+		try {
+			// Create MD5 Hash
+			MessageDigest digest = java.security.MessageDigest
+					.getInstance("MD5");
+			digest.update(s.getBytes());
+			byte messageDigest[] = digest.digest();
+
+			// Create Hex String
+			StringBuffer hexString = new StringBuffer();
+			for (int i = 0; i < messageDigest.length; i++) {
+				String h = Integer.toHexString(0xFF & messageDigest[i]);
+				while (h.length() < 2)
+					h = "0" + h;
+				hexString.append(h);
+			}
+			return hexString.toString();
+
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 	
 }

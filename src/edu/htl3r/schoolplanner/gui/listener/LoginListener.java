@@ -54,8 +54,10 @@ public class LoginListener implements OnItemClickListener, Serializable {
 			@Override
 			protected Void doInBackground(Void... params) {
 				
-				// TODO: Do login here
 				SchoolPlannerApp app = (SchoolPlannerApp) welcomescreen.getApplication();
+				
+				// Beim Login die Daten im RAM leeren, damit aus der Datenbank die passenden Daten geladen werden
+				app.getData().clearInternalCache();
 				
 				app.getData().setLoginCredentials(selectedEntry);
 				DataFacade<Boolean> authenticate = app.getData().authenticate();

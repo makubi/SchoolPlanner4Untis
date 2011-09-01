@@ -25,10 +25,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.format.Time;
+import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.MasterdataStore;
 import edu.htl3r.schoolplanner.backend.StatusData;
+import edu.htl3r.schoolplanner.backend.database.constants.DatabaseCreateConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseSchoolHolidayConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseStatusDataConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseTimegridConstants;
@@ -84,7 +86,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 		
 		SQLiteDatabase database = this.database.openDatabase(false);
 		
-		Cursor query = this.database.query(database, DatabaseSchoolHolidayConstants.TABLE_SCHOOL_HOLIDAYS_NAME);
+		Cursor query = this.database.queryWithLoginSetKey(database, DatabaseSchoolHolidayConstants.TABLE_SCHOOL_HOLIDAYS_NAME);
 		
 		int indexID = query.getColumnIndex(DatabaseSchoolHolidayConstants.ID);
 		int indexName = query.getColumnIndex(DatabaseSchoolHolidayConstants.NAME);
@@ -120,7 +122,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 		
 		SQLiteDatabase database = this.database.openDatabase(false);
 		
-		Cursor query = this.database.query(database, DatabaseTimegridConstants.TABLE_TIMEGRID_NAME);
+		Cursor query = this.database.queryWithLoginSetKey(database, DatabaseTimegridConstants.TABLE_TIMEGRID_NAME);
 		
 		int indexDay = query.getColumnIndex(DatabaseTimegridConstants.DAY);
 		int indexStartTime = query.getColumnIndex(DatabaseTimegridConstants.START_TIME);
@@ -150,7 +152,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 		
 		SQLiteDatabase database = this.database.openDatabase(false);
 		
-		Cursor query = this.database.query(database, DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME);
+		Cursor query = this.database.queryWithLoginSetKey(database, DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME);
 		
 		int indexCode = query.getColumnIndex(DatabaseStatusDataConstants.CODE);
 		int indexForeColor = query.getColumnIndex(DatabaseStatusDataConstants.FORE_COLOR);
@@ -179,7 +181,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 		
 		SQLiteDatabase database = this.database.openDatabase(false);
 		
-		Cursor query = this.database.query(database, table);
+		Cursor query = this.database.queryWithLoginSetKey(database, table);
 		
 		int indexID = query.getColumnIndex(DatabaseViewTypeConstants.ID);
 		int indexName = query.getColumnIndex(DatabaseViewTypeConstants.NAME);
@@ -221,6 +223,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 		database.beginTransaction();
 		for(ViewType viewType: viewTypeList) {
 			ContentValues values = new ContentValues();
+			values.put(DatabaseCreateConstants.TABLE_LOGINSET_KEY, this.database.getLoginSetKeyForTable());
 			values.put(DatabaseViewTypeConstants.ID, viewType.getId());
 			values.put(DatabaseViewTypeConstants.NAME, viewType.getName());
 			values.put(DatabaseViewTypeConstants.LONG_NAME, viewType.getLongName());
@@ -268,6 +271,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 		database.beginTransaction();
 		for(SchoolHoliday schoolHoliday : holidayList) {
 			ContentValues values = new ContentValues();
+			values.put(DatabaseCreateConstants.TABLE_LOGINSET_KEY, this.database.getLoginSetKeyForTable());
 			values.put(DatabaseSchoolHolidayConstants.ID, schoolHoliday.getId());
 			values.put(DatabaseSchoolHolidayConstants.NAME, schoolHoliday.getName());
 			values.put(DatabaseSchoolHolidayConstants.LONG_NAME, schoolHoliday.getLongName());
@@ -314,6 +318,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 			
 				for(TimegridUnit timegridUnit : timegridUnitList) {
 					ContentValues values = new ContentValues();
+					values.put(DatabaseCreateConstants.TABLE_LOGINSET_KEY, this.database.getLoginSetKeyForTable());
 					values.put(DatabaseTimegridConstants.DAY, day);
 					values.put(DatabaseTimegridConstants.START_TIME, dateTimeToMillis(timegridUnit.getStart()));
 					values.put(DatabaseTimegridConstants.END_TIME, dateTimeToMillis(timegridUnit.getEnd()));
@@ -326,9 +331,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 		database.endTransaction();
 		this.database.closeDatabase(database);
 	}
-
-
-
+	
 	@Override
 	public void setStatusData(List<StatusData> statusData) {
 		writeStatusData(statusData, DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME);
@@ -342,6 +345,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 		database.beginTransaction();
 		for(StatusData statusData : statusDataList) {
 			ContentValues values = new ContentValues();
+			values.put(DatabaseCreateConstants.TABLE_LOGINSET_KEY, this.database.getLoginSetKeyForTable());
 			values.put(DatabaseStatusDataConstants.CODE, statusData.getCode());
 			values.put(DatabaseStatusDataConstants.FORE_COLOR, statusData.getFgColor());
 			values.put(DatabaseStatusDataConstants.BACK_COLOR, statusData.getBgColor());

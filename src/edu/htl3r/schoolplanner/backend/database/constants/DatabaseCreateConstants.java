@@ -18,7 +18,11 @@ package edu.htl3r.schoolplanner.backend.database.constants;
 
 public interface DatabaseCreateConstants {
 
-	public static final String TABLE_VIEW_TYPE_COLUMN_DEFINITIONS = DatabaseViewTypeConstants.ID
+	/** Verwende diesen Key, um Daten zu mehreren, unterschiedlichen LoginSets gleichzeit zu speichern **/
+	public static final String TABLE_LOGINSET_KEY = "loginSetKey";
+	
+	public static final String TABLE_VIEW_TYPE_COLUMN_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, " +
+			DatabaseViewTypeConstants.ID
 			+ " INTEGER, "
 			+ DatabaseViewTypeConstants.NAME
 			+ " TEXT, "
@@ -28,7 +32,8 @@ public interface DatabaseCreateConstants {
 			+ " TEXT, "
 			+ DatabaseViewTypeConstants.BACK_COLOR + " TEXT";
 
-	public static final String TABLE_SCHOOL_HOLIDAY_COLUMN_DEFINITIONS = DatabaseSchoolHolidayConstants.ID
+	public static final String TABLE_SCHOOL_HOLIDAY_COLUMN_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, " +
+			DatabaseSchoolHolidayConstants.ID
 			+ " INTEGER, "
 			+ DatabaseSchoolHolidayConstants.NAME
 			+ " TEXT, "
@@ -38,12 +43,14 @@ public interface DatabaseCreateConstants {
 			+ " INTEGER, "
 			+ DatabaseSchoolHolidayConstants.END_DATE + " INTEGER";
 
-	public static final String TABLE_TIMEGRID_COLUMN_DEFINITIONS = DatabaseTimegridConstants.DAY
+	public static final String TABLE_TIMEGRID_COLUMN_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, " + 
+			DatabaseTimegridConstants.DAY
 			+ " INTEGER, "
 			+ DatabaseTimegridConstants.START_TIME
 			+ " INTEGER, " + DatabaseTimegridConstants.END_TIME + " INTEGER";
 
-	public static final String TABLE_STATUS_DATA_COLUMN_DEFINITIONS = DatabaseStatusDataConstants.CODE
+	public static final String TABLE_STATUS_DATA_COLUMN_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, " + 
+			DatabaseStatusDataConstants.CODE
 			+ " TEXT, "
 			+ DatabaseStatusDataConstants.FORE_COLOR
 			+ " INTEGER, "

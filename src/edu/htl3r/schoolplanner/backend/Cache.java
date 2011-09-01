@@ -42,7 +42,6 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	private InternalMemory internalMemory = new InternalMemory();
 	private ExternalDataLoader externalDataLoader = new ExternalDataLoader();
 	
-	
 	public Cache() {
 		externalDataLoader.setCache(this);
 	}
@@ -260,5 +259,10 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	@Override
 	public void setLoginCredentials(LoginSet loginSet) {
 		externalDataLoader.setLoginCredentials(loginSet);
+	}
+	
+	@Override
+	public void clearInternalCache() {
+		internalMemory = new InternalMemory();
 	}
 }

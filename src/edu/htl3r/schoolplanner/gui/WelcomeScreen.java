@@ -40,12 +40,6 @@ import edu.htl3r.schoolplanner.gui.listener.LoginListener;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenContextMenu;
 
 public class WelcomeScreen extends SchoolPlannerActivity{
-
-	private final String nameKey = LoginSetConstants.nameKey;
-	private final String urlKey = LoginSetConstants.serverUrlKey;
-	private final String schoolKey = LoginSetConstants.schoolKey;
-	private final String userKey = LoginSetConstants.usernameKey;
-
 	
 	private ListView mainListView;
 	
@@ -145,7 +139,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 				mainLayout.removeView(emptyListTextView);
 		}
 		
-		String [] list_keys = new String[] {nameKey, urlKey, schoolKey, userKey};
+		String [] list_keys = new String[] {LoginSetConstants.nameKey, LoginSetConstants.serverUrlKey, LoginSetConstants.schoolKey, LoginSetConstants.usernameKey};
 		int [] list_ids =  new int[] {R.id.txt_name, R.id.txt_url, R.id.txt_school, R.id.txt_user};
 		
 		SimpleAdapter aa = new SimpleAdapter(this, allLoginSetsForListAdapter, R.layout.login_table_row, list_keys, list_ids);

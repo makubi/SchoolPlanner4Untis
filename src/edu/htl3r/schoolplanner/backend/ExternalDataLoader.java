@@ -350,6 +350,7 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 	 * @see JSONNetwork#authenticate()
 	 */
 	public void setLoginCredentials(LoginSet loginSet) {
+		database.setActiveLoginSet(loginSet);
 		network.setLoginCredentials(loginSet);
 	}
 
