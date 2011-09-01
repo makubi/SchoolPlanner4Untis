@@ -2,15 +2,14 @@ package edu.htl3r.schoolplanner.gui.basti.Week;
 
 import java.util.ArrayList;
 
-import android.R;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.util.Log;
 import android.view.ViewGroup;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIDay;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUILessonContainer;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIWeek;
@@ -89,8 +88,8 @@ public class WeekView extends ViewGroup {
 			}
 
 			c.measure(MeasureSpec.makeMeasureSpec((int) widthlesson - 4,MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) heightlesson - 4, MeasureSpec.EXACTLY));
-			c.layout(l + (BORDERWIDTH/2), t + (BORDERWIDTH/2), r - (BORDERWIDTH/2), b - (BORDERWIDTH/2));
-
+			c.layout(l + (BORDERWIDTH/2)-1, t + (BORDERWIDTH/2)-1, r - (BORDERWIDTH/2)+1, b - (BORDERWIDTH/2)+1);
+			//c.layout(l, t, r, b);
 		}
 	}
 
@@ -110,7 +109,7 @@ public class WeekView extends ViewGroup {
 	}
 
 	private void initDrawingStuff() {
-		setBackgroundColor(getResources().getColor(R.color.background_light));
+		setBackgroundColor(getResources().getColor(R.color.background));
 		paint = new Paint();
 		paint.setColor(Color.BLACK);
 		paint.setStrokeWidth(BORDERWIDTH);
