@@ -23,6 +23,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.LessonHelper;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
@@ -200,6 +201,16 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 	@Override
 	public void setPermanentLesson(Lesson lesson) {
 		lessonHelperDatabase.setPermanentLesson(lesson);
+	}
+
+	public long dateTimeToMillis(DateTime dateTime) {
+		return dateTime.getAndroidTime().toMillis(true);
+	}
+
+	public DateTime millisToDateTime(long millis) {
+		DateTime dateTime = new DateTime();
+		dateTime.getAndroidTime().set(millis);
+		return dateTime;
 	}
 	
 }
