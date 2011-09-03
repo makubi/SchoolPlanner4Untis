@@ -113,10 +113,17 @@ public class SelectScreen extends SchoolPlannerActivity{
 			subjectSpinner.setEnabled(false);
 		}
 		
-		classSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, new Intent(), classList));
-		teacherSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, new Intent(), teacherList));
-		roomSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, new Intent(), roomList));
-		subjectSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, new Intent(), subjectList));
+		Intent classIntent = new Intent(SelectScreen.this, ViewBasti.class);
+		classSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, classIntent, classList));
+		
+		Intent teacherIntent = new Intent(SelectScreen.this, ViewBasti.class);
+		teacherSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, teacherIntent, teacherList));
+		
+		Intent roomIntent = new Intent(SelectScreen.this, ViewBasti.class);
+		roomSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, roomIntent, roomList));
+		
+		Intent subjectIntent = new Intent(SelectScreen.this, ViewBasti.class);
+		subjectSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, subjectIntent, subjectList));
 	}
 	
 	private void initViewTypeSpinner(Spinner spinner, List<? extends ViewType> list) {

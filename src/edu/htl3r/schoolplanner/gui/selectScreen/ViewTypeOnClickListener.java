@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Spinner;
-import android.widget.Toast;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
@@ -49,8 +48,6 @@ public class ViewTypeOnClickListener extends AnimatedOnClickListener{
 		bundle.putSerializable(BundleConstants.SELECTED_VIEW_TYPE, list.get(spinner.getSelectedItemPosition()));
 		intent.putExtras(bundle);
 		parent.startActivity(intent);
-		
-		Toast.makeText(parent.getApplicationContext(), "Selected "+intent, Toast.LENGTH_SHORT).show();
 	}
 
 }

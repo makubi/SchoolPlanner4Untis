@@ -20,12 +20,13 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Spinner;
-import android.widget.Toast;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.gui.BundleConstants;
 
 public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedListener {
 
@@ -48,10 +49,11 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 		// Hack, damit beim Initialisieren des Spinners nicht automatisch eine Action ausgefuehrt wird
 		if (!init) {			
 			ViewType item = getViewType(position);
-			Toast.makeText(this.parent.getApplicationContext(), "Selected "+item.toString(), Toast.LENGTH_LONG).show();
-			// TODO Start activity here
-			//this.parent.startActivity(intent);
 			
+			Bundle bundle = new Bundle();
+			bundle.putSerializable(BundleConstants.SELECTED_VIEW_TYPE, item);
+			intent.putExtras(bundle);
+			this.parent.startActivity(intent);
 		}
 		else {
 			init = false;
