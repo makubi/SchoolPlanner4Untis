@@ -17,6 +17,8 @@
 */
 package edu.htl3r.schoolplanner.gui.basti;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RelativeLayout;
@@ -29,38 +31,71 @@ import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIContentManager;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIWeek;
-import edu.htl3r.schoolplanner.gui.basti.Week.WeekView;
+import edu.htl3r.schoolplanner.gui.basti.Week.WeekLayout;
 
-public class ViewBasti extends SchoolPlannerActivity {
+public class ViewBasti extends SchoolPlannerActivity{
 	
 	private Cache cache;
 	private GUIContentManager contentmanager = new GUIContentManager();
+	private RelativeLayout container;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);    
-
-		
-		DateTime date = new DateTime();
-		date.set(16, 5, 2011);
-
-		
-		cache = ((SchoolPlannerApp)getApplication()).getData();
-		contentmanager.setNeededData(this, cache);
-		contentmanager.setViewType((ViewType)getIntent().getExtras().getSerializable(BundleConstants.SELECTED_VIEW_TYPE));
-		
-		GUIWeek week = contentmanager.getTimeTable4GUI(date);
-		WeekView weekview = new WeekView(this);
-		Log.d("basti",week.toString());
-		weekview.setWeekData(week);
-		
-		
 		setContentView(R.layout.basti_weekview);
-
-		RelativeLayout r = (RelativeLayout)findViewById(R.id.week_rel);
-		r.addView(weekview);
-
+		container = (RelativeLayout)findViewById(R.id.week_rel);
+		DateTime date = new DateTime();
+		date.set(13, 9, 2010);
 		
-
+		LoadWeekData loadweek = new LoadWeekData();
+		loadweek.setContext(this);
+		loadweek.execute(date);
 	}
+	
+	
+	public class LoadWeekData extends AsyncTask<DateTime, String, GUIWeek>{
+
+		private Context context;
+			
+		@Override
+		protected void onPreExecute() {
+			publishProgress("Erzeuge Objekte","true");
+
+			cache = ((SchoolPlannerApp)getApplication()).getData();
+			contentmanager.setNeededData(context, cache);
+			contentmanager.setViewType((ViewType)getIntent().getExtras().getSerializable(BundleConstants.SELECTED_VIEW_TYPE));
+			super.onPreExecute();
+		}
+		
+		@Override
+		protected GUIWeek doInBackground(DateTime... date) {
+			publishProgress("Lade Daten","true");
+			GUIWeek timeTable4GUI = contentmanager.getTimeTable4GUI(date[0]);
+			return timeTable4GUI;
+		}
+	
+		@Override
+		protected void onProgressUpdate(String... values) {
+			super.onProgressUpdate(values);
+			setInProgress(values[0], Boolean.parseBoolean(values[1]));
+		}
+		
+		@Override
+		protected void onPostExecute(GUIWeek result) {
+			super.onPostExecute(result);
+			publishProgress("zaubere UI","true");
+			WeekLayout week = new WeekLayout(context);
+			week.setWeekData(result);
+			container.addView(week);
+			publishProgress("","false");
+		}
+
+		public void setContext(Context context) {
+			this.context = context;
+		}
+		
+		
+	}
+	
 }

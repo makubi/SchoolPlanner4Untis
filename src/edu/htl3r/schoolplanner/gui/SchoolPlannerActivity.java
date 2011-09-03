@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.htl3r.schoolplanner.gui;
 
 import android.app.Activity;
@@ -24,23 +24,31 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.gui.settings.SettingsScreen;
 
 /**
- * Diese Klasse erweitert die Standard Android-{@link Activity} um weitere Funktionalitaeten.
- * Dazu zaehlt unter Anderem das Hinzufuegen des Standard-Menues oder der Zugriff auf die ProgressBar am unteren Bildschirmrand.
+ * Diese Klasse erweitert die Standard Android-{@link Activity} um weitere
+ * Funktionalitaeten. Dazu zaehlt unter Anderem das Hinzufuegen des
+ * Standard-Menues oder der Zugriff auf die ProgressBar am unteren
+ * Bildschirmrand.
  */
 public abstract class SchoolPlannerActivity extends Activity {
-	
+
 	private ProgressBar progressWheel;
 	private TextView loginProgressText;
-	
+
 	/**
-	 * Zeigt einen Text und den Lade-Kreis in der ProgressBar am unteren Bildschirmrand an oder versteckt den Lade-Kreis.
-	 * @param message Text, der angezeigt werden soll
-	 * @param active Wenn 'true', wird der Lade-Kreis angezeigt, ansonsten wird er versteckt
+	 * Zeigt einen Text und den Lade-Kreis in der ProgressBar am unteren
+	 * Bildschirmrand an oder versteckt den Lade-Kreis.
+	 * 
+	 * @param message
+	 *            Text, der angezeigt werden soll
+	 * @param active
+	 *            Wenn 'true', wird der Lade-Kreis angezeigt, ansonsten wird er
+	 *            versteckt
 	 */
 	public void setInProgress(String message, boolean active) {
 		loginProgressText.setText(message);
@@ -50,31 +58,32 @@ public abstract class SchoolPlannerActivity extends Activity {
 			progressWheel.setVisibility(View.INVISIBLE);
 		}
 	}
-	
+
+
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		progressWheel = (ProgressBar) findViewById(R.id.loginProgress);
 		loginProgressText = (TextView) findViewById(R.id.loginProgressText);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		
-	    MenuInflater inflater = getMenuInflater();
-	    inflater.inflate(R.menu.default_menu, menu);
-	    return true;
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.default_menu, menu);
+		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch (item.getItemId()) {
-	    case R.id.menu_settings:
-	    	startActivity(new Intent(getApplicationContext(),SettingsScreen.class));
-	        return true;
-	    default:
-	        return super.onOptionsItemSelected(item);
-	    }
+		switch (item.getItemId()) {
+		case R.id.menu_settings:
+			startActivity(new Intent(getApplicationContext(), SettingsScreen.class));
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 }

@@ -12,7 +12,6 @@ import android.graphics.Typeface;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.view.View;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
@@ -21,8 +20,9 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUILessonContainer;
+import edu.htl3r.schoolplanner.gui.basti.Week.GUIView;
 
-public class LessonView extends View {
+public class LessonView extends GUIView {
 
 	private GUILessonContainer lessoncontainer;
 	private Paint paint;
@@ -31,16 +31,20 @@ public class LessonView extends View {
 	private ViewType viewtype;
 
 	private DateTime time;
+	
+	private boolean background = false;
 
 	public LessonView(Context context) {
 		super(context);
 
+		setID(LESSON_ID);
 		paint = new Paint();
 		paint.setColor(Color.BLACK);
 		paint.setStrokeWidth(5);
 		paint.setStyle(Style.FILL);
 		paint.setTextSize(25);
 		paint.setAntiAlias(true);
+
 	}
 
 	public String getName() {
@@ -50,6 +54,9 @@ public class LessonView extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
+		
+
+		
 		List<Lesson> lessons = lessoncontainer.getLessons();
 
 		ArrayList<String> firstline = new ArrayList<String>();
@@ -112,7 +119,11 @@ public class LessonView extends View {
 			tmp = c + sb.toString() + ", ";
 
 			if (StaticLayout.getDesiredWidth(tmp, tp) > width) {
-				sb.append(" ...");
+				if(StaticLayout.getDesiredWidth(sb.toString()+" ...", tp) < width){
+					sb.append(" ...");
+				}else{
+					sb.append(" .");
+				}
 				break;
 			}
 

@@ -7,19 +7,19 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.Rect;
-import android.os.SystemClock;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.ViewGroup;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.gui.basti.Eyecandy.WeekHeader;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIDay;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUILessonContainer;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIWeek;
 import edu.htl3r.schoolplanner.gui.basti.Lessons.LessonView;
 
-public class WeekView extends ViewGroup {
+public class WeekLayout extends ViewGroup {
+
+	private final int HEADER_HEIGHT = 80;
+	private final int BORDERWIDTH = 2;
 
 	private GUIWeek weekdata;
 
@@ -29,11 +29,13 @@ public class WeekView extends ViewGroup {
 	private int days, hours;
 	private float widthlesson, heightlesson;
 	private Context context;
-	private final int BORDERWIDTH = 2;
 
-	public WeekView(Context context) {
+	private WeekHeader weekheader;
+
+	public WeekLayout(Context context) {
 		super(context);
 		this.context = context;
+		weekheader = new WeekHeader(context);
 		initDrawingStuff();
 	}
 
@@ -58,62 +60,79 @@ public class WeekView extends ViewGroup {
 		width = MeasureSpec.getSize(widthMeasureSpec);
 		widthlesson = width / days;
 		heightlesson = (widthlesson / 5) * 4;
-		height = (int) (heightlesson * hours);
-		
-		
-		this.setMeasuredDimension(width, height);
+		height = (int) (heightlesson * hours) + HEADER_HEIGHT;
+
+
 		for (int i = 0; i < getChildCount(); i++) {
-			LessonView c = (LessonView) getChildAt(i);
-			measureChild(c, MeasureSpec.makeMeasureSpec((int) widthlesson - 4,MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) heightlesson - 4, MeasureSpec.EXACTLY));
+			GUIView c = (GUIView) getChildAt(i);
+
+			switch (c.getId()) {
+			case GUIView.LESSON_ID:
+				measureChild(c, MeasureSpec.makeMeasureSpec((int) widthlesson - 4, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) heightlesson - 4, MeasureSpec.EXACTLY));
+				break;
+			case GUIView.HEADER_ID:
+				measureChild(c, MeasureSpec.makeMeasureSpec((int) width, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) HEADER_HEIGHT, MeasureSpec.EXACTLY));
+				break;
+			}
 		}
+		this.setMeasuredDimension(width, height);
+
 	}
 
-	
-
-	
 	@Override
-	protected void onLayout(boolean changed, int left, int top, int right,
-			int bottom) {
+	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
 		int l = 0;
-		int t = 0;
+		int t = HEADER_HEIGHT;
 		int r = (int) (l + widthlesson);
 		int b = (int) (t + heightlesson);
 		DateTime now = null;
 		DateTime old = null;
-		
+
 		for (int i = 0; i < getChildCount(); i++) {
 
-			LessonView c = (LessonView) getChildAt(i);
-			now = c.getTime();
-			
-			if (old == null) {
-				old = c.getTime();
-			} else {
+			GUIView gv = (GUIView) getChildAt(i);
 
-				if (old.compareTo(now) == 0) {
-					t += heightlesson;
-					b += heightlesson;
+			switch (gv.getId()) {
+			case GUIView.LESSON_ID:
+				LessonView c = (LessonView) gv;
+				now = c.getTime();
+
+				if (old == null) {
+					old = c.getTime();
 				} else {
-					old = now;
-					l += widthlesson;
-					r += widthlesson;
-					t = 0;
-					b = (int) (t + heightlesson);
+
+					if (old.compareTo(now) == 0) {
+						t += heightlesson;
+						b += heightlesson;
+					} else {
+						old = now;
+						l += widthlesson;
+						r += widthlesson;
+						t = HEADER_HEIGHT;
+						b = (int) (t + heightlesson);
+					}
 				}
+				c.layout(l + (BORDERWIDTH / 2), t + (BORDERWIDTH / 2), r - (BORDERWIDTH / 2), b - (BORDERWIDTH / 2));
+				break;
+
+			case GUIView.HEADER_ID:
+				gv.layout(0, 0, width, HEADER_HEIGHT);
+				break;
 			}
-			c.layout(l + (BORDERWIDTH/2), t + (BORDERWIDTH/2), r - (BORDERWIDTH/2), b - (BORDERWIDTH/2));
+
 		}
 	}
 
 	private void zeichneGatter(Canvas canvas) {
-		int tposx = 0, tposy = 0;
-		for (int i = 0; i < days - 1; i++) {
+		int tposx = 0, tposy = HEADER_HEIGHT;
+		
+		for (int i = 0; i < days - 1; ++i) {
 			tposx += widthlesson;
-			canvas.drawLine(tposx, 0, tposx, height, paint);
+			canvas.drawLine(tposx, tposy, tposx, height, paint);
 		}
 
 		tposx = 0;
-		tposy = 0;
+		tposy = HEADER_HEIGHT;
 		for (int i = 0; i < hours - 1; i++) {
 			tposy += heightlesson;
 			canvas.drawLine(0, tposy, width, tposy, paint);
@@ -134,6 +153,8 @@ public class WeekView extends ViewGroup {
 		hours = weekdata.getMaxHours();
 
 		ArrayList<DateTime> datum = weekdata.getSortDates();
+		weekheader.setMonday(datum.get(0));
+		this.addView(weekheader);
 
 		for (int i = 0; i < datum.size(); i++) {
 			GUIDay day = week.getDay(datum.get(i));
@@ -143,7 +164,7 @@ public class WeekView extends ViewGroup {
 			for (int j = 0; j < sortDates.size(); j++) {
 				GUILessonContainer lessonsContainer = day.getLessonsContainer(sortDates.get(j));
 				LessonView lv = new LessonView(context);
-				lv.setNeededData(lessonsContainer,week.getViewType());
+				lv.setNeededData(lessonsContainer, week.getViewType());
 				this.addView(lv);
 			}
 		}

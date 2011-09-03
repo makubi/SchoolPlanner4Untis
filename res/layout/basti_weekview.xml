@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<ScrollView android:layout_width="fill_parent"
-	android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
-	<RelativeLayout android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:id="@+id/week_rel">
 
-	</RelativeLayout>
-</ScrollView>
+<RelativeLayout android:layout_width="wrap_content"
+	android:layout_height="fill_parent" style="@style/background_layout"
+	xmlns:android="http://schemas.android.com/apk/res/android">
 
+	<ScrollView android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:layout_above="@+id/include1">
+		<RelativeLayout android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:id="@+id/week_rel">
+
+		</RelativeLayout>
+	</ScrollView>
+
+	<include layout="@layout/progress_bar" android:id="@+id/include1" />
+
+</RelativeLayout>
