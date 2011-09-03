@@ -41,7 +41,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see Database
  * @see JSONNetwork
  */
-public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider, LessonHelper {
+public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider, LessonHelper, LoginSetHandler {
 
 	private Database database = new Database();
 	private JSONNetwork network = new JSONNetwork();
@@ -373,6 +373,27 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 	@Override
 	public void setPermanentLesson(Lesson lesson) {
 		database.setPermanentLesson(lesson);
+	}
+
+	@Override
+	public void saveLoginSet(LoginSet loginSet) {
+		database.saveLoginSet(loginSet);
+	}
+
+	@Override
+	public void removeLoginSet(LoginSet loginSet) {
+		database.removeLoginSet(loginSet);
+	}
+
+	@Override
+	public void editLoginSet(String name, String serverUrl, String school,
+			String username, String password, boolean checked) {
+		database.editLoginSet(name, serverUrl, school, username, password, checked);
+	}
+
+	@Override
+	public List<LoginSet> getAllLoginSets() {
+		return database.getAllLoginSets();
 	}
 	
 }

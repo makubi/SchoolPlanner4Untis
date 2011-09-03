@@ -31,6 +31,7 @@ import edu.htl3r.schoolplanner.backend.MasterdataStore;
 import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseCreateConstants;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetDatabase;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
@@ -45,6 +46,8 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 
 	private MasterDataDatabase masterDataDatabase = new MasterDataDatabase(this);
 	private LessonHelperDatabase lessonHelperDatabase = new LessonHelperDatabase(this);
+	
+	private LoginSetDatabase loginSetDatabase = new LoginSetDatabase(this);
 	
 	private String loginSetKey;
 	
@@ -211,6 +214,22 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 		DateTime dateTime = new DateTime();
 		dateTime.getAndroidTime().set(millis);
 		return dateTime;
+	}
+	
+	public void saveLoginSet(LoginSet loginSet) {
+		loginSetDatabase.saveLoginSet(loginSet);
+	}
+	
+	public void removeLoginSet(LoginSet loginSet) {
+		loginSetDatabase.removeLoginSet(loginSet);
+	}
+
+	public void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked) {
+		loginSetDatabase.editLoginSet(name, serverUrl, school, username, password, checked);
+	}
+
+	public List<LoginSet> getAllLoginSets() {
+		return loginSetDatabase.getAllLoginSets();
 	}
 	
 }

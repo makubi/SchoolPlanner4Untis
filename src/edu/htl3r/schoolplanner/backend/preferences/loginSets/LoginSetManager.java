@@ -22,19 +22,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.htl3r.schoolplanner.SchoolplannerContext;
+import edu.htl3r.schoolplanner.backend.Cache;
+import edu.htl3r.schoolplanner.backend.LoginSetHandler;
 import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class LoginSetManager {
 	
 	private List<LoginSet> loginSets;
-	private LoginSetDatabase database = new LoginSetDatabase();
+	private LoginSetHandler loginSetHandler;
 	
 	private WebUntisUrlParser urlParser = new WebUntisUrlParser();
 	
-	public LoginSetManager() {
-		database.setContext(SchoolplannerContext.context);
-		loginSets = database.getAllLoginSets();
+	public LoginSetManager(Cache data) {
+		this.loginSetHandler = data;
+		loginSets = data.getAllLoginSets();
 	}
 	
 	/**
@@ -47,7 +48,7 @@ public class LoginSetManager {
 			return false;
 		}
 		loginSets.add(loginSet);
-		database.saveLoginSet(loginSet);
+		loginSetHandler.saveLoginSet(loginSet);
 		
 		return true;
 	}
@@ -98,7 +99,7 @@ public class LoginSetManager {
 
 	public void removeLoginEntry(LoginSet loginSet) {
 		loginSets.remove(loginSet);
-		database.removeLoginSet(loginSet);
+		loginSetHandler.removeLoginSet(loginSet);
 	}
 	
 	public void removeLoginEntry(int pos) {
@@ -127,7 +128,7 @@ public class LoginSetManager {
 			String username, String password, boolean checked) {
 		
 		if(has(name)) {
-			database.editLoginSet(name, urlParser.parseUrl(serverUrl), school,
+			loginSetHandler.editLoginSet(name, urlParser.parseUrl(serverUrl), school,
 					username, password, checked);
 
 			for(LoginSet loginSet : loginSets) {

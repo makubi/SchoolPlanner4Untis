@@ -20,18 +20,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import edu.htl3r.schoolplanner.backend.database.Database;
+import edu.htl3r.schoolplanner.backend.database.constants.DatabaseLoginSetConstants;
 import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class LoginSetDatabase {
 	
-	private LoginSetDatabaseHelper databaseHelper;
-	private String loginSetTableName;
+	private Database database;
 	
+	private String loginSetTableName = DatabaseLoginSetConstants.TABLE_LOGIN_SETS_NAME;
+	
+	public LoginSetDatabase(Database database) {
+		this.database = database;
+	}
+
 	public void saveLoginSet(LoginSet loginSet) {		
-		SQLiteDatabase writableDatabase = openDatabase(true);
+		SQLiteDatabase writableDatabase = this.database.openDatabase(true);
 		
 		ContentValues values = new ContentValues();
 		values.put(LoginSetConstants.nameKey, loginSet.getName());
@@ -46,21 +52,13 @@ public class LoginSetDatabase {
 		writableDatabase.setTransactionSuccessful();
 		writableDatabase.endTransaction();
 		
-		closeDatabase(writableDatabase);
-	}
-	
-	private SQLiteDatabase openDatabase(boolean writeable) {
-		return writeable ? databaseHelper.getWritableDatabase() : databaseHelper.getReadableDatabase();
-	}
-	
-	private void closeDatabase(SQLiteDatabase database) {
-		database.close();
+		this.database.closeDatabase(writableDatabase);
 	}
 	
 	public List<LoginSet> getAllLoginSets() {
 		List<LoginSet> allLoginSets = new ArrayList<LoginSet>();
 		
-		SQLiteDatabase readableDatabase = openDatabase(false);
+		SQLiteDatabase readableDatabase = this.database.openDatabase(false);
 				
 		Cursor query = readableDatabase.query(loginSetTableName, null, null, null, null, null, null);
 		
@@ -77,30 +75,25 @@ public class LoginSetDatabase {
 		}
 		
 		query.close();
-		closeDatabase(readableDatabase);
+		this.database.closeDatabase(readableDatabase);
 		
 		return allLoginSets;
 	}
 	
 	public void removeLoginSet(LoginSet loginSet) {
-		SQLiteDatabase writableDatabase = openDatabase(true);
+		SQLiteDatabase writableDatabase = this.database.openDatabase(true);
 		
 		writableDatabase.beginTransaction();
 		writableDatabase.delete(loginSetTableName, LoginSetConstants.nameKey+"=?", new String[] {loginSet.getName()});
 		writableDatabase.setTransactionSuccessful();
 		writableDatabase.endTransaction();
 		
-		closeDatabase(writableDatabase);
-	}
-	
-	public void setContext(Context context) {
-		databaseHelper = new LoginSetDatabaseHelper(context);
-		loginSetTableName = databaseHelper.getLoginsetTableName();
+		this.database.closeDatabase(writableDatabase);
 	}
 
 	public void editLoginSet(String name, String serverUrl, String school,
 			String username, String password, boolean checked) {
-		SQLiteDatabase writableDatabase = openDatabase(true);
+		SQLiteDatabase writableDatabase = this.database.openDatabase(true);
 		
 		ContentValues values = new ContentValues();
 		values.put(LoginSetConstants.serverUrlKey, serverUrl);
@@ -114,7 +107,7 @@ public class LoginSetDatabase {
 		writableDatabase.setTransactionSuccessful();
 		writableDatabase.endTransaction();
 		
-		closeDatabase(writableDatabase);
+		this.database.closeDatabase(writableDatabase);
 	}
 	
 }

@@ -67,8 +67,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		buildEmptyListTextView();
 		mainLayout = (RelativeLayout) findViewById(R.id.welcome_main_layout);
 		
-		loginmanager = new LoginSetManager();
-		((SchoolPlannerApp) getApplication()).setLoginManager(loginmanager);
+		loginmanager = ((SchoolPlannerApp) getApplication()).getLoginSetManager();
 				
 		// TODO: temporarily for easier login
 		if(loginmanager.getAllLoginSets().size() <= 0)

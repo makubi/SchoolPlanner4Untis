@@ -16,6 +16,8 @@
  */
 package edu.htl3r.schoolplanner.backend.database.constants;
 
+import edu.htl3r.schoolplanner.constants.LoginSetConstants;
+
 public interface DatabaseCreateConstants {
 
 	/** Verwende diesen Key, um Daten zu mehreren, unterschiedlichen LoginSets gleichzeit zu speichern **/
@@ -68,4 +70,11 @@ public interface DatabaseCreateConstants {
 	public static final String TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, "
 			+ DatabasePermanentLessonViewTypeConstants.ID + " INTEGER, "
 			+ DatabasePermanentLessonViewTypeConstants.VIEW_TYPE_ID + " INTEGER";
+	
+	public static final String TABLE_LOGIN_SETS_DEFINITIONS = LoginSetConstants.nameKey + " TEXT UNIQUE, "
+    		+ LoginSetConstants.serverUrlKey + " TEXT, "
+    		+ LoginSetConstants.schoolKey + " TEXT, "
+    		+ LoginSetConstants.usernameKey + " TEXT, "
+    		+ LoginSetConstants.passwordKey + " TEXT, "
+    		+ LoginSetConstants.sslOnlyKey + " BOOLEAN";
 }

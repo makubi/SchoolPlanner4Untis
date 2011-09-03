@@ -21,23 +21,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseCreateConstants;
+import edu.htl3r.schoolplanner.backend.database.constants.DatabaseLoginSetConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabasePermanentLessonConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabasePermanentLessonViewTypeConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseSchoolHolidayConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseStatusDataConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseTimegridConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseViewTypeConstants;
+import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
 
-	private final static int DATABASE_VERSION = 3;
+	private final static int DATABASE_VERSION = 4;
 	private final static String DATABASE_NAME = "db_schoolplanner_data";
 	
 	private final List<String> CREATE_TABLE_STATEMENTS = new ArrayList<String>();
@@ -67,6 +72,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		coloumnDefinitions.put(DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_ROOMS_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
 		coloumnDefinitions.put(DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_SUBJECTS_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
 		
+		coloumnDefinitions.put(DatabaseLoginSetConstants.TABLE_LOGIN_SETS_NAME, "("+DatabaseCreateConstants.TABLE_LOGIN_SETS_DEFINITIONS+");");
+		
 		for(String tableName : coloumnDefinitions.keySet()) {
 			createStatements.add(CREATE_TABLE_SQL+" "+tableName+" "+coloumnDefinitions.get(tableName));
 		}
@@ -86,12 +93,45 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		for(String sqlStatement : CREATE_TABLE_STATEMENTS) {
 			db.execSQL(sqlStatement);
 		}
+		
+		transferLoginDataToLoginSet(db);
 	}
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Bei Release entfernen
 		throw new RuntimeException("Database scheme changed. Please reinstall the app. It is currently under heavy development.");
+	}
+	
+	private void transferLoginDataToLoginSet(SQLiteDatabase db) {
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SchoolplannerContext.context);
+		final String v1_pref_key_serverurl = "serverURL";
+		final String v1_pref_key_school = "school";
+		final String v1_pref_key_username = "username";
+		final String v1_pref_key_password = "password";
+		
+		String url = preferences.getString(v1_pref_key_serverurl, "");
+		String school = preferences.getString(v1_pref_key_school, "");
+		String username = preferences.getString(v1_pref_key_username, "");
+		String password = preferences.getString(v1_pref_key_password, "");
+		
+		if(url.length() > 0 && school.length() > 0 && username.length() > 0) {
+			ContentValues values = new ContentValues();
+			values.put(LoginSetConstants.nameKey, school);
+			values.put(LoginSetConstants.serverUrlKey, url);
+			values.put(LoginSetConstants.schoolKey, school);
+			values.put(LoginSetConstants.usernameKey, username);
+			values.put(LoginSetConstants.passwordKey, password);
+			values.put(LoginSetConstants.sslOnlyKey, false);
+			
+			db.beginTransaction();
+			db.insert(DatabaseLoginSetConstants.TABLE_LOGIN_SETS_NAME, null, values);
+			db.setTransactionSuccessful();
+			db.endTransaction();
+		}
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.clear();
+		editor.commit();
 	}
 
 }
