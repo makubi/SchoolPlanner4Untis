@@ -3,7 +3,7 @@ package edu.htl3r.schoolplanner.gui.basti.Week;
 import android.content.Context;
 import android.view.View;
 
-public class GUIView extends View{
+public class GUIWeekView extends View{
 
 	
 	public final static int LESSON_ID = 0;
@@ -12,7 +12,7 @@ public class GUIView extends View{
 	
 	private int id = LESSON_ID;
 	
-	public GUIView(Context context) {
+	public GUIWeekView(Context context) {
 		super(context);
 	}
 	

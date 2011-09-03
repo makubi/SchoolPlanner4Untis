@@ -17,13 +17,10 @@
 */
 package edu.htl3r.schoolplanner.gui.basti;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
@@ -49,7 +46,8 @@ public class ViewBasti extends SchoolPlannerActivity{
 		setContentView(R.layout.basti_weekview);
 		container = (RelativeLayout)findViewById(R.id.week_rel);
 		DateTime date = new DateTime();
-		date.set(13, 9, 2010);
+		
+		date.set(14, 2, 2011);
 		
 		LoadWeekData loadweek = new LoadWeekData();
 		loadweek.setContext(this);

@@ -41,7 +41,7 @@ public class GUIContentManager {
 		if(viewlength == WEEK){
 			RenderInfoWeekTable weekinfo = new RenderInfoWeekTable();
 			DateTime end = new DateTime();
-			end.set(17, 9, 2010);
+			end.set(start.getDay()+4, start.getMonth(), start.getYear());
 			Map<String, List<Lesson>> lessonsForSomeTime = datacenter.getLessonsForSomeTime(viewtype, start, end);
 			if(lessonsForSomeTime.size() != 0 && lessonsForSomeTime != null){
 				weekinfo.setWeekData(lessonsForSomeTime);

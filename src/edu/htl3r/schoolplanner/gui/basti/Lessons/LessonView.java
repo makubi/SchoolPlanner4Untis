@@ -20,9 +20,9 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUILessonContainer;
-import edu.htl3r.schoolplanner.gui.basti.Week.GUIView;
+import edu.htl3r.schoolplanner.gui.basti.Week.GUIWeekView;
 
-public class LessonView extends GUIView {
+public class LessonView extends GUIWeekView {
 
 	private GUILessonContainer lessoncontainer;
 	private Paint paint;
