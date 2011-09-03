@@ -26,6 +26,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
+import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 
 public class SchoolPlannerApp extends Application {
@@ -34,11 +35,14 @@ public class SchoolPlannerApp extends Application {
 	
 	private Cache data;
 	
+	private Settings settings;
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 
 		initBackend();
+		settings = new Settings();
 		
 		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
 		registerReceiver(new BroadcastReceiver() {
@@ -74,6 +78,10 @@ public class SchoolPlannerApp extends Application {
 	
 	public Cache getData() {
 		return data;
+	}
+
+	public Settings getSettings() {
+		return settings;
 	}
 	
 }
