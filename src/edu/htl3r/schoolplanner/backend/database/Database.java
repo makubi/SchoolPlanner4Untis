@@ -78,11 +78,11 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 	}
 	
 	public void deleteAllRows(SQLiteDatabase database, String table) {
-		database.delete(table, DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=?", new String[]{loginSetKey});
+		database.delete(table, null, null);
 	}
 	
 	public void deleteAllRowsWithLoginSetKey(SQLiteDatabase database, String table) {
-		database.delete(table, null, null);
+		database.delete(table, DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=?", new String[]{loginSetKey});
 	}
 
 	@Override
