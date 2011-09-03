@@ -53,10 +53,15 @@ public class ViewBasti extends SchoolPlannerActivity {
 		WeekView weekview = new WeekView(this);
 		Log.d("basti",week.toString());
 		weekview.setWeekData(week);
+		
+		
 		setContentView(R.layout.basti_weekview);
-		
-		
+
 		RelativeLayout r = (RelativeLayout)findViewById(R.id.week_rel);
 		r.addView(weekview);
+		Log.d("basti", "viewbasti  oncreate");
+
+		
+
 	}
 }

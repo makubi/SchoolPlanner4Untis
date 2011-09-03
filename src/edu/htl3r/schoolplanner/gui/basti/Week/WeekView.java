@@ -7,6 +7,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
+import android.os.SystemClock;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
@@ -35,6 +39,12 @@ public class WeekView extends ViewGroup {
 
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
+		super.dispatchDraw(canvas);
+		Log.d("basti", "weekview dispatchdraw");
+		
+		Rect clipBounds = canvas.getClipBounds();
+		Log.d("basti", clipBounds.flattenToString());
+		
 		for (int i = getChildCount() - 1; i >= 0; i--) {
 			drawChild(canvas, getChildAt(i), 0);
 		}
@@ -44,31 +54,43 @@ public class WeekView extends ViewGroup {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		zeichneGatter(canvas);
+		Log.d("basti", "weekview ondraw");
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		width = MeasureSpec.getSize(widthMeasureSpec);
 		widthlesson = width / days;
 		heightlesson = (widthlesson / 5) * 4;
 		height = (int) (heightlesson * hours);
-		setMeasuredDimension(width, height);
+		
+		
+		this.setMeasuredDimension(width, height);
+		for (int i = 0; i < getChildCount(); i++) {
+			LessonView c = (LessonView) getChildAt(i);
+			measureChild(c, MeasureSpec.makeMeasureSpec((int) widthlesson - 4,MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) heightlesson - 4, MeasureSpec.EXACTLY));
+		}
+		Log.d("basti", "weekview onmeasure");
+
 	}
 
+	
+
+	
 	@Override
 	protected void onLayout(boolean changed, int left, int top, int right,
 			int bottom) {
-
 		int l = 0;
 		int t = 0;
 		int r = (int) (l + widthlesson);
 		int b = (int) (t + heightlesson);
 		DateTime now = null;
 		DateTime old = null;
+		
 		for (int i = 0; i < getChildCount(); i++) {
 
 			LessonView c = (LessonView) getChildAt(i);
-
 			now = c.getTime();
 			
 			if (old == null) {
@@ -86,11 +108,10 @@ public class WeekView extends ViewGroup {
 					b = (int) (t + heightlesson);
 				}
 			}
-
-			c.measure(MeasureSpec.makeMeasureSpec((int) widthlesson - 4,MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) heightlesson - 4, MeasureSpec.EXACTLY));
-			c.layout(l + (BORDERWIDTH/2)-1, t + (BORDERWIDTH/2)-1, r - (BORDERWIDTH/2)+1, b - (BORDERWIDTH/2)+1);
-			//c.layout(l, t, r, b);
+			c.layout(l + (BORDERWIDTH/2), t + (BORDERWIDTH/2), r - (BORDERWIDTH/2), b - (BORDERWIDTH/2));
 		}
+		Log.d("basti", "weekview onlayout");
+
 	}
 
 	private void zeichneGatter(Canvas canvas) {
@@ -131,12 +152,11 @@ public class WeekView extends ViewGroup {
 			for (int j = 0; j < sortDates.size(); j++) {
 				GUILessonContainer lessonsContainer = day.getLessonsContainer(sortDates.get(j));
 				LessonView lv = new LessonView(context);
-				lv.setLesson(lessonsContainer);
-				lv.setViewType(week.getViewType());
+				lv.setNeededData(lessonsContainer,week.getViewType());
 				this.addView(lv);
 			}
 		}
-
+		Log.d("basti", "weekview setweekdate");
 	}
 
 }
