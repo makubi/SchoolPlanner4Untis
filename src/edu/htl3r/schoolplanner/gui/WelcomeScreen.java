@@ -67,8 +67,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		buildEmptyListTextView();
 		mainLayout = (RelativeLayout) findViewById(R.id.welcome_main_layout);
 		
-		loginmanager = new LoginSetManager();
-		((SchoolPlannerApp) getApplication()).setLoginManager(loginmanager);
+		loginmanager = ((SchoolPlannerApp) getApplication()).getLoginSetManager();
 				
 		// TODO: temporarily for easier login
 		if(loginmanager.getAllLoginSets().size() <= 0)
@@ -240,11 +239,11 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	}
 
 	public void editLoginSet(final String name, final String serverUrl, final String school,
-			final String username, final String password, final boolean checked) {
+			final String username, final String password, final boolean checked, final String oldServerUrl, final String oldSchool) {
 		LoginSetUpdateAsyncTask task = new LoginSetUpdateAsyncTask(this) {
 			@Override
 			protected Boolean doInBackground(Void... params) {
-				loginmanager.editLoginSet(name, serverUrl, school, username, password, checked);
+				loginmanager.editLoginSet(name, serverUrl, school, username, password, checked, oldServerUrl, oldSchool);
 				return true;
 			}
 		};

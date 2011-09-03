@@ -25,8 +25,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.format.Time;
-import android.util.Log;
-import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.MasterdataStore;
 import edu.htl3r.schoolplanner.backend.StatusData;
@@ -105,8 +103,8 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 			schoolHoliday.setId(id);
 			schoolHoliday.setName(name);
 			schoolHoliday.setLongName(longName);
-			schoolHoliday.setStartDate(millisToDateTime(startDate));
-			schoolHoliday.setEndDate(millisToDateTime(endDate));
+			schoolHoliday.setStartDate(this.database.millisToDateTime(startDate));
+			schoolHoliday.setEndDate(this.database.millisToDateTime(endDate));
 			
 			schoolHolidayList.add(schoolHoliday);
 		}
@@ -134,8 +132,8 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 			long endTime = query.getLong(indexEndTime);
 			
 			TimegridUnit timegridUnit = new TimegridUnit();
-			timegridUnit.setStart(millisToDateTime(startTime));
-			timegridUnit.setEnd(millisToDateTime(endTime));
+			timegridUnit.setStart(this.database.millisToDateTime(startTime));
+			timegridUnit.setEnd(this.database.millisToDateTime(endTime));
 			
 			timegrid.putTimegridUnit(day, timegridUnit);
 		}
@@ -214,7 +212,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 	private ViewType getViewType(String table) {
 		return viewTypeFactory.get(table);
 	}
-
+	
 	private void setViewTypeList(List<? extends ViewType> viewTypeList, String table) {
 		SQLiteDatabase database = this.database.openDatabase(true);
 		
@@ -232,9 +230,9 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 			
 			this.database.insert(database,table, values);
 		}
-		database.setTransactionSuccessful();;
+		database.setTransactionSuccessful();
 		database.endTransaction();
-		this.database.closeDatabase(database);;
+		this.database.closeDatabase(database);
 	}
 
 	@Override
@@ -276,8 +274,8 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 			values.put(DatabaseSchoolHolidayConstants.NAME, schoolHoliday.getName());
 			values.put(DatabaseSchoolHolidayConstants.LONG_NAME, schoolHoliday.getLongName());
 			
-			values.put(DatabaseSchoolHolidayConstants.START_DATE, dateTimeToMillis(schoolHoliday.getStartDate()));
-			values.put(DatabaseSchoolHolidayConstants.END_DATE, dateTimeToMillis(schoolHoliday.getEndDate()));
+			values.put(DatabaseSchoolHolidayConstants.START_DATE, this.database.dateTimeToMillis(schoolHoliday.getStartDate()));
+			values.put(DatabaseSchoolHolidayConstants.END_DATE, this.database.dateTimeToMillis(schoolHoliday.getEndDate()));
 			
 			this.database.insert(database, table, values);
 		}
@@ -286,16 +284,6 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 		this.database.closeDatabase(database);
 	}
 	
-	private long dateTimeToMillis(DateTime dateTime) {
-		return dateTime.getAndroidTime().toMillis(true);
-	}
-	
-	private DateTime millisToDateTime(long millis) {
-		DateTime dateTime = new DateTime();
-		dateTime.getAndroidTime().set(millis);
-		return dateTime;
-	}
-
 	@Override
 	public void setTimegrid(Timegrid timegrid) {
 		writeTimegrid(timegrid, DatabaseTimegridConstants.TABLE_TIMEGRID_NAME);
@@ -320,8 +308,8 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 					ContentValues values = new ContentValues();
 					values.put(DatabaseCreateConstants.TABLE_LOGINSET_KEY, this.database.getLoginSetKeyForTable());
 					values.put(DatabaseTimegridConstants.DAY, day);
-					values.put(DatabaseTimegridConstants.START_TIME, dateTimeToMillis(timegridUnit.getStart()));
-					values.put(DatabaseTimegridConstants.END_TIME, dateTimeToMillis(timegridUnit.getEnd()));
+					values.put(DatabaseTimegridConstants.START_TIME, this.database.dateTimeToMillis(timegridUnit.getStart()));
+					values.put(DatabaseTimegridConstants.END_TIME, this.database.dateTimeToMillis(timegridUnit.getEnd()));
 					
 					this.database.insert(database, table, values);
 				}
@@ -355,5 +343,47 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 		database.setTransactionSuccessful();
 		database.endTransaction();
 		this.database.closeDatabase(database);
+	}
+
+	private void deleteAllRowsFromDatabaseTransaction(String table, String loginSetKey) {
+		SQLiteDatabase database = this.database.openDatabase(true);
+		database.beginTransaction();
+		
+		this.database.deleteAllRowsWithLoginSetKey(database, table, loginSetKey);
+		
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		this.database.closeDatabase(database);
+	}
+
+	public void deleteAllRowsFromSchoolClassListWithLoginSetKey(String loginSetKey) {
+		deleteAllRowsFromDatabaseTransaction(DatabaseViewTypeConstants.TABLE_SCHOOL_CLASSES_NAME, loginSetKey);
+	}
+
+	public void deleteAllRowsFromSchoolTeacherListWithLoginSetKey(
+			String loginSetKey) {
+		deleteAllRowsFromDatabaseTransaction(DatabaseViewTypeConstants.TABLE_SCHOOL_TEACHER_NAME, loginSetKey);
+	}
+	
+	public void deleteAllRowsFromSchoolRoomListWithLoginSetKey(
+			String loginSetKey) {
+		deleteAllRowsFromDatabaseTransaction(DatabaseViewTypeConstants.TABLE_SCHOOL_ROOMS_NAME, loginSetKey);
+	}
+
+	public void deleteAllRowsFromSchoolSubjectListWithLoginSetKey(
+			String loginSetKey) {
+		deleteAllRowsFromDatabaseTransaction(DatabaseViewTypeConstants.TABLE_SCHOOL_SUBJECTS_NAME, loginSetKey);
+	}
+	
+	public void deleteAllRowsFromSchoolHolidayListWithLoginSetKey(String loginSetKey) {
+		deleteAllRowsFromDatabaseTransaction(DatabaseSchoolHolidayConstants.TABLE_SCHOOL_HOLIDAYS_NAME, loginSetKey);
+	}
+	
+	public void deleteAllRowsFromTimegridWithLoginSetKey(String loginSetKey) {
+		deleteAllRowsFromDatabaseTransaction(DatabaseTimegridConstants.TABLE_TIMEGRID_NAME, loginSetKey);
+	}
+	
+	public void deleteAllRowsFromStatusDataListWithLoginSetKey(String loginSetKey) {
+		deleteAllRowsFromDatabaseTransaction(DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME, loginSetKey);
 	}
 }

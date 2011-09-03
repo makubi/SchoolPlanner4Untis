@@ -23,6 +23,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.LessonHelper;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
@@ -30,6 +31,7 @@ import edu.htl3r.schoolplanner.backend.MasterdataStore;
 import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseCreateConstants;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetDatabase;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
@@ -44,6 +46,8 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 
 	private MasterDataDatabase masterDataDatabase = new MasterDataDatabase(this);
 	private LessonHelperDatabase lessonHelperDatabase = new LessonHelperDatabase(this);
+	
+	private LoginSetDatabase loginSetDatabase = new LoginSetDatabase(this);
 	
 	private String loginSetKey;
 	
@@ -82,6 +86,11 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 	}
 	
 	public void deleteAllRowsWithLoginSetKey(SQLiteDatabase database, String table) {
+		database.delete(table, DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=?", new String[]{loginSetKey});
+	}
+	
+	public void deleteAllRowsWithLoginSetKey(SQLiteDatabase database,
+			String table, String loginSetKey) {
 		database.delete(table, DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=?", new String[]{loginSetKey});
 	}
 
@@ -200,6 +209,49 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 	@Override
 	public void setPermanentLesson(Lesson lesson) {
 		lessonHelperDatabase.setPermanentLesson(lesson);
+	}
+
+	public long dateTimeToMillis(DateTime dateTime) {
+		return dateTime.getAndroidTime().toMillis(true);
+	}
+
+	public DateTime millisToDateTime(long millis) {
+		DateTime dateTime = new DateTime();
+		dateTime.getAndroidTime().set(millis);
+		return dateTime;
+	}
+	
+	public void saveLoginSet(LoginSet loginSet) {
+		loginSetDatabase.saveLoginSet(loginSet);
+	}
+	
+	public void removeLoginSet(LoginSet loginSet) {
+		String loginSetKey = md5(loginSet.getServerUrl()+loginSet.getSchool());
+		deleteMasterdataForLoginSetKey(loginSetKey);
+		loginSetDatabase.removeLoginSet(loginSet);
+	}
+
+	public void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked, String oldServerUrl, String oldSchool) {
+		if(!serverUrl.equals(oldServerUrl) || !school.equals(oldSchool)) {
+			String loginSetKey = md5(serverUrl+school);
+			deleteMasterdataForLoginSetKey(loginSetKey);
+		}
+		loginSetDatabase.editLoginSet(name, serverUrl, school, username, password, checked);
+	}
+
+	public List<LoginSet> getAllLoginSets() {
+		return loginSetDatabase.getAllLoginSets();
+	}
+	
+	public void deleteMasterdataForLoginSetKey(String loginSetKey) {
+		masterDataDatabase.deleteAllRowsFromSchoolClassListWithLoginSetKey(loginSetKey);
+		masterDataDatabase.deleteAllRowsFromSchoolTeacherListWithLoginSetKey(loginSetKey);
+		masterDataDatabase.deleteAllRowsFromSchoolRoomListWithLoginSetKey(loginSetKey);
+		masterDataDatabase.deleteAllRowsFromSchoolSubjectListWithLoginSetKey(loginSetKey);
+		
+		masterDataDatabase.deleteAllRowsFromSchoolHolidayListWithLoginSetKey(loginSetKey);
+		masterDataDatabase.deleteAllRowsFromTimegridWithLoginSetKey(loginSetKey);
+		masterDataDatabase.deleteAllRowsFromStatusDataListWithLoginSetKey(loginSetKey);
 	}
 	
 }

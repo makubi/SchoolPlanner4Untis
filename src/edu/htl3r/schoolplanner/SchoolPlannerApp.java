@@ -31,10 +31,9 @@ import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 
 public class SchoolPlannerApp extends Application {
 	
-	private LoginSetManager loginManager;
-	
 	private Cache data;
 	
+	private LoginSetManager loginManager;
 	private Settings settings;
 	
 	@Override
@@ -42,7 +41,6 @@ public class SchoolPlannerApp extends Application {
 		super.onCreate();
 
 		initBackend();
-		settings = new Settings();
 		
 		IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
 		registerReceiver(new BroadcastReceiver() {
@@ -57,7 +55,10 @@ public class SchoolPlannerApp extends Application {
 
 	private void initBackend() {
 		SchoolplannerContext.context = getApplicationContext();
+		
 		data = new Cache();
+		loginManager = new LoginSetManager(data);
+		settings = new Settings();
 	}
 	
 	/**
@@ -71,10 +72,6 @@ public class SchoolPlannerApp extends Application {
 	public LoginSetManager getLoginManager() {
 		return loginManager;
 	}
-
-	public void setLoginManager(LoginSetManager loginSetManager) {
-		loginManager = loginSetManager;
-	}
 	
 	public Cache getData() {
 		return data;
@@ -82,6 +79,10 @@ public class SchoolPlannerApp extends Application {
 
 	public Settings getSettings() {
 		return settings;
+	}
+
+	public LoginSetManager getLoginSetManager() {
+		return loginManager;
 	}
 	
 }

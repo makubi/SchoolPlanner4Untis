@@ -19,12 +19,8 @@ package edu.htl3r.schoolplanner.backend.database;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import edu.htl3r.schoolplanner.backend.LessonHelper;
-import edu.htl3r.schoolplanner.backend.database.constants.DatabaseSchoolHolidayConstants;
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 
 public class LessonHelperDatabase implements LessonHelper {
@@ -72,8 +68,32 @@ public class LessonHelperDatabase implements LessonHelper {
 
 	@Override
 	public void setPermanentLesson(Lesson lesson) {
-		// TODO Auto-generated method stub
-
+//		final String table = DatabasePermanentLessonConstants.TABLE_PERMANENT_LESSONS_NAME;
+//		SQLiteDatabase database = this.database.openDatabase(true);
+//		
+//		this.database.deleteAllRowsWithLoginSetKey(database, table);
+//		
+//		database.beginTransaction();
+//		
+//		ContentValues values = new ContentValues();
+//		values.put(DatabaseCreateConstants.TABLE_LOGINSET_KEY, this.database.getLoginSetKeyForTable());
+//		
+//		values.put(DatabasePermanentLessonConstants.DATE, this.database.dateTimeToMillis(lesson.getDate()));
+//		values.put(DatabasePermanentLessonConstants.START_TIME, this.database.dateTimeToMillis(lesson.getStartTime()));
+//		values.put(DatabasePermanentLessonConstants.END_TIME, this.database.dateTimeToMillis(lesson.getEndTime()));
+//		
+//		values.put(DatabasePermanentLessonConstants.LIST_CLASSES, value);
+//		values.put(DatabasePermanentLessonConstants.LIST_TEACHER, value);
+//		values.put(DatabasePermanentLessonConstants.LIST_ROOMS, value);
+//		values.put(DatabasePermanentLessonConstants.LIST_SUBJECTS, value);
+//		
+//		// TODO Listen speichern
+//		
+//		this.database.insert(database, table, values);
+//		
+//		database.setTransactionSuccessful();
+//		database.endTransaction();
+//		this.database.closeDatabase(database);
 	}
 
 }
