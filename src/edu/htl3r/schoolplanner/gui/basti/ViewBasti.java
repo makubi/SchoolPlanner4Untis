@@ -17,11 +17,13 @@
 */
 package edu.htl3r.schoolplanner.gui.basti;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
@@ -34,6 +36,7 @@ import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIWeek;
 import edu.htl3r.schoolplanner.gui.basti.Week.WeekLayout;
 
 public class ViewBasti extends SchoolPlannerActivity{
+	
 	
 	private Cache cache;
 	private GUIContentManager contentmanager = new GUIContentManager();
@@ -51,8 +54,10 @@ public class ViewBasti extends SchoolPlannerActivity{
 		LoadWeekData loadweek = new LoadWeekData();
 		loadweek.setContext(this);
 		loadweek.execute(date);
+
 	}
 	
+
 	
 	public class LoadWeekData extends AsyncTask<DateTime, String, GUIWeek>{
 
@@ -83,12 +88,15 @@ public class ViewBasti extends SchoolPlannerActivity{
 		
 		@Override
 		protected void onPostExecute(GUIWeek result) {
+			if(result != null){
+				WeekLayout w = new WeekLayout(context);
+				w.setWeekData(result);
+				container.addView(w);
+				publishProgress("","false");
+			}else{
+				publishProgress("Error","false");
+			}
 			super.onPostExecute(result);
-			publishProgress("zaubere UI","true");
-			WeekLayout week = new WeekLayout(context);
-			week.setWeekData(result);
-			container.addView(week);
-			publishProgress("","false");
 		}
 
 		public void setContext(Context context) {
