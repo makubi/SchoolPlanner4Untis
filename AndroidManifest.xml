@@ -19,6 +19,12 @@
 		
 		<activity android:name=".gui.basti.ViewBasti" android:theme="@android:style/Theme.NoTitleBar" />
 		<activity android:name=".gui.chris.ViewChris" android:theme="@android:style/Theme.NoTitleBar" />
+		
+		<receiver android:name=".gui.basti.GUIErrorHandler">
+			<intent-filter>
+    			<action android:name="edu.htl3r.schoolplanner.gui.ERRORMSG" />
+  			</intent-filter>
+		</receiver>
 	</application>
 
 

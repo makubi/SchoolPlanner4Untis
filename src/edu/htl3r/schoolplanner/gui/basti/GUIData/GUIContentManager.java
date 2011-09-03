@@ -1,9 +1,13 @@
 package edu.htl3r.schoolplanner.gui.basti.GUIData;
 
+import java.util.List;
+import java.util.Map;
+
 import android.content.Context;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 
 public class GUIContentManager {
 	
@@ -38,10 +42,15 @@ public class GUIContentManager {
 			RenderInfoWeekTable weekinfo = new RenderInfoWeekTable();
 			DateTime end = new DateTime();
 			end.set(17, 9, 2010);
-			weekinfo.setWeekData(datacenter.getLessonsForSomeTime(viewtype, start, end));
-			weekinfo.setTimeGrid(datacenter.getTimeGrid());
-			weekinfo.setViewType(viewtype);
-			return weekinfo.analyse();
+			Map<String, List<Lesson>> lessonsForSomeTime = datacenter.getLessonsForSomeTime(viewtype, start, end);
+			if(lessonsForSomeTime.size() != 0 && lessonsForSomeTime != null){
+				weekinfo.setWeekData(lessonsForSomeTime);
+				weekinfo.setTimeGrid(datacenter.getTimeGrid());
+				weekinfo.setViewType(viewtype);
+				return weekinfo.analyse();
+			}else{
+				return null;
+			}
 		}
 		
 		return null;
