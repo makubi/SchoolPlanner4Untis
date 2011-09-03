@@ -59,7 +59,6 @@ public class ViewBasti extends SchoolPlannerActivity {
 
 		RelativeLayout r = (RelativeLayout)findViewById(R.id.week_rel);
 		r.addView(weekview);
-		Log.d("basti", "viewbasti  oncreate");
 
 		
 

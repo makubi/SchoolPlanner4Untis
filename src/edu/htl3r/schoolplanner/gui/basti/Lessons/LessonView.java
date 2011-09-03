@@ -8,13 +8,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Typeface;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.util.Log;
 import android.view.View;
 import edu.htl3r.schoolplanner.DateTime;
-import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
@@ -53,32 +52,66 @@ public class LessonView extends View {
 		super.onDraw(canvas);
 		List<Lesson> lessons = lessoncontainer.getLessons();
 
-		ArrayList<String> title = new ArrayList<String>();
-		List<? extends ViewType> vts = null;
+		ArrayList<String> firstline = new ArrayList<String>();
+		ArrayList<String> secondline = new ArrayList<String>();
+
+		List<? extends ViewType> vtfirstline = null;
+		List<? extends ViewType> vtsecondline = null;
+
 		
 		for (Lesson l : lessons) {
+			
 			if (viewtype instanceof SchoolClass) {
-				vts = l.getSchoolSubjects();
+				vtfirstline = l.getSchoolSubjects();
+				vtsecondline = l.getSchoolTeachers();
 			} else if (viewtype instanceof SchoolTeacher) {
-				vts = l.getSchoolClasses();
+				vtfirstline = l.getSchoolClasses();
+				vtsecondline = l.getSchoolSubjects();
 			} else if (viewtype instanceof SchoolRoom) {
-				vts = l.getSchoolClasses();
+				vtfirstline = l.getSchoolClasses();
+				vtsecondline = l.getSchoolTeachers();
 			} else if (viewtype instanceof SchoolSubject) {
-				vts = l.getSchoolTeachers();
+				vtfirstline = l.getSchoolTeachers();
+				vtsecondline = l.getSchoolClasses();
 			}
 						
-			for (ViewType s : vts) {
-				title.add(s.getName());
+			for (ViewType s : vtfirstline) {
+				if(!firstline.contains(s.getName()))
+					firstline.add(s.getName());
 			}
+			for (ViewType s : vtsecondline) {
+				if(!secondline.contains(s.getName()))
+					secondline.add(s.getName());
+			}
+			
+			
 		}
-
+		
+	
+		TextPaint tp = new TextPaint(paint);
+		tp.setTypeface(Typeface.DEFAULT_BOLD); 
+		String line1 = prepareListForDisplay(firstline,tp);
+			
+		StaticLayout s = new StaticLayout(line1, tp,width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+		canvas.translate(0, 5);
+		s.draw(canvas);
+		
+		tp.setTextSize(18);
+		tp.setTypeface(Typeface.DEFAULT);
+		String line2 = prepareListForDisplay(secondline,tp);
+		s = new StaticLayout(line2, tp,width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+		canvas.translate(0, 30);
+		s.draw(canvas);
+	}
+	
+	private String prepareListForDisplay(ArrayList<String> input, TextPaint tp){
 		StringBuilder sb = new StringBuilder();
 		String tmp = "";
 
-		for (String c : title) {
-			tmp = c + sb.toString() + " ";
+		for (String c : input) {
+			tmp = c + sb.toString() + ", ";
 
-			if (StaticLayout.getDesiredWidth(tmp, new TextPaint(paint)) > width) {
+			if (StaticLayout.getDesiredWidth(tmp, tp) > width) {
 				sb.append(" ...");
 				break;
 			}
@@ -88,8 +121,7 @@ public class LessonView extends View {
 			else
 				sb.append(", " + c);
 		}
-		StaticLayout s = new StaticLayout(sb.toString(), new TextPaint(paint),width, Layout.Alignment.ALIGN_NORMAL, 0, 0, false);
-		s.draw(canvas);
+		return sb.toString();
 	}
 
 	@Override
@@ -122,7 +154,9 @@ public class LessonView extends View {
 			} else if (viewtype instanceof SchoolSubject) {
 				vt = lessons.get(0).getSchoolTeachers();
 			}
-
+			
+			
+			
 			if (vt.size() != 0) {
 				String bcolor = vt.get(0).getBackColor();
 				if (!bcolor.equalsIgnoreCase("")) {

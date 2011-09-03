@@ -40,11 +40,7 @@ public class WeekView extends ViewGroup {
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
 		super.dispatchDraw(canvas);
-		Log.d("basti", "weekview dispatchdraw");
-		
-		Rect clipBounds = canvas.getClipBounds();
-		Log.d("basti", clipBounds.flattenToString());
-		
+
 		for (int i = getChildCount() - 1; i >= 0; i--) {
 			drawChild(canvas, getChildAt(i), 0);
 		}
@@ -54,7 +50,6 @@ public class WeekView extends ViewGroup {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		zeichneGatter(canvas);
-		Log.d("basti", "weekview ondraw");
 	}
 
 	@Override
@@ -71,8 +66,6 @@ public class WeekView extends ViewGroup {
 			LessonView c = (LessonView) getChildAt(i);
 			measureChild(c, MeasureSpec.makeMeasureSpec((int) widthlesson - 4,MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) heightlesson - 4, MeasureSpec.EXACTLY));
 		}
-		Log.d("basti", "weekview onmeasure");
-
 	}
 
 	
@@ -110,8 +103,6 @@ public class WeekView extends ViewGroup {
 			}
 			c.layout(l + (BORDERWIDTH/2), t + (BORDERWIDTH/2), r - (BORDERWIDTH/2), b - (BORDERWIDTH/2));
 		}
-		Log.d("basti", "weekview onlayout");
-
 	}
 
 	private void zeichneGatter(Canvas canvas) {
@@ -156,7 +147,6 @@ public class WeekView extends ViewGroup {
 				this.addView(lv);
 			}
 		}
-		Log.d("basti", "weekview setweekdate");
 	}
 
 }
