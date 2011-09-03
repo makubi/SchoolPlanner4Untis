@@ -33,6 +33,7 @@ import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.constants.LoginSetConstants;
@@ -88,9 +89,14 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		super.onPostCreate(savedInstanceState);
 		
 		Settings settings = ((SchoolPlannerApp)getApplication()).getSettings();
+		String autoLoginSetString = settings.getAutoLoginSet();
 		
-		if(settings.isAutoLogin() && !settings.getAutoLoginSet().equals("")) {
-			loginListener.performLogin(loginmanager.getLoginSet(settings.getAutoLoginSet()));
+		if(settings.isAutoLogin() && !autoLoginSetString.equals("")) {
+			LoginSet loginSet = loginmanager.getLoginSet(autoLoginSetString);
+			// Kann auftreten, wenn LoginSet als AutoLogin ausgewaehlt und dann geloescht wurde
+			if(loginSet != null) {
+				loginListener.performLogin(loginSet);
+			}
 		}
 	}
 	
