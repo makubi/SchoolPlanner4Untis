@@ -114,7 +114,7 @@ public class LoginSetManager {
 		return false;
 	}
 	
-	private LoginSet getLoginSet(String name) {
+	public LoginSet getLoginSet(String name) {
 		for(LoginSet loginSet : loginSets) {
 			if(loginSet.getName().equals(name)) {
 				return loginSet;

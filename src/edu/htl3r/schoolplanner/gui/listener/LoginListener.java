@@ -48,7 +48,10 @@ public class LoginListener implements OnItemClickListener, Serializable {
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 		final LoginSet selectedEntry = welcomescreen.getLoginManager().getLoginSetOnPosition(position);
-
+		performLogin(selectedEntry);
+	}
+	
+	public void performLogin(final LoginSet selectedEntry) {
 		AsyncTask<Void, String, Void> task = new AsyncTask<Void, String, Void>() {
 
 			@Override
@@ -78,6 +81,8 @@ public class LoginListener implements OnItemClickListener, Serializable {
 						
 						publishProgress("Retrieving school subjects...");
 						bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, app.getData().getSchoolSubjectList());
+						
+						publishProgress("Loading next screen...");
 						
 						t.putExtras(bundle);
 						welcomescreen.startActivity(t);						

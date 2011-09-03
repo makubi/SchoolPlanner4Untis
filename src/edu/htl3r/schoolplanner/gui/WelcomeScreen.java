@@ -32,6 +32,8 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
+import edu.htl3r.schoolplanner.backend.preferences.Settings;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.constants.LoginSetConstants;
@@ -49,6 +51,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	private TextView emptyListTextView;
 	
 	private LoginSetManager loginmanager;
+	private LoginListener loginListener;
 	
 	private final int CONTEXT_MENU_ID = 1;
 	
@@ -74,9 +77,27 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		registerForContextMenu(mainListView);
 		
 		initList();
-		mainListView.setOnItemClickListener(new LoginListener(this));
+		
+		loginListener = new LoginListener(this);
+		mainListView.setOnItemClickListener(loginListener);
 		
 		initContextMenu();
+	}
+	
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		
+		Settings settings = ((SchoolPlannerApp)getApplication()).getSettings();
+		String autoLoginSetString = settings.getAutoLoginSet();
+		
+		if(settings.isAutoLogin() && !autoLoginSetString.equals("")) {
+			LoginSet loginSet = loginmanager.getLoginSet(autoLoginSetString);
+			// Kann auftreten, wenn LoginSet als AutoLogin ausgewaehlt und dann geloescht wurde
+			if(loginSet != null) {
+				loginListener.performLogin(loginSet);
+			}
+		}
 	}
 	
 	private void buildEmptyListTextView() {
