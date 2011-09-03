@@ -125,11 +125,11 @@ public class LoginSetManager {
 	}
 
 	public void editLoginSet(String name, String serverUrl, String school,
-			String username, String password, boolean checked) {
+			String username, String password, boolean checked, String oldServerUrl, String oldSchool) {
 		
 		if(has(name)) {
 			loginSetHandler.editLoginSet(name, urlParser.parseUrl(serverUrl), school,
-					username, password, checked);
+					username, password, checked, oldServerUrl, oldSchool);
 
 			for(LoginSet loginSet : loginSets) {
 				if(loginSet.getName().equals(name)) {

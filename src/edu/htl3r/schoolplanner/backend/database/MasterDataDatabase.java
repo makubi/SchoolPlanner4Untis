@@ -25,7 +25,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.format.Time;
-import android.util.Log;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.MasterdataStore;
 import edu.htl3r.schoolplanner.backend.StatusData;
@@ -213,7 +212,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 	private ViewType getViewType(String table) {
 		return viewTypeFactory.get(table);
 	}
-
+	
 	private void setViewTypeList(List<? extends ViewType> viewTypeList, String table) {
 		SQLiteDatabase database = this.database.openDatabase(true);
 		
@@ -231,9 +230,9 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 			
 			this.database.insert(database,table, values);
 		}
-		database.setTransactionSuccessful();;
+		database.setTransactionSuccessful();
 		database.endTransaction();
-		this.database.closeDatabase(database);;
+		this.database.closeDatabase(database);
 	}
 
 	@Override
@@ -344,5 +343,47 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 		database.setTransactionSuccessful();
 		database.endTransaction();
 		this.database.closeDatabase(database);
+	}
+
+	private void deleteAllRowsFromDatabaseTransaction(String table, String loginSetKey) {
+		SQLiteDatabase database = this.database.openDatabase(true);
+		database.beginTransaction();
+		
+		this.database.deleteAllRowsWithLoginSetKey(database, table, loginSetKey);
+		
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		this.database.closeDatabase(database);
+	}
+
+	public void deleteAllRowsFromSchoolClassListWithLoginSetKey(String loginSetKey) {
+		deleteAllRowsFromDatabaseTransaction(DatabaseViewTypeConstants.TABLE_SCHOOL_CLASSES_NAME, loginSetKey);
+	}
+
+	public void deleteAllRowsFromSchoolTeacherListWithLoginSetKey(
+			String loginSetKey) {
+		deleteAllRowsFromDatabaseTransaction(DatabaseViewTypeConstants.TABLE_SCHOOL_TEACHER_NAME, loginSetKey);
+	}
+	
+	public void deleteAllRowsFromSchoolRoomListWithLoginSetKey(
+			String loginSetKey) {
+		deleteAllRowsFromDatabaseTransaction(DatabaseViewTypeConstants.TABLE_SCHOOL_ROOMS_NAME, loginSetKey);
+	}
+
+	public void deleteAllRowsFromSchoolSubjectListWithLoginSetKey(
+			String loginSetKey) {
+		deleteAllRowsFromDatabaseTransaction(DatabaseViewTypeConstants.TABLE_SCHOOL_SUBJECTS_NAME, loginSetKey);
+	}
+	
+	public void deleteAllRowsFromSchoolHolidayListWithLoginSetKey(String loginSetKey) {
+		deleteAllRowsFromDatabaseTransaction(DatabaseSchoolHolidayConstants.TABLE_SCHOOL_HOLIDAYS_NAME, loginSetKey);
+	}
+	
+	public void deleteAllRowsFromTimegridWithLoginSetKey(String loginSetKey) {
+		deleteAllRowsFromDatabaseTransaction(DatabaseTimegridConstants.TABLE_TIMEGRID_NAME, loginSetKey);
+	}
+	
+	public void deleteAllRowsFromStatusDataListWithLoginSetKey(String loginSetKey) {
+		deleteAllRowsFromDatabaseTransaction(DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME, loginSetKey);
 	}
 }

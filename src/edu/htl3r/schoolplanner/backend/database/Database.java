@@ -88,6 +88,11 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 	public void deleteAllRowsWithLoginSetKey(SQLiteDatabase database, String table) {
 		database.delete(table, DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=?", new String[]{loginSetKey});
 	}
+	
+	public void deleteAllRowsWithLoginSetKey(SQLiteDatabase database,
+			String table, String loginSetKey) {
+		database.delete(table, DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=?", new String[]{loginSetKey});
+	}
 
 	@Override
 	public List<SchoolClass> getSchoolClassList() {
@@ -221,15 +226,32 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 	}
 	
 	public void removeLoginSet(LoginSet loginSet) {
+		String loginSetKey = md5(loginSet.getServerUrl()+loginSet.getSchool());
+		deleteMasterdataForLoginSetKey(loginSetKey);
 		loginSetDatabase.removeLoginSet(loginSet);
 	}
 
-	public void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked) {
+	public void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked, String oldServerUrl, String oldSchool) {
+		if(!serverUrl.equals(oldServerUrl) || !school.equals(oldSchool)) {
+			String loginSetKey = md5(serverUrl+school);
+			deleteMasterdataForLoginSetKey(loginSetKey);
+		}
 		loginSetDatabase.editLoginSet(name, serverUrl, school, username, password, checked);
 	}
 
 	public List<LoginSet> getAllLoginSets() {
 		return loginSetDatabase.getAllLoginSets();
+	}
+	
+	public void deleteMasterdataForLoginSetKey(String loginSetKey) {
+		masterDataDatabase.deleteAllRowsFromSchoolClassListWithLoginSetKey(loginSetKey);
+		masterDataDatabase.deleteAllRowsFromSchoolTeacherListWithLoginSetKey(loginSetKey);
+		masterDataDatabase.deleteAllRowsFromSchoolRoomListWithLoginSetKey(loginSetKey);
+		masterDataDatabase.deleteAllRowsFromSchoolSubjectListWithLoginSetKey(loginSetKey);
+		
+		masterDataDatabase.deleteAllRowsFromSchoolHolidayListWithLoginSetKey(loginSetKey);
+		masterDataDatabase.deleteAllRowsFromTimegridWithLoginSetKey(loginSetKey);
+		masterDataDatabase.deleteAllRowsFromStatusDataListWithLoginSetKey(loginSetKey);
 	}
 	
 }

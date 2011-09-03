@@ -26,7 +26,7 @@ public interface LoginSetHandler {
 	
 	public void removeLoginSet(LoginSet loginSet);
 
-	public void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked);
+	public void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked, String oldServerUrl, String oldSchool);
 
 	public List<LoginSet> getAllLoginSets();
 }

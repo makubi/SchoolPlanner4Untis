@@ -387,8 +387,8 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 
 	@Override
 	public void editLoginSet(String name, String serverUrl, String school,
-			String username, String password, boolean checked) {
-		database.editLoginSet(name, serverUrl, school, username, password, checked);
+			String username, String password, boolean checked, String oldServerUrl, String oldSchool) {
+		database.editLoginSet(name, serverUrl, school, username, password, checked, oldServerUrl, oldSchool);
 	}
 
 	@Override

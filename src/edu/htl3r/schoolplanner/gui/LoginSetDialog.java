@@ -43,6 +43,9 @@ public class LoginSetDialog extends Dialog{
 	
 	private Context context;
 	
+	private String oldServerUrl;
+	private String oldSchool;
+	
 	/**
 	 * Benutzen, um ein neues LoginSet hinzuzufuegen.
 	 * @param context
@@ -64,9 +67,12 @@ public class LoginSetDialog extends Dialog{
 		super(context);
 		init();
 		
+		oldServerUrl = new String(loginSet.getServerUrl());
+		oldSchool = new String(loginSet.getSchool());
+		
 		nameInput.setText(loginSet.getName());
-		serverUrlInput.setText(loginSet.getServerUrl());
-		schoolInput.setText(loginSet.getSchool());
+		serverUrlInput.setText(oldServerUrl);
+		schoolInput.setText(oldSchool);
 		usernameInput.setText(loginSet.getUsername());
 		passwordInput.setText(loginSet.getPassword());
 		sslOnly.setChecked(loginSet.isSslOnly());
@@ -74,7 +80,7 @@ public class LoginSetDialog extends Dialog{
 		saveButton.setOnClickListener(new OnClickEditLoginSetListener());
 	}
 	
-	private void init() {	    
+	private void init() {
 		setContentView(R.layout.login_set_add_dialog);
 	    setTitle(R.string.login_set_add_title);
 	    setCancelable(true);
@@ -101,7 +107,7 @@ public class LoginSetDialog extends Dialog{
 		@Override
 		public void onClick(View v) {    	    	    	    	
 	    	if(requiredDataEntered()) {
-	    		parent.editLoginSet(nameInput.getText().toString(), serverUrlInput.getText().toString(), schoolInput.getText().toString(), usernameInput.getText().toString(), passwordInput.getText().toString(), sslOnly.isChecked());
+	    		parent.editLoginSet(nameInput.getText().toString(), serverUrlInput.getText().toString(), schoolInput.getText().toString(), usernameInput.getText().toString(), passwordInput.getText().toString(), sslOnly.isChecked(), oldServerUrl, oldSchool);
 	    		dismiss();
 	    	}
 	    	else {
