@@ -41,7 +41,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see Database
  * @see JSONNetwork
  */
-public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider {
+public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider, LessonHelper {
 
 	private Database database = new Database();
 	private JSONNetwork network = new JSONNetwork();
@@ -363,6 +363,16 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		errorMessage.setErrorCode(-1);
 		errorMessage.setAdditionalInfo("Unable to load data from external data sources");
 		return errorMessage;
+	}
+
+	@Override
+	public List<Lesson> getPermanentLessons() {
+		return database.getPermanentLessons();
+	}
+
+	@Override
+	public void setPermanentLesson(Lesson lesson) {
+		database.setPermanentLesson(lesson);
 	}
 	
 }

@@ -55,4 +55,17 @@ public interface DatabaseCreateConstants {
 			+ DatabaseStatusDataConstants.FORE_COLOR
 			+ " INTEGER, "
 			+ DatabaseStatusDataConstants.BACK_COLOR + " INTEGER";
+	
+	public static final String TABLE_PERMANENT_LESSONS_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, "
+			+ DatabasePermanentLessonConstants.DATE + " INTEGER, "
+			+ DatabasePermanentLessonConstants.START_TIME + " INTEGER, "
+			+ DatabasePermanentLessonConstants.END_TIME + " INTEGER, "
+			+ DatabasePermanentLessonConstants.LIST_CLASSES + " INTEGER, "
+			+ DatabasePermanentLessonConstants.LIST_TEACHER + " INTEGER, "
+			+ DatabasePermanentLessonConstants.LIST_ROOMS + " INTEGER, "
+			+ DatabasePermanentLessonConstants.LIST_SUBJECTS + " INTEGER";
+	
+	public static final String TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, "
+			+ DatabasePermanentLessonViewTypeConstants.ID + " INTEGER, "
+			+ DatabasePermanentLessonViewTypeConstants.VIEW_TYPE_ID + " INTEGER";
 }

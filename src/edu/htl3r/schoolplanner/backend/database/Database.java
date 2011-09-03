@@ -24,23 +24,26 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
+import edu.htl3r.schoolplanner.backend.LessonHelper;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.MasterdataStore;
 import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseCreateConstants;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
-public class Database implements MasterdataStore, MasterdataProvider {
+public class Database implements MasterdataStore, MasterdataProvider, LessonHelper {
 	
 	private DatabaseHelper databaseHelper = new DatabaseHelper(SchoolplannerContext.context);
 
 	private MasterDataDatabase masterDataDatabase = new MasterDataDatabase(this);
+	private LessonHelperDatabase lessonHelperDatabase = new LessonHelperDatabase(this);
 	
 	private String loginSetKey;
 	
@@ -75,6 +78,10 @@ public class Database implements MasterdataStore, MasterdataProvider {
 	}
 	
 	public void deleteAllRows(SQLiteDatabase database, String table) {
+		database.delete(table, DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=?", new String[]{loginSetKey});
+	}
+	
+	public void deleteAllRowsWithLoginSetKey(SQLiteDatabase database, String table) {
 		database.delete(table, null, null);
 	}
 
@@ -183,6 +190,16 @@ public class Database implements MasterdataStore, MasterdataProvider {
 			e.printStackTrace();
 		}
 		return "";
+	}
+
+	@Override
+	public List<Lesson> getPermanentLessons() {
+		return lessonHelperDatabase.getPermanentLessons();
+	}
+
+	@Override
+	public void setPermanentLesson(Lesson lesson) {
+		lessonHelperDatabase.setPermanentLesson(lesson);
 	}
 	
 }

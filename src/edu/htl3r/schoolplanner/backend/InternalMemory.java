@@ -18,6 +18,7 @@
 
 package edu.htl3r.schoolplanner.backend;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +38,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * Diese Klasse repraesentiert den internen, fluechtigen Speicher und haelt
  * Daten, um sie bei Gebrauch schneller und direkt aus dem RAM laden zu koennen.
  */
-public class InternalMemory implements MasterdataProvider, MasterdataStore, TimetableDataProvider, TimetableDataStore {
+public class InternalMemory implements MasterdataProvider, MasterdataStore, TimetableDataProvider, TimetableDataStore, LessonHelper {
 
 	private List<SchoolClass> schoolClassList;
 	private List<SchoolTeacher> schoolTeacherList;
@@ -51,6 +52,8 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 	private Timetable timetable = new Timetable();
 	
 	private List<StatusData> statusData;
+	
+	private List<Lesson> permanentLessons = new ArrayList<Lesson>();
 
 	@Override
 	public List<SchoolClass> getSchoolClassList() {
@@ -166,5 +169,22 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 	@Override
 	public void setStatusData(List<StatusData> statusData) {
 		this.statusData = statusData;
+	}
+
+	@Override
+	public List<Lesson> getPermanentLessons() {
+		return permanentLessons;
+	}
+
+	@Override
+	public void setPermanentLesson(Lesson lesson) {
+		for(Lesson permanentLesson : permanentLessons) {
+			if(permanentLesson.matches(lesson)) {
+				permanentLessons.remove(permanentLesson);
+				break;
+			}
+		}
+		
+		permanentLessons.add(lesson);
 	}
 }

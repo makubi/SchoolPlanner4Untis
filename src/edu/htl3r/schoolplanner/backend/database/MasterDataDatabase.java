@@ -218,7 +218,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 	private void setViewTypeList(List<? extends ViewType> viewTypeList, String table) {
 		SQLiteDatabase database = this.database.openDatabase(true);
 		
-		this.database.deleteAllRows(database, table);
+		this.database.deleteAllRowsWithLoginSetKey(database, table);
 		
 		database.beginTransaction();
 		for(ViewType viewType: viewTypeList) {
@@ -266,7 +266,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 	private void writeSchoolHolidayList(List<SchoolHoliday> holidayList, String table) {
 		SQLiteDatabase database = this.database.openDatabase(true);
 		
-		this.database.deleteAllRows(database, table);
+		this.database.deleteAllRowsWithLoginSetKey(database, table);
 		
 		database.beginTransaction();
 		for(SchoolHoliday schoolHoliday : holidayList) {
@@ -304,7 +304,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 	private void writeTimegrid(Timegrid timegrid, String table) {
 		SQLiteDatabase database = this.database.openDatabase(true);
 		
-		this.database.deleteAllRows(database, table);
+		this.database.deleteAllRowsWithLoginSetKey(database, table);
 		
 		final int[] timeWeekDays = new int[] {Time.SUNDAY, Time.MONDAY, Time.TUESDAY, Time.WEDNESDAY, Time.THURSDAY, Time.FRIDAY, Time.SATURDAY};
 		
@@ -340,7 +340,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 	private void writeStatusData(List<StatusData> statusDataList, String table) {
 		SQLiteDatabase database = this.database.openDatabase(true);
 		
-		this.database.deleteAllRows(database, table);
+		this.database.deleteAllRowsWithLoginSetKey(database, table);
 		
 		database.beginTransaction();
 		for(StatusData statusData : statusDataList) {

@@ -216,6 +216,23 @@ public class Lesson implements Serializable {
 	}
 	
 	/**
+	 * Ueberprueft, ob Datum, Anfangs- und Endzeit, Klassen-, Lehrer-, Raum- und Fachliste uebereinstimmen.
+	 * @param another Stunde, mit der diese vergleichen werden soll
+	 * @return 'true', wenn Stunde uebereinstimmt (siehe Methodenbeschreibung)
+	 */
+	public boolean matches(Lesson another) {
+		if(equals(another)) {
+			List<SchoolClass> anotherSchoolClasses = another.getSchoolClasses();
+			List<SchoolTeacher> anotherSchoolTeachers = another.getSchoolTeachers();
+			List<SchoolRoom> anotherSchoolRooms = another.getSchoolRooms();
+			List<SchoolSubject> anotherSchoolSubjects = another.getSchoolSubjects();
+			
+			return schoolClasses.size() == anotherSchoolClasses.size() && schoolClasses.containsAll(anotherSchoolClasses) && schoolTeachers.size() == anotherSchoolTeachers.size() && schoolTeachers.containsAll(anotherSchoolTeachers) && schoolRooms.size() == anotherSchoolRooms.size() && schoolRooms.containsAll(anotherSchoolRooms) && schoolSubjects.size() == anotherSchoolSubjects.size() && schoolSubjects.containsAll(anotherSchoolSubjects);									
+		}
+		return false;
+	}
+	
+	/**
 	 * Ueberprueft, ob die uebergebene Stunde am gleichen Datum und zwischen der aktuellen stattfindet.
 	 * @param another Zu ueberpruefende Stunde
 	 * @return 'true', wenn die uebergebene Stunde am gleichen Datum und zwischen der aktuellen stattfindet

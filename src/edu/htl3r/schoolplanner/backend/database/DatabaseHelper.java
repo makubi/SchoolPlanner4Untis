@@ -28,6 +28,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseCreateConstants;
+import edu.htl3r.schoolplanner.backend.database.constants.DatabasePermanentLessonConstants;
+import edu.htl3r.schoolplanner.backend.database.constants.DatabasePermanentLessonViewTypeConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseSchoolHolidayConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseStatusDataConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseTimegridConstants;
@@ -58,6 +60,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		coloumnDefinitions.put(DatabaseSchoolHolidayConstants.TABLE_SCHOOL_HOLIDAYS_NAME, "("+DatabaseCreateConstants.TABLE_SCHOOL_HOLIDAY_COLUMN_DEFINITIONS+");");
 		coloumnDefinitions.put(DatabaseTimegridConstants.TABLE_TIMEGRID_NAME, "("+DatabaseCreateConstants.TABLE_TIMEGRID_COLUMN_DEFINITIONS+");");
 		coloumnDefinitions.put(DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME, "("+DatabaseCreateConstants.TABLE_STATUS_DATA_COLUMN_DEFINITIONS+");");
+		
+		coloumnDefinitions.put(DatabasePermanentLessonConstants.TABLE_PERMANENT_LESSONS_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_DEFINITIONS+");");
+		coloumnDefinitions.put(DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_CLASSES_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
+		coloumnDefinitions.put(DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_TEACHER_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
+		coloumnDefinitions.put(DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_ROOMS_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
+		coloumnDefinitions.put(DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_SUBJECTS_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
 		
 		for(String tableName : coloumnDefinitions.keySet()) {
 			createStatements.add(CREATE_TABLE_SQL+" "+tableName+" "+coloumnDefinitions.get(tableName));
