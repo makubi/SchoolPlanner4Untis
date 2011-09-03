@@ -18,6 +18,7 @@ package edu.htl3r.schoolplanner.backend.preferences;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
@@ -64,15 +65,15 @@ public class Settings {
 		// autoselect options
 //		autoSelect = preferences.getBoolean(getString(R.string.settings_key_autoselect), false);
 //		autoSelectType = preferences.getString(getString(R.string.settings_key_autoselect_type), "");
-//		autoSelectValue = preferences.getString(getString(R.string.settings_key_autoselect), "");
+//		autoSelectValue = preferences.getString(getString(R.string.settings_key_autoselect_value), "");
 		
 		// display options
 		defaultView = preferences.getString(getString(R.string.settings_key_default_view), SettingsConstants.DEFAULT_VIEW_WEEK);
-		displaySaturday = preferences.getBoolean(getString(R.string.settings_key_autologin), true);
-		displayDate = preferences.getBoolean(getString(R.string.settings_key_autologin), true);
-		displayWeekdayNames = preferences.getBoolean(getString(R.string.settings_key_autologin), true);
-		displayTimegrid = preferences.getBoolean(getString(R.string.settings_key_autologin), true);
-		displayZerothLesson = preferences.getBoolean(getString(R.string.settings_key_autologin), true);
+		displaySaturday = preferences.getBoolean(getString(R.string.settings_key_show_saturday), true);
+		displayDate = preferences.getBoolean(getString(R.string.settings_key_show_date), true);
+		displayWeekdayNames = preferences.getBoolean(getString(R.string.settings_key_show_weekday_names), true);
+		displayTimegrid = preferences.getBoolean(getString(R.string.settings_key_show_timegrid), true);
+		displayZerothLesson = preferences.getBoolean(getString(R.string.settings_key_show_zeroth_lesson), true);
 	}
 	
 	public boolean isAutoLogin() {
