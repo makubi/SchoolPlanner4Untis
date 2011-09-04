@@ -3,17 +3,35 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.htl3r.schoolplanner</groupId>
     <artifactId>sp4u</artifactId>
-    <version>Beta 3 Update 4</version>
+    <version>2.0</version>
     <packaging>apk</packaging>
     <name>SchoolPlanner4Untis</name>
 
+    <repositories>
+	    <repository>
+		    <id>scubywars</id>
+		    <name>Scubywars</name>
+		    <url>http://scubywars.de:8080/content/groups/public/</url>
+	    </repository>
+	    <repository>
+		    <id>android</id>
+		    <name>Android</name>
+		    <url>http://scubywars.de:8080/content/repositories/android/</url>
+	    </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
-            <groupId>com.google.android</groupId>
-            <artifactId>android</artifactId>
-            <version>2.1.2</version>
-           <scope>provided</scope>
-        </dependency>
+		<groupId>com.google.android</groupId>
+		<artifactId>android</artifactId>
+		<version>2.1.2</version>
+		<scope>provided</scope>
+	</dependency>
+	<dependency>
+		<groupId>android-extras</groupId>
+		<artifactId>compatibility-library</artifactId>
+		<version>v4</version>
+      </dependency>
     </dependencies>
 
     <build>
@@ -38,10 +56,10 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <!-- version 2.3 defaults to java 1.5, so no further configuration needed-->
                 <version>2.3.2</version>
-	<configuration>
-          <source>1.6</source>
-          <target>1.6</target>
-        </configuration>
+		<configuration>
+          		<source>1.6</source>
+          		<target>1.6</target>
+        	</configuration>
             </plugin>
         </plugins>
     </build>
