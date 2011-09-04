@@ -116,7 +116,7 @@ public class JSONNetwork implements DataProvider{
 			String errorMessage = errorObject.getString("message");
 			Log.d("JSON", "Received error code: "+errorCode+ ", message: "+errorMessage);
 			
-			if(errorCode == 0 && errorMessage.equals("not authenticated")) {
+			if(errorCode == -8520 || errorMessage.toLowerCase().equals("not authenticated")) {
 				Log.d("Network", "Reauthenticating");
 				if(authenticate()) {
 					responseString = network.getResponse(request.toString());
