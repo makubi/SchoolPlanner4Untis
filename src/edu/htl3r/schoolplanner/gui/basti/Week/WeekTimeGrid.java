@@ -4,12 +4,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.graphics.Paint.Style;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
 
 public class WeekTimeGrid extends GUIWeekView{
@@ -66,7 +64,8 @@ public class WeekTimeGrid extends GUIWeekView{
 		canvas.translate(0, offsettop+(((height-offsettop)/hours)/4));
 		for(int i=0; i<hours; i++){
 			StaticLayout s = new StaticLayout(i+"", tp,width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-			s.draw(canvas);
+			//s.draw(canvas);
+			canvas.drawText(i+"", 5, 10, tp);
 			canvas.translate(0, (height-offsettop)/hours);
 		}
 	}

@@ -99,16 +99,14 @@ public class LessonView extends GUIWeekView {
 		tp.setTypeface(Typeface.DEFAULT_BOLD); 
 		String line1 = prepareListForDisplay(firstline,tp);
 			
-		StaticLayout s = new StaticLayout(line1, tp,width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-		canvas.translate(0, 5);
-		s.draw(canvas);
+
+		canvas.drawText(line1, 5, 25, tp);
 		
 		tp.setTextSize(18);
 		tp.setTypeface(Typeface.DEFAULT);
 		String line2 = prepareListForDisplay(secondline,tp);
-		s = new StaticLayout(line2, tp,width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-		canvas.translate(0, 30);
-		s.draw(canvas);
+
+		canvas.drawText(line2, 5, 50, tp);
 	}
 	
 	private String prepareListForDisplay(ArrayList<String> input, TextPaint tp){

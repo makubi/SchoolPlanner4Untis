@@ -14,13 +14,18 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.htl3r.schoolplanner.gui.basti;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.widget.RelativeLayout;
+import android.os.Parcelable;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
@@ -32,76 +37,172 @@ import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIContentManager;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIWeek;
 import edu.htl3r.schoolplanner.gui.basti.Week.WeekLayout;
 
-public class ViewBasti extends SchoolPlannerActivity{
-	
-	
+public class ViewBasti extends SchoolPlannerActivity {
+
 	private Cache cache;
 	private GUIContentManager contentmanager = new GUIContentManager();
-	private RelativeLayout container;
+	private ViewPager myViewPager;
+	private WeekViewPageAdapter wvpageadapter;
+	private LoadWeekData loadweekdata;
 	
-	
+	private boolean isTaskUpdateing = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);    
+		super.onCreate(savedInstanceState);
 		setContentView(R.layout.basti_weekview);
-		container = (RelativeLayout)findViewById(R.id.week_rel);
-		DateTime date = new DateTime();
+
+		myViewPager = (ViewPager) findViewById(R.id.awesomepager);
+
+		wvpageadapter = new WeekViewPageAdapter();
+		wvpageadapter.setContext(this);
 		
-		date.set(14, 2, 2011);
+
+		DateTime d = new DateTime();
+		d.set(14, 2, 2011);
+
+		wvpageadapter.setDate(d);
 		
-		LoadWeekData loadweek = new LoadWeekData();
-		loadweek.setContext(this);
-		loadweek.execute(date);
+		myViewPager.setAdapter(wvpageadapter);
+		myViewPager.setCurrentItem(50);
 
 	}
-	
 
-	
-	public class LoadWeekData extends AsyncTask<DateTime, String, GUIWeek>{
+	private class LoadWeekData extends AsyncTask<DateTime, String, GUIWeek> {
 
 		private Context context;
-			
+
 		@Override
 		protected void onPreExecute() {
-			publishProgress("Erzeuge Objekte","true");
+			publishProgress("Erzeuge Objekte", "true");
 
-			cache = ((SchoolPlannerApp)getApplication()).getData();
+			cache = ((SchoolPlannerApp) getApplication()).getData();
 			contentmanager.setNeededData(context, cache);
-			contentmanager.setViewType((ViewType)getIntent().getExtras().getSerializable(BundleConstants.SELECTED_VIEW_TYPE));
+			contentmanager.setViewType((ViewType) getIntent().getExtras().getSerializable(BundleConstants.SELECTED_VIEW_TYPE));
+			isTaskUpdateing = true;
 			super.onPreExecute();
 		}
-		
+
 		@Override
 		protected GUIWeek doInBackground(DateTime... date) {
-			publishProgress("Lade Daten","true");
-			GUIWeek timeTable4GUI = contentmanager.getTimeTable4GUI(date[0]);
+			
+			DateTime d = date[0];
+			publishProgress("Lade Daten", "true");
+			GUIWeek timeTable4GUI = contentmanager.getTimeTable4GUI(d);
+	
 			return timeTable4GUI;
 		}
-	
+
 		@Override
 		protected void onProgressUpdate(String... values) {
 			super.onProgressUpdate(values);
 			setInProgress(values[0], Boolean.parseBoolean(values[1]));
 		}
-		
+
 		@Override
 		protected void onPostExecute(GUIWeek result) {
-			if(result != null){
-				WeekLayout w = new WeekLayout(context);
-				w.setWeekData(result);
-				container.addView(w);
-				publishProgress("","false");
-			}else{
-				publishProgress("Error","false");
-			}
+			publishProgress("zaubere UI", "true");
+			wvpageadapter.setWeeData(result);
+			wvpageadapter.notifyDataSetChanged();
+			publishProgress("", "false");
+			isTaskUpdateing = false;
 			super.onPostExecute(result);
 		}
 
 		public void setContext(Context context) {
 			this.context = context;
 		}
-		
-		
+
 	}
-	
+
+	public class WeekViewPageAdapter extends PagerAdapter {
+
+		DateTime date;
+		Context context;
+		WeekLayout wl;
+		int oldpos = 51;
+
+		GUIWeek data = null;
+
+		public void setDate(DateTime dt) {
+			date = dt;
+		}
+
+		public synchronized void setWeeData(GUIWeek data) {
+			wl.setWeekData(data);
+			wl.invalidate();
+		}
+
+		public void setContext(Context c) {
+			context = c;
+		}
+
+		@Override
+		public void destroyItem(View collection, int arg1, Object view) {
+			((ViewPager) collection).removeView((WeekLayout) view);
+		}
+
+		@Override
+		public void finishUpdate(View arg0) {
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public int getCount() {
+			return 100;
+		}
+
+		@Override
+		public synchronized WeekLayout instantiateItem(View collection, int position) {
+			
+			if(oldpos < position){
+				date.set(date.getDay()+7, date.getMonth(), date.getYear());
+			}
+			if(oldpos > position){
+				date.set(date.getDay()-7, date.getMonth(), date.getYear());
+			}
+			oldpos = position;
+			
+			if(!isTaskUpdateing){
+				loadweekdata = new LoadWeekData();
+				loadweekdata.setContext(context);
+				loadweekdata.execute(date);
+			}
+			
+			wl = new WeekLayout(context);
+			((ViewPager)collection).addView(wl);
+			
+		
+			return wl;
+		}
+
+		@Override
+		public boolean isViewFromObject(View view, Object object) {
+			return view == (WeekLayout)object;
+		}
+
+		@Override
+		public void restoreState(Parcelable arg0, ClassLoader arg1) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public Parcelable saveState() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void startUpdate(View arg0) {
+			// TODO Auto-generated method stub
+
+		}
+		
+		public int getItemPosition(Object object) {
+		    return oldpos;
+		}
+
+	}
+
 }

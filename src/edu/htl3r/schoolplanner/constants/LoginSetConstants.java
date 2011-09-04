@@ -16,6 +16,8 @@
 */
 package edu.htl3r.schoolplanner.constants;
 
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
+
 /**
  * Stellt Konstanten fuer die Verwaltung der {@link LoginSet}s in Datenbank / Maps zur Verfuegung.
  */

@@ -19,8 +19,8 @@ package org.springframework.web.util;
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.BitSet;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utility class for URI encoding and decoding based on RFC 3986. Offers encoding methods for

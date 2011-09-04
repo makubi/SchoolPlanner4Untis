@@ -41,6 +41,11 @@ public class WeekLayout extends ViewGroup {
 		weekheader = new WeekHeader(context);
 		weektimegrid = new WeekTimeGrid(context);
 		initDrawingStuff();
+		
+		weekdata = new GUIWeek();
+		days = 5;
+		hours=11;
+		
 	}
 
 	@Override
@@ -50,18 +55,23 @@ public class WeekLayout extends ViewGroup {
 		for (int i = getChildCount() - 1; i >= 0; i--) {
 			drawChild(canvas, getChildAt(i), 0);
 		}
+
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		zeichneGatter(canvas);
+		if(getChildCount() != 0){
+			zeichneGatter(canvas);
+		}
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		width = MeasureSpec.getSize(widthMeasureSpec);
+		
+		
 		widthlesson = (width - TIMEGRID_WIDTH)/ days;
 		heightlesson = (widthlesson / 5) * 4;
 		height = (int) (heightlesson * hours) + HEADER_HEIGHT;
@@ -182,6 +192,7 @@ public class WeekLayout extends ViewGroup {
 				this.addView(lv);
 			}
 		}
+		
 	}
 
 }
