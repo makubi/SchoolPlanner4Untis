@@ -84,6 +84,13 @@ Sollte die Fehlermeldung:
 		
 angezeigt werden, muss die Option '-XX:+AggressiveOpts' in der Datei 'eclipse.ini' entfernt werden
 
+java.lang.ClassNotFoundException: android.support.v4.view.ViewPager in loader dalvik.system.PathClassLoader
+-----------------------------------------------------------------------------------------------------------
+Sollte die App ueber das ADT-Plugin von Eclipse gestartet werden, muss das JAR-File der 'compatibility-library-v4' zum Classpath hinzugefuegt werden.
+
+Z.B. ueber Rechtsklick auf das Projekt --> 'Properties' --> 'Java Build Path' --> 'Add External JARs' und dann das JAR auswaehlen.
+Wird Maven verwendet, kann die Datei '~/.m2/repository/android-extras/compatibility-library/v4/compatibility-library-v4.jar' hinzugefuegt werden.
+
 WEITERE INFORMATIONEN ZUM PROJEKT
 ---------------------------------
 * Android Market: https://market.android.com/details?id=edu.htl3r.schoolplanner
