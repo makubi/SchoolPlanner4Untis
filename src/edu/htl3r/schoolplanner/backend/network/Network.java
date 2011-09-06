@@ -278,7 +278,7 @@ public class Network {
 	/**
 	 * Setzt den Namen der Schule, die als GET-Parameter in der Request-URL verwendet werden soll .
 	 * @param school Name der zu verwendenden Schule
-	 * @throws UnsupportedEncodingException Wenn die Kodierung nicht unterstützt wird
+	 * @throws UnsupportedEncodingException Wenn die Kodierung nicht unterstuetzt wird
 	 * @throws URISyntaxException Wenn die URL nicht gesetzt werden konnte
 	 */
 	private void setSchool(String school) throws UnsupportedEncodingException, URISyntaxException {

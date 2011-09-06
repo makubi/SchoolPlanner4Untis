@@ -49,14 +49,14 @@ public interface MasterdataStore {
 	public void setSchoolTeacherList(List<SchoolTeacher> schoolTeachers);
 
 	/**
-	 * Setzt die Fächerliste. Wird benoetigt, falls sie z.B. aus dem Netzwerk neu Uebertragen wurden, um sie mit dem lokalen Cache abzugleichen.
-	 * @param schoolSubjects Neue Liste mit Fächern 
+	 * Setzt die Faecherliste. Wird benoetigt, falls sie z.B. aus dem Netzwerk neu Uebertragen wurden, um sie mit dem lokalen Cache abzugleichen.
+	 * @param schoolSubjects Neue Liste mit Faechern 
 	 */
 	public void setSchoolSubjectList(List<SchoolSubject> schoolSubjects);
 
 	/**
 	 * Setzt die Raumliste. Wird benoetigt, falls sie z.B. aus dem Netzwerk neu Uebertragen wurden, um sie mit dem lokalen Cache abzugleichen.
-	 * @param schoolRooms Neue Liste mit Räumen 
+	 * @param schoolRooms Neue Liste mit Raeumen 
 	 */
 	public void setSchoolRoomList(List<SchoolRoom> schoolRooms);
 

@@ -17,15 +17,19 @@
  */
 package edu.htl3r.schoolplanner.gui.basti;
 
+import java.util.concurrent.LinkedBlockingQueue;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
-import android.widget.ScrollView;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
@@ -44,6 +48,9 @@ public class ViewBasti extends SchoolPlannerActivity {
 	private ViewPager myViewPager;
 	private WeekViewPageAdapter wvpageadapter;
 	private LoadWeekData loadweekdata;
+	private RelativeLayout week_container;
+	
+	public LinkedBlockingQueue<DateTime[]> downloadschlange = new LinkedBlockingQueue<DateTime[]>();
 	
 	private boolean isTaskUpdateing = false;
 
@@ -53,13 +60,16 @@ public class ViewBasti extends SchoolPlannerActivity {
 		setContentView(R.layout.basti_weekview);
 
 		myViewPager = (ViewPager) findViewById(R.id.awesomepager);
-
+		week_container = (RelativeLayout) findViewById(R.id.week_container);
 		wvpageadapter = new WeekViewPageAdapter();
 		wvpageadapter.setContext(this);
 		
+		loadweekdata = new LoadWeekData();
+		loadweekdata.setContext(this);
+		loadweekdata.execute(null);
 
 		DateTime d = new DateTime();
-		d.set(14, 2, 2011);
+		d.set(12, 9, 2011);
 
 		wvpageadapter.setDate(d);
 		
@@ -67,30 +77,56 @@ public class ViewBasti extends SchoolPlannerActivity {
 		myViewPager.setCurrentItem(50);
 
 	}
+	
+	public Handler h = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			wvpageadapter.setWeeData((GUIWeek) msg.obj,msg.arg1);
+			super.handleMessage(msg);
+		}
+	};
 
-	private class LoadWeekData extends AsyncTask<DateTime, String, GUIWeek> {
+	private class LoadWeekData extends AsyncTask<Void, String, Void> {
 
 		private Context context;
+		private int pos;
 
 		@Override
 		protected void onPreExecute() {
 			publishProgress("Erzeuge Objekte", "true");
-
 			cache = ((SchoolPlannerApp) getApplication()).getData();
 			contentmanager.setNeededData(context, cache);
 			contentmanager.setViewType((ViewType) getIntent().getExtras().getSerializable(BundleConstants.SELECTED_VIEW_TYPE));
-			isTaskUpdateing = true;
+			week_container.setClickable(false);
 			super.onPreExecute();
 		}
 
 		@Override
-		protected GUIWeek doInBackground(DateTime... date) {
+		protected Void doInBackground(Void... params) {
 			
-			DateTime d = date[0];
-			publishProgress("Lade Daten", "true");
-			GUIWeek timeTable4GUI = contentmanager.getTimeTable4GUI(d);
-	
-			return timeTable4GUI;
+			while(true){
+				DateTime d[] = null;
+				try {
+					d = downloadschlange.take();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				publishProgress("Lade Daten", "true");
+				GUIWeek timeTable4GUI = contentmanager.getTimeTable4GUI(d[0]);
+				pos = d[1].getYear();
+				
+				Log.d("basti", "Thread " + pos);
+				
+				publishProgress("zaubere UI", "true");
+				
+				Message m = new Message();
+				m.arg1 = pos;
+				m.obj = timeTable4GUI;
+				h.sendMessage(m);
+				publishProgress("", "false");
+			}
+			
+			
 		}
 
 		@Override
@@ -100,12 +136,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 		}
 
 		@Override
-		protected void onPostExecute(GUIWeek result) {
-			publishProgress("zaubere UI", "true");
-			wvpageadapter.setWeeData(result);
-			wvpageadapter.notifyDataSetChanged();
-			publishProgress("", "false");
-			isTaskUpdateing = false;
+		protected void onPostExecute(Void result) {
 			super.onPostExecute(result);
 		}
 
@@ -120,21 +151,29 @@ public class ViewBasti extends SchoolPlannerActivity {
 		DateTime date;
 		Context context;
 		WeekLayout wl;
-		int oldpos = 51;
+		int oldpos = 50;
 
-		GUIWeek data = null;
+		private WeekLayout view_cach []= new WeekLayout[100];
+
+		
+		//GUIWeek data = null;
 
 		public void setDate(DateTime dt) {
 			date = dt;
 		}
 
-		public synchronized void setWeeData(GUIWeek data) {
-			wl.setWeekData(data);
-			wl.invalidate();
+		public synchronized void setWeeData(GUIWeek data, int pos) {
+			view_cach[pos].setWeekData(data);
+			Log.d("basti", "setWeekData: " + pos);
 		}
+		
+
 
 		public void setContext(Context c) {
 			context = c;
+			for (int i = 0; i < view_cach.length; i++) {
+				view_cach[i] = new WeekLayout(context, i);
+			}
 		}
 
 		@Override
@@ -155,25 +194,42 @@ public class ViewBasti extends SchoolPlannerActivity {
 		@Override
 		public synchronized WeekLayout instantiateItem(View collection, int position) {
 			
-			if(oldpos < position){
-				date.set(date.getDay()+7, date.getMonth(), date.getYear());
-			}
-			if(oldpos > position){
-				date.set(date.getDay()-7, date.getMonth(), date.getYear());
-			}
-			oldpos = position;
+			int di = position - 50;
 			
-			if(!isTaskUpdateing){
-				loadweekdata = new LoadWeekData();
-				loadweekdata.setContext(context);
-				loadweekdata.execute(date);
-			}
+			DateTime ad = new DateTime();
+			ad.set(date.getDay() + (di*7), date.getMonth(), date.getYear());
 			
-			wl = new WeekLayout(context);
-			((ViewPager)collection).addView(wl);
-			
+			DateTime dummy = new DateTime();
+			dummy.set(1, 1, position);
 		
-			return wl;
+			DateTime[] blub = {ad,dummy};
+			
+			if(!view_cach[position].isDataHere && !downloadschlange.contains(blub))
+				downloadschlange.add(blub);
+
+	
+			
+			Log.d("basti", "init: " + position +" ");
+			
+			ViewPager tmp = (ViewPager)collection;
+			
+			
+			boolean vorhanden = false;
+			
+			for(int i=0; i<tmp.getChildCount(); i++){
+				if(((WeekLayout)tmp.getChildAt(i)).equals(view_cach[position])){
+					vorhanden = true;
+					break;
+				}
+			}
+			
+			if(!vorhanden)
+				tmp.addView(view_cach[position]);
+		
+			
+			oldpos = position;
+
+			return view_cach[position];
 		}
 
 		@Override
@@ -200,7 +256,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 		}
 		
 		public int getItemPosition(Object object) {
-		    return oldpos;
+		    return oldpos-1;
 		}
 
 	}

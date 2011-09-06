@@ -23,6 +23,8 @@ public class WeekLayout extends ViewGroup {
 
 	private final int BORDERWIDTH = 2;
 
+	private int ID;
+	
 	private GUIWeek weekdata;
 
 	private Paint paint;
@@ -34,17 +36,21 @@ public class WeekLayout extends ViewGroup {
 
 	private WeekHeader weekheader;
 	private WeekTimeGrid weektimegrid;
+	
+	public boolean isDataHere = false;
 
-	public WeekLayout(Context context) {
+	public WeekLayout(Context context, int id) {
 		super(context);
 		this.context = context;
+		this.ID = id;
+		
 		weekheader = new WeekHeader(context);
 		weektimegrid = new WeekTimeGrid(context);
 		initDrawingStuff();
 		
 		weekdata = new GUIWeek();
 		days = 5;
-		hours=11;
+		hours = 11;
 		
 	}
 
@@ -192,7 +198,22 @@ public class WeekLayout extends ViewGroup {
 				this.addView(lv);
 			}
 		}
-		
+		isDataHere = true;
+	}
+	
+	public int getID(){
+		return ID;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return (this.getID() == ((WeekLayout)obj).getID())? true : false;
 	}
 
+	public boolean isDataHere(){
+		return isDataHere;
+	}
+	
+	
+	
 }
