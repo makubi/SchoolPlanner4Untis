@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
@@ -176,5 +177,6 @@ public class SelectScreen extends SchoolPlannerActivity{
 		Intent basti3 = new Intent(SelectScreen.this, ViewBasti.class);
 		imageTeacher.setOnClickListener(new ViewTypeOnClickListener(this, basti3, teacherList, teacherSpinner));		
 	}
+
 	
 }

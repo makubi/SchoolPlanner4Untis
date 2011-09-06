@@ -7,7 +7,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.gui.basti.Eyecandy.WeekHeader;
@@ -16,7 +21,7 @@ import edu.htl3r.schoolplanner.gui.basti.GUIData.GUILessonContainer;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIWeek;
 import edu.htl3r.schoolplanner.gui.basti.Lessons.LessonView;
 
-public class WeekLayout extends ViewGroup {
+public class WeekLayout extends ViewGroup  {
 
 	private final int HEADER_HEIGHT = 80;
 	private final int TIMEGRID_WIDTH = 40;
@@ -24,7 +29,7 @@ public class WeekLayout extends ViewGroup {
 	private final int BORDERWIDTH = 2;
 
 	private int ID;
-	
+
 	private GUIWeek weekdata;
 
 	private Paint paint;
@@ -36,18 +41,18 @@ public class WeekLayout extends ViewGroup {
 
 	private WeekHeader weekheader;
 	private WeekTimeGrid weektimegrid;
-	
+
 	public boolean isDataHere = false;
 
 	public WeekLayout(Context context, int id) {
 		super(context);
 		this.context = context;
 		this.ID = id;
-		
+
 		weekheader = new WeekHeader(context);
 		weektimegrid = new WeekTimeGrid(context);
 		initDrawingStuff();
-		
+
 		weekdata = new GUIWeek();
 		days = 5;
 		hours = 11;
@@ -67,18 +72,19 @@ public class WeekLayout extends ViewGroup {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		if(getChildCount() != 0){
+		if (getChildCount() != 0) {
 			zeichneGatter(canvas);
 		}
+
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
 		width = MeasureSpec.getSize(widthMeasureSpec);
-		
-		
-		widthlesson = (width - TIMEGRID_WIDTH)/ days;
+
+		widthlesson = (width - TIMEGRID_WIDTH) / days;
 		heightlesson = (widthlesson / 5) * 4;
 		height = (int) (heightlesson * hours) + HEADER_HEIGHT;
 
@@ -90,13 +96,14 @@ public class WeekLayout extends ViewGroup {
 				measureChild(c, MeasureSpec.makeMeasureSpec((int) widthlesson - 4, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) heightlesson - 4, MeasureSpec.EXACTLY));
 				break;
 			case GUIWeekView.HEADER_ID:
-				measureChild(c, MeasureSpec.makeMeasureSpec((int) width-TIMEGRID_WIDTH, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) HEADER_HEIGHT, MeasureSpec.EXACTLY));
+				measureChild(c, MeasureSpec.makeMeasureSpec((int) width - TIMEGRID_WIDTH, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) HEADER_HEIGHT, MeasureSpec.EXACTLY));
 				break;
 			case GUIWeekView.TIMGRID_ID:
 				measureChild(c, MeasureSpec.makeMeasureSpec((int) TIMEGRID_WIDTH, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) height, MeasureSpec.EXACTLY));
 				break;
 			}
 		}
+
 		this.setMeasuredDimension(width, height);
 
 	}
@@ -178,7 +185,7 @@ public class WeekLayout extends ViewGroup {
 		hours = weekdata.getMaxHours();
 
 		ArrayList<DateTime> datum = weekdata.getSortDates();
-		
+
 		weekheader.setMonday(datum);
 		weektimegrid.setHours(hours);
 		weektimegrid.setOffsetTop(HEADER_HEIGHT);
@@ -200,23 +207,25 @@ public class WeekLayout extends ViewGroup {
 		}
 		isDataHere = true;
 	}
-	
-	public int getID(){
+
+	public int getID() {
 		return ID;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		return (this.getID() == ((WeekLayout)obj).getID())? true : false;
+		return (this.getID() == ((WeekLayout) obj).getID()) ? true : false;
 	}
 
-	public boolean isDataHere(){
+	public boolean isDataHere() {
 		return isDataHere;
 	}
-	
-	public DateTime getWeekDate(){
-		return (isDataHere())? weekdata.getSortDates().get(0) : new DateTime();
+
+	public DateTime getWeekDate() {
+		return (isDataHere()) ? weekdata.getSortDates().get(0) : new DateTime();
 	}
 	
-	
+	private float startX,startY,scrollByX,scrollByY;
+
+
 }

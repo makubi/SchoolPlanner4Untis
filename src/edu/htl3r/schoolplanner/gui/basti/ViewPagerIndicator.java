@@ -18,7 +18,7 @@ import android.widget.TextView;
  * Made to resemble the indicator in the Google+ application
  * in function.
  * 
- * @author Mark Gj�l @ Zylinc
+ * @author Mark Gjl @ Zylinc
  */
 public class ViewPagerIndicator extends RelativeLayout implements OnPageChangeListener {
 	private static final int PADDING = 5;

@@ -82,7 +82,8 @@ public class WeekHeader extends GUIWeekView{
 			StaticLayout s = new StaticLayout(weekdays[i], tp,lessonwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 			s.draw(canvas);
 			canvas.translate(0, 35);
-			s = new StaticLayout(DateTimeUtils.toISO8601Date(datum.get(i)), tp2,lessonwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+			
+			s = new StaticLayout(datum.get(i).getDay()+ "." +datum.get(i).getMonth()+"."+datum.get(i).getYear(), tp2,lessonwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 			s.draw(canvas);
 			canvas.translate(lessonwidth, -35);
 		}
