@@ -214,6 +214,9 @@ public class WeekLayout extends ViewGroup {
 		return isDataHere;
 	}
 	
+	public DateTime getWeekDate(){
+		return (isDataHere())? weekdata.getSortDates().get(0) : new DateTime();
+	}
 	
 	
 }

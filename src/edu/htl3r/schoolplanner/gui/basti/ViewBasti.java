@@ -20,6 +20,8 @@ package edu.htl3r.schoolplanner.gui.basti;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,6 +39,7 @@ import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
+import edu.htl3r.schoolplanner.gui.basti.ViewPagerIndicator.PageInfoProvider;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIContentManager;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIWeek;
 import edu.htl3r.schoolplanner.gui.basti.Week.WeekLayout;
@@ -49,24 +52,25 @@ public class ViewBasti extends SchoolPlannerActivity {
 	private WeekViewPageAdapter wvpageadapter;
 	private LoadWeekData loadweekdata;
 	private RelativeLayout week_container;
+	private ViewPagerIndicator indicator;
+
 	
 	public LinkedBlockingQueue<DateTime[]> downloadschlange = new LinkedBlockingQueue<DateTime[]>();
 	
-	private boolean isTaskUpdateing = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.basti_weekview);
 
-		myViewPager = (ViewPager) findViewById(R.id.awesomepager);
+		myViewPager = (ViewPager) findViewById(R.id.week_pager);
 		week_container = (RelativeLayout) findViewById(R.id.week_container);
+		indicator = (ViewPagerIndicator) findViewById(R.id.week_indicator);
+		
 		wvpageadapter = new WeekViewPageAdapter();
 		wvpageadapter.setContext(this);
 		
-		loadweekdata = new LoadWeekData();
-		loadweekdata.setContext(this);
-		loadweekdata.execute(null);
+	
 
 		DateTime d = new DateTime();
 		d.set(12, 9, 2011);
@@ -75,6 +79,20 @@ public class ViewBasti extends SchoolPlannerActivity {
 		
 		myViewPager.setAdapter(wvpageadapter);
 		myViewPager.setCurrentItem(50);
+		
+		myViewPager.setOnPageChangeListener(indicator);
+		indicator.init(100, wvpageadapter.getCount(), wvpageadapter);
+		
+		Resources res = getResources();
+		Drawable prev = res.getDrawable(R.drawable.indicator_prev_arrow);
+		Drawable next = res.getDrawable(R.drawable.indicator_next_arrow);
+		
+		// Set images for previous and next arrows.
+		indicator.setArrows(prev, next);
+		
+		loadweekdata = new LoadWeekData();
+		loadweekdata.setContext(this);
+		loadweekdata.execute();
 
 	}
 	
@@ -146,7 +164,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 
 	}
 
-	public class WeekViewPageAdapter extends PagerAdapter {
+	public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndicator.PageInfoProvider{
 
 		DateTime date;
 		Context context;
@@ -257,6 +275,14 @@ public class ViewBasti extends SchoolPlannerActivity {
 		
 		public int getItemPosition(Object object) {
 		    return oldpos-1;
+		}
+
+		@Override
+		public String getTitle(int pos) {
+			int di = pos - 50;
+			DateTime ad = new DateTime();
+			ad.set(date.getDay() + (di*7), date.getMonth(), date.getYear());
+			return ad.getDay() + "." + ad.getMonth() + "." + ad.getYear();
 		}
 
 	}
