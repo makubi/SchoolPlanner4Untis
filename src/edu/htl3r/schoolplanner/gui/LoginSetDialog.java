@@ -37,12 +37,11 @@ public class LoginSetDialog extends Dialog{
 	
 	private Button saveButton;
 	
-	private Toast errorMessage;
-
 	private WelcomeScreen parent;
 	
 	private Context context;
 	
+	private String oldName;
 	private String oldServerUrl;
 	private String oldSchool;
 	
@@ -65,12 +64,14 @@ public class LoginSetDialog extends Dialog{
 	 */
 	public LoginSetDialog(Context context, final LoginSet loginSet) {
 		super(context);
+		this.context = context;
 		init();
 		
+		oldName = new String(loginSet.getName());
 		oldServerUrl = new String(loginSet.getServerUrl());
 		oldSchool = new String(loginSet.getSchool());
 		
-		nameInput.setText(loginSet.getName());
+		nameInput.setText(oldName);
 		serverUrlInput.setText(oldServerUrl);
 		schoolInput.setText(oldSchool);
 		usernameInput.setText(loginSet.getUsername());
@@ -107,8 +108,12 @@ public class LoginSetDialog extends Dialog{
 		@Override
 		public void onClick(View v) {    	    	    	    	
 	    	if(requiredDataEntered()) {
-	    		parent.editLoginSet(nameInput.getText().toString(), serverUrlInput.getText().toString(), schoolInput.getText().toString(), usernameInput.getText().toString(), passwordInput.getText().toString(), sslOnly.isChecked(), oldServerUrl, oldSchool);
-	    		dismiss();
+	    		if(parent.editLoginSet(nameInput.getText().toString(), serverUrlInput.getText().toString(), schoolInput.getText().toString(), usernameInput.getText().toString(), passwordInput.getText().toString(), sslOnly.isChecked(), oldName, oldServerUrl, oldSchool)) {
+	    			dismiss();
+	    		}
+	    		else {
+	    			showErrorMessage("A LoginSet with that name already exists");
+	    		}
 	    	}
 	    	else {
 	    		showErrorMessage("Please enter at least name, server url, school and username");
@@ -134,7 +139,7 @@ public class LoginSetDialog extends Dialog{
 	}
 	
 	private void showErrorMessage(String message) {
-		errorMessage = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+		Toast errorMessage = Toast.makeText(context, message, Toast.LENGTH_SHORT);
 		errorMessage.show();
 	}
 	

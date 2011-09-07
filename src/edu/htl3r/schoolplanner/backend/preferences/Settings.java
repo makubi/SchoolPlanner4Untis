@@ -18,7 +18,6 @@ package edu.htl3r.schoolplanner.backend.preferences;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;

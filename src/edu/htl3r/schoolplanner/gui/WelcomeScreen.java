@@ -238,17 +238,27 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		
 	}
 
-	public void editLoginSet(final String name, final String serverUrl, final String school,
-			final String username, final String password, final boolean checked, final String oldServerUrl, final String oldSchool) {
+	public boolean editLoginSet(final String name, final String serverUrl, final String school,
+			final String username, final String password, final boolean checked, final String oldName, final String oldServerUrl, final String oldSchool) {
 		LoginSetUpdateAsyncTask task = new LoginSetUpdateAsyncTask(this) {
 			@Override
 			protected Boolean doInBackground(Void... params) {
-				loginmanager.editLoginSet(name, serverUrl, school, username, password, checked, oldServerUrl, oldSchool);
-				return true;
+				return loginmanager.editLoginSet(name, serverUrl, school, username, password, checked, oldName, oldServerUrl, oldSchool);
 			}
 		};
 		
 		task.execute();
+		
+		try {
+			return task.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	@Override

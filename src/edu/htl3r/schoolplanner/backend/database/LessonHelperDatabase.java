@@ -36,6 +36,9 @@ public class LessonHelperDatabase implements LessonHelper {
 		List<Lesson> permanentLessons = new ArrayList<Lesson>();
 		SQLiteDatabase database = this.database.openDatabase(false);
 		
+		// TODO tabelle mit lesson (ohne listen)
+		// TODO zwischentabelle mit [id der stunde, id des listenelements]
+		
 //		Cursor query = this.database.queryWithLoginSetKey(database, table);
 		
 //		int indexID = query.getColumnIndex(DatabaseSchoolHolidayConstants.ID);

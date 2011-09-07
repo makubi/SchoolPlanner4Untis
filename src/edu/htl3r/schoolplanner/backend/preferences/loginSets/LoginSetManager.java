@@ -124,24 +124,29 @@ public class LoginSetManager {
 		return null;
 	}
 
-	public void editLoginSet(String name, String serverUrl, String school,
-			String username, String password, boolean checked, String oldServerUrl, String oldSchool) {
+	public boolean editLoginSet(String name, String serverUrl, String school,
+			String username, String password, boolean checked, String oldName, String oldServerUrl, String oldSchool) {
 		
+		String parsedServerUrl = urlParser.parseUrl(serverUrl);
 		if(has(name)) {
-			loginSetHandler.editLoginSet(name, urlParser.parseUrl(serverUrl), school,
-					username, password, checked, oldServerUrl, oldSchool);
+			if(name.equals(oldName)) {
+				loginSetHandler.editLoginSet(name, parsedServerUrl, school, username, password, checked, oldServerUrl, oldSchool);
 
-			for(LoginSet loginSet : loginSets) {
-				if(loginSet.getName().equals(name)) {
-					loginSets.remove(loginSet);
-					loginSets.add(new LoginSet(name, serverUrl, school, username, password, checked));
+				for(LoginSet loginSet : loginSets) {
+					if(loginSet.getName().equals(name)) {
+						loginSets.remove(loginSet);
+						loginSets.add(new LoginSet(name, parsedServerUrl, school, username, password, checked));
+						return true;
+					}
 				}
 			}
+			else {
+				return false;
+			}
 		}
-		else {
-			removeLoginEntry(getLoginSet(name));
-			addLoginSet(name, serverUrl, school, username, password, checked);
-		}
+		
+		removeLoginEntry(getLoginSet(oldName));
+		return addLoginSet(name, parsedServerUrl, school, username, password, checked);
 	}
 	
 }

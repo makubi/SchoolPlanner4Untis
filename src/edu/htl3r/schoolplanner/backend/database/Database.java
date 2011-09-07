@@ -26,6 +26,7 @@ import android.database.sqlite.SQLiteDatabase;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.LessonHelper;
+import edu.htl3r.schoolplanner.backend.LoginSetHandler;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.MasterdataStore;
 import edu.htl3r.schoolplanner.backend.StatusData;
@@ -40,7 +41,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
-public class Database implements MasterdataStore, MasterdataProvider, LessonHelper {
+public class Database implements MasterdataStore, MasterdataProvider, LessonHelper, LoginSetHandler {
 	
 	private DatabaseHelper databaseHelper = new DatabaseHelper(SchoolplannerContext.context);
 
@@ -221,16 +222,19 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 		return dateTime;
 	}
 	
+	@Override
 	public void saveLoginSet(LoginSet loginSet) {
 		loginSetDatabase.saveLoginSet(loginSet);
 	}
 	
+	@Override
 	public void removeLoginSet(LoginSet loginSet) {
 		String loginSetKey = md5(loginSet.getServerUrl()+loginSet.getSchool());
 		deleteMasterdataForLoginSetKey(loginSetKey);
 		loginSetDatabase.removeLoginSet(loginSet);
 	}
 
+	@Override
 	public void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked, String oldServerUrl, String oldSchool) {
 		if(!serverUrl.equals(oldServerUrl) || !school.equals(oldSchool)) {
 			String loginSetKey = md5(serverUrl+school);
@@ -239,6 +243,7 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 		loginSetDatabase.editLoginSet(name, serverUrl, school, username, password, checked);
 	}
 
+	@Override
 	public List<LoginSet> getAllLoginSets() {
 		return loginSetDatabase.getAllLoginSets();
 	}
