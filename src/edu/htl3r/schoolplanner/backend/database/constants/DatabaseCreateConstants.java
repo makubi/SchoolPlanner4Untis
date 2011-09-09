@@ -59,17 +59,15 @@ public interface DatabaseCreateConstants {
 			+ DatabaseStatusDataConstants.BACK_COLOR + " INTEGER";
 	
 	public static final String TABLE_PERMANENT_LESSONS_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, "
-			+ DatabasePermanentLessonConstants.DATE + " INTEGER, "
+			+ DatabasePermanentLessonConstants.ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+			+ DatabasePermanentLessonConstants.WEEK_DAY + " INTEGER, "
 			+ DatabasePermanentLessonConstants.START_TIME + " INTEGER, "
-			+ DatabasePermanentLessonConstants.END_TIME + " INTEGER, "
-			+ DatabasePermanentLessonConstants.LIST_CLASSES + " INTEGER, "
-			+ DatabasePermanentLessonConstants.LIST_TEACHER + " INTEGER, "
-			+ DatabasePermanentLessonConstants.LIST_ROOMS + " INTEGER, "
-			+ DatabasePermanentLessonConstants.LIST_SUBJECTS + " INTEGER";
+			+ DatabasePermanentLessonConstants.END_TIME + " INTEGER";
 	
 	public static final String TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, "
-			+ DatabasePermanentLessonViewTypeConstants.ID + " INTEGER, "
-			+ DatabasePermanentLessonViewTypeConstants.VIEW_TYPE_ID + " INTEGER";
+			+ DatabasePermanentLessonViewTypeConstants.LESSON_ID + " INTEGER, "
+			+ DatabasePermanentLessonViewTypeConstants.VIEW_TYPE_ID + " INTEGER, "
+			+ DatabasePermanentLessonViewTypeConstants.VIEW_TYPE_TYPE + " TEXT";
 	
 	public static final String TABLE_LOGIN_SETS_DEFINITIONS = LoginSetConstants.nameKey + " TEXT UNIQUE, "
     		+ LoginSetConstants.serverUrlKey + " TEXT, "
@@ -78,19 +76,11 @@ public interface DatabaseCreateConstants {
     		+ LoginSetConstants.passwordKey + " TEXT, "
     		+ LoginSetConstants.sslOnlyKey + " BOOLEAN";
 	
-	public static final String TABLE_LESSONS_COLUMN_DEFINITIONS =
-			  DatabaseLessonConstants.ID+ " INTEGER, "
+	/*public static final String TABLE_LESSONS_COLUMN_DEFINITIONS = LoginSetConstants.nameKey + " TEXT UNIQUE, "
+			+ DatabaseLessonConstants.ID+ " INTEGER, "
 			+ DatabaseLessonConstants.DATE + " INTEGER, "
 			+ DatabaseLessonConstants.START_TIME + " INTEGER, "
 			+ DatabaseLessonConstants.END_TIME + " INTEGER, "
-			// TODO: Als Liste von IDs speichern?
-			+ DatabaseLessonConstants.SCHOOL_CLASS_LIST + " TEXT, "
-			// TODO: Als Liste von IDs speichern?
-			+ DatabaseLessonConstants.SCHOOL_TEACHER_LIST + " TEXT, "
-			// TODO: Als Liste von IDs speichern?
-			+ DatabaseLessonConstants.SCHOOL_ROOM_LIST + " TEXT, "
-			// TODO: Als Liste von IDs speichern?
-			+ DatabaseLessonConstants.SCHOOL_SUBJECT_LIST + " TEXT, "
 			+ DatabaseLessonConstants.LESSON_TYPE + " TEXT, "
-			+ DatabaseLessonConstants.LESSON_CODE + " TEXT";
+			+ DatabaseLessonConstants.LESSON_CODE + " TEXT";*/
 }

@@ -25,6 +25,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
+import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.LessonHelper;
 import edu.htl3r.schoolplanner.backend.LoginSetHandler;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
@@ -60,13 +61,8 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 		database.close();
 	}
 	
-	/**
-	 * Startet eine Transaction, fuegt Werte ein und endet Transaction wieder.
-	 * @param table
-	 * @param values
-	 */
-	public void insert(SQLiteDatabase database, String table, ContentValues values) {
-		database.insert(table, null, values);
+	public long insert(SQLiteDatabase database, String table, ContentValues values) {
+		return database.insert(table, null, values);
 	}
 	
 	/**
@@ -257,6 +253,10 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 		masterDataDatabase.deleteAllRowsFromSchoolHolidayListWithLoginSetKey(loginSetKey);
 		masterDataDatabase.deleteAllRowsFromTimegridWithLoginSetKey(loginSetKey);
 		masterDataDatabase.deleteAllRowsFromStatusDataListWithLoginSetKey(loginSetKey);
+	}
+
+	public void setCache(Cache cache) {
+		lessonHelperDatabase.setUnsaveDataSourceMasterdataProvider(cache);
 	}
 	
 }

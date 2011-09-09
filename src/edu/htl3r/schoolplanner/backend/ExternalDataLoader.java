@@ -341,6 +341,7 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 	}
 
 	public void setCache(Cache cache) {
+		database.setCache(cache);
 		network.setCache(cache);
 	}
 

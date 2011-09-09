@@ -19,12 +19,8 @@ package edu.htl3r.schoolplanner.backend.database.constants;
 public interface DatabasePermanentLessonConstants {
 	public static final String TABLE_PERMANENT_LESSONS_NAME = "permanentLessons";
 	
-	public static final String DATE = "date";
+	public static final String ROWID = "ROWID";	
+	public static final String WEEK_DAY = "weekDay";
 	public static final String START_TIME = "startTime";
 	public static final String END_TIME = "endTime";
-	
-	public static final String LIST_CLASSES = "classList";
-	public static final String LIST_TEACHER = "teacherList";
-	public static final String LIST_ROOMS = "roomList";
-	public static final String LIST_SUBJECTS = "subjectList";
 }

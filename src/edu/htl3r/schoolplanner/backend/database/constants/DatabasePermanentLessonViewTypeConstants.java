@@ -22,7 +22,13 @@ public interface DatabasePermanentLessonViewTypeConstants {
 	public static final String TABLE_PERMANENT_LESSONS_SCHOOL_ROOMS_NAME = "permanentLessons_schoolRooms";
 	public static final String TABLE_PERMANENT_LESSONS_SCHOOL_SUBJECTS_NAME = "permanentLessons_schoolSubjects";
 	
-	public static final String ID = "id";
-	public static final String VIEW_TYPE_ID = "viewTypeId";
+	public static final String LESSON_ID = "lessonID";
+	public static final String VIEW_TYPE_ID = "viewTypeID";
+	public static final String VIEW_TYPE_TYPE = "viewTypeType";
+	
+	public static final String VIEW_TYPE_SCHOOL_CLASS = "viewTypeSchoolClass";
+	public static final String VIEW_TYPE_SCHOOL_TEACHER = "viewTypeSchoolTeacher";
+	public static final String VIEW_TYPE_SCHOOL_ROOM = "viewTypeSchoolRoom";
+	public static final String VIEW_TYPE_SCHOOL_SUBJECT = "viewTypeSchoolSubject";
 	
 }

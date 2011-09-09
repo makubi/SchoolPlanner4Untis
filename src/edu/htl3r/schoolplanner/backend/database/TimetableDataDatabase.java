@@ -88,7 +88,7 @@ public class TimetableDataDatabase implements TimetableDataStore, TimetableDataP
 	
 	private void writeLessons(ViewType view, DateTime date, List<Lesson> lessons, String table) {
 		// TODO one table per ViewType?
-		SQLiteDatabase database = this.database.openDatabase(true);
+		/*SQLiteDatabase database = this.database.openDatabase(true);
 		
 		database.beginTransaction();
 		for(Lesson lesson : lessons) {
@@ -112,7 +112,7 @@ public class TimetableDataDatabase implements TimetableDataStore, TimetableDataP
 		}
 		database.setTransactionSuccessful();
 		database.endTransaction();
-		this.database.closeDatabase(database);
+		this.database.closeDatabase(database);*/
 	}
 
 	private String getViewTypeListAsString(List<? extends ViewType> viewTypeList) {

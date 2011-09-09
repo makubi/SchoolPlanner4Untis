@@ -268,13 +268,13 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 
 	@Override
 	public List<Lesson> getPermanentLessons() {
-		List<Lesson> permanentLessons = internalMemory.getPermanentLessons();
-		if(permanentLessons != null) {
-			return permanentLessons;
-		}
-		else {
+//		List<Lesson> permanentLessons = internalMemory.getPermanentLessons();
+//		if(permanentLessons != null) {
+//			return permanentLessons;
+//		}
+//		else {
 			return externalDataLoader.getPermanentLessons();
-		}
+//		}
 	}
 
 	@Override

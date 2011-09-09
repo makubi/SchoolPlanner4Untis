@@ -42,7 +42,7 @@ import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
 
-	private final static int DATABASE_VERSION = 4;
+	private final static int DATABASE_VERSION = 5;
 	private final static String DATABASE_NAME = "db_schoolplanner_data";
 	
 	private final List<String> CREATE_TABLE_STATEMENTS = new ArrayList<String>();
@@ -82,14 +82,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	}
 
 	@Override
-	public void onCreate(SQLiteDatabase db) {		
-		final String v1_DatabaseName = "HTL3R_SchoolPlanner";
-		ContextWrapper c = new ContextWrapper(SchoolplannerContext.context);
-		for(String name : c.databaseList()) {
-			if(v1_DatabaseName.equals(name)) {
-				Log.i("database","Deleted old database: "+c.deleteDatabase(name));
-			}
-		}
+	public void onCreate(SQLiteDatabase db) {
+		removeV1Database();
+		
 		for(String sqlStatement : CREATE_TABLE_STATEMENTS) {
 			db.execSQL(sqlStatement);
 		}
@@ -101,6 +96,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Bei Release entfernen
 		throw new RuntimeException("Database scheme changed. Please reinstall the app. It is currently under heavy development.");
+	}
+	
+	private void removeV1Database() {
+		final String v1_DatabaseName = "HTL3R_SchoolPlanner";
+		ContextWrapper c = new ContextWrapper(SchoolplannerContext.context);
+		for(String name : c.databaseList()) {
+			if(v1_DatabaseName.equals(name)) {
+				Log.i("database","Deleted old database: "+c.deleteDatabase(name));
+			}
+		}
 	}
 	
 	private void transferLoginDataToLoginSet(SQLiteDatabase db) {

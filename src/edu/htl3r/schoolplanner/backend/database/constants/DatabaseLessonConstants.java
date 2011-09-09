@@ -27,11 +27,6 @@ public interface DatabaseLessonConstants {
 	public static final String START_TIME = "startTime";
 	public static final String END_TIME = "endTime";
 	
-	public static final String SCHOOL_CLASS_LIST = "schoolClassList";
-	public static final String SCHOOL_TEACHER_LIST = "schoolTeacherList";
-	public static final String SCHOOL_SUBJECT_LIST = "schoolSubjectList";
-	public static final String SCHOOL_ROOM_LIST = "schoolRoomList";
-	
 	public static final String LESSON_TYPE = "lessonType";
 	public static final String LESSON_CODE = "lessonCode";
 	
