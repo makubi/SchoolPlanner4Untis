@@ -48,8 +48,4 @@
     <string name="settings_display_show_timegrid_summary">Display timegrid in timetable</string>
     <string name="settings_display_show_zeroth_lesson_title">Display zeroth lesson</string>
     <string name="settings_display_show_zeroth_lesson_summary">Display zeroth lesson in timetable (even if no lesson is planned)</string>
-    
-    <string name="settings_misc_header">Miscellaneous</string>
-    <string name="settings_misc_resync_masterdata_title">Resync masterdata</string>
-    <string name="settings_misc_resync_masterdata_summary"></string>
 </resources>

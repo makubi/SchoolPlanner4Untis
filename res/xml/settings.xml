@@ -81,14 +81,4 @@
                 android:summary="@string/settings_display_show_zeroth_lesson_summary" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-            android:title="@string/settings_misc_header">
-
-        <Preference
-                android:title="@string/settings_misc_resync_masterdata_title"
-                android:summary="@string/settings_misc_resync_masterdata_summary">
-                
-        </Preference>
-    </PreferenceCategory>
-
 </PreferenceScreen>
