@@ -17,9 +17,6 @@
 
 package edu.htl3r.schoolplanner;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -31,8 +28,6 @@ import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
-import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 
 public class SchoolPlannerApp extends Application {
 	

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="resync_masterdata_in_progress">Resyncing masterdata...</string>
+    <string name="resync_masterdata_finished_successful">Successfully resynced masterdata</string>
+    <string name="resync_masterdata_finished_error">Error on masterdata resync</string>
+</resources>

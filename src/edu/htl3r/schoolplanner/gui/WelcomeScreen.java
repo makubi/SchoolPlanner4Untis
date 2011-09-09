@@ -21,7 +21,9 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Dialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,8 +32,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
+import edu.htl3r.schoolplanner.backend.Cache;
+import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
@@ -273,6 +278,50 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		contextMenu = new WelcomeScreenContextMenu(this,CONTEXT_MENU_ID);
 		contextMenu.setListView(mainListView);
 		contextMenu.init();
+	}
+
+	public void resyncMasterData(int selectedItem) {
+		final LoginSet loginSet = loginmanager.getLoginSetOnPosition(selectedItem);
+		
+		AsyncTask<Void, Void, Boolean> task = new AsyncTask<Void, Void, Boolean>() {
+
+			@Override
+			protected Boolean doInBackground(Void... params) {
+				Cache cache = ((SchoolPlannerApp)getApplication()).getData();
+				cache.setLoginCredentials(loginSet);
+				DataFacade<Boolean> resyncMasterData = null;
+				if(cache.authenticate().isSuccessful() && cache.authenticate().getData()) {
+					resyncMasterData = cache.resyncMasterData();
+				}
+				
+				return resyncMasterData != null ? resyncMasterData.isSuccessful() : false;
+			}
+			
+			@Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+				setInProgress(getString(R.string.resync_masterdata_in_progress), true);
+			}
+			
+			@Override
+			protected void onPostExecute(Boolean result) {
+				super.onPostExecute(result);
+				
+				setInProgress("", false);
+				if(result) {
+					showToastMessage(getString(R.string.resync_masterdata_finished_successful));
+				}
+				else {
+					showToastMessage(getString(R.string.resync_masterdata_finished_error));
+				}
+			}
+			
+		};
+		task.execute();
+	}
+	
+	private void showToastMessage(String message) {
+		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 	}
 	
 }

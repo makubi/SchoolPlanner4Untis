@@ -25,6 +25,7 @@ import android.widget.ListView;
 import com.tani.app.ui.IconContextMenu;
 
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
 
 public class WelcomeScreenContextMenu extends IconContextMenu{
@@ -35,6 +36,7 @@ public class WelcomeScreenContextMenu extends IconContextMenu{
 	
 	private final int CONTEXT_MENU_EDIT = 1;
 	private final int CONTEXT_MENU_REMOVE = 2;
+	private final int CONTEXT_MENU_RESYNC_MASTERDATA = 3;
 	
 	public WelcomeScreenContextMenu(WelcomeScreen parent, int id) {
 		super(parent, id);
@@ -53,6 +55,9 @@ public class WelcomeScreenContextMenu extends IconContextMenu{
 					break;
 				case CONTEXT_MENU_REMOVE:
 					parentActivity.removeLoginSet((int) getSelectedItem());
+					break;
+				case CONTEXT_MENU_RESYNC_MASTERDATA:
+					parentActivity.resyncMasterData((int) getSelectedItem());
 					break;
 				}
 			}
@@ -74,6 +79,7 @@ public class WelcomeScreenContextMenu extends IconContextMenu{
 		
 		addItem(resources, parentActivity.getString(R.string.menu_edit_login_set), R.drawable.ic_menu_edit, CONTEXT_MENU_EDIT);
 		addItem(resources, parentActivity.getString(R.string.menu_remove_login_set), R.drawable.ic_menu_delete,  CONTEXT_MENU_REMOVE);
+		addItem(resources, parentActivity.getString(R.string.menu_resync_masterdata), R.drawable.ic_menu_refresh, CONTEXT_MENU_RESYNC_MASTERDATA);
 	}
 	
 	public void setListView(ListView listView) {
