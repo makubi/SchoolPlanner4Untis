@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
@@ -30,9 +29,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
@@ -62,7 +65,7 @@ public class SelectScreen extends SchoolPlannerActivity{
 		setContentView(R.layout.select_screen);
 		
 		initSpinner();
-		addImageOnClickListener();
+		
 	}
 	
 	private void initSpinner() {
@@ -114,17 +117,30 @@ public class SelectScreen extends SchoolPlannerActivity{
 			subjectSpinner.setEnabled(false);
 		}
 		
-		Intent classIntent = new Intent(SelectScreen.this, ViewBasti.class);
-		classSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, classIntent, classList));
+		if(classData.isSuccessful() && teacherData.isSuccessful() && roomData.isSuccessful() && subjectData.isSuccessful()) {
 		
-		Intent teacherIntent = new Intent(SelectScreen.this, ViewBasti.class);
-		teacherSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, teacherIntent, teacherList));
-		
-		Intent roomIntent = new Intent(SelectScreen.this, ViewBasti.class);
-		roomSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, roomIntent, roomList));
-		
-		Intent subjectIntent = new Intent(SelectScreen.this, ViewBasti.class);
-		subjectSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, subjectIntent, subjectList));
+			Intent classIntent = new Intent(SelectScreen.this, ViewBasti.class);
+			classSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, classIntent, classList));
+			
+			Intent teacherIntent = new Intent(SelectScreen.this, ViewBasti.class);
+			teacherSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, teacherIntent, teacherList));
+			
+			Intent roomIntent = new Intent(SelectScreen.this, ViewBasti.class);
+			roomSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, roomIntent, roomList));
+			
+			Intent subjectIntent = new Intent(SelectScreen.this, ViewBasti.class);
+			subjectSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, subjectIntent, subjectList));
+			
+			addImageOnClickListener(true);
+		}
+		else {
+			classSpinner.setEnabled(false);
+			teacherSpinner.setEnabled(false);
+			roomSpinner.setEnabled(false);
+			subjectSpinner.setEnabled(false);
+			
+			addImageOnClickListener(false);
+		}
 	}
 	
 	private void initViewTypeSpinner(Spinner spinner, List<? extends ViewType> list) {
@@ -159,24 +175,44 @@ public class SelectScreen extends SchoolPlannerActivity{
 	    return bmpGrayscale;
 	}
 
-	private void addImageOnClickListener() {
+	private void addImageOnClickListener(boolean enabled) {
+		
 		ImageView imageClass = (ImageView) findViewById(R.id.selectScreen_imageClass);
 		ImageView imageTeacher = (ImageView) findViewById(R.id.selectScreen_imageTeacher);
 		ImageView imageRoom = (ImageView) findViewById(R.id.selectScreen_imageRoom);
 		ImageView imageSubject = (ImageView) findViewById(R.id.selectScreen_imageSubject);
 		
-		Intent basti4 = new Intent(SelectScreen.this, ViewBasti.class);
-		imageClass.setOnClickListener(new ViewTypeOnClickListener(this, basti4, classList, classSpinner));
-		
-		Intent basti = new Intent(SelectScreen.this, ViewBasti.class);
-		imageSubject.setOnClickListener(new ViewTypeOnClickListener(this, basti, subjectList, subjectSpinner));
-		
-		Intent basti2 = new Intent(SelectScreen.this, ViewBasti.class);
-		imageRoom.setOnClickListener(new ViewTypeOnClickListener(this, basti2, roomList, roomSpinner));
-		
-		Intent basti3 = new Intent(SelectScreen.this, ViewBasti.class);
-		imageTeacher.setOnClickListener(new ViewTypeOnClickListener(this, basti3, teacherList, teacherSpinner));		
+		if(enabled) {
+			Intent basti4 = new Intent(SelectScreen.this, ViewBasti.class);
+			imageClass.setOnClickListener(new ViewTypeOnClickListener(this, basti4, classList, classSpinner));
+			
+			Intent basti = new Intent(SelectScreen.this, ViewBasti.class);
+			imageSubject.setOnClickListener(new ViewTypeOnClickListener(this, basti, subjectList, subjectSpinner));
+			
+			Intent basti2 = new Intent(SelectScreen.this, ViewBasti.class);
+			imageRoom.setOnClickListener(new ViewTypeOnClickListener(this, basti2, roomList, roomSpinner));
+			
+			Intent basti3 = new Intent(SelectScreen.this, ViewBasti.class);
+			imageTeacher.setOnClickListener(new ViewTypeOnClickListener(this, basti3, teacherList, teacherSpinner));
+		}
+		else {
+			OnClickListener unableToDisplayTimetableOnClickListener = new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					showToastMessage(getString(R.string.view_type_list_missing));
+				}
+			};
+			
+			imageClass.setOnClickListener(unableToDisplayTimetableOnClickListener);
+			imageTeacher.setOnClickListener(unableToDisplayTimetableOnClickListener);
+			imageRoom.setOnClickListener(unableToDisplayTimetableOnClickListener);
+			imageSubject.setOnClickListener(unableToDisplayTimetableOnClickListener);
+		}
 	}
 
+	private void showToastMessage(String message) {
+		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+	}
 	
 }
