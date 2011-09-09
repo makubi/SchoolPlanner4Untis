@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.graphics.Color;
+import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.Cache;
@@ -270,19 +271,26 @@ public class JSONParser {
 				if(lessonType.has(lsType)) {
 					JSONObject concreteLessonType = lessonType.getJSONObject(lsType);
 				
-					if(concreteLessonType != null) {
-						String foreColor = getValueFromJSON(concreteLessonType, "foreColor", "");
-						String backColor = getValueFromJSON(concreteLessonType, "backColor", "");
-						int fgColor = foreColor.length() > 0 ? Color.parseColor("#" + foreColor) : 0;
-						int bgColor = backColor.length() > 0 ? Color.parseColor("#" + backColor) : 0;
-						
-						StatusData statusData = new StatusData();
-						statusData.setRelatedStatusDataClass(lessonTypeCreator.createLessonType(lsType).getClass());
-						statusData.setCode(lsType);
-						statusData.setFgColor(fgColor);
-						statusData.setBgColor(bgColor);
-						
-						statusDataList.add(statusData);
+					LessonType relatedStatusData = lessonTypeCreator.createLessonType(lsType);
+					
+					if(relatedStatusData != null) {
+						if(concreteLessonType != null) {
+							String foreColor = getValueFromJSON(concreteLessonType, "foreColor", "");
+							String backColor = getValueFromJSON(concreteLessonType, "backColor", "");
+							int fgColor = foreColor.length() > 0 ? Color.parseColor("#" + foreColor) : 0;
+							int bgColor = backColor.length() > 0 ? Color.parseColor("#" + backColor) : 0;
+							
+							StatusData statusData = new StatusData();
+							statusData.setRelatedStatusDataClass(relatedStatusData.getClass());
+							statusData.setCode(lsType);
+							statusData.setFgColor(fgColor);
+							statusData.setBgColor(bgColor);
+							
+							statusDataList.add(statusData);
+						}
+					}
+					else {
+						Log.w("json","Unknown lesson type: "+lsType);
 					}
 				}
 			}
