@@ -25,10 +25,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.ErrorMessage;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
+import edu.htl3r.schoolplanner.gui.AsyncTaskProgress;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SelectScreen;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
@@ -52,7 +54,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 	}
 	
 	public void performLogin(final LoginSet selectedEntry) {
-		AsyncTask<Void, String, Void> task = new AsyncTask<Void, String, Void>() {
+		AsyncTask<Void, AsyncTaskProgress, Void> task = new AsyncTask<Void, AsyncTaskProgress, Void>() {
 
 			@Override
 			protected Void doInBackground(Void... params) {
@@ -70,36 +72,67 @@ public class LoginListener implements OnItemClickListener, Serializable {
 						Intent t = new Intent(welcomescreen, SelectScreen.class);
 						Bundle bundle = new Bundle();
 						
-						publishProgress("Retrieving school classes...");
+						AsyncTaskProgress schoolClassProgress = new AsyncTaskProgress();
+						schoolClassProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_classes));
+						schoolClassProgress.setShowProgressWheel(true);
+						
+						publishProgress(schoolClassProgress);
 						bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, app.getData().getSchoolClassList());
 						
-						publishProgress("Retrieving school teacher...");
+						
+						AsyncTaskProgress schoolTeacherProgress = new AsyncTaskProgress();
+						schoolClassProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_teacher));
+						schoolClassProgress.setShowProgressWheel(true);
+						
+						publishProgress(schoolTeacherProgress);
 						bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, app.getData().getSchoolTeacherList());
 
-						publishProgress("Retrieving school rooms...");
+						
+						AsyncTaskProgress schoolRoomProgress = new AsyncTaskProgress();
+						schoolClassProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_rooms));
+						schoolClassProgress.setShowProgressWheel(true);
+						
+						publishProgress(schoolRoomProgress);
 						bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, app.getData().getSchoolRoomList());
 						
-						publishProgress("Retrieving school subjects...");
+						
+						AsyncTaskProgress schoolSubjectProgress = new AsyncTaskProgress();
+						schoolClassProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_subjects));
+						schoolClassProgress.setShowProgressWheel(true);
+						
+						publishProgress(schoolSubjectProgress);
 						bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, app.getData().getSchoolSubjectList());
 						
-						publishProgress("Loading next screen...");
+						
+						AsyncTaskProgress loginFinished = new AsyncTaskProgress();
+						schoolClassProgress.setProgressMessage(welcomescreen.getString(R.string.loading_next_screen));
+						loginFinished.setShowProgressWheel(true);
+						
+						publishProgress(loginFinished);
 						
 						t.putExtras(bundle);
 						welcomescreen.startActivity(t);						
 					}
 					else {
-						// TODO handle error on gui
+						AsyncTaskProgress loginFailed = new AsyncTaskProgress();
+						loginFailed.setToastMessage(welcomescreen.getString(R.string.login_data_wrong));
+						publishProgress(loginFailed);
 					}
 				}
 				else {
+					AsyncTaskProgress loginError = new AsyncTaskProgress();
+					loginError.setToastMessage(welcomescreen.getString(R.string.error_occurred));
+					publishProgress(loginError);
+					
 					ErrorMessage error = authenticate.getErrorMessage();
 					String additionalInfo = error.getAdditionalInfo();
 					int errorCode = error.getErrorCode();
 					Throwable exception = error.getException();
-					// TODO handle error on gui
+					
+					Log.e("login","========== ERROR");
 					Log.e("login","info: "+additionalInfo);
 					Log.e("login","code: "+errorCode);
-					Log.e("login","e: "+exception.getMessage());
+					Log.e("login","e: "+exception.getMessage(),exception);
 				}
 				
 				
@@ -110,13 +143,24 @@ public class LoginListener implements OnItemClickListener, Serializable {
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
-				welcomescreen.setInProgress("Login in progress...", true);
+				welcomescreen.setInProgress(welcomescreen.getString(R.string.login_in_progress), true);
 			}
 			
 			@Override
-			protected void onProgressUpdate(String... values) {
+			protected void onProgressUpdate(AsyncTaskProgress... values) {
 				super.onProgressUpdate(values);
-				welcomescreen.setInProgress(values[0], true);
+				
+				AsyncTaskProgress progress = values[0];
+				String progressMessage = progress.getProgressMessage();
+				String toastMessage = progress.getToastMessage();
+				
+				if(progressMessage != null) {
+					welcomescreen.setInProgress(progressMessage, progress.isShowProgressWheel());
+				}
+				if(toastMessage != null) {
+					welcomescreen.showToastMessage(toastMessage);
+				}
+				
 			}
 
 			@Override

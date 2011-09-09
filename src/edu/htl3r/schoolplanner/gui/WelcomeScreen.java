@@ -320,7 +320,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		task.execute();
 	}
 	
-	private void showToastMessage(String message) {
+	public void showToastMessage(String message) {
 		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 	}
 	

@@ -3,4 +3,13 @@
     <string name="resync_masterdata_in_progress">Resyncing masterdata...</string>
     <string name="resync_masterdata_finished_successful">Successfully resynced masterdata</string>
     <string name="resync_masterdata_finished_error">Error on masterdata resync</string>
+    
+    <string name="login_in_progress">Login in progress...</string>
+    
+    <string name="loading_school_classes">Retrieving school classes...</string>
+    <string name="loading_school_teacher">Retrieving school teacher...</string>
+    <string name="loading_school_rooms">Retrieving school rooms...</string>
+    <string name="loading_school_subjects">Retrieving school subjects...</string>
+    
+    <string name="loading_next_screen">Loading next screen...</string>
 </resources>
