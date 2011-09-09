@@ -77,4 +77,20 @@ public interface DatabaseCreateConstants {
     		+ LoginSetConstants.usernameKey + " TEXT, "
     		+ LoginSetConstants.passwordKey + " TEXT, "
     		+ LoginSetConstants.sslOnlyKey + " BOOLEAN";
+	
+	public static final String TABLE_LESSONS_COLUMN_DEFINITIONS =
+			  DatabaseLessonConstants.ID+ " INTEGER, "
+			+ DatabaseLessonConstants.DATE + " INTEGER, "
+			+ DatabaseLessonConstants.START_TIME + " INTEGER, "
+			+ DatabaseLessonConstants.END_TIME + " INTEGER, "
+			// TODO: Als Liste von IDs speichern?
+			+ DatabaseLessonConstants.SCHOOL_CLASS_LIST + " TEXT, "
+			// TODO: Als Liste von IDs speichern?
+			+ DatabaseLessonConstants.SCHOOL_TEACHER_LIST + " TEXT, "
+			// TODO: Als Liste von IDs speichern?
+			+ DatabaseLessonConstants.SCHOOL_ROOM_LIST + " TEXT, "
+			// TODO: Als Liste von IDs speichern?
+			+ DatabaseLessonConstants.SCHOOL_SUBJECT_LIST + " TEXT, "
+			+ DatabaseLessonConstants.LESSON_TYPE + " TEXT, "
+			+ DatabaseLessonConstants.LESSON_CODE + " TEXT";
 }
