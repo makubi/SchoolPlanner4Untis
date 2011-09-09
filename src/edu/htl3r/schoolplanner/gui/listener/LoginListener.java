@@ -29,6 +29,7 @@ import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.ErrorMessage;
+import edu.htl3r.schoolplanner.backend.network.ErrorCodes;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.gui.AsyncTaskProgress;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
@@ -121,18 +122,31 @@ public class LoginListener implements OnItemClickListener, Serializable {
 				}
 				else {
 					AsyncTaskProgress loginError = new AsyncTaskProgress();
-					loginError.setToastMessage(welcomescreen.getString(R.string.error_occurred));
-					publishProgress(loginError);
+					String errorMessage;
 					
 					ErrorMessage error = authenticate.getErrorMessage();
 					String additionalInfo = error.getAdditionalInfo();
 					int errorCode = error.getErrorCode();
 					Throwable exception = error.getException();
 					
-					Log.e("login","========== ERROR");
-					Log.e("login","info: "+additionalInfo);
-					Log.e("login","code: "+errorCode);
-					Log.e("login","e: "+exception.getMessage(),exception);
+					switch (errorCode) {
+					case ErrorCodes.HTTP_HOST_CONNECTION_EXCEPTION:
+						errorMessage = welcomescreen.getString(R.string.error_connection_refused) + " " + selectedEntry.getServerUrl();
+						break;
+					case ErrorCodes.UNKNOWN_HOST_EXCEPTION:
+						errorMessage = welcomescreen.getString(R.string.error_unknown_host) + " " + selectedEntry.getServerUrl();
+						break;
+					default:
+						errorMessage = welcomescreen.getString(R.string.error_occurred);
+						Log.e("login","========== ERROR");
+						Log.e("login","info: "+additionalInfo);
+						Log.e("login","code: "+errorCode);
+						Log.e("login","e: "+exception.getMessage(),exception);
+						break;
+					}
+					
+					loginError.setToastMessage(errorMessage);
+					publishProgress(loginError);
 				}
 				
 				

@@ -19,11 +19,13 @@
 package edu.htl3r.schoolplanner.backend.network;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.conn.HttpHostConnectException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -194,10 +196,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			errorMessage.setException(e);
 			data.setErrorMessage(errorMessage);
 		} catch (IOException e) {
-			ErrorMessage errorMessage = new ErrorMessage();
-			errorMessage.setErrorCode(ErrorCodes.IO_EXCEPTION);
-			errorMessage.setException(e);
-			data.setErrorMessage(errorMessage);
+			data.setErrorMessage(getErrorMessage(e));
 		}
 
 		return data;
@@ -640,10 +639,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			errorMessage.setException(e);
 			data.setErrorMessage(errorMessage);
 		} catch (IOException e) {
-			ErrorMessage errorMessage = new ErrorMessage();
-			errorMessage.setErrorCode(ErrorCodes.IO_EXCEPTION);
-			errorMessage.setException(e);
-			data.setErrorMessage(errorMessage);
+			data.setErrorMessage(getErrorMessage(e));
 		}
 		return data;
 	}
@@ -723,6 +719,18 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	public void setLoginCredentials(LoginSet loginSet) {
 		this.loginCredentials = loginSet;
 		network.setLoginCredentials(loginSet);
+	}
+	
+	private ErrorMessage getErrorMessage(IOException e) {
+		ErrorMessage errorMessage = new ErrorMessage();
+		int errorCode = ErrorCodes.IO_EXCEPTION;
+		if(e instanceof HttpHostConnectException) errorCode = ErrorCodes.HTTP_HOST_CONNECTION_EXCEPTION;
+		else if (e instanceof UnknownHostException) errorCode = ErrorCodes.UNKNOWN_HOST_EXCEPTION;
+			
+		errorMessage.setErrorCode(errorCode);
+		errorMessage.setException(e);
+		
+		return errorMessage;
 	}
 
 }

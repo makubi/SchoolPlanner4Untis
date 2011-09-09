@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="error_occurred">An error occurred. Please check your logs.</string>
+
+    <string name="error_connection_refused">Host refused connection:</string>
+    <string name="error_unknown_host">Unknown host:</string>
+    
+</resources>
