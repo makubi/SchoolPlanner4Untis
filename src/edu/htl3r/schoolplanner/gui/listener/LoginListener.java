@@ -43,7 +43,9 @@ public class LoginListener implements OnItemClickListener, Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private WelcomeScreen welcomescreen;
-
+	
+	private AsyncTask<Void, AsyncTaskProgress, Void> loginTask;
+	
 	public LoginListener(WelcomeScreen ws) {
 		welcomescreen = ws;
 	}
@@ -55,7 +57,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 	}
 	
 	public void performLogin(final LoginSet selectedEntry) {
-		AsyncTask<Void, AsyncTaskProgress, Void> task = new AsyncTask<Void, AsyncTaskProgress, Void>() {
+		loginTask = new AsyncTask<Void, AsyncTaskProgress, Void>() {
 
 			@Override
 			protected Void doInBackground(Void... params) {
@@ -66,53 +68,60 @@ public class LoginListener implements OnItemClickListener, Serializable {
 				app.getData().clearInternalCache();
 				
 				app.getData().setLoginCredentials(selectedEntry);
-				DataFacade<Boolean> authenticate = app.getData().authenticate();
+				if(!isCancelled()) {
+					DataFacade<Boolean> authenticate = app.getData().authenticate();
 				if(authenticate.isSuccessful()) {
 					boolean auth = authenticate.getData();
 					if(auth) {
 						Intent t = new Intent(welcomescreen, SelectScreen.class);
 						Bundle bundle = new Bundle();
 						
-						AsyncTaskProgress schoolClassProgress = new AsyncTaskProgress();
-						schoolClassProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_classes));
-						schoolClassProgress.setShowProgressWheel(true);
+						if(!isCancelled()) {
+							AsyncTaskProgress schoolClassProgress = new AsyncTaskProgress();
+							schoolClassProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_classes));
+							schoolClassProgress.setShowProgressWheel(true);
+							
+							publishProgress(schoolClassProgress);
+							bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, app.getData().getSchoolClassList());
+						}
 						
-						publishProgress(schoolClassProgress);
-						bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, app.getData().getSchoolClassList());
+						if(!isCancelled()) {
+							AsyncTaskProgress schoolTeacherProgress = new AsyncTaskProgress();
+							schoolTeacherProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_teacher));
+							schoolTeacherProgress.setShowProgressWheel(true);
+							
+							publishProgress(schoolTeacherProgress);
+							bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, app.getData().getSchoolTeacherList());
+						}
 						
+						if(!isCancelled()) {
+							AsyncTaskProgress schoolRoomProgress = new AsyncTaskProgress();
+							schoolRoomProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_rooms));
+							schoolRoomProgress.setShowProgressWheel(true);
+							
+							publishProgress(schoolRoomProgress);
+							bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, app.getData().getSchoolRoomList());
+						}
 						
-						AsyncTaskProgress schoolTeacherProgress = new AsyncTaskProgress();
-						schoolClassProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_teacher));
-						schoolClassProgress.setShowProgressWheel(true);
+						if(!isCancelled()) {
+							AsyncTaskProgress schoolSubjectProgress = new AsyncTaskProgress();
+							schoolSubjectProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_subjects));
+							schoolSubjectProgress.setShowProgressWheel(true);
+							
+							publishProgress(schoolSubjectProgress);
+							bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, app.getData().getSchoolSubjectList());
+						}
 						
-						publishProgress(schoolTeacherProgress);
-						bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, app.getData().getSchoolTeacherList());
-
-						
-						AsyncTaskProgress schoolRoomProgress = new AsyncTaskProgress();
-						schoolClassProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_rooms));
-						schoolClassProgress.setShowProgressWheel(true);
-						
-						publishProgress(schoolRoomProgress);
-						bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, app.getData().getSchoolRoomList());
-						
-						
-						AsyncTaskProgress schoolSubjectProgress = new AsyncTaskProgress();
-						schoolClassProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_subjects));
-						schoolClassProgress.setShowProgressWheel(true);
-						
-						publishProgress(schoolSubjectProgress);
-						bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, app.getData().getSchoolSubjectList());
-						
-						
-						AsyncTaskProgress loginFinished = new AsyncTaskProgress();
-						schoolClassProgress.setProgressMessage(welcomescreen.getString(R.string.loading_next_screen));
-						loginFinished.setShowProgressWheel(true);
-						
-						publishProgress(loginFinished);
-						
-						t.putExtras(bundle);
-						welcomescreen.startActivity(t);						
+						if(!isCancelled()) {
+							AsyncTaskProgress loginFinished = new AsyncTaskProgress();
+							loginFinished.setProgressMessage(welcomescreen.getString(R.string.loading_next_screen));
+							loginFinished.setShowProgressWheel(true);
+							
+							publishProgress(loginFinished);
+							
+							t.putExtras(bundle);
+							welcomescreen.startActivity(t);
+						}
 					}
 					else {
 						AsyncTaskProgress loginFailed = new AsyncTaskProgress();
@@ -149,8 +158,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 					publishProgress(loginError);
 				}
 				
-				
-			
+				}
 				return null;
 			}
 
@@ -182,9 +190,19 @@ public class LoginListener implements OnItemClickListener, Serializable {
 				super.onPostExecute(result);
 				welcomescreen.setInProgress("", false);
 			}
+			
+			@Override
+			protected void onCancelled() {
+				super.onCancelled();
+				welcomescreen.setInProgress("", false);
+			}
 		};
 
-		task.execute();
+		loginTask.execute();
+	}
+
+	public AsyncTask<Void, AsyncTaskProgress, Void> getLoginTask() {
+		return loginTask;
 	}
 
 }

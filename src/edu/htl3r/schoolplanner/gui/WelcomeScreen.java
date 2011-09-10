@@ -22,8 +22,8 @@ import java.util.concurrent.ExecutionException;
 
 import android.app.Dialog;
 import android.os.AsyncTask;
+import android.os.AsyncTask.Status;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -118,6 +118,15 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		emptyListTextView.setText(R.string.login_sets_list_empty);
 		emptyListTextView.setLayoutParams(p);
 		emptyListTextView.setTag(WelcomeScreenConstants.EMPTY_LIST_TEXTVIEW_ADDED);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		AsyncTask<Void, AsyncTaskProgress, Void> loginTask = loginListener.getLoginTask();
+		if(!loginTask.isCancelled() && !(loginTask.getStatus() == Status.FINISHED)) {
+			loginTask.cancel(true);
+		}
+		else super.onBackPressed();
 	}
 	
 	@Override
