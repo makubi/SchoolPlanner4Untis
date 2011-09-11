@@ -173,7 +173,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 		}
 
 		public synchronized void setWeeData(GUIWeek data, int pos) {
-			if (!view_cach[pos].isDataHere) {
+			if (!view_cach[pos].isDataHere()) {
 				view_cach[pos].setWeekData(data);
 			}
 			Log.d("basti", "setWeekData: " + pos);
@@ -216,7 +216,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 
 			DateTime[] blub = { ad, dummy };
 
-			if (!view_cach[position].isDataHere && !downloadschlange.contains(blub)) {
+			if (!view_cach[position].isDataHere() && !downloadschlange.contains(blub)) {
 				downloadschlange.add(blub);
 			}
 

@@ -16,12 +16,14 @@ import android.widget.ScrollView;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.gui.basti.Eyecandy.WeekHeader;
+import edu.htl3r.schoolplanner.gui.basti.Eyecandy.WeekOverlay;
+import edu.htl3r.schoolplanner.gui.basti.Eyecandy.WeekTimeGrid;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIDay;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUILessonContainer;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIWeek;
 import edu.htl3r.schoolplanner.gui.basti.Lessons.LessonView;
 
-public class WeekLayout extends ViewGroup  {
+public class WeekLayout extends ViewGroup{
 
 	private final int HEADER_HEIGHT = 80;
 	private final int TIMEGRID_WIDTH = 40;
@@ -42,13 +44,19 @@ public class WeekLayout extends ViewGroup  {
 	private WeekHeader weekheader;
 	private WeekTimeGrid weektimegrid;
 
-	public boolean isDataHere = false;
+	private  boolean isDataHere = false;
+	
+	private OnLessonsClickListener clicklistener;
+	private WeekOverlay weekoverlay;
 
 	public WeekLayout(Context context, int id) {
 		super(context);
 		this.context = context;
 		this.ID = id;
-
+		
+		clicklistener = new OnLessonsClickListener();
+		weekoverlay = new WeekOverlay(context);
+		
 		weekheader = new WeekHeader(context);
 		weektimegrid = new WeekTimeGrid(context);
 		initDrawingStuff();
@@ -202,6 +210,8 @@ public class WeekLayout extends ViewGroup  {
 				GUILessonContainer lessonsContainer = day.getLessonsContainer(sortDates.get(j));
 				LessonView lv = new LessonView(context);
 				lv.setNeededData(lessonsContainer, week.getViewType());
+				if(lessonsContainer.getLessonsCount() != 0)
+					lv.setOnClickListener(clicklistener);
 				this.addView(lv);
 			}
 		}
@@ -225,7 +235,15 @@ public class WeekLayout extends ViewGroup  {
 		return (isDataHere()) ? weekdata.getSortDates().get(0) : new DateTime();
 	}
 	
-	private float startX,startY,scrollByX,scrollByY;
-
-
+	
+	private class OnLessonsClickListener implements OnClickListener{
+		@Override
+		public void onClick(View v) {
+			LessonView l = (LessonView)v;
+			weekoverlay.setLessons(l.getLessonsContainer());
+			weekoverlay.show();
+			Log.d("basti",l.getTime().toString());			
+		}
+	}
+	
 }

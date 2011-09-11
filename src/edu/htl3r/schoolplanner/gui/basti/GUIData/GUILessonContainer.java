@@ -28,14 +28,6 @@ public class GUILessonContainer {
 	
 	
 	private DateTime start, end,date;
-	
-	public DateTime getDate() {
-		return date;
-	}
-
-	public void setDate(DateTime date) {
-		this.date = date;
-	}
 
 	private List<Lesson> lessons = new ArrayList<Lesson>();
 	
@@ -72,6 +64,14 @@ public class GUILessonContainer {
 		return lessons;
 	}
 	
+	public DateTime getDate() {
+		return date;
+	}
+
+	public void setDate(DateTime date) {
+		this.date = date;
+	}
+
 	
 		
 }

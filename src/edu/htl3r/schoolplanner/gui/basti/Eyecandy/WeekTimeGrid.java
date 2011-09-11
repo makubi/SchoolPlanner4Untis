@@ -1,4 +1,4 @@
-package edu.htl3r.schoolplanner.gui.basti.Week;
+package edu.htl3r.schoolplanner.gui.basti.Eyecandy;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,6 +9,7 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.gui.basti.Week.GUIWeekView;
 
 public class WeekTimeGrid extends GUIWeekView{
 
@@ -31,8 +32,6 @@ public class WeekTimeGrid extends GUIWeekView{
 		paint.setColor( getResources().getColor(R.color.background_stundenplan));
 
 	}
-	
-	
 	
 	@Override
 	protected void onDraw(Canvas canvas) {

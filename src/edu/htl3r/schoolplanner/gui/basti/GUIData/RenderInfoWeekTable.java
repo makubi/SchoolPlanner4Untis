@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;

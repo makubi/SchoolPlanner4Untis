@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
-import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import edu.htl3r.schoolplanner.DateTime;
@@ -27,12 +26,10 @@ public class LessonView extends GUIWeekView {
 	private GUILessonContainer lessoncontainer;
 	private Paint paint;
 	private int width, height;
-	private String name;
 	private ViewType viewtype;
 
 	private DateTime time;
 	
-	private boolean background = false;
 
 	public LessonView(Context context) {
 		super(context);
@@ -47,9 +44,7 @@ public class LessonView extends GUIWeekView {
 
 	}
 
-	public String getName() {
-		return name;
-	}
+
 
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -67,7 +62,7 @@ public class LessonView extends GUIWeekView {
 
 		
 		for (Lesson l : lessons) {
-			
+						
 			if (viewtype instanceof SchoolClass) {
 				vtfirstline = l.getSchoolSubjects();
 				vtsecondline = l.getSchoolTeachers();
@@ -177,6 +172,10 @@ public class LessonView extends GUIWeekView {
 
 	public DateTime getTime() {
 		return time;
+	}
+	
+	public GUILessonContainer getLessonsContainer(){
+		return lessoncontainer;
 	}
 
 }
