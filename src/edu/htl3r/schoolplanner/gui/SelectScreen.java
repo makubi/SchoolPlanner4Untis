@@ -31,7 +31,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -44,6 +44,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 import edu.htl3r.schoolplanner.gui.basti.ViewBasti;
+import edu.htl3r.schoolplanner.gui.selectScreen.SpinnerMemory;
 import edu.htl3r.schoolplanner.gui.selectScreen.ViewTypeOnClickListener;
 import edu.htl3r.schoolplanner.gui.selectScreen.ViewTypeSpinnerOnItemSelectedListener;
 
@@ -58,6 +59,8 @@ public class SelectScreen extends SchoolPlannerActivity{
 	private Spinner teacherSpinner;
 	private Spinner roomSpinner;
 	private Spinner subjectSpinner;
+	
+	private SpinnerMemory spinnerMemory = new SpinnerMemory();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -120,16 +123,36 @@ public class SelectScreen extends SchoolPlannerActivity{
 		if(classData.isSuccessful() && teacherData.isSuccessful() && roomData.isSuccessful() && subjectData.isSuccessful()) {
 		
 			Intent classIntent = new Intent(SelectScreen.this, ViewBasti.class);
-			classSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, classIntent, classList));
+			classSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, classIntent, classList, spinnerMemory));
 			
 			Intent teacherIntent = new Intent(SelectScreen.this, ViewBasti.class);
-			teacherSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, teacherIntent, teacherList));
+			teacherSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, teacherIntent, teacherList, spinnerMemory));
 			
 			Intent roomIntent = new Intent(SelectScreen.this, ViewBasti.class);
-			roomSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, roomIntent, roomList));
+			roomSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, roomIntent, roomList, spinnerMemory));
 			
 			Intent subjectIntent = new Intent(SelectScreen.this, ViewBasti.class);
-			subjectSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, subjectIntent, subjectList));
+			subjectSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, subjectIntent, subjectList, spinnerMemory));
+			
+			int classSpinnerLastPos = getPositionForItem(classSpinner, spinnerMemory.getClassListLastElement());
+			if(classSpinnerLastPos > -1) {
+				classSpinner.setSelection(classSpinnerLastPos);
+			}
+			
+			int teacherSpinnerLastPos = getPositionForItem(teacherSpinner, spinnerMemory.getTeacherListLastElement());
+			if(teacherSpinnerLastPos > -1) {
+				teacherSpinner.setSelection(teacherSpinnerLastPos);
+			}
+			
+			int roomSpinnerLastPos = getPositionForItem(roomSpinner, spinnerMemory.getRoomListLastElement());
+			if(roomSpinnerLastPos > -1) {
+				roomSpinner.setSelection(roomSpinnerLastPos);
+			}
+			
+			int subjectSpinnerLastPos = getPositionForItem(subjectSpinner, spinnerMemory.getSubjectListLastElement());
+			if(subjectSpinnerLastPos > -1) {
+				subjectSpinner.setSelection(subjectSpinnerLastPos);
+			}
 			
 			addImageOnClickListener(true);
 		}
@@ -143,6 +166,25 @@ public class SelectScreen extends SchoolPlannerActivity{
 		}
 	}
 	
+	private int getPositionForItem(Spinner spinner, String item) {
+		return getPositionForItem(spinner.getAdapter(), item);
+	}
+	
+	private int getPositionForItem(Adapter adapter, String item) {
+		for(int i = 0; i < adapter.getCount(); i++) {
+			if(adapter.getItem(i).equals(item)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	/**
+	 * Verwende {@link ViewType#getName()} fuer Adapter.
+	 * @param spinner
+	 * @param list
+	 * @see SpinnerMemory#setSelectedViewType(ViewType)
+	 */
 	private void initViewTypeSpinner(Spinner spinner, List<? extends ViewType> list) {
 		List<String> spinnerList = new ArrayList<String>();
 		for(ViewType schoolRoom : list) {

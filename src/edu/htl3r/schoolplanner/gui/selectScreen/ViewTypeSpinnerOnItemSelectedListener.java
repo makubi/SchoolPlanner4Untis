@@ -33,14 +33,16 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 	private Activity parent;
 	private Intent intent;
 	private List<? extends ViewType> list;
+	private SpinnerMemory spinnerMemory;
 	
 	/** Wird benoetigt, damit beim Laden der Activity nicht automatisch die Action ausgefuehrt wird, da die Klasse {@link Spinner} bzw. der {@link OnItemSelectedListener} schon zu diesem Zeitpunkt gecalled werden. */
 	private boolean init = true;
 
-	public ViewTypeSpinnerOnItemSelectedListener(Activity parent, Intent intent, List<? extends ViewType> list) {
+	public ViewTypeSpinnerOnItemSelectedListener(Activity parent, Intent intent, List<? extends ViewType> list, SpinnerMemory spinnerMemory) {
 		this.parent = parent;
 		this.intent = intent;
 		this.list = list;
+		this.spinnerMemory = spinnerMemory;
 	}
 
 	@Override
@@ -49,6 +51,8 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 		// Hack, damit beim Initialisieren des Spinners nicht automatisch eine Action ausgefuehrt wird
 		if (!init) {			
 			ViewType item = getViewType(position);
+			
+			if(spinnerMemory != null) spinnerMemory.setSelectedViewType(item);
 			
 			Bundle bundle = new Bundle();
 			bundle.putSerializable(BundleConstants.SELECTED_VIEW_TYPE, item);

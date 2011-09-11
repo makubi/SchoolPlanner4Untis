@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="spinner_memory_class_list">spinner_memory_class_list</string>
+    <string name="spinner_memory_teacher_list">spinner_memory_teacher_list</string>
+    <string name="spinner_memory_room_list">spinner_memory_room_list</string>
+    <string name="spinner_memory_subject_list">spinner_memory_subject_list</string>
+</resources>
