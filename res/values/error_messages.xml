@@ -4,5 +4,6 @@
 
     <string name="error_connection_refused">Host refused connection:</string>
     <string name="error_unknown_host">Unknown host:</string>
+    <string name="error_ssl_forced_but_unavailable">SSL forced, but it is unavailable: </string>
     
 </resources>

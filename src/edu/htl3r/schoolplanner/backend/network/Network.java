@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLSocket;
 
 import org.apache.http.HttpResponse;
@@ -55,6 +56,7 @@ import org.springframework.web.util.UriUtils;
 import android.util.Log;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
+import edu.htl3r.schoolplanner.backend.network.exceptions.SSLForcedButUnavailableException;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 
 /**
@@ -273,10 +275,16 @@ public class Network {
 	 * @throws UnsupportedEncodingException Wenn die Kodierung nicht unterstuetzt wird
 	 * @throws URISyntaxException Wenn die URL nicht gesetzt werden konnte
 	 */
-	private void setSchool(String school) throws UnsupportedEncodingException, URISyntaxException {
+	private void setSchool(String school) throws UnsupportedEncodingException, URISyntaxException, SSLException {
 			// Encode school as iso-8859-1 string
 			String encodedSchool = UriUtils.encodeQuery(school,"ISO-8859-1");
-			usedUrl = sslAvailable ? new URI(httpsServerUrl + "?school=" + encodedSchool) : new URI(serverUrl + "?school=" + encodedSchool);
+			
+			if(loginCredentials.isSslOnly() && !sslAvailable) {
+				throw new SSLForcedButUnavailableException(httpsServerUrl.toString()+":"+httpsServerUrl.getPort()+" does not have SSL enabled");
+			}
+			else {
+				usedUrl = sslAvailable ? new URI(httpsServerUrl + "?school=" + encodedSchool) : new URI(serverUrl + "?school=" + encodedSchool);
+			}
 			
 			Log.d("Network", "Setting url: "+usedUrl.toString());
 	}

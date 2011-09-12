@@ -40,6 +40,7 @@ import edu.htl3r.schoolplanner.backend.ErrorMessage;
 import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceMasterdataProvider;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceTimetableDataProvider;
+import edu.htl3r.schoolplanner.backend.network.exceptions.SSLForcedButUnavailableException;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
@@ -726,6 +727,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		int errorCode = ErrorCodes.IO_EXCEPTION;
 		if(e instanceof HttpHostConnectException) errorCode = ErrorCodes.HTTP_HOST_CONNECTION_EXCEPTION;
 		else if (e instanceof UnknownHostException) errorCode = ErrorCodes.UNKNOWN_HOST_EXCEPTION;
+		else if (e instanceof SSLForcedButUnavailableException) errorCode = ErrorCodes.SSL_FORCED_BUT_UNAVAILABLE;
 			
 		errorMessage.setErrorCode(errorCode);
 		errorMessage.setException(e);

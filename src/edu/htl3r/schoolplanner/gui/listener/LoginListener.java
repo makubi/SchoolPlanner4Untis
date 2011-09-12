@@ -145,6 +145,9 @@ public class LoginListener implements OnItemClickListener, Serializable {
 					case ErrorCodes.UNKNOWN_HOST_EXCEPTION:
 						errorMessage = welcomescreen.getString(R.string.error_unknown_host) + " " + selectedEntry.getServerUrl();
 						break;
+					case ErrorCodes.SSL_FORCED_BUT_UNAVAILABLE:
+						errorMessage = welcomescreen.getString(R.string.error_ssl_forced_but_unavailable) + " " + selectedEntry.getServerUrl();
+						break;
 					default:
 						errorMessage = welcomescreen.getString(R.string.error_occurred);
 						Log.e("login","========== ERROR");
