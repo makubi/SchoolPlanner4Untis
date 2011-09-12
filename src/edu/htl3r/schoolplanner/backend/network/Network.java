@@ -249,25 +249,17 @@ public class Network {
 			String school = loginCredentials.getSchool();
 			
 			try {
+				jsessionid = null;
+				
 				setServerUrl(serverUrl);
+				
+				initSSLSchemes();
+				checkServerCapability();
+				
 				setSchool(school);
 			} catch (URISyntaxException e) {
 				// Thrown, if server url can not be parsed
-				throw new IOException("Unable to parse URL");
-			}
-			
-			jsessionid = null;
-			
-			initSSLSchemes();
-			checkServerCapability();
-			
-			// TODO: Ugly hack, setting URL after server SSL check
-			try {
-				setServerUrl(serverUrl);
-				setSchool(school);
-			} catch (URISyntaxException e) {
-				// Thrown, if server url can not be parsed
-				throw new IOException("Unable to parse URL");
+				throw new IOException("Unable to parse URL: " + serverUrl);
 			}
 			
 			oldServerUrl = new String(serverUrl);
