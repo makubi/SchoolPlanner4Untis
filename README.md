@@ -1,4 +1,4 @@
-![Logo](http://www.schoolplanner.at/modx/assets/images/logo_square.png) [SchoolPlanner4Untis](http://www.schoolplanner.at/)
+![Logo](http://www.schoolplanner.at/modx/assets/images/logo_square_github.png) [SchoolPlanner4Untis](http://www.schoolplanner.at/)
 ==================================================
 
 ANDROID PROJEKT IN ECLIPSE EINBINDEN
