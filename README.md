@@ -1,4 +1,4 @@
-[SchoolPlanner4Untis](http://www.schoolplanner.at/) ![PlannerLogo](http://www.schoolplanner.at/wordpress/wp-content/themes/notepad-theme/img/logo.png)
+![Logo](http://www.schoolplanner.at/modx/assets/images/logo_square.png) [SchoolPlanner4Untis](http://www.schoolplanner.at/)
 ==================================================
 
 ANDROID PROJEKT IN ECLIPSE EINBINDEN
