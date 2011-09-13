@@ -44,7 +44,7 @@ public class WeekTimeGrid extends GUIWeekView{
 		for(int i=offsettop; i<height; i+=((height-offsettop)/hours)){
 			canvas.drawLine(0, i, width, i, paint);
 		}
-		canvas.drawLine(width, 0, width, height, paint);
+		canvas.drawLine(width, 0, width-3, height, paint);
 	}
 	
 	@Override

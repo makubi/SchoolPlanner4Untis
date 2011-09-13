@@ -103,5 +103,9 @@ public class GUILessonContainer {
 	public boolean isEmpty(){
 		return (standardLessons.isEmpty() && specialLessons.isEmpty() && extraLongLessons.isEmpty() && extraLongSpecialLessons.isEmpty())? true:false;
 	}
+	
+	public boolean istSomethinStrange(){
+		return ( specialLessons.isEmpty()  && extraLongSpecialLessons.isEmpty())? false:true;
+	}
 		
 }

@@ -50,8 +50,9 @@ public class LessonView extends GUIWeekView {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
-
-		
+		if(lessoncontainer.istSomethinStrange())
+			__paintRedBorder(canvas);
+			
 		List<Lesson> lessons = lessoncontainer.getStandardLessons();
 
 		ArrayList<String> firstline = new ArrayList<String>();
@@ -148,7 +149,6 @@ public class LessonView extends GUIWeekView {
 		List<? extends ViewType> vt = null;
 
 		if (lessons.size() != 0) {
-
 			if (viewtype instanceof SchoolClass) {
 				vt = lessons.get(0).getSchoolSubjects();
 			} else if (viewtype instanceof SchoolTeacher) {
@@ -159,8 +159,6 @@ public class LessonView extends GUIWeekView {
 				vt = lessons.get(0).getSchoolTeachers();
 			}
 			
-			
-			
 			if (vt.size() != 0) {
 				String bcolor = vt.get(0).getBackColor();
 				if (!bcolor.equalsIgnoreCase("")) {
@@ -169,7 +167,21 @@ public class LessonView extends GUIWeekView {
 			}
 		}
 	}
-
+	
+	private void __paintRedBorder(Canvas c){
+		Paint p = new Paint();
+		p.setColor(Color.RED);
+		p.setAlpha(100);
+		p.setStrokeWidth(8);
+		p.setStyle(Style.STROKE);
+		
+		
+		c.drawLine(0, 0, width+2, 0, p);
+		c.drawLine(0, 0, 0, height+2, p);
+		c.drawLine(0, height+2, width+2, height+2, p);
+		c.drawLine(width+2, 0, width+2, height+2, p);
+	}
+	
 	public DateTime getTime() {
 		return time;
 	}
