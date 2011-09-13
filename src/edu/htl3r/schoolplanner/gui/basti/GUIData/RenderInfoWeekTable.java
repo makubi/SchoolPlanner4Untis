@@ -14,10 +14,13 @@ import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeCancelled;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeIrregular;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
 
-public class RenderInfoWeekTable {
+public class RenderInfoWeekTable implements WebUntis{
 
 	private Map<String,List<Lesson>> weekdata ;
 	
@@ -112,13 +115,29 @@ public class RenderInfoWeekTable {
 						&& lesson.getStartTime().getHour() == timegridUnit.getStart().getHour()
 						&& lesson.getEndTime().getMinute() == timegridUnit.getEnd().getMinute()
 						&& lesson.getEndTime().getHour() == timegridUnit.getEnd().getHour()){
-					lessoncon.addLesson(lesson);
+					
+					
+					if(lesson.getLessonCode() instanceof LessonCodeIrregular || lesson.getLessonCode() instanceof LessonCodeCancelled || lesson.getLessonCode() instanceof LessonCodeSubstitute){
+						lessoncon.addSpecialLesson(lesson);
+					}else{
+						lessoncon.addStandardLesson(lesson);
+					}						
+				} else if(lesson.getStartTime().getMinute() == timegridUnit.getStart().getMinute()
+						&& lesson.getStartTime().getHour() == timegridUnit.getStart().getHour()
+						&& lesson.getEndTime().getMinute() != timegridUnit.getEnd().getMinute()
+						&& lesson.getEndTime().getHour() != timegridUnit.getEnd().getHour()){
+					
+					if(lesson.getLessonCode() instanceof LessonCodeIrregular || lesson.getLessonCode() instanceof LessonCodeCancelled || lesson.getLessonCode() instanceof LessonCodeSubstitute){
+						lessoncon.addExtraLongSpecialLesson(lesson);
+					}else{
+						lessoncon.addExtraLongLesson(lesson);
+					}				
 				}
+
 			}
+			Log.d("basti",lessoncon.getSpecialLessons().toString());
 			day.addLessonContainer(timegridUnit.getStart(),lessoncon);
 		}
-		
-		
 		return day;
 	}
 	

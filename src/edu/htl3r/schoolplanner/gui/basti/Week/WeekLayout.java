@@ -210,7 +210,9 @@ public class WeekLayout extends ViewGroup{
 				GUILessonContainer lessonsContainer = day.getLessonsContainer(sortDates.get(j));
 				LessonView lv = new LessonView(context);
 				lv.setNeededData(lessonsContainer, week.getViewType());
-				if(lessonsContainer.getLessonsCount() != 0)
+				
+				
+				if(!lessonsContainer.isEmpty())
 					lv.setOnClickListener(clicklistener);
 				this.addView(lv);
 			}

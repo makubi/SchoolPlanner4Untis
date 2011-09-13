@@ -29,7 +29,11 @@ public class GUILessonContainer {
 	
 	private DateTime start, end,date;
 
-	private List<Lesson> lessons = new ArrayList<Lesson>();
+	private List<Lesson> standardLessons = new ArrayList<Lesson>();
+	private List<Lesson> extraLongLessons = new ArrayList<Lesson>();
+	private List<Lesson> specialLessons = new ArrayList<Lesson>();
+	private List<Lesson> extraLongSpecialLessons = new ArrayList<Lesson>();
+
 	
 
 	public GUILessonContainer(){}
@@ -39,17 +43,29 @@ public class GUILessonContainer {
 		this.end = end;
 	}
 	
-	public int getLessonsCount(){
-		return lessons.size();
+//	public int getStandardLessonsCount(){
+//		return standardLessons.size();
+//	}
+	
+	public void addStandardLesson(Lesson l){
+		standardLessons.add(l);
 	}
 	
-	public void addLesson(Lesson l){
-		lessons.add(l);
+	public void addExtraLongLesson(Lesson l){
+		extraLongLessons.add(l);
+	}
+	
+	public void addSpecialLesson(Lesson l){
+		specialLessons.add(l);
+	}
+	
+	public void addExtraLongSpecialLesson(Lesson l){
+		extraLongSpecialLessons.add(l);
 	}
 	
 	@Override
 	public String toString() {
-		return lessons.toString();
+		return standardLessons.toString();
 	}
 
 	public DateTime getStart() {
@@ -60,10 +76,22 @@ public class GUILessonContainer {
 		return end;
 	}
 
-	public List<Lesson> getLessons() {
-		return lessons;
+	public List<Lesson> getStandardLessons() {
+		return standardLessons;
 	}
 	
+	public List<Lesson> getExtraLongLessons() {
+		return extraLongLessons;
+	}
+
+	public List<Lesson> getSpecialLessons() {
+		return specialLessons;
+	}
+
+	public List<Lesson> getExtraLongSpecialLessons() {
+		return extraLongSpecialLessons;
+	}
+
 	public DateTime getDate() {
 		return date;
 	}
@@ -72,6 +100,8 @@ public class GUILessonContainer {
 		this.date = date;
 	}
 
-	
+	public boolean isEmpty(){
+		return (standardLessons.isEmpty() && specialLessons.isEmpty() && extraLongLessons.isEmpty() && extraLongSpecialLessons.isEmpty())? true:false;
+	}
 		
 }

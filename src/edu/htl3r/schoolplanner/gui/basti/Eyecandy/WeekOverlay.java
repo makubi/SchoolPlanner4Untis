@@ -25,7 +25,11 @@ public class WeekOverlay extends Dialog{
 	
 	public void setLessons(GUILessonContainer gl){
 		lessons = gl;
-		t.setText(lessons.getStart() + " - " + lessons.getEnd() + "\nAnzahl der Stunden: " + lessons.getLessonsCount());
+		t.setText(lessons.getStart() + " - " + lessons.getEnd() + 
+				"\nAnzahl der Stunden regulaeren Stunden: " + lessons.getStandardLessons().size()+
+				"\nAnzahl der Stunden irregulaeren Stunden: " + lessons.getSpecialLessons().size()+
+				"\nAnzahl der Stunden regulaeren langen Stunden: " + lessons.getExtraLongLessons().size()+
+				"\nAnzahl der Stunden itregulaeren langen Stunden: " + lessons.getExtraLongSpecialLessons().size());
 	}
 
 }

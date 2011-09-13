@@ -39,7 +39,7 @@ public class LessonView extends GUIWeekView {
 		paint.setColor(Color.BLACK);
 		paint.setStrokeWidth(5);
 		paint.setStyle(Style.FILL);
-		paint.setTextSize(25);
+		paint.setTextSize(23);
 		paint.setAntiAlias(true);
 
 	}
@@ -52,7 +52,7 @@ public class LessonView extends GUIWeekView {
 		
 
 		
-		List<Lesson> lessons = lessoncontainer.getLessons();
+		List<Lesson> lessons = lessoncontainer.getStandardLessons();
 
 		ArrayList<String> firstline = new ArrayList<String>();
 		ArrayList<String> secondline = new ArrayList<String>();
@@ -144,7 +144,7 @@ public class LessonView extends GUIWeekView {
 	}
 
 	private void __setBackgroundColor() {
-		List<Lesson> lessons = lessoncontainer.getLessons();
+		List<Lesson> lessons = lessoncontainer.getStandardLessons();
 		List<? extends ViewType> vt = null;
 
 		if (lessons.size() != 0) {
