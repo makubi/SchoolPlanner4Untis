@@ -97,8 +97,7 @@ public class Network {
 		
 		HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
 		HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
-		// TODO: Testen mit "false"
-		HttpProtocolParams.setUseExpectContinue(params, true);
+		HttpProtocolParams.setUseExpectContinue(params, false);
 		
 		SchemeRegistry registry = new SchemeRegistry();
 		
