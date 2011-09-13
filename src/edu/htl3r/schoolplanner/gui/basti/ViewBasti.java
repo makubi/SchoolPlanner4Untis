@@ -26,13 +26,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.text.format.Time;
+import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
-import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIWeek;
 
 public class ViewBasti extends SchoolPlannerActivity {
 
@@ -77,9 +77,9 @@ public class ViewBasti extends SchoolPlannerActivity {
 	public Handler h = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			ResultObject result = (ResultObject)msg.obj;
-			wvpageadapter.setWeeData(result.week, result.pos);
-			super.handleMessage(msg);
+			OutputTransferObject result = (OutputTransferObject)msg.obj;
+			Log.d("basti", result.getPos() + " || " + result.getWeek());
+			wvpageadapter.setWeeData(result.getWeek(), result.getPos());
 		}
 	};
 
@@ -102,9 +102,8 @@ public class ViewBasti extends SchoolPlannerActivity {
 
 		wvpageadapter = new WeekViewPageAdapter();
 		wvpageadapter.setContext(this, downloadschlange);
-
 		wvpageadapter.setDate(getMonday());
-
+		
 		myViewPager.setAdapter(wvpageadapter);
 
 		myViewPager.setOnPageChangeListener(indicator);
@@ -118,8 +117,5 @@ public class ViewBasti extends SchoolPlannerActivity {
 		myViewPager.setCurrentItem(50);
 	}
 	
-	public static class ResultObject{
-		public GUIWeek week;
-		public int pos;
-	}
+	
 }

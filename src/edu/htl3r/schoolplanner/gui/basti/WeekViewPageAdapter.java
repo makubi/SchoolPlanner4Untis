@@ -64,13 +64,10 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 		DateTime ad = new DateTime();
 		ad.set(date.getDay() + (di * 7), date.getMonth(), date.getYear());
 
-		DateTime dummy = new DateTime();
-		dummy.set(1, 1, position);
+		InputTransferObject input = new InputTransferObject(ad, position);
 
-		DateTime[] blub = { ad, dummy };
-
-		if (!view_cach[position].isDataHere() && !downloadschlange.contains(blub)) {
-			downloadschlange.add(blub);
+		if (!view_cach[position].isDataHere() ){//&& !downloadschlange.contains(input)) {
+			downloadschlange.add(input);
 		}
 
 		ViewPager tmp = (ViewPager) collection;
@@ -107,7 +104,6 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 	@Override
 	public void startUpdate(View arg0) {
 		// TODO Auto-generated method stub
-
 	}
 
 	public int getItemPosition(Object object) {

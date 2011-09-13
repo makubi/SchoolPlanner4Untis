@@ -2,17 +2,14 @@ package edu.htl3r.schoolplanner.gui.basti;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-import edu.htl3r.schoolplanner.DateTime;
+public class BlockingDownloadQueue extends LinkedBlockingQueue<TransferObject> {
 
-public class BlockingDownloadQueue extends LinkedBlockingQueue<DateTime[]> {
-
-	public static final DateTime[] INTERRUPT = { new DateTime(), new DateTime(), new DateTime(), new DateTime() };
-
+	
 	private boolean isInterrupted = false;
 
 	public void interrupt() {
 		if (!isInterrupted) {
-			this.add(INTERRUPT);
+			add(new InterruptTranferObject());
 			isInterrupted = true;
 		}
 	}
@@ -21,4 +18,10 @@ public class BlockingDownloadQueue extends LinkedBlockingQueue<DateTime[]> {
 		return isInterrupted;
 	}
 
+	
+	@Override
+	public boolean contains(Object o) {
+		// TODO Auto-generated method stub
+		return super.contains(o);
+	}
 }

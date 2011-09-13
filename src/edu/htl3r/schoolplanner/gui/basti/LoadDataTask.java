@@ -3,8 +3,6 @@ package edu.htl3r.schoolplanner.gui.basti;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Message;
-import android.util.Log;
-import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIContentManager;
@@ -14,7 +12,6 @@ class LoadDataTask extends AsyncTask<Void, String, Void> {
 
 	private Context context;
 	private Cache cache;
-	private int pos;
 	private GUIContentManager contentmanager = new GUIContentManager();
 	private ViewBasti viewbasti;
 	private ViewType viewtype;
@@ -33,26 +30,23 @@ class LoadDataTask extends AsyncTask<Void, String, Void> {
 
 
 		while (!downloadschlange.isInterrupted()) {
-			DateTime d[] = null;
+			TransferObject d = null;
 			try {
 				d = downloadschlange.take();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			
-			if(d.equals(BlockingDownloadQueue.INTERRUPT))
+			if(d.isBomb())
 				return null;
 			
 			publishProgress("Lade Daten", "true");
-			GUIWeek timeTable4GUI = contentmanager.getTimeTable4GUI(d[0]);
-			pos = d[1].getYear();
+			InputTransferObject input = (InputTransferObject)d;
+			GUIWeek timeTable4GUI = contentmanager.getTimeTable4GUI(input.getDate());
 
-			
 			publishProgress("zaubere UI", "true");
 			Message m = new Message();
-			ViewBasti.ResultObject r= new ViewBasti.ResultObject();
-			r.week = timeTable4GUI;
-			r.pos = pos;
+			OutputTransferObject r= new OutputTransferObject(timeTable4GUI,input.getPos());
 			m.obj = r;
 			viewbasti.h.sendMessage(m);
 			publishProgress("", "false");

@@ -135,7 +135,6 @@ public class RenderInfoWeekTable implements WebUntis{
 				}
 
 			}
-			Log.d("basti",lessoncon.getSpecialLessons().toString());
 			day.addLessonContainer(timegridUnit.getStart(),lessoncon);
 		}
 		return day;
