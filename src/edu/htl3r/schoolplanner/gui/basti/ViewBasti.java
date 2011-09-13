@@ -19,6 +19,7 @@ package edu.htl3r.schoolplanner.gui.basti;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import android.content.Context;
@@ -59,7 +60,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 	private ViewPagerIndicator indicator;
 	private ViewType viewtype;
 
-	public LinkedBlockingQueue<DateTime[]> downloadschlange = new LinkedBlockingQueue<DateTime[]>();
+	public BlockingDownloadQueue downloadschlange = new BlockingDownloadQueue();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 
 		loadweekdata = new LoadWeekData();
 		loadweekdata.setContext(this);
+		
 		loadweekdata.execute();
 
 	}
@@ -115,6 +117,11 @@ public class ViewBasti extends SchoolPlannerActivity {
 		
 		return d;
 	}
+	@Override
+	protected void onStop() {
+		downloadschlange.interrupt();
+		super.onStop();
+	}
 	
 	public Handler h = new Handler() {
 		@Override
@@ -131,9 +138,14 @@ public class ViewBasti extends SchoolPlannerActivity {
 
 		@Override
 		protected void onPreExecute() {
+			Log.d("basti", "1. hole cache");
 			publishProgress("Erzeuge Objekte", "true");
 			cache = ((SchoolPlannerApp) getApplication()).getData();
+			
+			Log.d("basti", "2. gibt dem contentmanager suessigkeiten");
 			contentmanager.setNeededData(context, cache);
+			
+			Log.d("basti", "3. gibt mehr dem contentmanager suessigkeiten");
 			contentmanager.setViewType(viewtype);
 			super.onPreExecute();
 		}
@@ -141,18 +153,22 @@ public class ViewBasti extends SchoolPlannerActivity {
 		@Override
 		protected Void doInBackground(Void... params) {
 
-			while (true) {
+			Random r = new Random();
+			int i = r.nextInt();
+			while (!downloadschlange.isInterrupted()) {
 				DateTime d[] = null;
 				try {
 					d = downloadschlange.take();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				
+				if(d.equals(BlockingDownloadQueue.INTERRUPT))
+					return null;
+				
 				publishProgress("Lade Daten", "true");
 				GUIWeek timeTable4GUI = contentmanager.getTimeTable4GUI(d[0]);
 				pos = d[1].getYear();
-
-				Log.d("basti", "Thread " + pos);
 
 				publishProgress("zaubere UI", "true");
 
@@ -162,6 +178,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 				h.sendMessage(m);
 				publishProgress("", "false");
 			}
+			return null;
 
 		}
 
@@ -199,7 +216,6 @@ public class ViewBasti extends SchoolPlannerActivity {
 			if (!view_cach[pos].isDataHere()) {
 				view_cach[pos].setWeekData(data);
 			}
-			Log.d("basti", "setWeekData: " + pos);
 		}
 
 		public void setContext(Context c) {
@@ -242,8 +258,6 @@ public class ViewBasti extends SchoolPlannerActivity {
 			if (!view_cach[position].isDataHere() && !downloadschlange.contains(blub)) {
 				downloadschlange.add(blub);
 			}
-
-			Log.d("basti", "init: " + position + " ");
 
 			ViewPager tmp = (ViewPager) collection;
 
