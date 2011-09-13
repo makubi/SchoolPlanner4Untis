@@ -65,7 +65,7 @@ public class LessonHelperDatabase implements LessonHelper {
 		SQLiteDatabase database = this.database.openDatabase(false);
 		
 		final String table = DatabasePermanentLessonConstants.TABLE_PERMANENT_LESSONS_NAME;
-		final String[] columns = new String[] {"ROWID",DatabasePermanentLessonConstants.WEEK_DAY,DatabasePermanentLessonConstants.START_TIME,DatabasePermanentLessonConstants.END_TIME};
+		final String[] columns = new String[] {DatabasePermanentLessonConstants.ROWID,DatabasePermanentLessonConstants.WEEK_DAY,DatabasePermanentLessonConstants.START_TIME,DatabasePermanentLessonConstants.END_TIME};
 		
 		Cursor query = database.query(table, columns, DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=?", new String[]{loginSetKey}, null, null, null);
 		
