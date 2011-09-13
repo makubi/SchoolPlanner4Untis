@@ -12,16 +12,11 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import edu.htl3r.schoolplanner.DateTime;
-import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.backend.network.WebUntis;
-import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
-import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridDay;
 import edu.htl3r.schoolplanner.gui.basti.Week.GUIWeekView;
 
 public class WeekHeader extends GUIWeekView {
 
-	private DateTime monday;
 	private int width, height;
 	private int days, lessonwidth;
 	private Paint paint;
@@ -83,17 +78,18 @@ public class WeekHeader extends GUIWeekView {
 		tp2.setTypeface(Typeface.DEFAULT);
 		tp2.setStyle(Style.FILL_AND_STROKE);
 		
-		
+		int paddint_top = getResources().getDimensionPixelSize(R.dimen.gui_header_paddting_top);
 		int padding_bottom = getResources().getDimensionPixelSize(R.dimen.gui_header_line1_line1_padding);
 		for (int i = 0; i < days; i++) {
-
+			canvas.translate(0, paddint_top);
+			
 			StaticLayout s = new StaticLayout(weekdays[i], tp, lessonwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 			s.draw(canvas);
 			canvas.translate(0, padding_bottom);
 
 			s = new StaticLayout(datum.get(i).getDay() + "." + datum.get(i).getMonth() + "." + datum.get(i).getYear(), tp2, lessonwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 			s.draw(canvas);
-			canvas.translate(lessonwidth, -padding_bottom);
+			canvas.translate(lessonwidth, -(padding_bottom+paddint_top));
 		}
 	}
 
