@@ -74,21 +74,26 @@ public class WeekHeader extends GUIWeekView {
 		paint.setColor(getResources().getColor(R.color.background_stundenplan));
 		TextPaint tp = new TextPaint(paint);
 		tp.setStrokeWidth(2);
-		tp.setTextSize(25);
+		tp.setTextSize(getResources().getDimension(R.dimen.gui_header_line1_size));
+		tp.setStyle(Style.FILL_AND_STROKE);
+		
 		TextPaint tp2 = new TextPaint(paint);
 		tp2.setStrokeWidth(1);
-		tp2.setTextSize(12);
+		tp2.setTextSize(getResources().getDimension(R.dimen.gui_header_line2_size));
 		tp2.setTypeface(Typeface.DEFAULT);
-		canvas.translate(0, 10);
+		tp2.setStyle(Style.FILL_AND_STROKE);
+		
+		
+		int padding_bottom = getResources().getDimensionPixelSize(R.dimen.gui_header_line1_line1_padding);
 		for (int i = 0; i < days; i++) {
 
 			StaticLayout s = new StaticLayout(weekdays[i], tp, lessonwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 			s.draw(canvas);
-			canvas.translate(0, 35);
+			canvas.translate(0, padding_bottom);
 
 			s = new StaticLayout(datum.get(i).getDay() + "." + datum.get(i).getMonth() + "." + datum.get(i).getYear(), tp2, lessonwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 			s.draw(canvas);
-			canvas.translate(lessonwidth, -35);
+			canvas.translate(lessonwidth, -padding_bottom);
 		}
 	}
 

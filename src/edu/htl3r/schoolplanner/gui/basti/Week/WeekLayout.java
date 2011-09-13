@@ -8,11 +8,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.gui.basti.Eyecandy.WeekHeader;
@@ -25,8 +22,8 @@ import edu.htl3r.schoolplanner.gui.basti.Lessons.LessonView;
 
 public class WeekLayout extends ViewGroup{
 
-	private final int HEADER_HEIGHT = 80;
-	private final int TIMEGRID_WIDTH = 40;
+	private final int HEADER_HEIGHT = getResources().getDimensionPixelSize(R.dimen.gui_header_height);
+	private final int TIMEGRID_WIDTH = getResources().getDimensionPixelSize(R.dimen.gui_timegrid_width);
 
 	private final int BORDERWIDTH = 2;
 

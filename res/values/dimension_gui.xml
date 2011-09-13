@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="gui_header_height">45dip</dimen>
+    <dimen name="gui_timegrid_width">30dip</dimen>
+    <dimen name="gui_timegrid_padding_right">5dip</dimen>
+    
+    
+    <dimen name="gui_header_line1_size">18dip</dimen>
+    <dimen name="gui_header_line2_size">10dip</dimen>
+    <dimen name="gui_header_line1_line1_padding">22dip</dimen>
+    
+    
+    <dimen name="gui_lesson_line1_size">15dip</dimen>
+    <dimen name="gui_lesson_line2_size">10dip</dimen>
+    <dimen name="gui_lesson_line1_line1_padding">17dip</dimen>
+    <dimen name="gui_lesson_padding_top">17dip</dimen>
+    <dimen name="gui_lesson_padding_left">5dip</dimen>
+    
+    
+</resources>

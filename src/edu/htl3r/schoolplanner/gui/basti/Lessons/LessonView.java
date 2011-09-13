@@ -12,6 +12,7 @@ import android.graphics.Typeface;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
@@ -91,18 +92,23 @@ public class LessonView extends GUIWeekView {
 		}
 		
 	
+		int left = getResources().getDimensionPixelSize(R.dimen.gui_lesson_padding_left);
+		int top = getResources().getDimensionPixelSize(R.dimen.gui_lesson_padding_top);
+		int l1l2p = getResources().getDimensionPixelSize(R.dimen.gui_lesson_line1_line1_padding);
+		
 		TextPaint tp = new TextPaint(paint);
 		tp.setTypeface(Typeface.DEFAULT_BOLD); 
+		tp.setTextSize(getResources().getDimension(R.dimen.gui_lesson_line1_size));
 		String line1 = prepareListForDisplay(firstline,tp);
 			
 
-		canvas.drawText(line1, 5, 25, tp);
+		canvas.drawText(line1, left, top, tp);
 		
-		tp.setTextSize(18);
+		tp.setTextSize(getResources().getDimension(R.dimen.gui_lesson_line2_size));
 		tp.setTypeface(Typeface.DEFAULT);
 		String line2 = prepareListForDisplay(secondline,tp);
 
-		canvas.drawText(line2, 5, 50, tp);
+		canvas.drawText(line2, left, l1l2p+top, tp);
 	}
 	
 	private String prepareListForDisplay(ArrayList<String> input, TextPaint tp){

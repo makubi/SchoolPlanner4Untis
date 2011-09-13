@@ -87,6 +87,10 @@ public class DateTime implements Cloneable,Comparable<DateTime> {
 		return internalTime.monthDay;
 	}
 	
+	public int getWeekDay() {
+		return internalTime.weekDay;
+	}
+	
 	public int getHour() {
 		return internalTime.hour;
 	}

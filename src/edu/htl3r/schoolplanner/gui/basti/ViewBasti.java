@@ -17,6 +17,8 @@
  */
 package edu.htl3r.schoolplanner.gui.basti;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import android.content.Context;
@@ -29,13 +31,17 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.format.DateFormat;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.View;
 import android.widget.ScrollView;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.Cache;
+import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
@@ -60,6 +66,8 @@ public class ViewBasti extends SchoolPlannerActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.basti_weekview);
 
+		
+
 		myViewPager = (ViewPager) findViewById(R.id.week_pager);
 		indicator = (ViewPagerIndicator) findViewById(R.id.week_indicator);
 
@@ -68,10 +76,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 
 		viewtype = (ViewType) getIntent().getExtras().getSerializable(BundleConstants.SELECTED_VIEW_TYPE);
 
-		DateTime d = new DateTime();
-		d.set(12, 9, 2011);
-
-		wvpageadapter.setDate(d);
+		wvpageadapter.setDate(getMonday());
 
 		myViewPager.setAdapter(wvpageadapter);
 
@@ -93,6 +98,24 @@ public class ViewBasti extends SchoolPlannerActivity {
 
 	}
 
+	private DateTime getMonday(){
+		DateTime d = new DateTime();
+		Calendar c = Calendar.getInstance();
+		d.set(c.get(Calendar.DATE), c.get(Calendar.MONTH)+1, c.get(Calendar.YEAR));
+		
+		
+		if(d.getWeekDay() == Time.SUNDAY){
+			d.increaseDay();
+			return d;
+		}
+			
+		while(d.getWeekDay() != Time.MONDAY){
+			d.decreaseDay();
+		}
+		
+		return d;
+	}
+	
 	public Handler h = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {

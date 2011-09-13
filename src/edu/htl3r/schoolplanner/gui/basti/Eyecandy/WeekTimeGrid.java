@@ -57,14 +57,19 @@ public class WeekTimeGrid extends GUIWeekView{
 	
 	private void zeichenInfos(Canvas canvas){
 		paint.setColor( getResources().getColor(R.color.background_stundenplan));
+		
+		
 		TextPaint tp = new TextPaint(paint);
 		tp.setStrokeWidth(2);
-		tp.setTextSize(25);
+		tp.setStyle(Style.FILL_AND_STROKE);
+		tp.setTextSize(getResources().getDimension(R.dimen.gui_header_line1_size));
 		canvas.translate(0, offsettop+(((height-offsettop)/hours)/4));
+		int padding_right = getResources().getDimensionPixelSize(R.dimen.gui_timegrid_padding_right);
+		
 		for(int i=0; i<hours; i++){
-			StaticLayout s = new StaticLayout(i+"", tp,width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-			//s.draw(canvas);
-			canvas.drawText(i+"", 5, 10, tp);
+		//	canvas.drawText(i+"", 5, 10, tp);
+			StaticLayout s = new StaticLayout(i+"", tp, width-padding_right, Layout.Alignment.ALIGN_OPPOSITE, 0, 0, false);
+			s.draw(canvas);
 			canvas.translate(0, (height-offsettop)/hours);
 		}
 	}
