@@ -25,7 +25,7 @@ public class WebUntisUrlParser {
 		if(url.length() <= 0) {
 			return "";
 		}
-		String applicableUrl = url.replaceAll("/WebUntis(/*)(jsonrpc.do)?$", "");
+		String applicableUrl = url.replaceAll("(?i)/WebUntis(/*)(jsonrpc.do)?$", "");
 		Pattern p = Pattern.compile("^([a-zA-Z]+://)?(.*)$");
 		Matcher m = p.matcher(applicableUrl);
 		if(m.matches()) {

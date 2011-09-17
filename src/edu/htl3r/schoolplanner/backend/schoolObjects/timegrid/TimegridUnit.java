@@ -23,6 +23,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 
 public class TimegridUnit implements SchoolObject, Comparable<TimegridUnit> {
 
+	// TODO: Char?
 	private String name;
 	
 	private DateTime start;

@@ -25,14 +25,14 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
 
 public class TimegridUtils {
 
-	public static final int[] timeWeekDays = new int[] {Time.SUNDAY, Time.MONDAY, Time.TUESDAY, Time.WEDNESDAY, Time.THURSDAY, Time.FRIDAY, Time.SATURDAY};
+	public static final int[] ANDROID_TIME_WEEK_DAYS = new int[] {Time.SUNDAY, Time.MONDAY, Time.TUESDAY, Time.WEDNESDAY, Time.THURSDAY, Time.FRIDAY, Time.SATURDAY};
 	
 	/**
 	 * Sortiert die {@link TimegridUnit}-Listen fuer jeden Tag im Timegrid.
 	 * @param timegrid Timegrid, dessen Listen sortiert werden sollen
 	 */
 	public static void sortTimegridUnits(Timegrid timegrid) {
-		for(int day : timeWeekDays) {
+		for(int day : ANDROID_TIME_WEEK_DAYS) {
 			List<TimegridUnit> timegridForDateTimeDay = timegrid.getTimegridForDateTimeDay(day);
 			if(timegridForDateTimeDay != null) Collections.sort(timegridForDateTimeDay);
 		}
