@@ -221,6 +221,8 @@ public class JSONParser {
 			for(int j = 0; j < timegridUnitsArray.length(); j++) {
 				JSONObject timeUnit = timegridUnitsArray.getJSONObject(j);
 				
+				String name = timeUnit.getString("name");
+						
 				String starttime = ""+timeUnit.getInt("startTime");
 				String endtime = ""+timeUnit.getInt("endTime");
 				
@@ -238,6 +240,7 @@ public class JSONParser {
 				
 				// Setze aktuelle Unit
 				TimegridUnit timegridUnit = new TimegridUnit();
+				timegridUnit.setName(name);
 				timegridUnit.setStart(startTime);
 				timegridUnit.setEnd(endTime);
 								

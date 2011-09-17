@@ -219,9 +219,7 @@ public class Network {
 
 		if (jsessionid != null) {
 			httpRequest.addHeader("Cookie", "JSESSIONID=" + jsessionid);
-			Log.d("Network",
-					"Added header: "
-							+ httpRequest.getHeaders("Cookie")[0].toString());
+			Log.d("Network", "Added header: " + httpRequest.getHeaders("Cookie")[0].toString());
 		}
 
 		StringEntity entity = new StringEntity(request, "UTF-8");
