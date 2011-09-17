@@ -7,10 +7,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;
+import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
@@ -24,10 +24,16 @@ public class RenderInfoWeekTable implements WebUntis{
 
 	private Map<String,List<Lesson>> weekdata ;
 	
-	private boolean dispsat, dispdate, dispweekdaynames, dispzerolesson;
+	@Deprecated private boolean dispsat, dispdate, dispweekdaynames, dispzerolesson;
+	// FIXME Aufruf ueber settings.getXYZ()/isXYZ() (da bei jedem get-Aufruf auf die Settings der aktuelle Wert ausgelesen wird).
+	// Ausser diese Klasse wird nur einmal gezeichnet / etc.
+	// Kommt drauf wie lange die Information der Settings verwendet wird.
+	// Ansonsten koennen die Settings natuerlich auch in der setSettings(Settings) ausgelesen und direkt gesetzt werden. :)
 	private Timegrid timegrid;
 	private List<SchoolHoliday> holidays;
 	private ViewType viewtype;
+
+	private Settings settings;
 	
 	
 	public RenderInfoWeekTable(){
@@ -54,6 +60,10 @@ public class RenderInfoWeekTable implements WebUntis{
 	
 	public void setViewType(ViewType vt){
 		viewtype = vt;
+	}
+	
+	public void setSettings(Settings settings) {
+		this.settings = settings;
 	}
 	
 	public GUIWeek analyse(){

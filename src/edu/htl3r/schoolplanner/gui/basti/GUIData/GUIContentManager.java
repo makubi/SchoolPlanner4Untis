@@ -6,6 +6,7 @@ import java.util.Map;
 import android.content.Context;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.Cache;
+import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 
@@ -18,6 +19,7 @@ public class GUIContentManager {
 	private Context context;
 	private ViewType viewtype;
 	private int viewlength = WEEK;
+	private Settings settings;
 	
 	public GUIContentManager(){}
 	
@@ -47,6 +49,7 @@ public class GUIContentManager {
 				weekinfo.setWeekData(lessonsForSomeTime);
 				weekinfo.setTimeGrid(datacenter.getTimeGrid());
 				weekinfo.setViewType(viewtype);
+				weekinfo.setSettings(settings);
 				return weekinfo.analyse();
 			}else{
 				return null;
@@ -54,6 +57,10 @@ public class GUIContentManager {
 		}
 		
 		return null;
+	}
+
+	public void setSettings(Settings settings) {
+		this.settings = settings;
 	}
 	
 }

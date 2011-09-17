@@ -52,7 +52,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 
 		viewtype = (ViewType) getIntent().getExtras().getSerializable(BundleConstants.SELECTED_VIEW_TYPE);
 		loadweekdata = new LoadDataTask();
-		loadweekdata.setData(this, ((SchoolPlannerApp) getApplication()).getData(), this, viewtype, downloadschlange);
+		loadweekdata.setData(this, ((SchoolPlannerApp) getApplication()).getData(), this, viewtype, downloadschlange, ((SchoolPlannerApp) getApplication()).getSettings());
 		loadweekdata.execute();
 	}
 
