@@ -22,10 +22,22 @@ import java.util.regex.Pattern;
 
 import org.apache.http.ParseException;
 
+import android.content.Context;
 import android.text.format.Time;
 
 public class DateTimeUtils {
 
+	private static Context context = SchoolplannerContext.context;
+	
+	public static String[] SHORT_WEEKDAY_NAMES = new String[] {
+		getString(R.string.timetable_week_header_sunday_short),
+		getString(R.string.timetable_week_header_monday_short),
+		getString(R.string.timetable_week_header_tuesday_short),
+		getString(R.string.timetable_week_header_wednesday_short),
+		getString(R.string.timetable_week_header_thursday_short),
+		getString(R.string.timetable_week_header_friday_short),
+		getString(R.string.timetable_week_header_saturday_short)};
+	
 	/**
 	 * Liefert ein {@link Time}-Objekt als ISO-8601-String (Form: YYYY-MM-DD).
 	 * @param date {@link Time}-Objekt, von dem der String erzeugt werden soll
@@ -81,5 +93,13 @@ public class DateTimeUtils {
 		DateTime dateTime = new DateTime();
 		dateTime.set(calendar.get(Calendar.MINUTE), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR));
 		return dateTime;
+	}
+	
+	public static String getShortWeekDayName(DateTime dateTime) {
+		return SHORT_WEEKDAY_NAMES[dateTime.getWeekDay()];
+	}
+	
+	private static String getString(int resId) {
+		return context.getString(resId);
 	}
 }

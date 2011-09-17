@@ -3,6 +3,7 @@ package edu.htl3r.schoolplanner.gui.basti;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Message;
+import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIContentManager;
@@ -19,7 +20,7 @@ class LoadDataTask extends AsyncTask<Void, String, Void> {
 
 	@Override
 	protected void onPreExecute() {
-		publishProgress("Erzeuge Objekte", "true");
+		publishProgress(getString(R.string.timetable_create_objects), "true");	// TODO: Ist diese Anzeige fuer den Benutzer wichtig?
 		contentmanager.setNeededData(context, cache);
 		contentmanager.setViewType(viewtype);
 		super.onPreExecute();
@@ -40,11 +41,11 @@ class LoadDataTask extends AsyncTask<Void, String, Void> {
 			if(d.isBomb())
 				return null;
 			
-			publishProgress("Lade Daten", "true");
+			publishProgress(getString(R.string.timetable_load_data), "true");
 			InputTransferObject input = (InputTransferObject)d;
 			GUIWeek timeTable4GUI = contentmanager.getTimeTable4GUI(input.getDate());
 
-			publishProgress("zaubere UI", "true");
+			publishProgress(getString(R.string.timetable_loading_display), "true");
 			Message m = new Message();
 			OutputTransferObject r= new OutputTransferObject(timeTable4GUI,input.getPos());
 			m.obj = r;
@@ -72,6 +73,10 @@ class LoadDataTask extends AsyncTask<Void, String, Void> {
 		viewtype = vt;
 		downloadschlange = bdq;
 		viewbasti = vb;
+	}
+	
+	private String getString(int resId) {
+		return context.getString(resId);
 	}
 
 }

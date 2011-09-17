@@ -20,7 +20,7 @@ public class WeekOverlay extends Dialog{
 		t = new TextView(this.getContext());
 		addContentView(t, new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
 
-		setTitle("Detail View");
+		setTitle(context.getString(R.string.timetable_overlay_title));
 	}
 	
 	public void setLessons(GUILessonContainer gl){

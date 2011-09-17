@@ -12,20 +12,21 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.gui.basti.Week.GUIWeekView;
 
 public class WeekHeader extends GUIWeekView {
-
+	
 	private int width, height;
 	private int days, lessonwidth;
 	private Paint paint;
 
-	private String weekdays[] = { "Mo", "Di", "Mi", "Do", "Fr", "Sa" };
 	private ArrayList<DateTime> datum = new ArrayList<DateTime>();
 
 	public WeekHeader(Context context) {
 		super(context);
+		
 		setID(HEADER_ID);
 
 		int color = getResources().getColor(R.color.header_background);
@@ -83,11 +84,13 @@ public class WeekHeader extends GUIWeekView {
 		for (int i = 0; i < days; i++) {
 			canvas.translate(0, paddint_top);
 			
-			StaticLayout s = new StaticLayout(weekdays[i], tp, lessonwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+			DateTime dateTime = datum.get(i);
+			
+			StaticLayout s = new StaticLayout(DateTimeUtils.getShortWeekDayName(dateTime), tp, lessonwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 			s.draw(canvas);
 			canvas.translate(0, padding_bottom);
 
-			s = new StaticLayout(datum.get(i).getDay() + "." + datum.get(i).getMonth() + "." + datum.get(i).getYear(), tp2, lessonwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+			s = new StaticLayout(dateTime.getDay() + "." + dateTime.getMonth() + "." + dateTime.getYear(), tp2, lessonwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 			s.draw(canvas);
 			canvas.translate(lessonwidth, -(padding_bottom+paddint_top));
 		}
