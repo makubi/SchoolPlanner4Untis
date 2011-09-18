@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.gui.basti.Eyecandy.WeekHeader;
-import edu.htl3r.schoolplanner.gui.basti.Eyecandy.WeekOverlay;
 import edu.htl3r.schoolplanner.gui.basti.Eyecandy.WeekTimeGrid;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIDay;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUILessonContainer;
 import edu.htl3r.schoolplanner.gui.basti.GUIData.GUIWeek;
 import edu.htl3r.schoolplanner.gui.basti.Lessons.LessonView;
+import edu.htl3r.schoolplanner.gui.basti.Overlay.Overlay;
 
 public class WeekLayout extends ViewGroup{
 
@@ -41,10 +41,10 @@ public class WeekLayout extends ViewGroup{
 	private WeekHeader weekheader;
 	private WeekTimeGrid weektimegrid;
 
-	private  boolean isDataHere = false;
+	private boolean isDataHere = false;
 	
 	private OnLessonsClickListener clicklistener;
-	private WeekOverlay weekoverlay;
+	private Overlay weekoverlay;
 
 	public WeekLayout(Context context, int id) {
 		super(context);
@@ -52,7 +52,7 @@ public class WeekLayout extends ViewGroup{
 		this.ID = id;
 		
 		clicklistener = new OnLessonsClickListener();
-		weekoverlay = new WeekOverlay(context);
+		weekoverlay = new Overlay(context);
 		
 		weekheader = new WeekHeader(context);
 		weektimegrid = new WeekTimeGrid(context);
@@ -239,7 +239,7 @@ public class WeekLayout extends ViewGroup{
 		@Override
 		public void onClick(View v) {
 			LessonView l = (LessonView)v;
-			weekoverlay.setLessons(l.getLessonsContainer());
+			weekoverlay.setData(l.getLessonsContainer(),l.getViewType());
 			weekoverlay.show();
 			Log.d("basti",l.getTime().toString());			
 		}

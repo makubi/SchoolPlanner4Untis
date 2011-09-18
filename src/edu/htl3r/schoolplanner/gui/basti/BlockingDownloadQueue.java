@@ -18,10 +18,4 @@ public class BlockingDownloadQueue extends LinkedBlockingQueue<TransferObject> {
 		return isInterrupted;
 	}
 
-	
-	@Override
-	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
-		return super.contains(o);
-	}
 }

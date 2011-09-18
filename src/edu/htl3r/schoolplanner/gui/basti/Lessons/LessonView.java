@@ -42,7 +42,7 @@ public class LessonView extends GUIWeekView {
 		paint.setStyle(Style.FILL);
 		paint.setTextSize(23);
 		paint.setAntiAlias(true);
-
+		
 	}
 
 
@@ -194,6 +194,10 @@ public class LessonView extends GUIWeekView {
 	
 	public GUILessonContainer getLessonsContainer(){
 		return lessoncontainer;
+	}
+	
+	public ViewType getViewType(){
+		return viewtype;
 	}
 
 }

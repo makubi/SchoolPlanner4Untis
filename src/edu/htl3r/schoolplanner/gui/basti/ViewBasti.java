@@ -26,7 +26,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.text.format.Time;
-import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
@@ -78,7 +77,6 @@ public class ViewBasti extends SchoolPlannerActivity {
 		@Override
 		public void handleMessage(Message msg) {
 			OutputTransferObject result = (OutputTransferObject)msg.obj;
-			Log.d("basti", result.getPos() + " || " + result.getWeek());
 			wvpageadapter.setWeeData(result.getWeek(), result.getPos());
 		}
 	};

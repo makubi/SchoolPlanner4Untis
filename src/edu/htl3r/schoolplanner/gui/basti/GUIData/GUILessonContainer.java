@@ -100,12 +100,37 @@ public class GUILessonContainer {
 		this.date = date;
 	}
 
+	/**
+	 * Sind Lessons fuer diese Einheit vorhanden
+	 * @return
+	 */
 	public boolean isEmpty(){
 		return (standardLessons.isEmpty() && specialLessons.isEmpty() && extraLongLessons.isEmpty() && extraLongSpecialLessons.isEmpty())? true:false;
 	}
 	
+	/**
+	 * Gib es irregulaere Stunden
+	 * @return
+	 */
 	public boolean istSomethinStrange(){
 		return ( specialLessons.isEmpty()  && extraLongSpecialLessons.isEmpty())? false:true;
+	}
+	
+	public ArrayList<Lesson> getAllLessons(){
+		ArrayList<Lesson> ret = new ArrayList<Lesson>();
+		for(Lesson l : standardLessons){
+			ret.add(l);
+		}
+		for(Lesson l : specialLessons){
+			ret.add(l);
+		}
+		for(Lesson l : extraLongLessons){
+			ret.add(l);
+		}
+		for(Lesson l : extraLongSpecialLessons){
+			ret.add(l);
+		}
+		return ret;
 	}
 		
 }

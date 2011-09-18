@@ -16,5 +16,6 @@
     <dimen name="gui_lesson_padding_top">17dip</dimen>
     <dimen name="gui_lesson_padding_left">5dip</dimen>
     
-    
+    <dimen name="gui_overlay_lesson_width">200dip</dimen>
+    <dimen name="gui_overlay_lesson_height">250dip</dimen>
 </resources>
