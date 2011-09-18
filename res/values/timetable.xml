@@ -11,4 +11,9 @@
     <string name="timetable_week_header_friday_short">Fr</string>
     <string name="timetable_week_header_saturday_short">Sa</string>
     <string name="timetable_week_header_sunday_short">Su</string>
+    
+    
+    <string name="timetable_overlay_lesson_can">Cancelled</string>
+    <string name="timetable_overlay_lesson_irr">Irregular</string>
+    <string name="timetable_overlay_lesson_sub">Substitute</string>
 </resources>

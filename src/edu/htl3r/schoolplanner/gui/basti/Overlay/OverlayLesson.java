@@ -15,6 +15,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCode;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeCancelled;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeIrregular;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
@@ -52,7 +53,9 @@ public class OverlayLesson extends View {
 		Paint p = new Paint();
 		p.setStrokeWidth(10);
 		p.setColor(Color.BLACK);
-
+		p.setTextSize(20);
+		p.setAntiAlias(true);
+		
 		if(lcode!=null)
 			p.setColor(Color.RED);
 		
@@ -68,6 +71,15 @@ public class OverlayLesson extends View {
 			canvas.drawLine(0, 0, width, height, p);
 		}
 		
+		if(lcode != null){
+			if(lcode instanceof LessonCodeCancelled){
+				canvas.drawText(getResources().getString(R.string.timetable_overlay_lesson_can), 20, height-30, p);
+			}else if(lcode instanceof LessonCodeSubstitute){
+				canvas.drawText(getResources().getString(R.string.timetable_overlay_lesson_sub), 20, height-30, p);
+			}if(lcode instanceof LessonCodeIrregular){
+				canvas.drawText(getResources().getString(R.string.timetable_overlay_lesson_irr), 20, height-30, p);
+			}
+		}
 		
 		paintText(canvas);
 		

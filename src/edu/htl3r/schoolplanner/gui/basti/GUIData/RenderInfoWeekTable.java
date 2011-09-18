@@ -24,7 +24,7 @@ public class RenderInfoWeekTable implements WebUntis{
 
 	private Map<String,List<Lesson>> weekdata ;
 	
-	@Deprecated private boolean dispsat, dispdate, dispweekdaynames, dispzerolesson;
+	@Deprecated private boolean dispdate, dispweekdaynames, dispzerolesson;
 	// FIXME Aufruf ueber settings.getXYZ()/isXYZ() (da bei jedem get-Aufruf auf die Settings der aktuelle Wert ausgelesen wird).
 	// Ausser diese Klasse wird nur einmal gezeichnet / etc.
 	// Kommt drauf wie lange die Information der Settings verwendet wird.
@@ -39,7 +39,6 @@ public class RenderInfoWeekTable implements WebUntis{
 	public RenderInfoWeekTable(){
 		
 		//TODO Lese das aus den Prefernces aus!!!!
-		dispsat = true;
 		dispdate = true;
 		dispweekdaynames = true;
 		dispzerolesson = true;
