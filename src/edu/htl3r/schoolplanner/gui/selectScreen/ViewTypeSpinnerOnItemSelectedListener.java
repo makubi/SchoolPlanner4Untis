@@ -62,6 +62,7 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 		else {
 			init = false;
 		}
+		init = true;
 	}
 
 	protected ViewType getViewType(int position) {
