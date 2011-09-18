@@ -17,6 +17,7 @@
 package edu.htl3r.schoolplanner.backend.preferences;
 
 import android.content.SharedPreferences;
+import android.preference.CheckBoxPreference;
 import android.preference.PreferenceManager;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
@@ -68,11 +69,11 @@ public class Settings {
 		
 		// display options
 		defaultView = preferences.getString(getString(R.string.settings_key_default_view), SettingsConstants.DEFAULT_VIEW_WEEK);
-		displaySaturday = preferences.getBoolean(getString(R.string.settings_key_show_saturday), true);
-		displayDate = preferences.getBoolean(getString(R.string.settings_key_show_date), true);
-		displayWeekdayNames = preferences.getBoolean(getString(R.string.settings_key_show_weekday_names), true);
-		displayTimegrid = preferences.getBoolean(getString(R.string.settings_key_show_timegrid), true);
-		displayZerothLesson = preferences.getBoolean(getString(R.string.settings_key_show_zeroth_lesson), true);
+		displaySaturday = preferences.getBoolean(getString(R.string.settings_key_show_saturday), false);
+		displayDate = preferences.getBoolean(getString(R.string.settings_key_show_date), false);
+		displayWeekdayNames = preferences.getBoolean(getString(R.string.settings_key_show_weekday_names), false);
+		displayTimegrid = preferences.getBoolean(getString(R.string.settings_key_show_timegrid), false);
+		displayZerothLesson = preferences.getBoolean(getString(R.string.settings_key_show_zeroth_lesson), false);
 	}
 	
 	public boolean isAutoLogin() {
