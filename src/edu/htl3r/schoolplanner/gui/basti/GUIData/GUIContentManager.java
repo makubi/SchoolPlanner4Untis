@@ -56,7 +56,7 @@ public class GUIContentManager {
 				weekinfo.setSettings(settings);
 				return weekinfo.analyse();
 			}else{
-				return new GUIWeek();
+				return null;
 			}
 		}
 		

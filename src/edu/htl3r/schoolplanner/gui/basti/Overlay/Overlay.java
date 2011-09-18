@@ -35,7 +35,11 @@ public class Overlay extends Dialog{
 		scrollview.scrollTo(0, 0);
 		DateTime start = lessons.getStart();
 		DateTime end = lessons.getEnd();
-		setTitle(start.getHour()+":"+start.getMinute() + " - " + end.getHour() + ":" + end.getMinute());
+		
+		String mins = ((start.getMinute()+"").length()==1) ? "0"+start.getMinute() : start.getMinute()+"";
+		String mine = ((end.getMinute()+"").length()==1) ? "0"+end.getMinute() : end.getMinute()+"";
+
+		setTitle(start.getHour()+":"+ mins + " - " + end.getHour() + ":" + mine);
 
 		container.removeAllViews();
 		overlaylessons.clear();
