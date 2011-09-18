@@ -9,7 +9,7 @@
 
 		<LinearLayout style="@style/selectScreenBox" android:id="@+id/selectScreen_boxClass">
 			
-			<TextView style="@style/selectScreenHeader"  android:text="@string/selectscreen_subjects" />
+			<TextView style="@style/selectScreenHeader"  android:text="@string/selectscreen_class" />
 			
 			<View style="@style/statusBarDelimiter" />
 			
@@ -38,7 +38,7 @@
 		<LinearLayout style="@style/selectScreenBox" android:id="@+id/selectScreen_boxRoom"
 			android:layout_below="@id/selectScreen_boxClass">
 			
-			<TextView style="@style/selectScreenHeader" android:text="@string/selectscreen_class"/>
+			<TextView style="@style/selectScreenHeader" android:text="@string/selectscreen_rooms"/>
 			
 			<View style="@style/statusBarDelimiter" />
 			
