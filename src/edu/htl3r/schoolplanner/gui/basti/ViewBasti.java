@@ -115,5 +115,4 @@ public class ViewBasti extends SchoolPlannerActivity {
 		myViewPager.setCurrentItem(50);
 	}
 	
-	
 }

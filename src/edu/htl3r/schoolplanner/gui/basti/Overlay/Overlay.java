@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Canvas;
 import android.widget.LinearLayout;
+import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
@@ -23,13 +23,16 @@ public class Overlay extends Dialog{
 		setContentView(R.layout.overlay);
 		setCanceledOnTouchOutside(true);
 		container = (LinearLayout)findViewById(R.id.overlay_container);
-		setTitle(context.getString(R.string.timetable_overlay_title));
+		setTitle("");
 	}
 
 
 	public void setData(GUILessonContainer lessonsContainer, ViewType viewType) {
 		lessons = lessonsContainer;
-		
+		DateTime start = lessons.getStart();
+		DateTime end = lessons.getEnd();
+		setTitle(start.getHour()+":"+start.getMinute() + " - " + end.getHour() + ":" + end.getMinute());
+
 		container.removeAllViews();
 		overlaylessons.clear();
 		

@@ -12,8 +12,8 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 
 public class GUIContentManager {
 	
-	public static int WEEK = 1;
-	public static int DAY = 2;
+	public static int WEEK = 55187;
+	public static int DAY = 78155;
 	
 	private GUIContentProviderSpez datacenter;
 	private Context context;
@@ -43,7 +43,13 @@ public class GUIContentManager {
 		if(viewlength == WEEK){
 			RenderInfoWeekTable weekinfo = new RenderInfoWeekTable();
 			DateTime end = new DateTime();
-			end.set(start.getDay()+4, start.getMonth(), start.getYear());
+			
+			if(settings.isDisplaySaturday())
+				end.set(start.getDay()+5, start.getMonth(), start.getYear());
+			else
+				end.set(start.getDay()+4, start.getMonth(), start.getYear());
+
+			
 			Map<String, List<Lesson>> lessonsForSomeTime = datacenter.getLessonsForSomeTime(viewtype, start, end);
 			if(lessonsForSomeTime.size() != 0 && lessonsForSomeTime != null){
 				weekinfo.setWeekData(lessonsForSomeTime);
