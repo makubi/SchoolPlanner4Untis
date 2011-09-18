@@ -37,8 +37,6 @@ public class GUIContentManager {
 	}
 	
 	public GUIWeek getTimeTable4GUI(DateTime start){
-		if(viewtype == null || datacenter == null || context == null)
-			return null;	//TODO Nice Error Message
 		
 		if(viewlength == WEEK){
 			RenderInfoWeekTable weekinfo = new RenderInfoWeekTable();
@@ -58,7 +56,7 @@ public class GUIContentManager {
 				weekinfo.setSettings(settings);
 				return weekinfo.analyse();
 			}else{
-				return null;
+				return new GUIWeek();
 			}
 		}
 		

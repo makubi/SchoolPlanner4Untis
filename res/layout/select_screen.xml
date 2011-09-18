@@ -7,23 +7,27 @@
 	<RelativeLayout android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_centerHorizontal="true" android:layout_centerVertical="true">
 
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			style="@style/selectScreenBox" android:id="@+id/selectScreen_boxClass">
+		<LinearLayout style="@style/selectScreenBox" android:id="@+id/selectScreen_boxClass">
 			
-			<ImageView xmlxmlns="http://schemas.android.com/apk/res/android"
-				android:id="@+id/selectScreen_imageClass" style="@style/selectScreenBoxImage"
+			<TextView style="@style/selectScreenHeader"  android:text="@string/selectscreen_subjects" />
+			
+			<View style="@style/statusBarDelimiter" />
+			
+			<ImageView android:id="@+id/selectScreen_imageClass" style="@style/selectScreenBoxImage"
 				android:src="@drawable/ic_class" />
 			<View style="@style/statusBarDelimiter" />
 			
 			<Spinner android:id="@+id/selectScreen_spinnerClass" style="@style/selectScreenBoxSpinner" />
 		</LinearLayout>
 
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			style="@style/selectScreenBox" android:id="@+id/selectScreen_boxTeacher"
+		<LinearLayout style="@style/selectScreenBox" android:id="@+id/selectScreen_boxTeacher"
 			android:layout_toRightOf="@id/selectScreen_boxClass">
 			
-			<ImageView xmlxmlns="http://schemas.android.com/apk/res/android"
-				android:id="@+id/selectScreen_imageTeacher" style="@style/selectScreenBoxImage"
+			<TextView style="@style/selectScreenHeader"  android:text="@string/selectscreen_teacher" />
+			
+			<View style="@style/statusBarDelimiter" />
+						
+			<ImageView android:id="@+id/selectScreen_imageTeacher" style="@style/selectScreenBoxImage"
 				android:src="@drawable/ic_teacher" />
 			<View style="@style/statusBarDelimiter" />
 			
@@ -31,12 +35,14 @@
 		</LinearLayout>
 
 
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			style="@style/selectScreenBox" android:id="@+id/selectScreen_boxRoom"
+		<LinearLayout style="@style/selectScreenBox" android:id="@+id/selectScreen_boxRoom"
 			android:layout_below="@id/selectScreen_boxClass">
 			
-			<ImageView xmlxmlns="http://schemas.android.com/apk/res/android"
-				android:id="@+id/selectScreen_imageRoom" style="@style/selectScreenBoxImage"
+			<TextView style="@style/selectScreenHeader" android:text="@string/selectscreen_class"/>
+			
+			<View style="@style/statusBarDelimiter" />
+			
+			<ImageView android:id="@+id/selectScreen_imageRoom" style="@style/selectScreenBoxImage"
 				android:src="@drawable/ic_door" />
 			
 			<View style="@style/statusBarDelimiter" />
@@ -44,13 +50,15 @@
 			<Spinner android:id="@+id/selectScreen_spinnerRoom" style="@style/selectScreenBoxSpinner" />
 		</LinearLayout>
 
-		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			style="@style/selectScreenBox" android:id="@+id/selectScreen_boxSubject"
+		<LinearLayout style="@style/selectScreenBox" android:id="@+id/selectScreen_boxSubject"
 			android:layout_toRightOf="@id/selectScreen_boxRoom"
 			android:layout_below="@id/selectScreen_boxTeacher">
 			
-			<ImageView xmlxmlns="http://schemas.android.com/apk/res/android"
-				android:id="@+id/selectScreen_imageSubject" style="@style/selectScreenBoxImage"
+			<TextView style="@style/selectScreenHeader" android:text="@string/selectscreen_subjects"/>
+			
+			<View style="@style/statusBarDelimiter" />
+			
+			<ImageView android:id="@+id/selectScreen_imageSubject" style="@style/selectScreenBoxImage"
 				android:src="@drawable/ic_subject" />
 				
 			<View style="@style/statusBarDelimiter" />
