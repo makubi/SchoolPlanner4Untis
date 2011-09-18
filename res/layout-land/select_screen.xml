@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hack to prevent layout from being cut off. Implement layout for landscape 
+	mode. -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	style="@style/background_layout">
+
+	<RelativeLayout android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_centerHorizontal="true"
+		android:layout_centerVertical="true">
+
+		<LinearLayout style="@style/selectScreenBox" android:id="@+id/selectScreen_boxClass"
+			android:layout_marginLeft="5dip" android:layout_marginRight="5dip" >
+
+			<TextView style="@style/selectScreenHeader" android:text="@string/selectscreen_class" />
+
+			<View style="@style/statusBarDelimiter" />
+
+			<ImageView android:id="@+id/selectScreen_imageClass" style="@style/selectScreenBoxImage"
+				android:src="@drawable/ic_class" />
+			<View style="@style/statusBarDelimiter" />
+
+			<Spinner android:id="@+id/selectScreen_spinnerClass" style="@style/selectScreenBoxSpinner" />
+		</LinearLayout>
+
+		<LinearLayout style="@style/selectScreenBox" android:id="@+id/selectScreen_boxTeacher"
+			android:layout_toRightOf="@id/selectScreen_boxClass"
+			 android:layout_marginRight="5dip">
+
+			<TextView style="@style/selectScreenHeader" android:text="@string/selectscreen_teacher" />
+
+			<View style="@style/statusBarDelimiter" />
+
+			<ImageView android:id="@+id/selectScreen_imageTeacher"
+				style="@style/selectScreenBoxImage" android:src="@drawable/ic_teacher" />
+			<View style="@style/statusBarDelimiter" />
+
+			<Spinner android:id="@+id/selectScreen_spinnerTeacher" style="@style/selectScreenBoxSpinner" />
+		</LinearLayout>
+
+
+		<LinearLayout style="@style/selectScreenBox" android:id="@+id/selectScreen_boxRoom"
+			android:layout_toRightOf="@id/selectScreen_boxTeacher"
+			android:layout_marginRight="5dip" >
+
+			<TextView style="@style/selectScreenHeader" android:text="@string/selectscreen_rooms" />
+
+			<View style="@style/statusBarDelimiter" />
+
+			<ImageView android:id="@+id/selectScreen_imageRoom" style="@style/selectScreenBoxImage"
+				android:src="@drawable/ic_door" />
+
+			<View style="@style/statusBarDelimiter" />
+
+			<Spinner android:id="@+id/selectScreen_spinnerRoom" style="@style/selectScreenBoxSpinner" />
+		</LinearLayout>
+
+		<LinearLayout style="@style/selectScreenBox" android:id="@+id/selectScreen_boxSubject"
+			android:layout_toRightOf="@id/selectScreen_boxRoom"
+			 android:layout_marginRight="5dip">
+
+			<TextView style="@style/selectScreenHeader" android:text="@string/selectscreen_subjects" />
+
+			<View style="@style/statusBarDelimiter" />
+
+			<ImageView android:id="@+id/selectScreen_imageSubject"
+				style="@style/selectScreenBoxImage" android:src="@drawable/ic_subject" />
+
+			<View style="@style/statusBarDelimiter" />
+
+			<Spinner android:id="@+id/selectScreen_spinnerSubject" style="@style/selectScreenBoxSpinner" />
+		</LinearLayout>
+
+	</RelativeLayout>
+
+	<include layout="@layout/progress_bar" />
+</RelativeLayout>
