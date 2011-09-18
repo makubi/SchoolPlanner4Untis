@@ -3,7 +3,7 @@
     <string name="view_type_list_missing">One or more list is missing. Unable to continue.</string>
     
     <string name="selectscreen_class">Classes</string>
-    <string name="selectscreen_teacher">Teachers</string>
+    <string name="selectscreen_teacher">Teacher</string>
     <string name="selectscreen_rooms">Rooms</string>
     <string name="selectscreen_subjects">Subjects</string>
 </resources>
