@@ -1,5 +1,6 @@
 package edu.htl3r.schoolplanner.gui.timetable.Overlay;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.graphics.Paint;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.util.Log;
 import android.view.View;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
@@ -126,16 +128,16 @@ public class OverlayLesson extends View {
 			
 		
 		for(SchoolClass s : schoolClasses){
-			classes.append(s.getName()+" ");
+			classes.append(s.getName().trim()+" ");
 		}
 		for(SchoolRoom s : schoolRooms){
-			rooms.append(s.getName()+" ");
+			rooms.append(s.getName().trim()+" ");
 		}
 		for(SchoolSubject s : schoolSubjects){
-			subjects.append(s.getName()+" ");
+			subjects.append(s.getName().trim()+" ");
 		}
 		for(SchoolTeacher s : schoolTeachers){
-			teacher.append(s.getName()+" ");
+			teacher.append(s.getName().trim()+" ");
 		}
 		
 		if(lcode instanceof LessonCodeSubstitute){
@@ -149,20 +151,46 @@ public class OverlayLesson extends View {
 		}
 		
 		
-		StaticLayout sl = new StaticLayout(classes.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-		canvas.translate(0, 40);
-		sl.draw(canvas);
+		ArrayList<String> splitString = splitString(classes.toString(), tp);
+		StaticLayout sl = null;
+		
+		
+		for (String line : splitString){
+			canvas.translate(0, 40);
+			sl = new StaticLayout(line.trim(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+			sl.draw(canvas);
+		}
+
 		sl = new StaticLayout(teacher.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-		canvas.translate(0, 40);
+		canvas.translate(0, 50);
 		sl.draw(canvas);
 		sl = new StaticLayout(subjects.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-		canvas.translate(0, 40);
+		canvas.translate(0, 50);
 		sl.draw(canvas);
 		sl = new StaticLayout(rooms.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-		canvas.translate(0, 40);
+		canvas.translate(0, 50);
 		sl.draw(canvas);
 		
 		
+	}
+	
+	private ArrayList<String> splitString(String s, TextPaint tp){
+		
+		String [] tmp = s.split(" ");
+		StringBuilder sb = new StringBuilder();
+		ArrayList<String> ret = new ArrayList<String>();
+		
+		for (int i = 0; i < tmp.length; i++) {	
+			if(StaticLayout.getDesiredWidth(sb.toString()+" "+tmp[i], tp) > width){
+				ret.add(sb.toString().trim());
+				sb = new StringBuilder();
+				sb.append(tmp[i]);
+			}else{
+				sb.append(" " + tmp[i]);
+			}			
+		}
+		ret.add(sb.toString());
+		return ret;
 	}
 
 }
