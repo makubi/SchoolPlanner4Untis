@@ -9,20 +9,24 @@
 
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			style="@style/selectScreenBox" android:id="@+id/selectScreen_boxClass">
+			
 			<ImageView xmlxmlns="http://schemas.android.com/apk/res/android"
 				android:id="@+id/selectScreen_imageClass" style="@style/selectScreenBoxImage"
 				android:src="@drawable/ic_class" />
 			<View style="@style/statusBarDelimiter" />
+			
 			<Spinner android:id="@+id/selectScreen_spinnerClass" style="@style/selectScreenBoxSpinner" />
 		</LinearLayout>
 
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			style="@style/selectScreenBox" android:id="@+id/selectScreen_boxTeacher"
 			android:layout_toRightOf="@id/selectScreen_boxClass">
+			
 			<ImageView xmlxmlns="http://schemas.android.com/apk/res/android"
 				android:id="@+id/selectScreen_imageTeacher" style="@style/selectScreenBoxImage"
 				android:src="@drawable/ic_teacher" />
 			<View style="@style/statusBarDelimiter" />
+			
 			<Spinner android:id="@+id/selectScreen_spinnerTeacher" style="@style/selectScreenBoxSpinner" />
 		</LinearLayout>
 
@@ -30,10 +34,13 @@
 		<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			style="@style/selectScreenBox" android:id="@+id/selectScreen_boxRoom"
 			android:layout_below="@id/selectScreen_boxClass">
+			
 			<ImageView xmlxmlns="http://schemas.android.com/apk/res/android"
 				android:id="@+id/selectScreen_imageRoom" style="@style/selectScreenBoxImage"
 				android:src="@drawable/ic_door" />
+			
 			<View style="@style/statusBarDelimiter" />
+			
 			<Spinner android:id="@+id/selectScreen_spinnerRoom" style="@style/selectScreenBoxSpinner" />
 		</LinearLayout>
 
@@ -41,12 +48,16 @@
 			style="@style/selectScreenBox" android:id="@+id/selectScreen_boxSubject"
 			android:layout_toRightOf="@id/selectScreen_boxRoom"
 			android:layout_below="@id/selectScreen_boxTeacher">
+			
 			<ImageView xmlxmlns="http://schemas.android.com/apk/res/android"
 				android:id="@+id/selectScreen_imageSubject" style="@style/selectScreenBoxImage"
 				android:src="@drawable/ic_subject" />
+				
 			<View style="@style/statusBarDelimiter" />
+			
 			<Spinner android:id="@+id/selectScreen_spinnerSubject" style="@style/selectScreenBoxSpinner" />
 		</LinearLayout>
+	
 	</RelativeLayout>
 
 	<include layout="@layout/progress_bar" />

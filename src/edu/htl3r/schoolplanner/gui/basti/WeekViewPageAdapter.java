@@ -26,7 +26,7 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 	}
 
 	public synchronized void setWeeData(GUIWeek data, int pos) {
-		if (!view_cach[pos].isDataHere()) {
+		if (!view_cach[pos].isDataHere() && data != null) {
 			view_cach[pos].setWeekData(data);
 		}
 	}
