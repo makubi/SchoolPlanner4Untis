@@ -8,7 +8,7 @@
 		android:layout_height="wrap_content" android:background="@color/element_background"
 		android:layout_alignParentTop="true" android:id="@+id/week_indicator_container">
 
-		<edu.htl3r.schoolplanner.gui.basti.ViewPagerIndicator
+		<edu.htl3r.schoolplanner.gui.timetable.ViewPagerIndicator
 			android:id="@+id/week_indicator" android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:paddingLeft="5dp"
 			android:paddingRight="5dp" />

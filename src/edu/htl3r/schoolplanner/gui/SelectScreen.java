@@ -43,10 +43,10 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
-import edu.htl3r.schoolplanner.gui.basti.ViewBasti;
 import edu.htl3r.schoolplanner.gui.selectScreen.SpinnerMemory;
 import edu.htl3r.schoolplanner.gui.selectScreen.ViewTypeOnClickListener;
 import edu.htl3r.schoolplanner.gui.selectScreen.ViewTypeSpinnerOnItemSelectedListener;
+import edu.htl3r.schoolplanner.gui.timetable.ViewBasti;
 
 public class SelectScreen extends SchoolPlannerActivity{
 	
