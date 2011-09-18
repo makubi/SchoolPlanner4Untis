@@ -2,29 +2,31 @@ package edu.htl3r.schoolplanner.gui.basti.Overlay;
 
 import java.util.List;
 
-import edu.htl3r.schoolplanner.DateTimeUtils;
-import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
-import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
-import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
-import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
-import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.text.Layout.Alignment;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.view.View;
+import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCode;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeCancelled;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
 public class OverlayLesson extends View {
 
 	private Lesson lesson;
+	private LessonCode lcode;
 	private ViewType viewtype;
-	int width, height;
+	private int width, height;
 
 	public OverlayLesson(Context context) {
 		super(context);
@@ -33,13 +35,13 @@ public class OverlayLesson extends View {
 	
 	public void setData(Lesson l, ViewType vt){
 		lesson = l;
+		lcode = lesson.getLessonCode();
 		viewtype = vt;
 		setBackground();
 	}
 	
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		// TODO Auto-generated method stub
 		width = getResources().getDimensionPixelSize(R.dimen.gui_overlay_lesson_width);
 		height = getResources().getDimensionPixelSize(R.dimen.gui_overlay_lesson_height);
 		setMeasuredDimension(width, height);
@@ -48,13 +50,24 @@ public class OverlayLesson extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		Paint p = new Paint();
-		p.setStrokeWidth(7);
+		p.setStrokeWidth(10);
 		p.setColor(Color.BLACK);
+
+		if(lcode!=null)
+			p.setColor(Color.RED);
 		
 		canvas.drawLine(0, 0, width, 0, p);
 		canvas.drawLine(0, 0, 0, height, p);
 		canvas.drawLine(width, 0, width, height, p);
 		canvas.drawLine(width, height, 0, height, p);
+		
+		
+		
+		if(lcode instanceof LessonCodeCancelled){
+			p.setStrokeWidth(5);
+			canvas.drawLine(0, 0, width, height, p);
+		}
+		
 		
 		paintText(canvas);
 		
@@ -78,7 +91,8 @@ public class OverlayLesson extends View {
 			if (!bcolor.equalsIgnoreCase("")) {
 				setBackgroundColor(Color.parseColor("#55" + bcolor));
 			}
-		}
+		}	
+
 	}
 
 	private void paintText(Canvas canvas){
@@ -86,45 +100,56 @@ public class OverlayLesson extends View {
 		List<SchoolRoom> schoolRooms = lesson.getSchoolRooms();
 		List<SchoolSubject> schoolSubjects = lesson.getSchoolSubjects();
 		List<SchoolTeacher> schoolTeachers = lesson.getSchoolTeachers();
-		StringBuilder line = new StringBuilder();
 		
 		TextPaint tp = new TextPaint();
 		tp.setColor(Color.BLACK);
 		tp.setAntiAlias(true);
 		tp.setTextSize(30);
 		
+		StringBuilder classes = new StringBuilder();
+		StringBuilder rooms = new StringBuilder();
+		StringBuilder subjects = new StringBuilder();
+		StringBuilder teacher = new StringBuilder();
+		
+			
+		
 		for(SchoolClass s : schoolClasses){
-			line.append(s.getName()+" ");
+			classes.append(s.getName()+" ");
 		}
-		canvas.translate(0, 40);
-		StaticLayout sl = new StaticLayout(line.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-		sl.draw(canvas);
-		line = new StringBuilder();
-		
 		for(SchoolRoom s : schoolRooms){
-			line.append(s.getName()+" ");
+			rooms.append(s.getName()+" ");
 		}
-		
-		canvas.translate(0, 40);
-		sl = new StaticLayout(line.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-		sl.draw(canvas);
-		line = new StringBuilder();
-		
 		for(SchoolSubject s : schoolSubjects){
-			line.append(s.getName()+" ");
+			subjects.append(s.getName()+" ");
 		}
-		canvas.translate(0, 40);
-		sl = new StaticLayout(line.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-		sl.draw(canvas);
-		line = new StringBuilder();
-		
 		for(SchoolTeacher s : schoolTeachers){
-			line.append(s.getName()+" ");
+			teacher.append(s.getName()+" ");
 		}
+		
+		if(lcode instanceof LessonCodeSubstitute){
+			LessonCodeSubstitute lcs = (LessonCodeSubstitute)lcode;
+			SchoolRoom originSchoolRoom = lcs.getOriginSchoolRoom();
+			SchoolTeacher originSchoolTeacher = lcs.getOriginSchoolTeacher();
+			if(originSchoolRoom!= null)
+				rooms.append("("+originSchoolRoom.getName()+")");
+			if(originSchoolTeacher != null)
+				teacher.append("("+originSchoolTeacher.getName()+")");
+		}
+		
+		
+		StaticLayout sl = new StaticLayout(classes.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 		canvas.translate(0, 40);
-		sl = new StaticLayout(line.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 		sl.draw(canvas);
-		line = new StringBuilder();
+		sl = new StaticLayout(teacher.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+		canvas.translate(0, 40);
+		sl.draw(canvas);
+		sl = new StaticLayout(subjects.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+		canvas.translate(0, 40);
+		sl.draw(canvas);
+		sl = new StaticLayout(rooms.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+		canvas.translate(0, 40);
+		sl.draw(canvas);
+		
 		
 	}
 

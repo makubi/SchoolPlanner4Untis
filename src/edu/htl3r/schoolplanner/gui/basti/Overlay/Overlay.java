@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
@@ -16,6 +17,7 @@ public class Overlay extends Dialog{
 	
 	private GUILessonContainer lessons;
 	private LinearLayout container;
+	private HorizontalScrollView scrollview;
 	private ArrayList<OverlayLesson> overlaylessons = new ArrayList<OverlayLesson>();
 	
 	public Overlay(Context context) {
@@ -23,12 +25,14 @@ public class Overlay extends Dialog{
 		setContentView(R.layout.overlay);
 		setCanceledOnTouchOutside(true);
 		container = (LinearLayout)findViewById(R.id.overlay_container);
+		scrollview = (HorizontalScrollView)findViewById(R.id.overlay_scroll);
 		setTitle("");
 	}
 
 
 	public void setData(GUILessonContainer lessonsContainer, ViewType viewType) {
 		lessons = lessonsContainer;
+		scrollview.scrollTo(0, 0);
 		DateTime start = lessons.getStart();
 		DateTime end = lessons.getEnd();
 		setTitle(start.getHour()+":"+start.getMinute() + " - " + end.getHour() + ":" + end.getMinute());
