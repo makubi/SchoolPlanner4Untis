@@ -68,7 +68,6 @@ public class SelectScreen extends SchoolPlannerActivity{
 		setContentView(R.layout.select_screen);
 		
 		initSpinner();
-		
 	}
 	
 	private void initSpinner() {
@@ -252,7 +251,7 @@ public class SelectScreen extends SchoolPlannerActivity{
 			imageSubject.setOnClickListener(unableToDisplayTimetableOnClickListener);
 		}
 	}
-
+	
 	private void showToastMessage(String message) {
 		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 	}

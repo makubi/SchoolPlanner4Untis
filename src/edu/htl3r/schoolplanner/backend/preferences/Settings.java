@@ -17,7 +17,6 @@
 package edu.htl3r.schoolplanner.backend.preferences;
 
 import android.content.SharedPreferences;
-import android.preference.CheckBoxPreference;
 import android.preference.PreferenceManager;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
@@ -58,6 +57,8 @@ public class Settings {
 	}
 
 	private void loadPreferences() {
+		// Nicht-gesetzte 'defaultValue'-boolean-Werte sind standardgemaess 'false'
+		
 		// login options
 		autoLogin = preferences.getBoolean(getString(R.string.settings_key_autologin), false);
 		autoLoginSet = preferences.getString(getString(R.string.settings_key_autologin_set), "");

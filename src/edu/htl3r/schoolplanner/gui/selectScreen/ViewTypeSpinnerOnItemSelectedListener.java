@@ -36,7 +36,7 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 	private SpinnerMemory spinnerMemory;
 	
 	/** Wird benoetigt, damit beim Laden der Activity nicht automatisch die Action ausgefuehrt wird, da die Klasse {@link Spinner} bzw. der {@link OnItemSelectedListener} schon zu diesem Zeitpunkt gecalled werden. */
-	private boolean init = true;
+	private int lastSelectedPosition = -1;
 
 	public ViewTypeSpinnerOnItemSelectedListener(Activity parent, Intent intent, List<? extends ViewType> list, SpinnerMemory spinnerMemory) {
 		this.parent = parent;
@@ -48,8 +48,9 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			long id) {
-		// Hack, damit beim Initialisieren des Spinners nicht automatisch eine Action ausgefuehrt wird
-		if (!init) {			
+		
+		// Hack, damit beim Initialisieren des Spinners nicht automatisch eine Action ausgefuehrt wird		
+		if (lastSelectedPosition > -1 && lastSelectedPosition != position) {			
 			ViewType item = getViewType(position);
 			
 			if(spinnerMemory != null) spinnerMemory.setSelectedViewType(item);
@@ -59,9 +60,8 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 			intent.putExtras(bundle);
 			this.parent.startActivity(intent);
 		}
-		else {
-			init = false;
-		}
+		
+		lastSelectedPosition = position;
 	}
 
 	protected ViewType getViewType(int position) {
@@ -70,13 +70,5 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {}
-
-
-	/**
-	 * Veranlaesst den {@link OnItemSelectedListener} dazu, die naechste Action zu ignorieren.
-	 * @param init 'true', wenn die naechste Action ignoriert werden soll
-	 */
-	public void setSkipNextAction(boolean init) {
-		this.init = init;
-	}
+	
 }
