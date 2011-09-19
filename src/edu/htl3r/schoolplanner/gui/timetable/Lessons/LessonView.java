@@ -1,4 +1,4 @@
-package edu.htl3r.schoolplanner.gui.timetableLessons;
+package edu.htl3r.schoolplanner.gui.timetable.Lessons;
 
 import java.util.ArrayList;
 import java.util.List;
