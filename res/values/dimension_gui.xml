@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="gui_header_height">45dip</dimen>
     <dimen name="gui_timegrid_width">30dip</dimen>
     <dimen name="gui_timegrid_padding_right">5dip</dimen>
     
+    <dimen name="gui_header_height">45dip</dimen>
     <dimen name="gui_header_paddting_top">5dip</dimen>
     <dimen name="gui_header_line1_size">18sp</dimen>
     <dimen name="gui_header_line2_size">10sp</dimen>
@@ -16,6 +16,19 @@
     <dimen name="gui_lesson_padding_top">17dip</dimen>
     <dimen name="gui_lesson_padding_left">5dip</dimen>
     
+    
     <dimen name="gui_overlay_lesson_width">200dip</dimen>
     <dimen name="gui_overlay_lesson_height">215dip</dimen>
+    
+    <dimen name="gui_overlay_text_size_big">20sp</dimen>
+    <dimen name="gui_overlay_text_size_medium">15sp</dimen>
+    <dimen name="gui_overlay_text_size_small">10sp</dimen>
+    
+    <dimen name="gui_overlay_margin_top">7dip</dimen>
+    <dimen name="gui_overlay_line_space">30dip</dimen>
+    
+    
+    <dimen name="gui_overlay_footer_margin_left">15dip</dimen>
+    <dimen name="gui_overlay_footer_margin_bottom">20dip</dimen>
+    
 </resources>

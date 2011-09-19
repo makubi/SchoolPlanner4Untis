@@ -54,7 +54,7 @@ public class OverlayLesson extends View {
 		Paint p = new Paint();
 		p.setStrokeWidth(10);
 		p.setColor(Color.BLACK);
-		p.setTextSize(20);
+		p.setTextSize(getResources().getDimension(R.dimen.gui_overlay_text_size_medium));
 		p.setAntiAlias(true);
 		
 		if(lcode!=null)
@@ -73,12 +73,14 @@ public class OverlayLesson extends View {
 		}
 		
 		if(lcode != null){
+			int marginleft = getResources().getDimensionPixelSize(R.dimen.gui_overlay_footer_margin_left);
+			int marginbottom = getResources().getDimensionPixelSize(R.dimen.gui_overlay_footer_margin_bottom);
 			if(lcode instanceof LessonCodeCancelled){
-				canvas.drawText(getResources().getString(R.string.timetable_overlay_lesson_can), 20, height-30, p);
+				canvas.drawText(getResources().getString(R.string.timetable_overlay_lesson_can), marginleft, height-marginbottom, p);
 			}else if(lcode instanceof LessonCodeSubstitute){
-				canvas.drawText(getResources().getString(R.string.timetable_overlay_lesson_sub), 20, height-30, p);
+				canvas.drawText(getResources().getString(R.string.timetable_overlay_lesson_sub), marginleft, height-marginbottom, p);
 			}if(lcode instanceof LessonCodeIrregular){
-				canvas.drawText(getResources().getString(R.string.timetable_overlay_lesson_irr), 20, height-30, p);
+				canvas.drawText(getResources().getString(R.string.timetable_overlay_lesson_irr), marginleft, height-marginbottom, p);
 			}
 		}
 		
@@ -117,7 +119,7 @@ public class OverlayLesson extends View {
 		TextPaint tp = new TextPaint();
 		tp.setColor(Color.BLACK);
 		tp.setAntiAlias(true);
-		tp.setTextSize(30);
+		tp.setTextSize(getResources().getDimension(R.dimen.gui_overlay_text_size_big));
 		
 		StringBuilder classes = new StringBuilder();
 		StringBuilder rooms = new StringBuilder();
@@ -153,36 +155,40 @@ public class OverlayLesson extends View {
 		ArrayList<String> splitString = splitString(classes.toString(), tp);
 		StaticLayout sl = null;
 		
-		canvas.translate(0, 10);
+		int margintop = getResources().getDimensionPixelOffset(R.dimen.gui_overlay_margin_top);
+		int linespace = getResources().getDimensionPixelOffset(R.dimen.gui_overlay_line_space);
+
+		canvas.translate(0, margintop);
 
 		for (String line : splitString){
 			sl = new StaticLayout(line.trim(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 			sl.draw(canvas);
-			canvas.translate(0, 40);
+			canvas.translate(0, linespace-margintop);
 
 		}
 
-		canvas.translate(0, 10);
+		canvas.translate(0, margintop);
 		sl = new StaticLayout(teacher.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 		sl.draw(canvas);
 		
-		canvas.translate(0, 50);
+		canvas.translate(0, linespace);
 		sl = new StaticLayout(subjects.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 		sl.draw(canvas);
 		
-		canvas.translate(0, 50);
+		canvas.translate(0, linespace);
 		sl = new StaticLayout(rooms.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 		sl.draw(canvas);
 		
 		
-		tp.setTextSize(15);
+		tp.setTextSize(getResources().getDimension(R.dimen.gui_overlay_text_size_small));
+		
 		sl = new StaticLayout(lesson.getDate().getDay()+"."+lesson.getDate().getMonth()+"."+lesson.getDate().getYear(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-		canvas.translate(0, 50);
+		canvas.translate(0, linespace);
 		sl.draw(canvas);
 		String start = lesson.getStartTime().getHour() +":" +(((lesson.getStartTime().getMinute()+"").length()==2)?lesson.getStartTime().getMinute()+"":"0"+lesson.getStartTime().getMinute()+"");
 		String end = lesson.getEndTime().getHour() +":" +(((lesson.getEndTime().getMinute()+"").length()==2)?lesson.getEndTime().getMinute()+"":"0"+lesson.getEndTime().getMinute()+"");
 		sl = new StaticLayout(start + " - " + end, tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-		canvas.translate(0, 25);
+		canvas.translate(0, linespace/2);
 		sl.draw(canvas);
 		
 	}
