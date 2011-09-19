@@ -17,8 +17,8 @@ import edu.htl3r.schoolplanner.gui.timetable.Eyecandy.WeekTimeGrid;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIDay;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUILessonContainer;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIWeek;
+import edu.htl3r.schoolplanner.gui.timetable.Lessons.LessonView;
 import edu.htl3r.schoolplanner.gui.timetable.Overlay.Overlay;
-import edu.htl3r.schoolplanner.gui.timetableLessons.LessonView;
 
 public class WeekLayout extends ViewGroup{
 
