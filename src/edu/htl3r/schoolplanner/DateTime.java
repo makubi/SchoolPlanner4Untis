@@ -156,7 +156,8 @@ public class DateTime implements Cloneable,Comparable<DateTime> {
 	
 	@Override
 	public String toString() {
-		return getDay() +"."+getMonth()+"."+getYear() + " " + getHour()+":"+getMinute()+":"+getSecond();
+		return getDay() +"."+getMonth()+"."+getYear() + " " + getHour()+":" +
+				(((""+getMinute()).length()==2)? getMinute()+"" : "0"+getMinute());
 	}
 	
 }

@@ -50,12 +50,23 @@ public class LessonView extends GUIWeekView {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
+		List<Lesson> lessons = new ArrayList<Lesson>();
 		
-		if(lessoncontainer.isSomethinStrange())
+		if(lessoncontainer.isSomethinStrange()){
 			__paintRedBorder(canvas);
 			
-		List<Lesson> lessons = lessoncontainer.getStandardLessons();
-
+			if(lessoncontainer.allCancelled()){
+				lessons = lessoncontainer.getSpecialLessons();
+			}else{
+				lessons = lessoncontainer.getIrregularLessons();
+			}
+			
+		}else{
+			lessons = lessoncontainer.getStandardLessons();
+		}
+		
+		
+		
 		ArrayList<String> firstline = new ArrayList<String>();
 		ArrayList<String> secondline = new ArrayList<String>();
 
@@ -151,7 +162,19 @@ public class LessonView extends GUIWeekView {
 	}
 
 	private void __setBackgroundColor() {
+		
 		List<Lesson> lessons = lessoncontainer.getStandardLessons();
+		
+		if(lessons.size() == 0){
+			if(lessoncontainer.allCancelled()){
+				lessons = lessoncontainer.getSpecialLessons();
+			}else{
+				lessons = lessoncontainer.getIrregularLessons();
+			}
+		}
+		
+
+		
 		List<? extends ViewType> vt = null;
 
 		if (lessons.size() != 0) {
@@ -180,12 +203,17 @@ public class LessonView extends GUIWeekView {
 		p.setAlpha(100);
 		p.setStrokeWidth(8);
 		p.setStyle(Style.STROKE);
-		
+		p.setAntiAlias(true);
 		
 		c.drawLine(0, 0, width+2, 0, p);
 		c.drawLine(0, 0, 0, height+2, p);
 		c.drawLine(0, height+2, width+2, height+2, p);
 		c.drawLine(width+2, 0, width+2, height+2, p);
+		
+		if(lessoncontainer.allCancelled()){
+			p.setStrokeWidth(4);
+			c.drawLine(0, 0, width+2, height+2, p);
+		}
 	}
 	
 	public DateTime getTime() {

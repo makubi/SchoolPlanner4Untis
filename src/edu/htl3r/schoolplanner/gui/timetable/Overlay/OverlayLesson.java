@@ -171,13 +171,14 @@ public class OverlayLesson extends View {
 		canvas.translate(0, 50);
 		sl.draw(canvas);
 		tp.setTextSize(15);
-		sl = new StaticLayout(lesson.getStartTime().toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+		sl = new StaticLayout(lesson.getDate().getDay()+"."+lesson.getDate().getMonth()+"."+lesson.getDate().getYear(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 		canvas.translate(0, 50);
 		sl.draw(canvas);
-		sl = new StaticLayout(lesson.getEndTime().toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-		canvas.translate(0, 50);
+		String start = lesson.getStartTime().getHour() +":" +(((lesson.getStartTime().getMinute()+"").length()==2)?lesson.getStartTime().getMinute()+"":"0"+lesson.getStartTime().getMinute()+"");
+		String end = lesson.getEndTime().getHour() +":" +(((lesson.getEndTime().getMinute()+"").length()==2)?lesson.getEndTime().getMinute()+"":"0"+lesson.getEndTime().getMinute()+"");
+		sl = new StaticLayout(start + " - " + end, tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+		canvas.translate(0, 25);
 		sl.draw(canvas);
-		
 		
 	}
 	
