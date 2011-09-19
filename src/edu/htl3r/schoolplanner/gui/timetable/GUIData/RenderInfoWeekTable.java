@@ -141,7 +141,7 @@ public class RenderInfoWeekTable implements WebUntis{
 						|| lesson.getEndTime().getHour() != timegridUnit.getEnd().getHour())){
 					
 					
-					
+					lessons.remove(i);
 					Log.d("basti", lesson.toString());
 					Lesson tmp1 = new Lesson();
 					tmp1.setDate(lesson.getDate().getYear(), lesson.getDate().getMonth(), lesson.getDate().getDay());

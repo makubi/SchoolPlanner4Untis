@@ -23,6 +23,8 @@ import java.util.List;
 
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeCancelled;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeIrregular;
 
 public class GUILessonContainer {
 
@@ -87,11 +89,11 @@ public class GUILessonContainer {
 	}
 
 	/**
-	 * Gib es irregulaere Stunden
+	 * Gibt es irregulaere Stunden
 	 * 
 	 * @return
 	 */
-	public boolean istSomethinStrange() {
+	public boolean isSomethinStrange() {
 		return (specialLessons.isEmpty()) ? false : true;
 	}
 
@@ -102,6 +104,31 @@ public class GUILessonContainer {
 		}
 		for (Lesson l : specialLessons) {
 			ret.add(l);
+		}
+		return ret;
+	}
+	
+	public boolean allCancelled(){
+		if(isEmpty())
+			return false;
+		if(!isSomethinStrange())
+			return false;
+		
+		
+		for(Lesson l : specialLessons){
+			if(!(l.getLessonCode() instanceof LessonCodeCancelled)){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public List<Lesson> getIrregularLessons(){
+		List<Lesson> ret = new ArrayList<Lesson>();
+		for(Lesson l : specialLessons){
+			if((l.getLessonCode() instanceof LessonCodeIrregular)){
+				ret.add(l);
+			}
 		}
 		return ret;
 	}

@@ -51,7 +51,7 @@ public class LessonView extends GUIWeekView {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
-		if(lessoncontainer.istSomethinStrange())
+		if(lessoncontainer.isSomethinStrange())
 			__paintRedBorder(canvas);
 			
 		List<Lesson> lessons = lessoncontainer.getStandardLessons();
