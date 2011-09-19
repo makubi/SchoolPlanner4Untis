@@ -32,7 +32,6 @@ public class LessonView extends GUIWeekView {
 	private ViewType viewtype;
 
 	private DateTime time;
-	
 
 	public LessonView(Context context) {
 		super(context);
@@ -44,63 +43,61 @@ public class LessonView extends GUIWeekView {
 		paint.setStyle(Style.FILL);
 		paint.setTextSize(23);
 		paint.setAntiAlias(true);
-		
+
 	}
-
-
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		List<Lesson> lessons = new ArrayList<Lesson>();
-		
-		if(lessoncontainer.isSomethinStrange()){
+		int left = getResources().getDimensionPixelSize(R.dimen.gui_lesson_padding_left);
+		int top = getResources().getDimensionPixelSize(R.dimen.gui_lesson_padding_top);
+		int l1l2p = getResources().getDimensionPixelSize(R.dimen.gui_lesson_line1_line1_padding);
+		int all = top + l1l2p * 2;
+		boolean extendedView = (all < height) ? true : false;
+
+		if (lessoncontainer.isSomethinStrange()) {
 			__paintRedBorder(canvas);
-			
-			if(lessoncontainer.allCancelled()){
+
+			if (lessoncontainer.allCancelled()) {
 				lessons = lessoncontainer.getSpecialLessons();
-			}else if(lessoncontainer.containsSubsituteLesson()){
+			} else if (lessoncontainer.containsSubsituteLesson()) {
 				lessons = lessoncontainer.getAllLessons();
-			}else{
+			} else {
 				lessons = lessoncontainer.getIrregularLessons();
 			}
-			
-		}else{
+
+		} else {
 			lessons = lessoncontainer.getStandardLessons();
 		}
-		
-		
-		
+
 		ArrayList<String> firstline = new ArrayList<String>();
 		ArrayList<String> secondline = new ArrayList<String>();
 		ArrayList<String> thirdline = new ArrayList<String>();
-
 
 		List<? extends ViewType> vtfirstline = null;
 		List<? extends ViewType> vtsecondline = null;
 		List<? extends ViewType> vtthirdline = null;
 
-
-		
 		for (Lesson l : lessons) {
-						
+
 			if (viewtype instanceof SchoolClass) {
 				vtfirstline = l.getSchoolSubjects();
 				vtsecondline = l.getSchoolTeachers();
 				vtthirdline = l.getSchoolRooms();
-				
-				if(l.getLessonCode() instanceof LessonCodeSubstitute){
-					secondline.add(substituteLessonTeacherString((LessonCodeSubstitute)l.getLessonCode()));
-					thirdline.add(substituteLessonRoomString((LessonCodeSubstitute)l.getLessonCode()));
+
+				if (l.getLessonCode() instanceof LessonCodeSubstitute) {
+					secondline.add(substituteLessonTeacherString((LessonCodeSubstitute) l.getLessonCode()));
+					thirdline.add(substituteLessonRoomString((LessonCodeSubstitute) l.getLessonCode()));
 				}
-				
+
 			} else if (viewtype instanceof SchoolTeacher) {
 				vtfirstline = l.getSchoolClasses();
 				vtsecondline = l.getSchoolSubjects();
 				vtthirdline = l.getSchoolRooms();
-				
-				if(l.getLessonCode() instanceof LessonCodeSubstitute){
-					thirdline.add(substituteLessonRoomString((LessonCodeSubstitute)l.getLessonCode()));
+
+				if (l.getLessonCode() instanceof LessonCodeSubstitute) {
+					thirdline.add(substituteLessonRoomString((LessonCodeSubstitute) l.getLessonCode()));
 				}
 
 			} else if (viewtype instanceof SchoolRoom) {
@@ -108,93 +105,86 @@ public class LessonView extends GUIWeekView {
 				vtsecondline = l.getSchoolTeachers();
 				vtthirdline = l.getSchoolSubjects();
 
-				if(l.getLessonCode() instanceof LessonCodeSubstitute){
-					secondline.add(substituteLessonTeacherString((LessonCodeSubstitute)l.getLessonCode()));
+				if (l.getLessonCode() instanceof LessonCodeSubstitute) {
+					secondline.add(substituteLessonTeacherString((LessonCodeSubstitute) l.getLessonCode()));
 				}
-				
+
 			} else if (viewtype instanceof SchoolSubject) {
 				vtfirstline = l.getSchoolTeachers();
 				vtsecondline = l.getSchoolClasses();
 				vtthirdline = l.getSchoolRooms();
-				
-				if(l.getLessonCode() instanceof LessonCodeSubstitute){
-					firstline.add(substituteLessonTeacherString((LessonCodeSubstitute)l.getLessonCode()));
-					thirdline.add(substituteLessonRoomString((LessonCodeSubstitute)l.getLessonCode()));
+
+				if (l.getLessonCode() instanceof LessonCodeSubstitute) {
+					firstline.add(substituteLessonTeacherString((LessonCodeSubstitute) l.getLessonCode()));
+					thirdline.add(substituteLessonRoomString((LessonCodeSubstitute) l.getLessonCode()));
 				}
 			}
-			
-			
+
 			for (ViewType s : vtfirstline) {
-				if(!firstline.contains(s.getName()))
+				if (!firstline.contains(s.getName()))
 					firstline.add(s.getName());
 			}
 			for (ViewType s : vtsecondline) {
-				if(!secondline.contains(s.getName()))
+				if (!secondline.contains(s.getName()))
 					secondline.add(s.getName());
 			}
-			for (ViewType s : vtthirdline) {
-				if(!thirdline.contains(s.getName()))
-					thirdline.add(s.getName());
+			if (extendedView) {
+				for (ViewType s : vtthirdline) {
+					if (!thirdline.contains(s.getName()))
+						thirdline.add(s.getName());
+				}
 			}
-			
+
 		}
-		
-	
-		int left = getResources().getDimensionPixelSize(R.dimen.gui_lesson_padding_left);
-		int top = getResources().getDimensionPixelSize(R.dimen.gui_lesson_padding_top);
-		int l1l2p = getResources().getDimensionPixelSize(R.dimen.gui_lesson_line1_line1_padding);
 
 		TextPaint tp = new TextPaint(paint);
-		tp.setTypeface(Typeface.DEFAULT_BOLD); 
+		tp.setTypeface(Typeface.DEFAULT_BOLD);
 		tp.setTextSize(getResources().getDimension(R.dimen.gui_lesson_line1_size));
-		
-		
-		String line1 = prepareListForDisplay(firstline,tp);
+
+		String line1 = prepareListForDisplay(firstline, tp);
 		canvas.drawText(line1, left, top, tp);
-		
+
 		tp.setTextSize(getResources().getDimension(R.dimen.gui_lesson_line2_size));
 		tp.setTypeface(Typeface.DEFAULT);
-		String line2 = prepareListForDisplay(secondline,tp);
-		canvas.drawText(line2, left, l1l2p+top, tp);
-		
-		
-		int all = top + l1l2p*2;
-		Log.d("basti", all + " " + height);
-		if( all < height ){
-			String line3 = prepareListForDisplay(thirdline,tp);
-			canvas.drawText(line3, left, l1l2p*2+top, tp);
+		String line2 = prepareListForDisplay(secondline, tp);
+		canvas.drawText(line2, left, l1l2p + top, tp);
+
+		if (extendedView) {
+			String line3 = prepareListForDisplay(thirdline, tp);
+			canvas.drawText(line3, left, l1l2p * 2 + top, tp);
 		}
+
 	}
-	
-	private String substituteLessonTeacherString(LessonCodeSubstitute lcs){
+
+	private String substituteLessonTeacherString(LessonCodeSubstitute lcs) {
 		SchoolTeacher originSchoolTeacher = lcs.getOriginSchoolTeacher();
-		if(originSchoolTeacher != null)
-			return "("+originSchoolTeacher.getName()+")";	
+		if (originSchoolTeacher != null)
+			return "(" + originSchoolTeacher.getName() + ")";
 		return "";
 	}
-	
-	private String substituteLessonRoomString(LessonCodeSubstitute lcs){
+
+	private String substituteLessonRoomString(LessonCodeSubstitute lcs) {
 		SchoolRoom getOriginSchoolRoom = lcs.getOriginSchoolRoom();
-		if(getOriginSchoolRoom != null)
-			return "("+getOriginSchoolRoom.getName()+")";	
+		if (getOriginSchoolRoom != null)
+			return "(" + getOriginSchoolRoom.getName() + ")";
 		return "";
 	}
-	
-	private String prepareListForDisplay(ArrayList<String> input, TextPaint tp){
+
+	private String prepareListForDisplay(ArrayList<String> input, TextPaint tp) {
 		StringBuilder sb = new StringBuilder();
 		String tmp = "";
 
 		for (String c : input) {
-			
-			if(c.equals(""))
+
+			if (c.equals(""))
 				continue;
-			
+
 			tmp = c + sb.toString() + ", ";
 
 			if (StaticLayout.getDesiredWidth(tmp, tp) > width) {
-				if(StaticLayout.getDesiredWidth(sb.toString()+" ...", tp) < width){
+				if (StaticLayout.getDesiredWidth(sb.toString() + " ...", tp) < width) {
 					sb.append(" ...");
-				}else{
+				} else {
 					sb.append(" .");
 				}
 				break;
@@ -224,17 +214,17 @@ public class LessonView extends GUIWeekView {
 	}
 
 	private void __setBackgroundColor() {
-		
+
 		List<Lesson> lessons = lessoncontainer.getStandardLessons();
-		
-		if(lessons.size() == 0){
-			if(lessoncontainer.allCancelled()){
+
+		if (lessons.size() == 0) {
+			if (lessoncontainer.allCancelled()) {
 				lessons = lessoncontainer.getSpecialLessons();
-			}else{
+			} else {
 				lessons = lessoncontainer.getIrregularLessons();
 			}
 		}
-		
+
 		List<? extends ViewType> vt = null;
 
 		if (lessons.size() != 0) {
@@ -247,44 +237,44 @@ public class LessonView extends GUIWeekView {
 			} else if (viewtype instanceof SchoolSubject) {
 				vt = lessons.get(0).getSchoolTeachers();
 			}
-			
+
 			if (vt.size() != 0) {
 				String bcolor = vt.get(0).getBackColor();
 				if (!bcolor.equalsIgnoreCase("")) {
-					setBackgroundColor(Color.parseColor("#55"+bcolor));
+					setBackgroundColor(Color.parseColor("#55" + bcolor));
 				}
 			}
 		}
 	}
-	
-	private void __paintRedBorder(Canvas c){
+
+	private void __paintRedBorder(Canvas c) {
 		Paint p = new Paint();
 		p.setColor(Color.RED);
 		p.setAlpha(100);
 		p.setStrokeWidth(8);
 		p.setStyle(Style.STROKE);
 		p.setAntiAlias(true);
-		
-		c.drawLine(0, 0, width+2, 0, p);
-		c.drawLine(0, 0, 0, height+2, p);
-		c.drawLine(0, height+2, width+2, height+2, p);
-		c.drawLine(width+2, 0, width+2, height+2, p);
-		
-		if(lessoncontainer.allCancelled()){
+
+		c.drawLine(0, 0, width + 2, 0, p);
+		c.drawLine(0, 0, 0, height + 2, p);
+		c.drawLine(0, height + 2, width + 2, height + 2, p);
+		c.drawLine(width + 2, 0, width + 2, height + 2, p);
+
+		if (lessoncontainer.allCancelled()) {
 			p.setStrokeWidth(4);
-			c.drawLine(0, 0, width+2, height+2, p);
+			c.drawLine(0, 0, width + 2, height + 2, p);
 		}
 	}
-	
+
 	public DateTime getTime() {
 		return time;
 	}
-	
-	public GUILessonContainer getLessonsContainer(){
+
+	public GUILessonContainer getLessonsContainer() {
 		return lessoncontainer;
 	}
-	
-	public ViewType getViewType(){
+
+	public ViewType getViewType() {
 		return viewtype;
 	}
 
