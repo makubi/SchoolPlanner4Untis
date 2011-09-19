@@ -21,17 +21,28 @@ package edu.htl3r.schoolplanner.backend.schoolObjects.lesson;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.text.format.Time;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeCancelled;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeIrregular;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeBreakSupervision;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeExamination;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeLesson;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeOfficeHour;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeStandby;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
-public class Lesson implements Serializable {
+public class Lesson implements Serializable, Cloneable {
 	
 	private static final long serialVersionUID = 6168669480973047866L;
 
@@ -250,5 +261,54 @@ public class Lesson implements Serializable {
 	
 	private void sortList(List<? extends ViewType> viewTypeList) {
 		Collections.sort(viewTypeList);
+	}
+	
+	@Override
+	protected Lesson clone() {
+		Lesson lessonClone =  new Lesson();
+		
+		lessonClone.id = id;
+		lessonClone.date = date.clone();
+		lessonClone.startTime = startTime.clone();
+		lessonClone.endTime = endTime.clone();
+		lessonClone.schoolClasses = new ArrayList<SchoolClass>(schoolClasses);
+		lessonClone.schoolTeachers = new ArrayList<SchoolTeacher>(schoolTeachers);
+		lessonClone.schoolRooms = new ArrayList<SchoolRoom>(schoolRooms);
+		lessonClone.schoolSubjects = new ArrayList<SchoolSubject>(schoolSubjects);
+		
+		try {
+			lessonClone.lessonType = (LessonType) lessonType.clone();
+		} catch (CloneNotSupportedException e) {
+			if(lessonType instanceof LessonTypeExamination) {
+				lessonClone.lessonType = new LessonTypeExamination();
+			}
+			else if(lessonType instanceof LessonTypeBreakSupervision) {
+				lessonClone.lessonType = new LessonTypeBreakSupervision();
+			}
+			else if(lessonType instanceof LessonTypeOfficeHour) {
+				lessonClone.lessonType = new LessonTypeOfficeHour();
+			}
+			else if(lessonType instanceof LessonTypeStandby) {
+				lessonClone.lessonType = new LessonTypeStandby();
+			}
+		}
+		
+		try {
+			lessonClone.lessonCode = (LessonCode) lessonCode.clone();
+		} catch (CloneNotSupportedException e) {
+			if(lessonCode instanceof LessonCodeSubstitute) {
+				lessonClone.lessonCode = new LessonCodeSubstitute();
+				((LessonCodeSubstitute) lessonClone.lessonCode).setOriginSchoolRoom(((LessonCodeSubstitute) lessonCode).getOriginSchoolRoom());
+				((LessonCodeSubstitute) lessonClone.lessonCode).setOriginSchoolTeacher(((LessonCodeSubstitute) lessonCode).getOriginSchoolTeacher());
+			}
+			else if(lessonCode instanceof LessonCodeIrregular) {
+				lessonClone.lessonCode = new LessonCodeIrregular();
+			}
+			else if(lessonCode instanceof LessonCodeCancelled) {
+				lessonClone.lessonCode = new LessonCodeCancelled();
+			}
+		}
+		
+		return lessonClone;
 	}
 }
