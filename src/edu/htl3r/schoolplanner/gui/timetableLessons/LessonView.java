@@ -15,6 +15,7 @@ import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
@@ -57,6 +58,8 @@ public class LessonView extends GUIWeekView {
 			
 			if(lessoncontainer.allCancelled()){
 				lessons = lessoncontainer.getSpecialLessons();
+			}else if(lessoncontainer.containsSubsituteLesson()){
+				lessons = lessoncontainer.getAllLessons();
 			}else{
 				lessons = lessoncontainer.getIrregularLessons();
 			}
@@ -79,17 +82,29 @@ public class LessonView extends GUIWeekView {
 			if (viewtype instanceof SchoolClass) {
 				vtfirstline = l.getSchoolSubjects();
 				vtsecondline = l.getSchoolTeachers();
+				
+				if(l.getLessonCode() instanceof LessonCodeSubstitute)
+					secondline.add(substituteLessonTeacherString((LessonCodeSubstitute)l.getLessonCode()));
+				
 			} else if (viewtype instanceof SchoolTeacher) {
 				vtfirstline = l.getSchoolClasses();
 				vtsecondline = l.getSchoolSubjects();
 			} else if (viewtype instanceof SchoolRoom) {
 				vtfirstline = l.getSchoolClasses();
 				vtsecondline = l.getSchoolTeachers();
+				
+				if(l.getLessonCode() instanceof LessonCodeSubstitute)
+					secondline.add(substituteLessonTeacherString((LessonCodeSubstitute)l.getLessonCode()));
+				
 			} else if (viewtype instanceof SchoolSubject) {
 				vtfirstline = l.getSchoolTeachers();
 				vtsecondline = l.getSchoolClasses();
+				
+				if(l.getLessonCode() instanceof LessonCodeSubstitute)
+					firstline.add(substituteLessonTeacherString((LessonCodeSubstitute)l.getLessonCode()));
 			}
-						
+			
+			
 			for (ViewType s : vtfirstline) {
 				if(!firstline.contains(s.getName()))
 					firstline.add(s.getName());
@@ -120,6 +135,16 @@ public class LessonView extends GUIWeekView {
 		String line2 = prepareListForDisplay(secondline,tp);
 
 		canvas.drawText(line2, left, l1l2p+top, tp);
+	}
+	
+	private String substituteLessonTeacherString(LessonCodeSubstitute lcs){
+		SchoolRoom originSchoolRoom = lcs.getOriginSchoolRoom();
+		SchoolTeacher originSchoolTeacher = lcs.getOriginSchoolTeacher();
+		
+		if(originSchoolTeacher != null)
+			return "("+originSchoolTeacher.getName()+")";	
+		
+		return "";
 	}
 	
 	private String prepareListForDisplay(ArrayList<String> input, TextPaint tp){
@@ -172,8 +197,6 @@ public class LessonView extends GUIWeekView {
 				lessons = lessoncontainer.getIrregularLessons();
 			}
 		}
-		
-
 		
 		List<? extends ViewType> vt = null;
 

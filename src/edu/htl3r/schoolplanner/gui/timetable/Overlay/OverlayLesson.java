@@ -10,7 +10,6 @@ import android.graphics.Paint;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.util.Log;
 import android.view.View;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
@@ -128,16 +127,16 @@ public class OverlayLesson extends View {
 			
 		
 		for(SchoolClass s : schoolClasses){
-			classes.append(s.getName().trim()+" ");
+			classes.append(s.getName()+" ");
 		}
 		for(SchoolRoom s : schoolRooms){
-			rooms.append(s.getName().trim()+" ");
+			rooms.append(s.getName()+" ");
 		}
 		for(SchoolSubject s : schoolSubjects){
-			subjects.append(s.getName().trim()+" ");
+			subjects.append(s.getName()+" ");
 		}
 		for(SchoolTeacher s : schoolTeachers){
-			teacher.append(s.getName().trim()+" ");
+			teacher.append(s.getName()+" ");
 		}
 		
 		if(lcode instanceof LessonCodeSubstitute){
@@ -154,22 +153,28 @@ public class OverlayLesson extends View {
 		ArrayList<String> splitString = splitString(classes.toString(), tp);
 		StaticLayout sl = null;
 		
-		
+		canvas.translate(0, 10);
+
 		for (String line : splitString){
-			canvas.translate(0, 40);
 			sl = new StaticLayout(line.trim(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 			sl.draw(canvas);
+			canvas.translate(0, 40);
+
 		}
 
+		canvas.translate(0, 10);
 		sl = new StaticLayout(teacher.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-		canvas.translate(0, 50);
 		sl.draw(canvas);
+		
+		canvas.translate(0, 50);
 		sl = new StaticLayout(subjects.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-		canvas.translate(0, 50);
 		sl.draw(canvas);
+		
+		canvas.translate(0, 50);
 		sl = new StaticLayout(rooms.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-		canvas.translate(0, 50);
 		sl.draw(canvas);
+		
+		
 		tp.setTextSize(15);
 		sl = new StaticLayout(lesson.getDate().getDay()+"."+lesson.getDate().getMonth()+"."+lesson.getDate().getYear(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 		canvas.translate(0, 50);

@@ -25,6 +25,7 @@ import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeCancelled;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeIrregular;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
 
 public class GUILessonContainer {
 
@@ -133,4 +134,18 @@ public class GUILessonContainer {
 		return ret;
 	}
 
+	public boolean containsSubsituteLesson(){
+		if(isEmpty())
+			return false;
+		if(!isSomethinStrange())
+			return false;
+		
+		
+		for(Lesson l : specialLessons){
+			if(l.getLessonCode() instanceof LessonCodeSubstitute){
+				return true;
+			}
+		}
+		return false;
+	}
 }

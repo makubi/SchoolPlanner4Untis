@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
@@ -49,7 +50,9 @@ public class Overlay extends Dialog{
 			OverlayLesson ol = new OverlayLesson(getContext());
 			ol.setData(l,viewType);
 			overlaylessons.add(ol);
-			container.addView(ol);
+			ScrollView scr = new ScrollView(getContext());
+			scr.addView(ol);
+			container.addView(scr);
 		}		
 	}
 
