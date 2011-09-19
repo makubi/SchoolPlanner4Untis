@@ -61,21 +61,6 @@
                 android:summary="@string/settings_display_show_saturday_summary" />
                 
         <CheckBoxPreference
-                android:key="@string/settings_key_show_date"
-                android:title="@string/settings_display_show_date_title"
-                android:summary="@string/settings_display_show_date_summary" />
-                
-        <CheckBoxPreference
-                android:key="@string/settings_key_show_weekday_names"
-                android:title="@string/settings_display_show_weekday_names_title"
-                android:summary="@string/settings_display_show_weekday_names_summary" />
-                
-        <CheckBoxPreference
-                android:key="@string/settings_key_show_timegrid"
-                android:title="@string/settings_display_show_timegrid_title"
-                android:summary="@string/settings_display_show_timegrid_summary" />
-                
-        <CheckBoxPreference
                 android:key="@string/settings_key_show_zeroth_lesson"
                 android:title="@string/settings_display_show_zeroth_lesson_title"
                 android:summary="@string/settings_display_show_zeroth_lesson_summary" />
