@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 package edu.htl3r.schoolplanner.gui.timetable.GUIData;
 
@@ -25,44 +25,29 @@ import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 
 public class GUILessonContainer {
-	
-	
-	private DateTime start, end,date;
+
+	private DateTime start, end, date;
 
 	private List<Lesson> standardLessons = new ArrayList<Lesson>();
-	private List<Lesson> extraLongLessons = new ArrayList<Lesson>();
 	private List<Lesson> specialLessons = new ArrayList<Lesson>();
-	private List<Lesson> extraLongSpecialLessons = new ArrayList<Lesson>();
 
-	
 
-	public GUILessonContainer(){}
-	
-	public void setTime(DateTime start, DateTime end){
+	public GUILessonContainer() {
+	}
+
+	public void setTime(DateTime start, DateTime end) {
 		this.start = start;
 		this.end = end;
 	}
-	
-//	public int getStandardLessonsCount(){
-//		return standardLessons.size();
-//	}
-	
-	public void addStandardLesson(Lesson l){
+
+	public void addStandardLesson(Lesson l) {
 		standardLessons.add(l);
 	}
-	
-	public void addExtraLongLesson(Lesson l){
-		extraLongLessons.add(l);
-	}
-	
-	public void addSpecialLesson(Lesson l){
+
+	public void addSpecialLesson(Lesson l) {
 		specialLessons.add(l);
 	}
-	
-	public void addExtraLongSpecialLesson(Lesson l){
-		extraLongSpecialLessons.add(l);
-	}
-	
+
 	@Override
 	public String toString() {
 		return standardLessons.toString();
@@ -79,17 +64,9 @@ public class GUILessonContainer {
 	public List<Lesson> getStandardLessons() {
 		return standardLessons;
 	}
-	
-	public List<Lesson> getExtraLongLessons() {
-		return extraLongLessons;
-	}
 
 	public List<Lesson> getSpecialLessons() {
 		return specialLessons;
-	}
-
-	public List<Lesson> getExtraLongSpecialLessons() {
-		return extraLongSpecialLessons;
 	}
 
 	public DateTime getDate() {
@@ -102,35 +79,31 @@ public class GUILessonContainer {
 
 	/**
 	 * Sind Lessons fuer diese Einheit vorhanden
+	 * 
 	 * @return
 	 */
-	public boolean isEmpty(){
-		return (standardLessons.isEmpty() && specialLessons.isEmpty() && extraLongLessons.isEmpty() && extraLongSpecialLessons.isEmpty())? true:false;
+	public boolean isEmpty() {
+		return (standardLessons.isEmpty() && specialLessons.isEmpty()) ? true : false;
 	}
-	
+
 	/**
 	 * Gib es irregulaere Stunden
+	 * 
 	 * @return
 	 */
-	public boolean istSomethinStrange(){
-		return ( specialLessons.isEmpty()  && extraLongSpecialLessons.isEmpty())? false:true;
+	public boolean istSomethinStrange() {
+		return (specialLessons.isEmpty()) ? false : true;
 	}
-	
-	public ArrayList<Lesson> getAllLessons(){
+
+	public ArrayList<Lesson> getAllLessons() {
 		ArrayList<Lesson> ret = new ArrayList<Lesson>();
-		for(Lesson l : standardLessons){
+		for (Lesson l : standardLessons) {
 			ret.add(l);
 		}
-		for(Lesson l : specialLessons){
-			ret.add(l);
-		}
-		for(Lesson l : extraLongLessons){
-			ret.add(l);
-		}
-		for(Lesson l : extraLongSpecialLessons){
+		for (Lesson l : specialLessons) {
 			ret.add(l);
 		}
 		return ret;
 	}
-		
+
 }

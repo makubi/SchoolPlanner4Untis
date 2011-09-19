@@ -170,6 +170,13 @@ public class OverlayLesson extends View {
 		sl = new StaticLayout(rooms.toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 		canvas.translate(0, 50);
 		sl.draw(canvas);
+		tp.setTextSize(15);
+		sl = new StaticLayout(lesson.getStartTime().toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+		canvas.translate(0, 50);
+		sl.draw(canvas);
+		sl = new StaticLayout(lesson.getEndTime().toString(), tp, width, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+		canvas.translate(0, 50);
+		sl.draw(canvas);
 		
 		
 	}
