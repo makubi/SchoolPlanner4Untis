@@ -11,6 +11,7 @@ import android.graphics.Paint.Style;
 import android.graphics.Typeface;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
@@ -72,9 +73,13 @@ public class LessonView extends GUIWeekView {
 		
 		ArrayList<String> firstline = new ArrayList<String>();
 		ArrayList<String> secondline = new ArrayList<String>();
+		ArrayList<String> thirdline = new ArrayList<String>();
+
 
 		List<? extends ViewType> vtfirstline = null;
 		List<? extends ViewType> vtsecondline = null;
+		List<? extends ViewType> vtthirdline = null;
+
 
 		
 		for (Lesson l : lessons) {
@@ -82,26 +87,40 @@ public class LessonView extends GUIWeekView {
 			if (viewtype instanceof SchoolClass) {
 				vtfirstline = l.getSchoolSubjects();
 				vtsecondline = l.getSchoolTeachers();
+				vtthirdline = l.getSchoolRooms();
 				
-				if(l.getLessonCode() instanceof LessonCodeSubstitute)
+				if(l.getLessonCode() instanceof LessonCodeSubstitute){
 					secondline.add(substituteLessonTeacherString((LessonCodeSubstitute)l.getLessonCode()));
+					thirdline.add(substituteLessonRoomString((LessonCodeSubstitute)l.getLessonCode()));
+				}
 				
 			} else if (viewtype instanceof SchoolTeacher) {
 				vtfirstline = l.getSchoolClasses();
 				vtsecondline = l.getSchoolSubjects();
+				vtthirdline = l.getSchoolRooms();
+				
+				if(l.getLessonCode() instanceof LessonCodeSubstitute){
+					thirdline.add(substituteLessonRoomString((LessonCodeSubstitute)l.getLessonCode()));
+				}
+
 			} else if (viewtype instanceof SchoolRoom) {
 				vtfirstline = l.getSchoolClasses();
 				vtsecondline = l.getSchoolTeachers();
-				
-				if(l.getLessonCode() instanceof LessonCodeSubstitute)
+				vtthirdline = l.getSchoolSubjects();
+
+				if(l.getLessonCode() instanceof LessonCodeSubstitute){
 					secondline.add(substituteLessonTeacherString((LessonCodeSubstitute)l.getLessonCode()));
+				}
 				
 			} else if (viewtype instanceof SchoolSubject) {
 				vtfirstline = l.getSchoolTeachers();
 				vtsecondline = l.getSchoolClasses();
+				vtthirdline = l.getSchoolRooms();
 				
-				if(l.getLessonCode() instanceof LessonCodeSubstitute)
+				if(l.getLessonCode() instanceof LessonCodeSubstitute){
 					firstline.add(substituteLessonTeacherString((LessonCodeSubstitute)l.getLessonCode()));
+					thirdline.add(substituteLessonRoomString((LessonCodeSubstitute)l.getLessonCode()));
+				}
 			}
 			
 			
@@ -113,7 +132,10 @@ public class LessonView extends GUIWeekView {
 				if(!secondline.contains(s.getName()))
 					secondline.add(s.getName());
 			}
-			
+			for (ViewType s : vtthirdline) {
+				if(!thirdline.contains(s.getName()))
+					thirdline.add(s.getName());
+			}
 			
 		}
 		
@@ -121,29 +143,40 @@ public class LessonView extends GUIWeekView {
 		int left = getResources().getDimensionPixelSize(R.dimen.gui_lesson_padding_left);
 		int top = getResources().getDimensionPixelSize(R.dimen.gui_lesson_padding_top);
 		int l1l2p = getResources().getDimensionPixelSize(R.dimen.gui_lesson_line1_line1_padding);
-		
+
 		TextPaint tp = new TextPaint(paint);
 		tp.setTypeface(Typeface.DEFAULT_BOLD); 
 		tp.setTextSize(getResources().getDimension(R.dimen.gui_lesson_line1_size));
+		
+		
 		String line1 = prepareListForDisplay(firstline,tp);
-			
-
 		canvas.drawText(line1, left, top, tp);
 		
 		tp.setTextSize(getResources().getDimension(R.dimen.gui_lesson_line2_size));
 		tp.setTypeface(Typeface.DEFAULT);
 		String line2 = prepareListForDisplay(secondline,tp);
-
 		canvas.drawText(line2, left, l1l2p+top, tp);
+		
+		
+		int all = top + l1l2p*2;
+		Log.d("basti", all + " " + height);
+		if( all < height ){
+			String line3 = prepareListForDisplay(thirdline,tp);
+			canvas.drawText(line3, left, l1l2p*2+top, tp);
+		}
 	}
 	
 	private String substituteLessonTeacherString(LessonCodeSubstitute lcs){
-		SchoolRoom originSchoolRoom = lcs.getOriginSchoolRoom();
 		SchoolTeacher originSchoolTeacher = lcs.getOriginSchoolTeacher();
-		
 		if(originSchoolTeacher != null)
 			return "("+originSchoolTeacher.getName()+")";	
-		
+		return "";
+	}
+	
+	private String substituteLessonRoomString(LessonCodeSubstitute lcs){
+		SchoolRoom getOriginSchoolRoom = lcs.getOriginSchoolRoom();
+		if(getOriginSchoolRoom != null)
+			return "("+getOriginSchoolRoom.getName()+")";	
 		return "";
 	}
 	
@@ -152,6 +185,10 @@ public class LessonView extends GUIWeekView {
 		String tmp = "";
 
 		for (String c : input) {
+			
+			if(c.equals(""))
+				continue;
+			
 			tmp = c + sb.toString() + ", ";
 
 			if (StaticLayout.getDesiredWidth(tmp, tp) > width) {
