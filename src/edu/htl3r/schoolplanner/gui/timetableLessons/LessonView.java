@@ -49,27 +49,16 @@ public class LessonView extends GUIWeekView {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		List<Lesson> lessons = new ArrayList<Lesson>();
+		List<Lesson> lessons = giveMeTheCorrectList();
 		int left = getResources().getDimensionPixelSize(R.dimen.gui_lesson_padding_left);
 		int top = getResources().getDimensionPixelSize(R.dimen.gui_lesson_padding_top);
 		int l1l2p = getResources().getDimensionPixelSize(R.dimen.gui_lesson_line1_line1_padding);
 		int all = top + l1l2p * 2;
 		boolean extendedView = (all < height) ? true : false;
 
-		if (lessoncontainer.isSomethinStrange()) {
+		if(lessoncontainer.isSomethinStrange())
 			__paintRedBorder(canvas);
-
-			if (lessoncontainer.allCancelled()) {
-				lessons = lessoncontainer.getSpecialLessons();
-			} else if (lessoncontainer.containsSubsituteLesson()) {
-				lessons = lessoncontainer.getAllLessons();
-			} else {
-				lessons = lessoncontainer.getIrregularLessons();
-			}
-
-		} else {
-			lessons = lessoncontainer.getStandardLessons();
-		}
+		
 
 		ArrayList<String> firstline = new ArrayList<String>();
 		ArrayList<String> secondline = new ArrayList<String>();
@@ -215,15 +204,7 @@ public class LessonView extends GUIWeekView {
 
 	private void __setBackgroundColor() {
 
-		List<Lesson> lessons = lessoncontainer.getStandardLessons();
-
-		if (lessons.size() == 0) {
-			if (lessoncontainer.allCancelled()) {
-				lessons = lessoncontainer.getSpecialLessons();
-			} else {
-				lessons = lessoncontainer.getIrregularLessons();
-			}
-		}
+		List<Lesson> lessons = giveMeTheCorrectList();
 
 		List<? extends ViewType> vt = null;
 
@@ -276,6 +257,23 @@ public class LessonView extends GUIWeekView {
 
 	public ViewType getViewType() {
 		return viewtype;
+	}
+	
+	private List<Lesson> giveMeTheCorrectList(){
+		List<Lesson> lessons = new ArrayList<Lesson>();
+		
+		if (lessoncontainer.isSomethinStrange()) {
+			if (lessoncontainer.allCancelled()) {
+				lessons = lessoncontainer.getSpecialLessons();
+			} else if (lessoncontainer.containsSubsituteLesson()) {
+				lessons = lessoncontainer.getAllLessons();
+			} else {
+				lessons = lessoncontainer.getIrregularLessons();
+			}
+		} else {
+			lessons = lessoncontainer.getStandardLessons();
+		}
+		return lessons;
 	}
 
 }

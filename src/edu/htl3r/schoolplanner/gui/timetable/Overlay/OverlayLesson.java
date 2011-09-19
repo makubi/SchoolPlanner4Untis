@@ -60,6 +60,7 @@ public class OverlayLesson extends View {
 		if(lcode!=null)
 			p.setColor(Color.RED);
 		
+		
 		canvas.drawLine(0, 0, width, 0, p);
 		canvas.drawLine(0, 0, 0, height, p);
 		canvas.drawLine(width, 0, width, height, p);

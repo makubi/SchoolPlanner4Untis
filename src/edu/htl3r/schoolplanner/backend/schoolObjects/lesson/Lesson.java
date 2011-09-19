@@ -260,7 +260,7 @@ public class Lesson implements Serializable, Cloneable {
 	}
 	
 	@Override
-	protected Lesson clone() {
+	public Lesson clone() {
 		Lesson lessonClone =  new Lesson();
 		
 		lessonClone.id = id;
