@@ -140,13 +140,9 @@ public class RenderInfoWeekTable implements WebUntis{
 						&& (lesson.getEndTime().getMinute() != timegridUnit.getEnd().getMinute()
 						|| lesson.getEndTime().getHour() != timegridUnit.getEnd().getHour())){
 					
+
 					
-					
-					for(int k=0; k<lessons.size(); k++){
-						if(lessons.get(k).getId() == lesson.getId()){
-							lessons.remove(k);
-						}
-					}
+					lessons.remove(j);
 					
 					Log.d("basti", lesson.toString());
 					Lesson tmp1 = new Lesson();
@@ -172,7 +168,9 @@ public class RenderInfoWeekTable implements WebUntis{
 					tmp2.setSchoolRooms(lesson.getSchoolRooms());
 					tmp2.setSchoolSubjects(lesson.getSchoolSubjects());
 					tmp2.setSchoolTeachers(lesson.getSchoolTeachers());
+					
 					lessons.add(tmp2);
+					lessons.add(tmp1);
 					
 					if(tmp1.getLessonCode() instanceof LessonCodeIrregular || tmp1.getLessonCode() instanceof LessonCodeCancelled || tmp1.getLessonCode() instanceof LessonCodeSubstitute){
 						lessoncon.addSpecialLesson(tmp1);					
