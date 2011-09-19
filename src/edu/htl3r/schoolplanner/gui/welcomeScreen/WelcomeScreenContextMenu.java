@@ -25,7 +25,6 @@ import android.widget.ListView;
 import com.tani.app.ui.IconContextMenu;
 
 import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
 
 public class WelcomeScreenContextMenu extends IconContextMenu{

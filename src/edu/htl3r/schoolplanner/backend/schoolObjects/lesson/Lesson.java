@@ -21,20 +21,16 @@ package edu.htl3r.schoolplanner.backend.schoolObjects.lesson;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.text.format.Time;
 import edu.htl3r.schoolplanner.DateTime;
-import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeCancelled;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeIrregular;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeBreakSupervision;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeExamination;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeLesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeOfficeHour;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeStandby;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
@@ -268,9 +264,11 @@ public class Lesson implements Serializable, Cloneable {
 		Lesson lessonClone =  new Lesson();
 		
 		lessonClone.id = id;
+		
 		lessonClone.date = date.clone();
 		lessonClone.startTime = startTime.clone();
 		lessonClone.endTime = endTime.clone();
+		
 		lessonClone.schoolClasses = new ArrayList<SchoolClass>(schoolClasses);
 		lessonClone.schoolTeachers = new ArrayList<SchoolTeacher>(schoolTeachers);
 		lessonClone.schoolRooms = new ArrayList<SchoolRoom>(schoolRooms);
@@ -311,4 +309,5 @@ public class Lesson implements Serializable, Cloneable {
 		
 		return lessonClone;
 	}
+	
 }
