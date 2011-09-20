@@ -1,7 +1,7 @@
 
 package edu.htl3r.schoolplanner.gui.timetable.GUIData;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -25,11 +25,7 @@ public class RenderInfoWeekTable implements WebUntis{
 
 	private Map<String,List<Lesson>> weekdata ;
 	
-	@Deprecated private boolean dispdate, dispweekdaynames, dispzerolesson;
-	// FIXME Aufruf ueber settings.getXYZ()/isXYZ() (da bei jedem get-Aufruf auf die Settings der aktuelle Wert ausgelesen wird).
-	// Ausser diese Klasse wird nur einmal gezeichnet / etc.
-	// Kommt drauf wie lange die Information der Settings verwendet wird.
-	// Ansonsten koennen die Settings natuerlich auch in der setSettings(Settings) ausgelesen und direkt gesetzt werden. :)
+	
 	private Timegrid timegrid;
 	private List<SchoolHoliday> holidays;
 	private ViewType viewtype;
@@ -38,11 +34,7 @@ public class RenderInfoWeekTable implements WebUntis{
 	
 	
 	public RenderInfoWeekTable(){
-		
-		//TODO Lese das aus den Prefernces aus!!!!
-		dispdate = true;
-		dispweekdaynames = true;
-		dispzerolesson = true;
+
 	}
 	
 	
@@ -72,21 +64,22 @@ public class RenderInfoWeekTable implements WebUntis{
 		TreeSet<DateTime> dates = new TreeSet<DateTime>();
 		
 		
-		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
-			String string = (String) iterator.next();
+		for (Object element : keySet) {
+			String string = (String) element;
 			dates.add(DateTimeUtils.iso8601StringToDateTime(string));
 		}
 		
 		GUIWeek week = new GUIWeek();
 
 		
-		for (Iterator iterator = dates.iterator(); iterator.hasNext();) {
-			DateTime dateTime = (DateTime) iterator.next();
+		for (Object element : dates) {
+			DateTime dateTime = (DateTime) element;
 			List<Lesson> lessons =  weekdata.get(DateTimeUtils.toISO8601Date(dateTime));
 			GUIDay d = analyseDay(dateTime, lessons);
 			week.setGUIDay(dateTime, d);
 		}
 		week.setViewType(viewtype);
+		week.setTimegrid(timegridForDateTimeDay);
 		return week;
 	}
 	
@@ -97,9 +90,20 @@ public class RenderInfoWeekTable implements WebUntis{
 		day.setDate(date);
 		
 		if(timegridForDateTimeDay == null){ //TODO Das WochenGRID wird auf Montag gesynct
-			timegridForDateTimeDay = timegrid.getTimegridForDay(WebUntis.MONDAY);
-		}
-		
+			timegridForDateTimeDay = new ArrayList<TimegridUnit>();
+			List<TimegridUnit> timegridForDay = timegrid.getTimegridForDay(WebUntis.MONDAY);
+			boolean zerlesson = settings.isDisplayZerothLesson();
+			
+			for(int i=0; i<timegridForDay.size(); i++){
+				if(!zerlesson){
+					if(!timegridForDay.get(i).getName().equals("0")){
+						timegridForDateTimeDay.add(timegridForDay.get(i));
+					}
+				}else{
+					timegridForDateTimeDay.add(timegridForDay.get(i));
+				}
+			}
+		}		
 		
 		if(lessons.size() == 0){
 			for (TimegridUnit timegridUnit : timegridForDateTimeDay) {

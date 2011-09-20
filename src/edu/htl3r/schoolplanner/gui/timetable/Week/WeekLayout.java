@@ -192,7 +192,7 @@ public class WeekLayout extends ViewGroup{
 		ArrayList<DateTime> datum = weekdata.getSortDates();
 
 		weekheader.setMonday(datum);
-		weektimegrid.setHours(hours);
+		weektimegrid.setTimeGrid(week.getTimeGrid());
 		weektimegrid.setOffsetTop(HEADER_HEIGHT);
 
 		this.addView(weekheader);

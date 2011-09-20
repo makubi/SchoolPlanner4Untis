@@ -1,5 +1,8 @@
 package edu.htl3r.schoolplanner.gui.timetable.Eyecandy;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -8,16 +11,17 @@ import android.graphics.Paint.Style;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.util.Log;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
 import edu.htl3r.schoolplanner.gui.timetable.Week.GUIWeekView;
 
 public class WeekTimeGrid extends GUIWeekView{
 
 	
-	int width,height,hours,offsettop;
-	
+	private int width,height,hours,offsettop;
 	private Paint paint;
-
+	private List<TimegridUnit> timegrid = new ArrayList<TimegridUnit>();
 	
 	public WeekTimeGrid(Context context) {
 		super(context);
@@ -67,18 +71,26 @@ public class WeekTimeGrid extends GUIWeekView{
 		int padding_right = getResources().getDimensionPixelSize(R.dimen.gui_timegrid_padding_right);
 		
 		for(int i=0; i<hours; i++){
-		//	canvas.drawText(i+"", 5, 10, tp);
-			StaticLayout s = new StaticLayout(i+"", tp, width-padding_right, Layout.Alignment.ALIGN_OPPOSITE, 0, 0, false);
+			
+			String anz = (timegrid.get(i).getName()).length() <=2 ? (timegrid.get(i).getName()) : (timegrid.get(i).getName()).substring(0, 2);
+			StaticLayout s = new StaticLayout(anz, tp, width-padding_right, Layout.Alignment.ALIGN_OPPOSITE, 0, 0, false);
 			s.draw(canvas);
 			canvas.translate(0, (height-offsettop)/hours);
 		}
 	}
 	
-	public void setHours(int h){
+	private void setHours(int h){
 		hours = h;
 	}
+	
 	public void setOffsetTop(int off){
 		offsettop = off;
+	}
+	
+	public void setTimeGrid(List<TimegridUnit> time){
+		timegrid = time;
+		setHours(time.size());
+		Log.d("basti", timegrid.get(0).getName() + " " + timegrid.get(0).getStart());
 	}
 
 }

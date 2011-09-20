@@ -3,19 +3,26 @@ package edu.htl3r.schoolplanner.gui.timetable.GUIData;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
 
 public class GUIWeek implements DataGUItoGraphicGUI{
 	
 	
 	private Map<DateTime, GUIDay> week = new HashMap<DateTime, GUIDay>();
 	private ViewType viewtype;
+	private List<TimegridUnit> timegrid;
+
+	
+	public void setTimegrid(List <TimegridUnit> time){
+		timegrid = time;
+	}
 	
 	public void setGUIDay(DateTime day, GUIDay g){
 		week.put(day, g);
@@ -32,17 +39,21 @@ public class GUIWeek implements DataGUItoGraphicGUI{
 		return week.keySet().size();
 	}
 	
+	public List<TimegridUnit> getTimeGrid(){
+		return timegrid;
+	}
+	
 	public ArrayList<DateTime> getSortDates(){
 		Set<DateTime> keySet = week.keySet();
 		TreeSet<DateTime> dates = new TreeSet<DateTime>();
 		ArrayList<DateTime> ret = new ArrayList<DateTime>();
-		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
-			DateTime dateTime = (DateTime) iterator.next();
+		for (Object element : keySet) {
+			DateTime dateTime = (DateTime) element;
 			dates.add(dateTime);
 		}
 		
-		for (Iterator iterator = dates.iterator(); iterator.hasNext();) {
-			DateTime dateTime = (DateTime) iterator.next();
+		for (Object element : dates) {
+			DateTime dateTime = (DateTime) element;
 			ret.add(dateTime);
 		}
 		return ret;
@@ -51,8 +62,8 @@ public class GUIWeek implements DataGUItoGraphicGUI{
 	public int getMaxHours(){
 		Collection<GUIDay> values = week.values();
 		int max = 0;
-		for (Iterator iterator = values.iterator(); iterator.hasNext();) {
-			GUIDay guiDay = (GUIDay) iterator.next();
+		for (Object element : values) {
+			GUIDay guiDay = (GUIDay) element;
 			if(guiDay.getLessonCount() > max){
 				max = guiDay.getLessonCount();
 			}
@@ -68,8 +79,8 @@ public class GUIWeek implements DataGUItoGraphicGUI{
 	public String toString() {
 		Set<DateTime> keySet = week.keySet();
 		StringBuilder sb = new StringBuilder();
-		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
-			DateTime dateTime = (DateTime) iterator.next();
+		for (Object element : keySet) {
+			DateTime dateTime = (DateTime) element;
 			sb.append(dateTime + ": " + week.get(dateTime)+"\n");
 		}
 		return sb.toString();

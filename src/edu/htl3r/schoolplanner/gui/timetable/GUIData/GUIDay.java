@@ -12,14 +12,15 @@ public class GUIDay {
 	
 	
 	private Map<DateTime,GUILessonContainer> lessons = new HashMap<DateTime,GUILessonContainer>();
+	private DateTime date;
 	
 	public GUIDay(){}
 	
-	
-	public void setDate(DateTime date){
+	public void setDate(DateTime d){
+		date = d;
 	}
 	
-	
+
 	public void addLessonContainer(DateTime start, GUILessonContainer con){
 		lessons.put(start, con);
 	}
