@@ -92,7 +92,6 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		
 		Settings settings = ((SchoolPlannerApp)getApplication()).getSettings();
 		String autoLoginSetString = settings.getAutoLoginSet();
 		

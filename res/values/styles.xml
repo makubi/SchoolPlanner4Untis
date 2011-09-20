@@ -79,4 +79,15 @@
     	<item name="android:gravity">center_horizontal|center_vertical</item>
 	</style>
 	
+	<style name="info_dialog_head">
+		<item name="android:textSize">30sp</item>
+		<item name="android:paddingBottom">20dip</item>
+	</style>
+	
+	<style name="info_dialog_text">
+	<item name="android:textSize">15sp</item>
+    <item name="android:paddingLeft">5dip</item>
+    <item name="android:paddingTop">5dip</item>
+    <item name="android:paddingBottom">5dip</item>
+	</style>
 </resources>

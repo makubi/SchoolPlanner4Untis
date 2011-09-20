@@ -17,6 +17,8 @@
 package edu.htl3r.schoolplanner.gui;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -38,6 +40,8 @@ public abstract class SchoolPlannerActivity extends Activity {
 
 	private ProgressBar progressWheel;
 	private TextView loginProgressText;
+	
+	private Dialog infoDialog;
 
 	/**
 	 * Zeigt einen Text und den Lade-Kreis in der ProgressBar am unteren
@@ -79,8 +83,14 @@ public abstract class SchoolPlannerActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_settings:
-			startActivity(new Intent(getApplicationContext(), SettingsScreen.class));
+			startActivity(new Intent(this, SettingsScreen.class));
 			return true;
+		case R.id.menu_info:
+			infoDialog = new Dialog(this);
+			infoDialog.setContentView(R.layout.info_dialog);
+			infoDialog.setTitle(R.string.info_dialog_title);
+			infoDialog.setCancelable(true);
+			infoDialog.show();
 		default:
 			return super.onOptionsItemSelected(item);
 		}
