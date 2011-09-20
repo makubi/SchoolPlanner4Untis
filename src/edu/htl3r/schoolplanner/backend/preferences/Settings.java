@@ -36,9 +36,6 @@ public class Settings {
 	
 	private String defaultView;
 	private boolean displaySaturday;
-	private boolean displayDate;
-	private boolean displayWeekdayNames;
-	private boolean displayTimegrid;
 	private boolean displayZerothLesson;
 	
 	public Settings() {
@@ -71,9 +68,6 @@ public class Settings {
 		// display options
 		defaultView = preferences.getString(getString(R.string.settings_key_default_view), SettingsConstants.DEFAULT_VIEW_WEEK);
 		displaySaturday = preferences.getBoolean(getString(R.string.settings_key_show_saturday), false);
-		displayDate = preferences.getBoolean(getString(R.string.settings_key_show_date), false);
-		displayWeekdayNames = preferences.getBoolean(getString(R.string.settings_key_show_weekday_names), false);
-		displayTimegrid = preferences.getBoolean(getString(R.string.settings_key_show_timegrid), false);
 		displayZerothLesson = preferences.getBoolean(getString(R.string.settings_key_show_zeroth_lesson), false);
 	}
 	
@@ -99,18 +93,6 @@ public class Settings {
 
 	public boolean isDisplaySaturday() {
 		return displaySaturday;
-	}
-
-	public boolean isDisplayDate() {
-		return displayDate;
-	}
-
-	public boolean isDisplayWeekdayNames() {
-		return displayWeekdayNames;
-	}
-
-	public boolean isDisplayTimegrid() {
-		return displayTimegrid;
 	}
 
 	public boolean isDisplayZerothLesson() {

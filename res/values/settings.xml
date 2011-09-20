@@ -10,9 +10,6 @@
 	
 	<string name="settings_key_default_view">default_view</string>
 	<string name="settings_key_show_saturday">show_saturday</string>
-	<string name="settings_key_show_date">show_date</string>
-	<string name="settings_key_show_weekday_names">show_weekday_names</string>
-	<string name="settings_key_show_timegrid">show_timegrid</string>
 	<string name="settings_key_show_zeroth_lesson">show_zeroth_lesson</string>	
 	
 	
@@ -40,12 +37,6 @@
     <string name="settings_display_default_view_dialog_title">Default view</string>
     <string name="settings_display_show_saturday_title">Display saturday</string>
     <string name="settings_display_show_saturday_summary">Display saturday in timetable</string>
-    <string name="settings_display_show_date_title">Display date</string>
-    <string name="settings_display_show_date_summary">Display date in timetable</string>
-    <string name="settings_display_show_weekday_names_title">Display weekday names</string>
-    <string name="settings_display_show_weekday_names_summary">Display names of weekdays in timetable</string>
-    <string name="settings_display_show_timegrid_title">Display timegrid</string>
-    <string name="settings_display_show_timegrid_summary">Display timegrid in timetable</string>
     <string name="settings_display_show_zeroth_lesson_title">Display zeroth lesson</string>
     <string name="settings_display_show_zeroth_lesson_summary">Display zeroth lesson in timetable (even if no lesson is planned)</string>
 </resources>
