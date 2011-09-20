@@ -130,7 +130,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 			int day = query.getInt(indexDay);
 			long startTime = query.getLong(indexStartTime);
 			long endTime = query.getLong(indexEndTime);
-			
+			// TODO Name / description / etc. hinzufuegen
 			TimegridUnit timegridUnit = new TimegridUnit();
 			timegridUnit.setStart(this.database.millisToDateTime(startTime));
 			timegridUnit.setEnd(this.database.millisToDateTime(endTime));
@@ -310,7 +310,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 					values.put(DatabaseTimegridConstants.DAY, day);
 					values.put(DatabaseTimegridConstants.START_TIME, this.database.dateTimeToMillis(timegridUnit.getStart()));
 					values.put(DatabaseTimegridConstants.END_TIME, this.database.dateTimeToMillis(timegridUnit.getEnd()));
-					
+					// TODO Name / description / etc. hinzufuegen
 					this.database.insert(database, table, values);
 				}
 			}

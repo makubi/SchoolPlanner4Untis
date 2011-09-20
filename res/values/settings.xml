@@ -38,5 +38,5 @@
     <string name="settings_display_show_saturday_title">Display saturday</string>
     <string name="settings_display_show_saturday_summary">Display saturday in timetable</string>
     <string name="settings_display_show_zeroth_lesson_title">Display zeroth lesson</string>
-    <string name="settings_display_show_zeroth_lesson_summary">Display zeroth lesson in timetable (even if no lesson is planned)</string>
+    <string name="settings_display_show_zeroth_lesson_summary">Display zeroth lesson in timetable</string>
 </resources>
