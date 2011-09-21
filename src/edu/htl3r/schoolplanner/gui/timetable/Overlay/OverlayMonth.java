@@ -1,9 +1,7 @@
 package edu.htl3r.schoolplanner.gui.timetable.Overlay;
 
-import android.R.layout;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -11,7 +9,6 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import edu.htl3r.schoolplanner.DateTime;
-import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
 
 public class OverlayMonth extends Dialog implements OnClickListener {
@@ -66,7 +63,6 @@ public class OverlayMonth extends Dialog implements OnClickListener {
 
 	private void addCalendar() {
 		calendar.setFirstDay(date);
-		
 		month_container.removeView(calendar);
 		
 		RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
@@ -106,5 +102,4 @@ public class OverlayMonth extends Dialog implements OnClickListener {
 		}
 		return "Fuck";
 	}
-
 }

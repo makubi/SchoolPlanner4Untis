@@ -1,5 +1,7 @@
 package edu.htl3r.schoolplanner.gui.timetable.Overlay;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -7,17 +9,22 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.format.Time;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 
-public class OverlayCalendarView extends View{
+public class OverlayCalendarView extends View implements OnTouchListener{
 
 	
 	private DateTime firstDay;
 	private int width,height;
 	private int colwidth,rowheight;
 	private TextPaint tp;
+	
+	private ArrayList<ArrayList<Integer>> buffer = new ArrayList<ArrayList<Integer>>(); 
 	
 	public OverlayCalendarView(Context context) {
 		super(context);
@@ -27,6 +34,7 @@ public class OverlayCalendarView extends View{
 		tp.setAntiAlias(true);
 		tp.setTextSize(25);
 		tp.setColor(Color.WHITE);
+		setOnTouchListener(this);
 	}
 
 	@Override
@@ -75,7 +83,9 @@ public class OverlayCalendarView extends View{
 		tp.setStrokeWidth(3);
 		int count = 0;
 		boolean firstrow = true;
+		ArrayList<Integer> line = new ArrayList<Integer>();
 		while(tmp.getMonth() == firstDay.getMonth()){
+			
 			if(tmp.getWeekDay() == Time.SUNDAY){
 				s = new StaticLayout(tmp.getDay()+"", tp, colwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 				s.draw(canvas);
@@ -86,13 +96,18 @@ public class OverlayCalendarView extends View{
 					canvas.translate(-(colwidth*(count+getOffsetFaktor()-1)), rowheight);
 					firstrow=false;
 				}
+				line.add(tmp.getDay());
+				buffer.add(line);
+				line = new ArrayList<Integer>();
 				count = 0;
 			}else{
+				line.add(tmp.getDay());
 				s = new StaticLayout(tmp.getDay()+"", tp, colwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 				s.draw(canvas);
 				canvas.translate(colwidth, 0);
 				count++;
 			}
+			
 			tmp.increaseDay();
 		}
 		canvas.restore();
@@ -154,5 +169,21 @@ public class OverlayCalendarView extends View{
 	
 	public void setFirstDay(DateTime d){
 		firstDay = d;
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		if(event.getAction() == MotionEvent.ACTION_DOWN){
+			float x,y;
+			x = event.getX() - colwidth;
+			y = event.getY() - rowheight;
+			Log.d("basti", "x: " + x + " y: " + y);
+			if(x > 0 && y > 0){
+				x=(float) Math.ceil(x/colwidth);
+				y=(float) Math.ceil(y/rowheight);
+			}
+			
+		}
+		return false;
 	}
 }

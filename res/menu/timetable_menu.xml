@@ -1,4 +1,5 @@
 
-    <menu xmlns:android="http://schemas.android.com/apk/res/android">
-        <item android:title="Month" android:id="@+id/timetable_month" android:menuCategory="secondary"></item>
-    </menu>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:title="Month" android:id="@+id/timetable_month"
+		android:menuCategory="secondary" android:icon="@drawable/ic_menu_month" />
+</menu>
