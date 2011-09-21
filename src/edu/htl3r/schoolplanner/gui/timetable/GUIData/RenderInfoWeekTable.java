@@ -9,6 +9,7 @@ import java.util.TreeSet;
 import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
+import edu.htl3r.schoolplanner.TimegridUtils;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
@@ -70,7 +71,6 @@ public class RenderInfoWeekTable implements WebUntis {
 			DateTime dateTime = (DateTime) element;
 			List<Lesson> lessons = weekdata.get(DateTimeUtils.toISO8601Date(dateTime));
 			GUIDay d = analyseDay(dateTime, lessons);
-			Log.d("basti",d.toString());
 			week.setGUIDay(dateTime, d);
 		}
 		week.setViewType(viewtype);
@@ -79,20 +79,31 @@ public class RenderInfoWeekTable implements WebUntis {
 	}
 
 	List<TimegridUnit> timegridForDateTimeDay;
+	TimegridUnit zerolesson = null;
 
 	private GUIDay analyseDay(DateTime date, List<Lesson> lessons) {
 		GUIDay day = new GUIDay();
 		day.setDate(date);
+		boolean dispZerolesson = settings.isDisplayZerothLesson();
 
 		if (timegridForDateTimeDay == null) { // TODO Das WochenGRID wird auf
 												// Montag gesynct
 			timegridForDateTimeDay = new ArrayList<TimegridUnit>();
 			List<TimegridUnit> timegridForDay = timegrid.getTimegridForDay(WebUntis.MONDAY);
-			boolean zerlesson = settings.isDisplayZerothLesson();
+
+			// FIXME Gruber and Petters!
+			// An mich:
+			// Hier wird die Einstellung Display Zero Lesson implementiert
+			// Das Problem ist folgendes, es gibt Schulen deren Timegrid namen
+			// alle 0 sind - das ist bloed. Deswegen ueberpruefe ich hier ob die
+			// stunde eh vor 8:00 uhr aufhoert - taddaaa
+			// workaround done
 
 			for (int i = 0; i < timegridForDay.size(); i++) {
-				if (!zerlesson) {
-					if (!timegridForDay.get(i).getName().equals("0")) { // TODO
+				if (!dispZerolesson) {
+					if (timegridForDay.get(i).getName().equals("0") && timegridForDay.get(i).getEnd().getHour() <= 8 && timegridForDay.get(i).getEnd().getMinute() == 0) {
+						zerolesson = timegridForDay.get(i);
+					} else {
 						timegridForDateTimeDay.add(timegridForDay.get(i));
 					}
 				} else {
@@ -100,6 +111,9 @@ public class RenderInfoWeekTable implements WebUntis {
 				}
 			}
 		}
+
+		if (zerolesson != null)
+			Log.d("basti", "zero: " + zerolesson.getStart() + " " + zerolesson.getEnd() + " " + date.toString());
 
 		if (lessons.size() == 0) {
 			for (TimegridUnit timegridUnit : timegridForDateTimeDay) {
@@ -130,10 +144,12 @@ public class RenderInfoWeekTable implements WebUntis {
 						lessoncon.addStandardLesson(lesson);
 					}
 
-				} else if (lesson.getStartTime().getMinute() == timegridUnit.getStart().getMinute() 
-						&& lesson.getStartTime().getHour() == timegridUnit.getStart().getHour()
-						&& (lesson.getEndTime().getMinute() != timegridUnit.getEnd().getMinute() 
-							|| lesson.getEndTime().getHour() != timegridUnit.getEnd().getHour())) {
+				} else if(!dispZerolesson && zerolesson != null && lessonsSameStartTime(lesson, zerolesson) && lessonSameEndTime(lesson, zerolesson)){
+					lessons.remove(j);
+					Log.d("basti", "toete nullte stunde: " + lesson);
+				}else if (lesson.getStartTime().getMinute() == timegridUnit.getStart().getMinute() && lesson.getStartTime().getHour() == timegridUnit.getStart().getHour()
+				
+						&& (lesson.getEndTime().getMinute() != timegridUnit.getEnd().getMinute() || lesson.getEndTime().getHour() != timegridUnit.getEnd().getHour())) {
 
 					lessons.remove(j);
 
@@ -166,7 +182,8 @@ public class RenderInfoWeekTable implements WebUntis {
 					}
 					lessons.add(tmp1);
 
-				} else if((lesson.getStartTime().getHour() < timegridForDateTimeDay.get(0).getStart().getHour())){
+				} else if ((lesson.getStartTime().getHour() < timegridForDateTimeDay.get(0).getStart().getHour())) {
+
 					lessons.remove(j);
 
 					Lesson tmp1 = new Lesson();
@@ -181,12 +198,26 @@ public class RenderInfoWeekTable implements WebUntis {
 					tmp1.setSchoolSubjects(lesson.getSchoolSubjects());
 					tmp1.setSchoolTeachers(lesson.getSchoolTeachers());
 					lessons.add(tmp1);
+
 				}
 
 			}
 			day.addLessonContainer(timegridUnit.getStart(), lessoncon);
 		}
 		return day;
+	}
+	
+	private boolean lessonsSameStartTime(Lesson l1, TimegridUnit l2){
+		return ((l1.getStartTime().getHour() == l2.getStart().getHour()) &&(l1.getStartTime().getMinute() == l2.getStart().getMinute()));
+	}
+	private boolean lessonSameEndTime(Lesson l1, TimegridUnit l2){
+		return ((l1.getEndTime().getHour() == l2.getEnd().getHour()) &&(l1.getEndTime().getMinute() == l2.getEnd().getMinute()));
+	}
+	private boolean lessonsSameStartTime(Lesson l1, Lesson l2){
+		return ((l1.getStartTime().getHour() == l2.getStartTime().getHour()) &&(l1.getStartTime().getMinute() == l2.getStartTime().getMinute()));
+	}
+	private boolean lessonSameEndTime(Lesson l1, Lesson l2){
+		return ((l1.getEndTime().getHour() == l2.getEndTime().getHour()) &&(l1.getEndTime().getMinute() == l2.getEndTime().getMinute()));
 	}
 
 }
