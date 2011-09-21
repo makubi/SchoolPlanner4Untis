@@ -47,14 +47,6 @@
     <PreferenceCategory
             android:title="@string/settings_display_header">
 
-        <ListPreference
-                android:key="@string/settings_key_default_view"
-                android:title="@string/settings_display_default_view_title"
-                android:summary="@string/settings_display_default_view_summary"
-                android:entries="@array/settings_default_view_entries"
-                android:entryValues="@array/settings_default_view_entryvalues"
-                android:dialogTitle="@string/settings_display_default_view_dialog_title" />
-
 		<CheckBoxPreference
                 android:key="@string/settings_key_show_saturday"
                 android:title="@string/settings_display_show_saturday_title"

@@ -20,10 +20,6 @@ import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 
 public interface SettingsConstants {
-
-	public static final String DEFAULT_VIEW_DAY = SchoolplannerContext.context.getString(R.string.settings_default_view_day);
-	public static final String DEFAULT_VIEW_WEEK = SchoolplannerContext.context.getString(R.string.settings_default_view_week);
-	public static final String DEFAULT_VIEW_MONTH = SchoolplannerContext.context.getString(R.string.settings_default_view_month);
 	
 	public static final String AUTOSELECT_TYPE_CLASS = SchoolplannerContext.context.getString(R.string.settings_autoselect_type_class);
 	public static final String AUTOSELECT_TYPE_TEACHER = SchoolplannerContext.context.getString(R.string.settings_autoselect_type_teacher);

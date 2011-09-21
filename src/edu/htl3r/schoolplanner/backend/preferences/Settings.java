@@ -66,7 +66,6 @@ public class Settings {
 //		autoSelectValue = preferences.getString(getString(R.string.settings_key_autoselect_value), "");
 		
 		// display options
-		defaultView = preferences.getString(getString(R.string.settings_key_default_view), SettingsConstants.DEFAULT_VIEW_WEEK);
 		displaySaturday = preferences.getBoolean(getString(R.string.settings_key_show_saturday), false);
 		displayZerothLesson = preferences.getBoolean(getString(R.string.settings_key_show_zeroth_lesson), false);
 	}

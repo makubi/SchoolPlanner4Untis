@@ -32,9 +32,6 @@
     <string name="settings_autoselect_value_summary">Select value of timetable to show on autoselect</string>
     
     <string name="settings_display_header">Display options</string>
-    <string name="settings_display_default_view_title">Default view</string>
-    <string name="settings_display_default_view_summary">Select default timetable view</string>
-    <string name="settings_display_default_view_dialog_title">Default view</string>
     <string name="settings_display_show_saturday_title">Display saturday</string>
     <string name="settings_display_show_saturday_summary">Display saturday in timetable</string>
     <string name="settings_display_show_zeroth_lesson_title">Display zeroth lesson</string>
