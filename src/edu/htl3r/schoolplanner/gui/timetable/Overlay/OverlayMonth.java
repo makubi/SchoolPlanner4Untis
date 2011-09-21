@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
 
 public class OverlayMonth extends Dialog implements OnClickListener {
@@ -57,7 +58,7 @@ public class OverlayMonth extends Dialog implements OnClickListener {
 	}
 	
 	private void setHeader() {
-		String header = monthToString(date.getMonth()) + ", " + date.getYear();
+		String header = DateTimeUtils.getMonthName(date) + ", " + date.getYear();
 		title.setText(header);
 	}
 
@@ -73,34 +74,4 @@ public class OverlayMonth extends Dialog implements OnClickListener {
 		setHeader();
 	}
 
-	@Deprecated
-	private String monthToString(int mon) {				//FIXME MATTHIAS MACH DAS RICHTIG MIT RESSOURCES UND DATETIMEUTILS
-		switch (mon - 1) {
-		case 0:
-			return "January";
-		case 1:
-			return "February";
-		case 2:
-			return "March";
-		case 3:
-			return "April";
-		case 4:
-			return "May";
-		case 5:
-			return "June";
-		case 6:
-			return "July";
-		case 7:
-			return "August";
-		case 8:
-			return "September";
-		case 9:
-			return "October";
-		case 10:
-			return "November";
-		case 11:
-			return "Dezember";
-		}
-		return "Fuck";
-	}
 }
