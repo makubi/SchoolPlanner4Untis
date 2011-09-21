@@ -123,7 +123,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	@Override
 	public void onBackPressed() {
 		AsyncTask<Void, AsyncTaskProgress, Void> loginTask = loginListener.getLoginTask();
-		if(!loginTask.isCancelled() && !(loginTask.getStatus() == Status.FINISHED)) {
+		if(loginTask != null && !loginTask.isCancelled() && !(loginTask.getStatus() == Status.FINISHED)) {
 			loginTask.cancel(true);
 		}
 		else super.onBackPressed();
