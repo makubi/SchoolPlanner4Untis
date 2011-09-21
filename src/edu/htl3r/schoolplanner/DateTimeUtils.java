@@ -38,6 +38,21 @@ public class DateTimeUtils {
 		getString(R.string.timetable_week_header_friday_short),
 		getString(R.string.timetable_week_header_saturday_short)};
 	
+	public static String[] MONTH_NAMES = new String[] {
+		getString(R.string.month_name_january),
+		getString(R.string.month_name_february),
+		getString(R.string.month_name_march),
+		getString(R.string.month_name_april),
+		getString(R.string.month_name_may),
+		getString(R.string.month_name_june),
+		getString(R.string.month_name_july),
+		getString(R.string.month_name_august),
+		getString(R.string.month_name_september),
+		getString(R.string.month_name_october),
+		getString(R.string.month_name_november),
+		getString(R.string.month_name_december)
+	};
+	
 	/**
 	 * Liefert ein {@link Time}-Objekt als ISO-8601-String (Form: YYYY-MM-DD).
 	 * @param date {@link Time}-Objekt, von dem der String erzeugt werden soll
@@ -93,6 +108,10 @@ public class DateTimeUtils {
 		DateTime dateTime = new DateTime();
 		dateTime.set(calendar.get(Calendar.MINUTE), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.YEAR));
 		return dateTime;
+	}
+	
+	public static String getMonthName(DateTime dateTime) {
+		return MONTH_NAMES[dateTime.getMonth()-1];
 	}
 	
 	public static String getShortWeekDayName(DateTime dateTime) {

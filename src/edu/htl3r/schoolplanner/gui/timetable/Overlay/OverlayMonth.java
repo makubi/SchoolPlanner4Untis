@@ -73,6 +73,7 @@ public class OverlayMonth extends Dialog implements OnClickListener {
 		setHeader();
 	}
 
+	@Deprecated
 	private String monthToString(int mon) {				//FIXME MATTHIAS MACH DAS RICHTIG MIT RESSOURCES UND DATETIMEUTILS
 		switch (mon - 1) {
 		case 0:
