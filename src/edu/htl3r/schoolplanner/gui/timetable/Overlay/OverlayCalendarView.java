@@ -24,12 +24,13 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 	private int width, height;
 	private int colwidth, rowheight;
 	private TextPaint tp;
+	private OverlayMonth overlaymonth;
 
 	private ArrayList<ArrayList<Integer>> buffer = new ArrayList<ArrayList<Integer>>();
 
-	public OverlayCalendarView(Context context) {
+	public OverlayCalendarView(Context context, OverlayMonth om) {
 		super(context);
-
+		overlaymonth = om;
 		tp = new TextPaint();
 		tp.setStrokeWidth(2);
 		tp.setAntiAlias(true);
@@ -146,8 +147,6 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 			}
 			tmp.increaseDay();
 		}
-
-		printBuffer();
 		canvas.restore();
 	}
 
@@ -196,8 +195,8 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 				x = (float) Math.ceil(x / colwidth);
 				y = (float) Math.ceil(y / rowheight);
 				if (y < buffer.size() + 1 && x < 8) {
-					Log.d("basti", "spalte: " + x + " zeile: " + y);
-					Log.d("basti", "Tag: " + (buffer.get((int) y - 1)).get((int) x - 1));
+					if((buffer.get((int) y - 1)).get((int) x - 1) != DEAD_DAY)
+						overlaymonth.displayChoosenWeek((buffer.get((int) y - 1)).get((int) x - 1));
 				}
 			}
 
