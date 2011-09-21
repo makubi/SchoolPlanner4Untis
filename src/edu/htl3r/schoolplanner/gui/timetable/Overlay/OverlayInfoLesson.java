@@ -23,14 +23,14 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
-public class OverlayLesson extends View {
+public class OverlayInfoLesson extends View {
 
 	private Lesson lesson;
 	private LessonCode lcode;
 	private ViewType viewtype;
 	private int width, height;
 
-	public OverlayLesson(Context context) {
+	public OverlayInfoLesson(Context context) {
 		super(context);
 	}
 

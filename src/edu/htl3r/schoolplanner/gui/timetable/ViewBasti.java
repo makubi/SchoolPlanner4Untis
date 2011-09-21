@@ -19,6 +19,8 @@ package edu.htl3r.schoolplanner.gui.timetable;
 
 import java.util.Calendar;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -26,12 +28,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.text.format.Time;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
+import edu.htl3r.schoolplanner.gui.settings.SettingsScreen;
+import edu.htl3r.schoolplanner.gui.timetable.Overlay.OverlayMonth;
 
 public class ViewBasti extends SchoolPlannerActivity {
 
@@ -40,6 +48,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 	private LoadDataTask loadweekdata;
 	private ViewPagerIndicator indicator;
 	private ViewType viewtype;
+	private OverlayMonth overlaymonth;
 
 	public BlockingDownloadQueue downloadschlange = new BlockingDownloadQueue();
 
@@ -113,6 +122,28 @@ public class ViewBasti extends SchoolPlannerActivity {
 
 		indicator.setArrows(prev, next);
 		myViewPager.setCurrentItem(50);
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.timetable_menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.timetable_month:
+			Toast.makeText(this, "Month", Toast.LENGTH_SHORT).show();
+			overlaymonth = new OverlayMonth(this);
+			overlaymonth.setDate(getMonday());
+			overlaymonth.show();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 	
 }

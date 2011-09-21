@@ -16,4 +16,17 @@
     <string name="timetable_overlay_lesson_can">Cancelled</string>
     <string name="timetable_overlay_lesson_irr">Irregular</string>
     <string name="timetable_overlay_lesson_sub">Substitute</string>
+    
+    <string-array name="timetable_overlay_month_header_name">
+        <item></item>
+        <item>M</item>
+        <item>T</item>
+        <item>W</item>
+        <item>T</item>
+        <item>F</item>
+        <item>S</item>
+        <item>S</item>
+    </string-array>
+    
+    
 </resources>
