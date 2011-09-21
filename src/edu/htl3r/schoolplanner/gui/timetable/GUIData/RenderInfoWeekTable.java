@@ -1,6 +1,7 @@
 package edu.htl3r.schoolplanner.gui.timetable.GUIData;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -9,6 +10,7 @@ import java.util.TreeSet;
 import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
+import edu.htl3r.schoolplanner.TimegridUtils;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
@@ -18,6 +20,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCod
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeIrregular;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
+import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridDay;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
 
 public class RenderInfoWeekTable implements WebUntis {
@@ -89,14 +92,16 @@ public class RenderInfoWeekTable implements WebUntis {
 			timegridForDateTimeDay = new ArrayList<TimegridUnit>();
 			List<TimegridUnit> timegridForDay = timegrid.getTimegridForDay(WebUntis.MONDAY);
 			boolean zerlesson = settings.isDisplayZerothLesson();
+			
+			webuntisOnlyZeroTimegridUnitsHack(timegridForDay);
 
-			for (int i = 0; i < timegridForDay.size(); i++) {
+			for (TimegridUnit timegridUnit : timegridForDay) {
 				if (!zerlesson) {
-					if (!timegridForDay.get(i).getName().equals("0")) { // TODO
-						timegridForDateTimeDay.add(timegridForDay.get(i));
+					if (!timegridUnit.getName().equals("0")) { // TODO
+						timegridForDateTimeDay.add(timegridUnit);
 					}
 				} else {
-					timegridForDateTimeDay.add(timegridForDay.get(i));
+					timegridForDateTimeDay.add(timegridUnit);
 				}
 			}
 		}
@@ -187,6 +192,30 @@ public class RenderInfoWeekTable implements WebUntis {
 			day.addLessonContainer(timegridUnit.getStart(), lessoncon);
 		}
 		return day;
+	}
+
+	/**
+	 * Temporaer, bis von WebUntis bei Standardeinstellungen die Stundenbezeichnungen passen geliefert werden.
+	 * @param timegridForDay
+	 */
+	private void webuntisOnlyZeroTimegridUnitsHack(
+			List<TimegridUnit> timegridForDay) {
+		final String zeroString = "0";
+		
+		int zeroCount = 0;
+		for(TimegridUnit timegridUnit : timegridForDay) {
+			if(timegridUnit.getName().equals(zeroString)) {
+				zeroCount++;
+			}
+		}
+		
+		if(zeroCount > 1) {
+			Collections.sort(timegridForDay);
+			for(int i = 0; i < timegridForDay.size(); i++) {
+				// Standard is to start at lesson '1'
+				timegridForDay.get(i).setName(""+(i+1));
+			}
+		}
 	}
 
 }
