@@ -39,7 +39,18 @@ public class DateTimeUtils {
 		getString(R.string.timetable_week_header_saturday_short)};
 	
 	public static String[] MONTH_NAMES = new String[] {
-		
+		getString(R.string.month_name_january),
+		getString(R.string.month_name_february),
+		getString(R.string.month_name_march),
+		getString(R.string.month_name_april),
+		getString(R.string.month_name_may),
+		getString(R.string.month_name_june),
+		getString(R.string.month_name_july),
+		getString(R.string.month_name_august),
+		getString(R.string.month_name_september),
+		getString(R.string.month_name_october),
+		getString(R.string.month_name_november),
+		getString(R.string.month_name_december)
 	};
 	
 	/**
