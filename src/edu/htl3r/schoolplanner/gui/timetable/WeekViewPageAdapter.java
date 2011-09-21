@@ -66,7 +66,7 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 
 		InputTransferObject input = new InputTransferObject(ad, position);
 
-		if (!view_cach[position].isDataHere() ){//&& !downloadschlange.contains(input)) {
+		if (!view_cach[position].isDataHere() ){
 			downloadschlange.add(input);
 		}
 

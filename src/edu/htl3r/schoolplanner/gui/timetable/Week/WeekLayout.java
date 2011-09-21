@@ -18,7 +18,7 @@ import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIDay;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUILessonContainer;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIWeek;
 import edu.htl3r.schoolplanner.gui.timetable.Lessons.LessonView;
-import edu.htl3r.schoolplanner.gui.timetable.Overlay.Overlay;
+import edu.htl3r.schoolplanner.gui.timetable.Overlay.OverlayInfo;
 
 public class WeekLayout extends ViewGroup{
 
@@ -44,7 +44,7 @@ public class WeekLayout extends ViewGroup{
 	private boolean isDataHere = false;
 	
 	private OnLessonsClickListener clicklistener;
-	private Overlay weekoverlay;
+	private OverlayInfo weekoverlay;
 
 	public WeekLayout(Context context, int id) {
 		super(context);
@@ -52,7 +52,7 @@ public class WeekLayout extends ViewGroup{
 		this.ID = id;
 		
 		clicklistener = new OnLessonsClickListener();
-		weekoverlay = new Overlay(context);
+		weekoverlay = new OverlayInfo(context);
 		
 		weekheader = new WeekHeader(context);
 		weektimegrid = new WeekTimeGrid(context);

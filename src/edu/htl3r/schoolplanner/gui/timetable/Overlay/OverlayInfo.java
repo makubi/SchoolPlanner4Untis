@@ -13,15 +13,15 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUILessonContainer;
 
-public class Overlay extends Dialog{
+public class OverlayInfo extends Dialog{
 
 	
 	private GUILessonContainer lessons;
 	private LinearLayout container;
 	private HorizontalScrollView scrollview;
-	private ArrayList<OverlayLesson> overlaylessons = new ArrayList<OverlayLesson>();
+	private ArrayList<OverlayInfoLesson> overlaylessons = new ArrayList<OverlayInfoLesson>();
 	
-	public Overlay(Context context) {
+	public OverlayInfo(Context context) {
 		super(context);
 		setContentView(R.layout.overlay);
 		setCanceledOnTouchOutside(true);
@@ -47,7 +47,7 @@ public class Overlay extends Dialog{
 		
 		ArrayList<Lesson> allLessons = lessons.getAllLessons();
 		for(Lesson l :  allLessons){
-			OverlayLesson ol = new OverlayLesson(getContext());
+			OverlayInfoLesson ol = new OverlayInfoLesson(getContext());
 			ol.setData(l,viewType);
 			overlaylessons.add(ol);
 			ScrollView scr = new ScrollView(getContext());
