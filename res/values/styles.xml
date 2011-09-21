@@ -84,10 +84,22 @@
 		<item name="android:paddingBottom">20dip</item>
 	</style>
 	
+	<style name="info_dialog_head_land">
+		<item name="android:textSize">30sp</item>
+		<item name="android:paddingBottom">5dip</item>
+	</style>
+	
 	<style name="info_dialog_text">
-	<item name="android:textSize">15sp</item>
-    <item name="android:paddingLeft">5dip</item>
-    <item name="android:paddingTop">5dip</item>
-    <item name="android:paddingBottom">5dip</item>
+		<item name="android:textSize">15sp</item>
+    	<item name="android:paddingLeft">5dip</item>
+    	<item name="android:paddingTop">5dip</item>
+    	<item name="android:paddingBottom">5dip</item>
+	</style>
+
+	<style name="info_dialog_text_land">
+		<item name="android:textSize">15sp</item>
+    	<item name="android:paddingLeft">5dip</item>
+    	<item name="android:paddingTop">0dip</item>
+    	<item name="android:paddingBottom">0dip</item>
 	</style>
 </resources>

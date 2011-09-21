@@ -11,31 +11,31 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:text="@string/info_dialog_header"
-    style="@style/info_dialog_head"/>
+    style="@style/info_dialog_head_land"/>
     
     <TextView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:text="@string/info_dialog_names"
-    style="@style/info_dialog_text"
+    style="@style/info_dialog_text_land"
     />
     <TextView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:text="@string/info_dialog_thanks"
-    style="@style/info_dialog_text"
+    style="@style/info_dialog_text_land"
     />
     <View style="@style/statusBarDelimiter"
-    android:layout_marginTop="40dip" />
+    android:layout_marginTop="5dip" />
     <TextView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:text="@string/info_dialog_development"
-    style="@style/info_dialog_text"/>
+    style="@style/info_dialog_text_land"/>
     <TextView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:text="@string/info_dialog_license"
-    style="@style/info_dialog_text"
+    style="@style/info_dialog_text_land"
     />
 </LinearLayout>
