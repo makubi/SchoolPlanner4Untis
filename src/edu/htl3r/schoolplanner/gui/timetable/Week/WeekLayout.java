@@ -170,7 +170,7 @@ public class WeekLayout extends ViewGroup{
 
 		tposx = TIMEGRID_WIDTH;
 		tposy = HEADER_HEIGHT;
-		for (int i = 0; i < hours - 1; i++) {
+		for (int i = 0; i < hours; i++) {
 			tposy += heightlesson;
 			canvas.drawLine(tposx, tposy, width, tposy, paint);
 		}

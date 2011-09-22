@@ -157,7 +157,6 @@ public class ViewBasti extends SchoolPlannerActivity {
 		if (d.getWeekDay() == Time.SUNDAY) {
 			d.increaseDay();
 		} else {
-
 			while (d.getWeekDay() != Time.MONDAY) {
 				d.decreaseDay();
 			}
