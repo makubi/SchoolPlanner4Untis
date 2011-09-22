@@ -18,6 +18,7 @@
 package edu.htl3r.schoolplanner.gui.timetable;
 
 import java.util.Calendar;
+import java.util.List;
 
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -34,6 +35,7 @@ import android.widget.Toast;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
+import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
@@ -47,6 +49,8 @@ public class ViewBasti extends SchoolPlannerActivity {
 	private ViewPagerIndicator indicator;
 	private ViewType viewtype;
 	private OverlayMonth overlaymonth;
+
+	private List<SchoolHoliday> holidays;
 
 	public BlockingDownloadQueue downloadschlange = new BlockingDownloadQueue();
 
@@ -83,6 +87,9 @@ public class ViewBasti extends SchoolPlannerActivity {
 		public void handleMessage(Message msg) {
 			OutputTransferObject result = (OutputTransferObject) msg.obj;
 			wvpageadapter.setWeeData(result.getWeek(), result.getPos());
+
+			if (holidays == null)
+				holidays = result.getWeek().getHolidays();
 		}
 	};
 
@@ -131,9 +138,11 @@ public class ViewBasti extends SchoolPlannerActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.timetable_month:
-			overlaymonth = new OverlayMonth(this, this);
-			overlaymonth.setDate(getMonday());
-			overlaymonth.show();
+			if (holidays != null) {
+				overlaymonth = new OverlayMonth(this, this, holidays);
+				overlaymonth.setDate(getMonday());
+				overlaymonth.show();
+			}
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -144,6 +153,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 		DateTime d = date.clone();
 
 		Log.d("basti", "Gewaehltes Datum : " + date);
+		Toast.makeText(this, date.getDay()+"."+date.getMonth()+":"+date.getYear(), Toast.LENGTH_SHORT).show();
 		if (d.getWeekDay() == Time.SUNDAY) {
 			d.increaseDay();
 		} else {
@@ -155,20 +165,20 @@ public class ViewBasti extends SchoolPlannerActivity {
 		DateTime now = getMonday().clone();
 
 		int count = 0;
-		
-		if(d.compareTo(now) < 0){
-			
-			while(d.compareTo(now) != 0){
-				now.set(now.getDay()-7, now.getMonth(), now.getYear());
+
+		if (d.compareTo(now) < 0) {
+
+			while (d.compareTo(now) != 0) {
+				now.set(now.getDay() - 7, now.getMonth(), now.getYear());
 				count--;
 			}
-		}else if (d.compareTo(now)  > 0){
-			while(d.compareTo(now) != 0){
-				now.set(now.getDay()+7, now.getMonth(), now.getYear());
+		} else if (d.compareTo(now) > 0) {
+			while (d.compareTo(now) != 0) {
+				now.set(now.getDay() + 7, now.getMonth(), now.getYear());
 				count++;
 			}
 		}
-		myViewPager.setCurrentItem(50+count);
+		myViewPager.setCurrentItem(50 + count);
 	}
 
 }

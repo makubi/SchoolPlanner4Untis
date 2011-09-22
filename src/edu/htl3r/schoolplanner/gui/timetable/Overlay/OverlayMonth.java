@@ -1,9 +1,11 @@
 package edu.htl3r.schoolplanner.gui.timetable.Overlay;
 
-import javax.print.attribute.standard.Finishings;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.gui.timetable.ViewBasti;
 
 public class OverlayMonth extends Dialog implements OnClickListener {
@@ -25,12 +28,16 @@ public class OverlayMonth extends Dialog implements OnClickListener {
 
 	private OverlayCalendarView calendar;
 	private RelativeLayout month_container;
-	
+
 	private ViewBasti viewbasti;
 
-	public OverlayMonth(Context context, ViewBasti vb) {
+	private List<SchoolHoliday> holidays;
+	private List<Integer> holidays_day = new ArrayList<Integer>();
+
+	public OverlayMonth(Context context, ViewBasti vb, List<SchoolHoliday> hol) {
 		super(context);
 		viewbasti = vb;
+		holidays = hol;
 		init();
 	}
 
@@ -38,7 +45,7 @@ public class OverlayMonth extends Dialog implements OnClickListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.overlay_month);
 
-		calendar = new OverlayCalendarView(getContext(),this);
+		calendar = new OverlayCalendarView(getContext(), this);
 
 		month_container = (RelativeLayout) findViewById(R.id.overlay_month_container);
 		next = (ImageButton) findViewById(R.id.overlay_month_next);
@@ -60,6 +67,35 @@ public class OverlayMonth extends Dialog implements OnClickListener {
 			end = new DateTime();
 			end.set(1 + (50 * 7), d.getMonth(), d.getYear());
 		}
+
+		holidays_day = new ArrayList<Integer>();
+		for (SchoolHoliday s : holidays) {
+			Log.d("basti", "Holidays: " + s.getStartDate() + " " + s.getEndDate());
+
+			DateTime hstart = s.getStartDate().clone();
+			DateTime hend = s.getEndDate().clone();
+			if (hstart.compareTo(hend) == 0) {
+				if (hstart.getMonth() == date.getMonth() && hstart.getYear() == date.getYear()) {
+					holidays_day.add(hstart.getDay());
+				}
+			} else {
+
+				if (hend.getMonth() == date.getMonth() && hend.getYear() == date.getYear() && 
+						(hstart.getMonth() != date.getMonth() || hstart.getYear() != date.getYear())) {
+					hstart.set(1, hstart.getMonth() + 1, hstart.getYear());
+				}
+				boolean wasinloop = false;
+				while (hstart.compareTo(hend) < 0 && hstart.getMonth() == date.getMonth()) {
+					holidays_day.add(hstart.getDay());
+					wasinloop = true;
+					hstart.increaseDay();
+				}
+				if(wasinloop && hstart.getMonth() == date.getMonth())
+					holidays_day.add(hstart.getDay());
+					
+			}
+		}
+
 		addCalendar();
 	}
 
@@ -72,18 +108,18 @@ public class OverlayMonth extends Dialog implements OnClickListener {
 			if (tmp.getMonth() == end.getMonth() - 1 && tmp.getYear() == end.getYear()) {
 				next.setEnabled(false);
 			}
-			
-			if(!prev.isEnabled())
+
+			if (!prev.isEnabled())
 				prev.setEnabled(true);
-				
+
 		} else if (v == prev) {
 			tmp.set(date.getDay(), date.getMonth() - 1, date.getYear());
 
 			if (tmp.getMonth() == start.getMonth() + 1 && tmp.getYear() == start.getYear()) {
 				prev.setEnabled(false);
 			}
-			
-			if(!next.isEnabled())
+
+			if (!next.isEnabled())
 				next.setEnabled(true);
 		}
 		setDate(tmp);
@@ -95,7 +131,7 @@ public class OverlayMonth extends Dialog implements OnClickListener {
 	}
 
 	private void addCalendar() {
-		calendar.setFirstDay(date);
+		calendar.setFirstDay(date, holidays_day);
 		month_container.removeView(calendar);
 
 		RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
@@ -105,8 +141,8 @@ public class OverlayMonth extends Dialog implements OnClickListener {
 		month_container.addView(calendar);
 		setHeader();
 	}
-	
-	public void displayChoosenWeek(int day){
+
+	public void displayChoosenWeek(int day) {
 		DateTime ret = new DateTime();
 		ret.set(day, date.getMonth(), date.getYear());
 		viewbasti.setDateforDialog(ret);

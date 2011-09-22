@@ -1,10 +1,13 @@
 package edu.htl3r.schoolplanner.gui.timetable.Overlay;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint.Style;
+import android.graphics.RectF;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
@@ -19,12 +22,17 @@ import edu.htl3r.schoolplanner.R;
 public class OverlayCalendarView extends View implements OnTouchListener {
 
 	private final int DEAD_DAY = -1;
-	
+
 	private DateTime firstDay;
 	private int width, height;
 	private int colwidth, rowheight;
 	private TextPaint tp;
 	private OverlayMonth overlaymonth;
+	
+	private List<Integer> holidays;
+
+	private int highx, highy;
+	private boolean showhighlight = false;
 
 	private ArrayList<ArrayList<Integer>> buffer = new ArrayList<ArrayList<Integer>>();
 
@@ -52,9 +60,22 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
+
+		canvas.save();
+
+		if (showhighlight) {
+			showhighlight = false;
+			showHighLight(highx, highy, canvas);
+		}
+
+		canvas.restore();
+
 		paintFirstRow(canvas);
 		paintDays(canvas);
 		paintWeekNumber(canvas);
+
+		canvas.restore();
+
 	}
 
 	private void paintFirstRow(Canvas canvas) {
@@ -72,12 +93,22 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 		canvas.drawLine(0, rowheight, width, rowheight, tp);
 	}
 
+	private void showHighLight(int x, int y, Canvas canvas) {
+
+		tp.setColor(Color.parseColor("#2955ce"));
+		tp.setStyle(Style.FILL);
+		
+		RectF r = new RectF(x*colwidth, y*rowheight, (x+1)*colwidth, (y+1)*rowheight);
+
+		canvas.drawArc(r, 0, 360, true, tp);
+		
+	}
+
 	private void paintDays(Canvas canvas) {
 
 		canvas.save();
 		canvas.translate(getOffsetFaktor() * colwidth, 15 + rowheight);
 		DateTime tmp = firstDay.clone();
-		StaticLayout s = null;
 
 		tp.setColor(Color.WHITE);
 		tp.setStrokeWidth(3);
@@ -87,17 +118,18 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 		while (tmp.getMonth() == firstDay.getMonth()) {
 
 			if (tmp.getWeekDay() == Time.SUNDAY) {
-				s = new StaticLayout(tmp.getDay() + "", tp, colwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-				s.draw(canvas);
-
-				if(firstrow){
-					for(int i=line.size(); i<6; i++)
-						line.add(0,DEAD_DAY);
+	
+				holidays.add(tmp.getDay());
+				paintDay(tmp.getDay(), tp, canvas);
+				
+				if (firstrow) {
+					for (int i = line.size(); i < 6; i++)
+						line.add(0, DEAD_DAY);
 				}
 				line.add(tmp.getDay());
 				buffer.add(line);
 				line = new ArrayList<Integer>();
-				
+
 				if (!firstrow) {
 					canvas.translate(-(colwidth * count), rowheight);
 				} else {
@@ -106,12 +138,10 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 				}
 				count = 0;
 
-				
 			} else {
-								
+
 				line.add(tmp.getDay());
-				s = new StaticLayout(tmp.getDay() + "", tp, colwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
-				s.draw(canvas);
+				paintDay(tmp.getDay(), tp, canvas);
 				canvas.translate(colwidth, 0);
 				count++;
 			}
@@ -125,12 +155,27 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 
 		canvas.restore();
 	}
+	
+	private void paintDay(int day, TextPaint tp, Canvas canvas){
+		StaticLayout s = null;
+		s = new StaticLayout(day + "", tp, colwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+
+		if(holidays.contains(day)){
+			tp.setColor(Color.GREEN);
+			s.draw(canvas, null, tp, 5);
+		}else{
+			tp.setColor(Color.WHITE);
+			s.draw(canvas);	
+		}
+		
+		
+	}
 
 	private void paintWeekNumber(Canvas canvas) {
 
 		tp.setColor(Color.parseColor("#4a494a"));
 		tp.setStrokeWidth(2);
-
+		
 		DateTime tmp = firstDay.clone();
 		canvas.save();
 
@@ -179,11 +224,13 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 		return calc;
 	}
 
-	public void setFirstDay(DateTime d) {
+	public void setFirstDay(DateTime d, List<Integer> holidays) {
 		firstDay = d;
 		buffer.clear();
+		this.holidays = holidays;
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -195,8 +242,13 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 				x = (float) Math.ceil(x / colwidth);
 				y = (float) Math.ceil(y / rowheight);
 				if (y < buffer.size() + 1 && x < 8) {
-					if((buffer.get((int) y - 1)).get((int) x - 1) != DEAD_DAY)
-						overlaymonth.displayChoosenWeek((buffer.get((int) y - 1)).get((int) x - 1));
+					if ((buffer.get((int) y - 1)).get((int) x - 1) != DEAD_DAY)
+						showhighlight = true;
+					highx = (int) x;
+					highy = (int) y;
+					invalidate();
+					
+					overlaymonth.displayChoosenWeek((buffer.get((int) y - 1)).get((int) x - 1));
 				}
 			}
 
@@ -205,13 +257,13 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 	}
 
 	private void printBuffer() {
-		String tmp ="";
+		String tmp = "";
 		for (ArrayList<Integer> in : buffer) {
 			for (int j : in) {
-				tmp+=j + " ";
+				tmp += j + " ";
 			}
-			Log.d("basti",tmp);
-			tmp="";
+			Log.d("basti", tmp);
+			tmp = "";
 		}
 	}
 }

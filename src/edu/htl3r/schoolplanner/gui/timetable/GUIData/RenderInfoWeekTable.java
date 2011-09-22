@@ -75,6 +75,7 @@ public class RenderInfoWeekTable implements WebUntis {
 		}
 		week.setViewType(viewtype);
 		week.setTimegrid(timegridForDateTimeDay);
+		week.setHolidays(holidays);
 		return week;
 	}
 

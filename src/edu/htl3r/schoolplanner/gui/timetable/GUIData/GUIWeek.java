@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
 
@@ -18,6 +19,7 @@ public class GUIWeek implements DataGUItoGraphicGUI{
 	private Map<DateTime, GUIDay> week = new HashMap<DateTime, GUIDay>();
 	private ViewType viewtype;
 	private List<TimegridUnit> timegrid;
+	private List<SchoolHoliday> holidays;
 
 	
 	public void setTimegrid(List <TimegridUnit> time){
@@ -43,6 +45,15 @@ public class GUIWeek implements DataGUItoGraphicGUI{
 		return timegrid;
 	}
 	
+	
+	public List<SchoolHoliday> getHolidays() {
+		return holidays;
+	}
+
+	public void setHolidays(List<SchoolHoliday> holidays) {
+		this.holidays = holidays;
+	}
+
 	public ArrayList<DateTime> getSortDates(){
 		Set<DateTime> keySet = week.keySet();
 		TreeSet<DateTime> dates = new TreeSet<DateTime>();
