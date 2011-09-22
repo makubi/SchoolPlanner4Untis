@@ -81,11 +81,21 @@
 	
 	<style name="info_dialog_head">
 		<item name="android:textSize">30sp</item>
-		<item name="android:paddingBottom">20dip</item>
+		<item name="android:paddingBottom">0dip</item>
 	</style>
 	
 	<style name="info_dialog_head_land">
 		<item name="android:textSize">30sp</item>
+		<item name="android:paddingBottom">0dip</item>
+	</style>
+	
+	<style name="info_dialog_version">
+		<item name="android:textSize">12sp</item>
+		<item name="android:paddingBottom">20dip</item>
+	</style>
+	
+	<style name="info_dialog_version_land">
+		<item name="android:textSize">12sp</item>
 		<item name="android:paddingBottom">5dip</item>
 	</style>
 	

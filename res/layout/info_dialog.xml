@@ -16,6 +16,13 @@
     <TextView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:text="@string/info_dialog_version"
+    style="@style/info_dialog_version"/>
+    
+    <TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     android:text="@string/info_dialog_names"
     style="@style/info_dialog_text"
     />

@@ -16,6 +16,13 @@
     <TextView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:text="@string/info_dialog_version"
+    style="@style/info_dialog_version_land"/>
+    
+    <TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     android:text="@string/info_dialog_names"
     style="@style/info_dialog_text_land"
     />
@@ -26,7 +33,7 @@
     style="@style/info_dialog_text_land"
     />
     <View style="@style/statusBarDelimiter"
-    android:layout_marginTop="5dip" />
+    android:layout_marginTop="2dip" />
     <TextView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
