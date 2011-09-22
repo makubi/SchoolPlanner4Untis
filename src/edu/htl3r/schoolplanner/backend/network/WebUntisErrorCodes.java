@@ -16,14 +16,8 @@
 */
 package edu.htl3r.schoolplanner.backend.network;
 
-public interface ErrorCodes {
-
-	public static int JSON_EXCEPTION = 255;
-	public static int IO_EXCEPTION = 256;
-	public static int SERVICE_ERROR = 254;
-	public static int HTTP_HOST_CONNECTION_EXCEPTION = 1;
-	public static int UNKNOWN_HOST_EXCEPTION = 2;
-	public static int SSL_FORCED_BUT_UNAVAILABLE = 3;
-	public static int WEBUNTIS_SERVICE_EXCEPTION = 4;
+public interface WebUntisErrorCodes {
+	
+	public static int WEBUNTIS_NO_RIGHT_FOR_TIMETABLE = -8509;
 	
 }

@@ -41,6 +41,7 @@ import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceMasterdataProvider;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceTimetableDataProvider;
 import edu.htl3r.schoolplanner.backend.network.exceptions.SSLForcedButUnavailableException;
+import edu.htl3r.schoolplanner.backend.network.exceptions.WebUntisServiceException;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
@@ -545,18 +546,24 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	
 			// Netzwerkanfrage
 			JSONObject response = getJSONData(request);
-	
-			// Extrahiere Nutzdaten
-			JSONArray result = response.getJSONArray("result");
-	
-			// Parse die JSON-Response zu passender Map
-			lessonMap = jsonParser.jsonToLessonMap(result);
-	
-			// Fuege leere Listen fuer Daten ohne Stunden hinzu
-			lessonProcessor.addEmptyDaysToLessonMap(lessonMap, startDate,
+			
+			ErrorMessage errorMessage = getErrorMessage(response);
+			if(errorMessage != null) {
+				// Extrahiere Nutzdaten
+				JSONArray result = response.getJSONArray("result");
+			
+				// Parse die JSON-Response zu passender Map
+				lessonMap = jsonParser.jsonToLessonMap(result);
+				
+				// Fuege leere Listen fuer Daten ohne Stunden hinzu
+				lessonProcessor.addEmptyDaysToLessonMap(lessonMap, startDate,
 					endDate);
 	
-			data.setData(lessonMap);
+				data.setData(lessonMap);
+			}
+			else {
+				data.setErrorMessage(errorMessage);
+			}
 	
 		} catch (JSONException e) {
 			ErrorMessage errorMessage = new ErrorMessage();
@@ -733,6 +740,28 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		errorMessage.setException(e);
 		
 		return errorMessage;
+	}
+	
+	private ErrorMessage getErrorMessage(JSONObject jsonObject) {
+		if(jsonObject.has("error")) {
+			try {
+				ErrorMessage errorMessage = new ErrorMessage();
+				JSONObject errorObject = jsonObject.getJSONObject("error");
+				int errorCode = errorObject.getInt("code");
+				String errorString = errorObject.optString("message");
+				
+				errorMessage.setErrorCode(ErrorCodes.WEBUNTIS_SERVICE_EXCEPTION);
+				errorMessage.setException(new WebUntisServiceException(errorCode));
+				errorMessage.setAdditionalInfo(errorString);
+				
+				return errorMessage;
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		return null;
 	}
 
 }

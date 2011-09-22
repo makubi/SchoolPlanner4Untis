@@ -14,16 +14,19 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.backend.network;
+package edu.htl3r.schoolplanner.backend.network.exceptions;
 
-public interface ErrorCodes {
+public class WebUntisServiceException extends Exception {
 
-	public static int JSON_EXCEPTION = 255;
-	public static int IO_EXCEPTION = 256;
-	public static int SERVICE_ERROR = 254;
-	public static int HTTP_HOST_CONNECTION_EXCEPTION = 1;
-	public static int UNKNOWN_HOST_EXCEPTION = 2;
-	public static int SSL_FORCED_BUT_UNAVAILABLE = 3;
-	public static int WEBUNTIS_SERVICE_EXCEPTION = 4;
+	private static final long serialVersionUID = 1918203442019274685L;
 	
+	private int webUntisErrorCode;
+
+	public WebUntisServiceException(int webUntisErrorCode) {
+		this.webUntisErrorCode = webUntisErrorCode;
+	}
+
+	public int getWebUntisErrorCode() {
+		return webUntisErrorCode;
+	}
 }
