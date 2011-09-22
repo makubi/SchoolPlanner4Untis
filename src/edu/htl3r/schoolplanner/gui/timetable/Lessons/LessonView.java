@@ -56,7 +56,7 @@ public class LessonView extends GUIWeekView {
 		int all = top + l1l2p * 2;
 		boolean extendedView = (all < height) ? true : false;
 
-		if(lessoncontainer.isSomethinStrange())
+		if(lessoncontainer.isSomethinStrange() == GUILessonContainer.STRANGE || lessoncontainer.isSomethinStrange() == GUILessonContainer.STRANGE_NORMAL)
 			__paintRedBorder(canvas);
 		
 
@@ -241,7 +241,7 @@ public class LessonView extends GUIWeekView {
 		c.drawLine(0, height + 2, width + 2, height + 2, p);
 		c.drawLine(width + 2, 0, width + 2, height + 2, p);
 
-		if (lessoncontainer.allCancelled()) {
+		if (lessoncontainer.allCancelled() && lessoncontainer.isSomethinStrange() != GUILessonContainer.STRANGE_NORMAL) {
 			p.setStrokeWidth(4);
 			c.drawLine(0, 0, width + 2, height + 2, p);
 		}
@@ -262,17 +262,24 @@ public class LessonView extends GUIWeekView {
 	private List<Lesson> giveMeTheCorrectList(){
 		List<Lesson> lessons = new ArrayList<Lesson>();
 		
-		if (lessoncontainer.isSomethinStrange()) {
-			if (lessoncontainer.allCancelled()) {
+		switch(lessoncontainer.isSomethinStrange()){
+		case GUILessonContainer.NORMAL:
+			lessons = lessoncontainer.getStandardLessons();
+			break;
+		case GUILessonContainer.STRANGE:
+			if (lessoncontainer.allCancelled()) {					//Wurde alle Stunden gestrichen?
 				lessons = lessoncontainer.getSpecialLessons();
-			} else if (lessoncontainer.containsSubsituteLesson()) {
+			} else if (lessoncontainer.containsSubsituteLesson()) {	// Gibt es Supplierstunden?
 				lessons = lessoncontainer.getAllLessons();
-			} else {
+			} else {												//Zeige die 
 				lessons = lessoncontainer.getIrregularLessons();
 			}
-		} else {
-			lessons = lessoncontainer.getStandardLessons();
+			break;
+		case GUILessonContainer.STRANGE_NORMAL:
+			lessons = lessoncontainer.getAllLessons();
+			break;
 		}
+		
 		return lessons;
 	}
 

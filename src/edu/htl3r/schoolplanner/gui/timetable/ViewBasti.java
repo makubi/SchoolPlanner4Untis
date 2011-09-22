@@ -131,7 +131,6 @@ public class ViewBasti extends SchoolPlannerActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.timetable_month:
-			Toast.makeText(this, "Month", Toast.LENGTH_SHORT).show();
 			overlaymonth = new OverlayMonth(this, this);
 			overlaymonth.setDate(getMonday());
 			overlaymonth.show();
