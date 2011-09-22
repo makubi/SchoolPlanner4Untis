@@ -548,7 +548,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			JSONObject response = getJSONData(request);
 			
 			ErrorMessage errorMessage = getErrorMessage(response);
-			if(errorMessage != null) {
+			if(errorMessage == null) {
 				// Extrahiere Nutzdaten
 				JSONArray result = response.getJSONArray("result");
 			
@@ -742,7 +742,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		return errorMessage;
 	}
 	
-	private ErrorMessage getErrorMessage(JSONObject jsonObject) {
+	private ErrorMessage getErrorMessage(JSONObject jsonObject) throws JSONException {
 		if(jsonObject.has("error")) {
 			try {
 				ErrorMessage errorMessage = new ErrorMessage();
@@ -756,12 +756,11 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 				
 				return errorMessage;
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e("Network","Unable to parse JSON error",e);
+				throw new JSONException("Unable to parse JSON error: "+jsonObject);
 			}
-			
 		}
-		return null;
+		else return null;
 	}
 
 }
