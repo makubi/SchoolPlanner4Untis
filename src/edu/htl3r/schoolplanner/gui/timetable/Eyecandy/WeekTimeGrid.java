@@ -12,11 +12,15 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
 import edu.htl3r.schoolplanner.gui.timetable.Week.GUIWeekView;
 
-public class WeekTimeGrid extends GUIWeekView{
+public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 
 	
 	private int width,height,hours,offsettop;
@@ -34,7 +38,7 @@ public class WeekTimeGrid extends GUIWeekView{
 		paint.setAntiAlias(true);
 		paint.setStrokeWidth(4);
 		paint.setColor( getResources().getColor(R.color.background_stundenplan));
-
+		setOnTouchListener(this);
 	}
 	
 	@Override
@@ -91,6 +95,28 @@ public class WeekTimeGrid extends GUIWeekView{
 		timegrid = time;
 		setHours(time.size());
 		Log.d("basti", timegrid.get(0).getName() + " " + timegrid.get(0).getStart());
+	}
+	
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		
+		if(event.getAction() == MotionEvent.ACTION_DOWN){
+			float y = event.getY();
+			if(y > offsettop && y < height){
+				y-=offsettop;
+				y= (float) Math.ceil(y/((height-offsettop)/hours));
+				y--;
+				if(y >= timegrid.size())
+					return true;
+				String start = timegrid.get((int)y).getStart().getHour() + ":" + ((timegrid.get((int)y).getStart().getMinute()+"").length()==1 ? "0"+ timegrid.get((int)y).getStart().getMinute(): timegrid.get((int)y).getStart().getMinute()+"");
+				String end = timegrid.get((int)y).getEnd().getHour() + ":" + ((timegrid.get((int)y).getEnd().getMinute()+"").length()==1 ? "0"+ timegrid.get((int)y).getEnd().getMinute(): timegrid.get((int)y).getEnd().getMinute()+"");
+				String name = timegrid.get((int)y).getName();
+				Toast.makeText(getContext(), name + ": "+start +" - "+end, Toast.LENGTH_SHORT).show();
+			}
+		}
+		
+		return true;
 	}
 
 }
