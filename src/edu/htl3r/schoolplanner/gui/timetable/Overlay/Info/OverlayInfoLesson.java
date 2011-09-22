@@ -1,4 +1,4 @@
-package edu.htl3r.schoolplanner.gui.timetable.Overlay;
+package edu.htl3r.schoolplanner.gui.timetable.Overlay.Info;
 
 import java.util.ArrayList;
 import java.util.List;

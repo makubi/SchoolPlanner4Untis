@@ -39,7 +39,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
-import edu.htl3r.schoolplanner.gui.timetable.Overlay.OverlayMonth;
+import edu.htl3r.schoolplanner.gui.timetable.Overlay.Month.OverlayMonth;
 
 public class ViewBasti extends SchoolPlannerActivity {
 
@@ -153,7 +153,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 		DateTime d = date.clone();
 
 		Log.d("basti", "Gewaehltes Datum : " + date);
-		Toast.makeText(this, date.getDay()+"."+date.getMonth()+":"+date.getYear(), Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, date.getDay()+"."+date.getMonth()+"."+date.getYear(), Toast.LENGTH_SHORT).show();
 		if (d.getWeekDay() == Time.SUNDAY) {
 			d.increaseDay();
 		} else {

@@ -67,5 +67,9 @@ public class GUIContentManager {
 	public void setSettings(Settings settings) {
 		this.settings = settings;
 	}
-	
+
+	public Context getContext() {
+		return context;
+	}
+
 }

@@ -7,7 +7,6 @@ import java.util.Map;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Message;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataFacade;
@@ -26,7 +25,6 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 
 	private Cache cache;
 	private Context context;
-	private Message msg = new Message();
 	private Intent errorIntent = new Intent(GUIErrorHandler.ERRORINTENT);
 
 	public GUIContentProvider(Cache c, Context con) {

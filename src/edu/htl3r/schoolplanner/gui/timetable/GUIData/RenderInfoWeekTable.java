@@ -216,13 +216,14 @@ public class RenderInfoWeekTable implements WebUntis {
 	private boolean lessonSameEndTime(Lesson l1, TimegridUnit l2){
 		return ((l1.getEndTime().getHour() == l2.getEnd().getHour()) &&(l1.getEndTime().getMinute() == l2.getEnd().getMinute()));
 	}
+	/*
 	private boolean lessonsSameStartTime(Lesson l1, Lesson l2){
 		return ((l1.getStartTime().getHour() == l2.getStartTime().getHour()) &&(l1.getStartTime().getMinute() == l2.getStartTime().getMinute()));
 	}
 	private boolean lessonSameEndTime(Lesson l1, Lesson l2){
 		return ((l1.getEndTime().getHour() == l2.getEndTime().getHour()) &&(l1.getEndTime().getMinute() == l2.getEndTime().getMinute()));
 	}
-
+	 */
 	/**
 	 * Temporaer, bis von WebUntis bei Standardeinstellungen die Stundenbezeichnungen passen geliefert werden.
 	 * @param timegridForDay

@@ -11,7 +11,6 @@ import android.graphics.Paint.Style;
 import android.graphics.Typeface;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;

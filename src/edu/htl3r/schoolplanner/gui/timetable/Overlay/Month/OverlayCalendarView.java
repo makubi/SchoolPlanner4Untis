@@ -1,4 +1,4 @@
-package edu.htl3r.schoolplanner.gui.timetable.Overlay;
+package edu.htl3r.schoolplanner.gui.timetable.Overlay.Month;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -230,7 +230,6 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 		this.holidays = holidays;
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -256,6 +255,7 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 		return false;
 	}
 
+	@SuppressWarnings("unused")
 	private void printBuffer() {
 		String tmp = "";
 		for (ArrayList<Integer> in : buffer) {
