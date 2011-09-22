@@ -18,7 +18,7 @@ import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIDay;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUILessonContainer;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIWeek;
 import edu.htl3r.schoolplanner.gui.timetable.Lessons.LessonView;
-import edu.htl3r.schoolplanner.gui.timetable.Overlay.OverlayInfo;
+import edu.htl3r.schoolplanner.gui.timetable.Overlay.Info.OverlayInfo;
 
 public class WeekLayout extends ViewGroup{
 
@@ -170,7 +170,7 @@ public class WeekLayout extends ViewGroup{
 
 		tposx = TIMEGRID_WIDTH;
 		tposy = HEADER_HEIGHT;
-		for (int i = 0; i < hours - 1; i++) {
+		for (int i = 0; i < hours; i++) {
 			tposy += heightlesson;
 			canvas.drawLine(tposx, tposy, width, tposy, paint);
 		}

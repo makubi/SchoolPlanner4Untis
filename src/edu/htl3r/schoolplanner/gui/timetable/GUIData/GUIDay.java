@@ -60,4 +60,9 @@ public class GUIDay {
 		return lessons.get(d);
 	}
 
+	public DateTime getDate() {
+		return date;
+	}
+	
+	
 }

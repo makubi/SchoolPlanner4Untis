@@ -29,6 +29,10 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCod
 
 public class GUILessonContainer {
 
+	public final static int STRANGE = 666;
+	public final static int NORMAL = 999;
+	public final static int STRANGE_NORMAL = 1665;
+	
 	private DateTime start, end, date;
 
 	private List<Lesson> standardLessons = new ArrayList<Lesson>();
@@ -94,8 +98,15 @@ public class GUILessonContainer {
 	 * 
 	 * @return
 	 */
-	public boolean isSomethinStrange() {
-		return (specialLessons.isEmpty()) ? false : true;
+	public int isSomethinStrange() {
+		if(specialLessons.isEmpty() && !standardLessons.isEmpty())
+			return NORMAL;
+		if(!specialLessons.isEmpty() && standardLessons.isEmpty())
+			return STRANGE;
+		if(!specialLessons.isEmpty() && !standardLessons.isEmpty())
+			return STRANGE_NORMAL;
+		
+		return -1;
 	}
 
 	public ArrayList<Lesson> getAllLessons() {
@@ -112,7 +123,8 @@ public class GUILessonContainer {
 	public boolean allCancelled(){
 		if(isEmpty())
 			return false;
-		if(!isSomethinStrange())
+		
+		if(isSomethinStrange() == NORMAL)
 			return false;
 		
 		
@@ -123,6 +135,7 @@ public class GUILessonContainer {
 		}
 		return true;
 	}
+	
 	
 	public List<Lesson> getIrregularLessons(){
 		List<Lesson> ret = new ArrayList<Lesson>();
@@ -137,7 +150,7 @@ public class GUILessonContainer {
 	public boolean containsSubsituteLesson(){
 		if(isEmpty())
 			return false;
-		if(!isSomethinStrange())
+		if(isSomethinStrange() == NORMAL)
 			return false;
 		
 		

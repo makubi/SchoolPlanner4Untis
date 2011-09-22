@@ -51,6 +51,7 @@ public class GUIContentManager {
 			Map<String, List<Lesson>> lessonsForSomeTime = datacenter.getLessonsForSomeTime(viewtype, start, end);
 			if(lessonsForSomeTime.size() != 0 && lessonsForSomeTime != null){
 				weekinfo.setWeekData(lessonsForSomeTime);
+				weekinfo.setHolidays(datacenter.getAllSchoolHolidays());
 				weekinfo.setTimeGrid(datacenter.getTimeGrid());
 				weekinfo.setViewType(viewtype);
 				weekinfo.setSettings(settings);
@@ -66,5 +67,9 @@ public class GUIContentManager {
 	public void setSettings(Settings settings) {
 		this.settings = settings;
 	}
-	
+
+	public Context getContext() {
+		return context;
+	}
+
 }

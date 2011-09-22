@@ -62,7 +62,8 @@ class LoadDataTask extends AsyncTask<Void, String, Void> {
 	@Override
 	protected void onProgressUpdate(String... values) {
 		super.onProgressUpdate(values);
-		viewbasti.setInProgress(values[0], Boolean.parseBoolean(values[1]));
+		String trennzeichen = (values[0].length() == 0)? "" : "| " ;
+		viewbasti.setInProgress(viewtype.getName() +" "+ trennzeichen + values[0], Boolean.parseBoolean(values[1]));
 	}
 
 	@Override
