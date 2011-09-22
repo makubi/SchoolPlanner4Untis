@@ -96,6 +96,7 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 		setHours(time.size());
 		Log.d("basti", timegrid.get(0).getName() + " " + timegrid.get(0).getStart());
 	}
+	
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
