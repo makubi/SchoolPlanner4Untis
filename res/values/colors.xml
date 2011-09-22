@@ -14,4 +14,12 @@
 	
 	
 	<color name="background_stundenplan">#FFFFFF</color>
+	
+	
+	<color name="month_overlay_today">#FFA500</color>
+	<color name="month_overlay_day">#FFFFFF</color>
+	<color name="month_overlay_holiday">#00FF00</color>
+	
+	<color name="month_overlay_legend">#4a494a</color>
+	<color name="month_overlay_on_touch">#808080</color>
 </resources>

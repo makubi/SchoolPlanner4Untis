@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint.Style;
@@ -17,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
 
 public class OverlayCalendarView extends View implements OnTouchListener {
@@ -35,6 +37,8 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 	private boolean showhighlight = false;
 
 	private ArrayList<ArrayList<Integer>> buffer = new ArrayList<ArrayList<Integer>>();
+	
+	private Resources resources = getResources();
 
 	public OverlayCalendarView(Context context, OverlayMonth om) {
 		super(context);
@@ -79,7 +83,7 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 	}
 
 	private void paintFirstRow(Canvas canvas) {
-		tp.setColor(Color.parseColor("#4a494a"));
+		tp.setColor(resources.getColor(R.color.month_overlay_legend));
 		tp.setStrokeWidth(2);
 
 		String title[] = getResources().getStringArray(R.array.timetable_overlay_month_header_name);
@@ -95,7 +99,7 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 
 	private void showHighLight(int x, int y, Canvas canvas) {
 
-		tp.setColor(Color.parseColor("#2955ce"));
+		tp.setColor(resources.getColor(R.color.month_overlay_on_touch));
 		tp.setStyle(Style.FILL);
 		
 		RectF r = new RectF(x*colwidth, y*rowheight, (x+1)*colwidth, (y+1)*rowheight);
@@ -110,7 +114,6 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 		canvas.translate(getOffsetFaktor() * colwidth, 15 + rowheight);
 		DateTime tmp = firstDay.clone();
 
-		tp.setColor(Color.WHITE);
 		tp.setStrokeWidth(3);
 		int count = 0;
 		boolean firstrow = true;
@@ -160,11 +163,18 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 		StaticLayout s = null;
 		s = new StaticLayout(day + "", tp, colwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 
-		if(holidays.contains(day)){
-			tp.setColor(Color.GREEN);
+		DateTime today = new DateTime();
+		today.getAndroidTime().setToNow();
+		
+		if(firstDay.getYear() == today.getYear() && firstDay.getMonth() == today.getMonth() && day == today.getDay()) {
+			tp.setColor(resources.getColor(R.color.month_overlay_today));
+			s.draw(canvas, null, tp, 5);
+		}
+		else if(holidays.contains(day)){
+			tp.setColor(resources.getColor(R.color.month_overlay_holiday));
 			s.draw(canvas, null, tp, 5);
 		}else{
-			tp.setColor(Color.WHITE);
+			tp.setColor(resources.getColor(R.color.month_overlay_day));
 			s.draw(canvas);	
 		}
 		
@@ -173,7 +183,7 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 
 	private void paintWeekNumber(Canvas canvas) {
 
-		tp.setColor(Color.parseColor("#4a494a"));
+		tp.setColor(resources.getColor(R.color.month_overlay_legend));
 		tp.setStrokeWidth(2);
 		
 		DateTime tmp = firstDay.clone();
