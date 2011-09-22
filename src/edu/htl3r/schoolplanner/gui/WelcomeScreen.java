@@ -73,12 +73,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		mainLayout = (RelativeLayout) findViewById(R.id.welcome_main_layout);
 		
 		loginmanager = ((SchoolPlannerApp) getApplication()).getLoginSetManager();
-				
-		// TODO: temporarily for easier login
-		if(loginmanager.getAllLoginSets().size() <= 0){
-			loginmanager.addLoginSet("WebUntis Testschule", "webuntis.grupet.at:8080", "demo", "user", "", false);
-			loginmanager.addLoginSet("HTL Rennweg", "urania.webuntis.com", "htl3r", "htl3r", "htl3r", false);
-		}
+		
 		registerForContextMenu(mainListView);
 		
 		initList();
