@@ -88,7 +88,7 @@ public class ViewBasti extends SchoolPlannerActivity {
 			OutputTransferObject result = (OutputTransferObject) msg.obj;
 			wvpageadapter.setWeeData(result.getWeek(), result.getPos());
 
-			if (holidays == null)
+			if (result.getWeek() !=null && holidays == null)
 				holidays = result.getWeek().getHolidays();
 		}
 	};
