@@ -6,4 +6,5 @@
     <string name="error_unknown_host">Unknown host:</string>
     <string name="error_ssl_forced_but_unavailable">SSL forced, but it is unavailable: </string>
     
+    <string name="error_webuntis_no_right_for_timetable">No right to display timetable</string>
 </resources>

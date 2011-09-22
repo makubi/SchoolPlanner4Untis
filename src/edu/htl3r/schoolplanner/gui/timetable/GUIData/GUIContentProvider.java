@@ -8,8 +8,12 @@ import java.util.Map;
 import android.content.Context;
 import android.content.Intent;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataFacade;
+import edu.htl3r.schoolplanner.backend.ErrorMessage;
+import edu.htl3r.schoolplanner.backend.network.WebUntisErrorCodes;
+import edu.htl3r.schoolplanner.backend.network.exceptions.WebUntisServiceException;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
@@ -128,9 +132,24 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 		if (data.isSuccessful()) {
 			return data.getData();
 		} else {
-			errorIntent.putExtra(GUIErrorHandler.ERROR_TITLE_FIELD, data.getErrorMessage().getException().getMessage());
+			errorIntent.putExtra(GUIErrorHandler.ERROR_TITLE_FIELD, getDisplayErrorMessage(data.getErrorMessage()));
 			context.sendBroadcast(errorIntent);
 			return new HashMap<String, List<Lesson>>();
 		}
+	}
+	
+	private String getDisplayErrorMessage(ErrorMessage errorMessage) {
+		Throwable exception = errorMessage.getException();
+		if(exception instanceof WebUntisServiceException) {
+			final int webUntisErrorCode = ((WebUntisServiceException) exception).getWebUntisErrorCode();
+			if(webUntisErrorCode == WebUntisErrorCodes.WEBUNTIS_NO_RIGHT_FOR_TIMETABLE) {
+				return getString(R.string.error_webuntis_no_right_for_timetable);
+			}
+		}
+		return exception.getMessage()+": "+errorMessage.getAdditionalInfo();
+	}
+
+	private String getString(int resId) {
+		return context.getString(resId);
 	}
 }

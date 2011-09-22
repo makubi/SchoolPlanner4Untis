@@ -17,12 +17,13 @@
 package edu.htl3r.schoolplanner.backend.network.exceptions;
 
 public class WebUntisServiceException extends Exception {
-
+	
 	private static final long serialVersionUID = 1918203442019274685L;
 	
 	private int webUntisErrorCode;
 
 	public WebUntisServiceException(int webUntisErrorCode) {
+		super("WebUntis error "+webUntisErrorCode);
 		this.webUntisErrorCode = webUntisErrorCode;
 	}
 
