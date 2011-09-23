@@ -29,6 +29,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Adapter;
@@ -38,11 +39,13 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.DataFacade;
+import edu.htl3r.schoolplanner.backend.MasterData;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
+import edu.htl3r.schoolplanner.gui.selectScreen.MasterdataInstanceBundle;
 import edu.htl3r.schoolplanner.gui.selectScreen.SpinnerMemory;
 import edu.htl3r.schoolplanner.gui.selectScreen.ViewTypeOnClickListener;
 import edu.htl3r.schoolplanner.gui.selectScreen.ViewTypeSpinnerOnItemSelectedListener;
@@ -61,18 +64,43 @@ public class SelectScreen extends SchoolPlannerActivity {
 	private Spinner subjectSpinner;
 
 	private SpinnerMemory spinnerMemory = new SpinnerMemory();
+	
+	private DataFacade<List<SchoolClass>> classData;
+	private DataFacade<List<SchoolTeacher>> teacherData;
+	private DataFacade<List<SchoolRoom>> roomData;
+	private DataFacade<List<SchoolSubject>> subjectData;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.select_screen);
-
+		
+		
 		initSpinner();
 	}
 
+	private void retrieveSpinnerData() {
+		retrieveSavedBundle();
+		if (classData == null) classData = (DataFacade<List<SchoolClass>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_CLASS_LIST);
+		if (teacherData == null) teacherData = (DataFacade<List<SchoolTeacher>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_TEACHER_LIST);
+		if(roomData == null) roomData = (DataFacade<List<SchoolRoom>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_ROOM_LIST);
+		if(subjectData == null) subjectData = (DataFacade<List<SchoolSubject>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_SUBJECT_LIST);
+	}
+
+	private void retrieveSavedBundle() {
+		final MasterdataInstanceBundle bundle = (MasterdataInstanceBundle) getLastNonConfigurationInstance();
+		if(bundle != null) {
+			classData = bundle.getClassData();
+			teacherData = bundle.getTeacherData();
+			roomData = bundle.getRoomData();
+			subjectData = bundle.getSubjectData();
+		}
+	}
+
 	private void initSpinner() {
+		retrieveSpinnerData();
 		classSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerClass);
-		DataFacade<List<SchoolClass>> classData = (DataFacade<List<SchoolClass>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_CLASS_LIST);
+		
 		if (classData.isSuccessful()) {
 			classList = classData.getData();
 			initViewTypeSpinner(classSpinner, classList);
@@ -83,7 +111,7 @@ public class SelectScreen extends SchoolPlannerActivity {
 		}
 
 		teacherSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerTeacher);
-		DataFacade<List<SchoolTeacher>> teacherData = (DataFacade<List<SchoolTeacher>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_TEACHER_LIST);
+		
 		if (teacherData.isSuccessful()) {
 			teacherList = teacherData.getData();
 			initViewTypeSpinner(teacherSpinner, teacherList);
@@ -94,7 +122,7 @@ public class SelectScreen extends SchoolPlannerActivity {
 		}
 
 		roomSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerRoom);
-		DataFacade<List<SchoolRoom>> roomData = (DataFacade<List<SchoolRoom>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_ROOM_LIST);
+		
 		if (roomData.isSuccessful()) {
 			roomList = roomData.getData();
 			initViewTypeSpinner(roomSpinner, roomList);
@@ -105,7 +133,7 @@ public class SelectScreen extends SchoolPlannerActivity {
 		}
 
 		subjectSpinner = (Spinner) findViewById(R.id.selectScreen_spinnerSubject);
-		DataFacade<List<SchoolSubject>> subjectData = (DataFacade<List<SchoolSubject>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_SUBJECT_LIST);
+		
 		if (subjectData.isSuccessful()) {
 			subjectList = subjectData.getData();
 			initViewTypeSpinner(subjectSpinner, subjectList);
@@ -158,6 +186,18 @@ public class SelectScreen extends SchoolPlannerActivity {
 
 			addImageOnClickListener(false);
 		}
+	}
+	
+	
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+		final MasterdataInstanceBundle bundle = new MasterdataInstanceBundle();
+		bundle.setClassData(classData);
+		bundle.setTeacherData(teacherData);
+		bundle.setRoomData(roomData);
+		bundle.setSubjectData(subjectData);
+		
+		return bundle;
 	}
 
 	private int getPositionForItem(Spinner spinner, String item) {
