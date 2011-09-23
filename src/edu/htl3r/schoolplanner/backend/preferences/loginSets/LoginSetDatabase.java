@@ -48,19 +48,19 @@ public class LoginSetDatabase {
 		values.put(LoginSetConstants.sslOnlyKey, loginSet.isSslOnly());
 		
 		writableDatabase.beginTransaction();
-		writableDatabase.insert(loginSetTableName, null, values);
+		insert(writableDatabase, loginSetTableName, values);
 		writableDatabase.setTransactionSuccessful();
 		writableDatabase.endTransaction();
 		
 		this.database.closeDatabase(writableDatabase);
 	}
-	
+
 	public List<LoginSet> getAllLoginSets() {
 		List<LoginSet> allLoginSets = new ArrayList<LoginSet>();
 		
 		SQLiteDatabase readableDatabase = this.database.openDatabase(false);
 				
-		Cursor query = readableDatabase.query(loginSetTableName, null, null, null, null, null, null);
+		Cursor query = query(readableDatabase, loginSetTableName);
 		
 		while(query.moveToNext()) {
 			String name = query.getString(0);
@@ -84,7 +84,7 @@ public class LoginSetDatabase {
 		SQLiteDatabase writableDatabase = this.database.openDatabase(true);
 		
 		writableDatabase.beginTransaction();
-		writableDatabase.delete(loginSetTableName, LoginSetConstants.nameKey+"=?", new String[] {loginSet.getName()});
+		delete(writableDatabase, loginSetTableName, LoginSetConstants.nameKey+"=?", new String[] {loginSet.getName()});
 		writableDatabase.setTransactionSuccessful();
 		writableDatabase.endTransaction();
 		
@@ -103,11 +103,28 @@ public class LoginSetDatabase {
 		values.put(LoginSetConstants.sslOnlyKey, checked);
 		
 		writableDatabase.beginTransaction();
-		writableDatabase.update(loginSetTableName, values, LoginSetConstants.nameKey+"=?", new String[]{name});
+		update(writableDatabase, loginSetTableName, values, LoginSetConstants.nameKey+"=?", new String[]{name});
 		writableDatabase.setTransactionSuccessful();
 		writableDatabase.endTransaction();
 		
 		this.database.closeDatabase(writableDatabase);
+	}
+	
+	private synchronized void update(SQLiteDatabase database, String table, ContentValues values, String whereClause, String[] whereArgs) {
+		database.update(table, values, whereClause, whereArgs);
+	}
+	
+	private synchronized void delete(SQLiteDatabase database, String table, String whereClause, String[] whereArgs) {
+		database.delete(table, whereClause, whereArgs);
+	}
+	
+	private synchronized Cursor query(SQLiteDatabase database, String table) {
+		return database.query(table, null, null, null, null, null, null);
+	}
+	
+	private synchronized void insert(SQLiteDatabase database,
+			String table, ContentValues values) {
+		database.insert(table, null, values);
 	}
 	
 }

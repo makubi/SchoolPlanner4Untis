@@ -61,7 +61,7 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 		database.close();
 	}
 	
-	public long insert(SQLiteDatabase database, String table, ContentValues values) {
+	public synchronized long insert(SQLiteDatabase database, String table, ContentValues values) {
 		return database.insert(table, null, values);
 	}
 	
@@ -70,23 +70,23 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 	 * @param table
 	 * @return
 	 */
-	public Cursor query(SQLiteDatabase database, String table) {
+	public synchronized Cursor query(SQLiteDatabase database, String table) {
 		return database.query(table, null, null, null, null, null, null);
 	}
 	
-	public Cursor queryWithLoginSetKey(SQLiteDatabase database, String table) {
+	public synchronized Cursor queryWithLoginSetKey(SQLiteDatabase database, String table) {
 		return database.query(table, null, DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=?", new String[]{loginSetKey}, null, null, null);
 	}
 	
-	public void deleteAllRows(SQLiteDatabase database, String table) {
+	public synchronized void deleteAllRows(SQLiteDatabase database, String table) {
 		database.delete(table, null, null);
 	}
 	
-	public void deleteAllRowsWithLoginSetKey(SQLiteDatabase database, String table) {
+	public synchronized void deleteAllRowsWithLoginSetKey(SQLiteDatabase database, String table) {
 		database.delete(table, DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=?", new String[]{loginSetKey});
 	}
 	
-	public void deleteAllRowsWithLoginSetKey(SQLiteDatabase database,
+	public synchronized void deleteAllRowsWithLoginSetKey(SQLiteDatabase database,
 			String table, String loginSetKey) {
 		database.delete(table, DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=?", new String[]{loginSetKey});
 	}

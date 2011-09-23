@@ -54,7 +54,7 @@ public class LessonHelperDatabase implements LessonHelper {
 	}
 
 	@Override
-	public List<Lesson> getPermanentLessons() {
+	public synchronized List<Lesson> getPermanentLessons() {
 		List<SchoolClass> schoolClassList = cache.getSchoolClassList().getData();
 		List<SchoolTeacher> schoolTeacherList = cache.getSchoolTeacherList().getData();
 		List<SchoolRoom> schoolRoomList = cache.getSchoolRoomList().getData();
@@ -103,7 +103,7 @@ public class LessonHelperDatabase implements LessonHelper {
 		return permanentLessons;
 	}
 	
-	private List<? extends ViewType> getViewTypeListForPermanentLesson(SQLiteDatabase database, String table, String viewTypeColumn, String loginSetKey, long lessonID, List<? extends ViewType> initializedList) {
+	private synchronized List<? extends ViewType> getViewTypeListForPermanentLesson(SQLiteDatabase database, String table, String viewTypeColumn, String loginSetKey, long lessonID, List<? extends ViewType> initializedList) {
 		final List<ViewType> list = new ArrayList<ViewType>();
 		
 		final String selectionString = DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=? AND "+DatabasePermanentLessonViewTypeConstants.LESSON_ID+"=? AND "+DatabasePermanentLessonViewTypeConstants.VIEW_TYPE_TYPE+"=?";
@@ -129,7 +129,7 @@ public class LessonHelperDatabase implements LessonHelper {
 	}
 
 	@Override
-	public void setPermanentLesson(Lesson lesson) {
+	public synchronized void setPermanentLesson(Lesson lesson) {
 		final String lessonTable = DatabasePermanentLessonConstants.TABLE_PERMANENT_LESSONS_NAME;
 		final String loginSetKey = this.database.getLoginSetKeyForTable();
 		SQLiteDatabase database = this.database.openDatabase(true);
@@ -168,7 +168,7 @@ public class LessonHelperDatabase implements LessonHelper {
 		this.database.closeDatabase(database);
 	}
 	
-	private void removeLessonIfExists(SQLiteDatabase database, String table, String loginSetKey, int weekDay, long startTime, long endTime) {
+	private synchronized void removeLessonIfExists(SQLiteDatabase database, String table, String loginSetKey, int weekDay, long startTime, long endTime) {
 		final String selectionString = DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=? AND "+DatabasePermanentLessonConstants.WEEK_DAY+"=? AND "+DatabasePermanentLessonConstants.START_TIME+"=? AND "+DatabasePermanentLessonConstants.END_TIME+"=?";
 		final String[] selectionArgs = new String[]{loginSetKey, ""+weekDay, ""+startTime, ""+endTime};
 		
@@ -188,9 +188,8 @@ public class LessonHelperDatabase implements LessonHelper {
 		return contentValues;
 	}
 	
-	public Cursor queryWithLoginSetKey(SQLiteDatabase database, String table, String selection, String[] selectionArgs) {
-		this.database.getLoginSetKeyForTable();
-		return database.query(table, null, DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=?", new String[]{}, null, null, null);
+	public synchronized Cursor queryWithLoginSetKey(SQLiteDatabase database, String table, String selection, String[] selectionArgs) {
+		return database.query(table, null, DatabaseCreateConstants.TABLE_LOGINSET_KEY+"=?", new String[]{this.database.getLoginSetKeyForTable()}, null, null, null);
 	}
 
 	public void setUnsaveDataSourceMasterdataProvider(UnsaveDataSourceMasterdataProvider cache) {
