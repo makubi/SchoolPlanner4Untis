@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_sets_list_empty">
+    Sie haben noch keine Login Sets!
+	\n\n
+	Um sich in die App anloggen zu können, benötigen Sie ein Login Set.
+	\n\n
+	Ein Login Set besteht aus fünf Informationen:
+	\n\t- Name (beliebig): z.B. Mein Schullogin
+	\n\t- Server URL: z.B. urania.webuntis.com:1234
+	\n\t- Schulname: z.B. meine_schule
+	\n\t- Benutername: mein_login_name
+	\n\t- Passwort (optional): mein_passwort
+	\n\n	
+	+ Der Name wird nur verwendet, um zwischen den Login Sets zu unterscheiden.
+	\n+ Die Server URL ist die selbe URL, die auch beim Einloggen über einen Webbrowser verwendet wird.
+	\n+ Sie müssen die selben Logininformationen, wie beim Login über die WebUntis-Website, verwenden.
+	\n+ Wenn Ihre Schule SSL zur Verfügung stellt, können Sie ein sicheres Einloggen erzwingen.
+    </string>
+    
+    <string name="login_set_edit_title">Login Set bearbeiten</string>
+    
+</resources>

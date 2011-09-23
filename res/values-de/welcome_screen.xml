@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login_data_wrong">&quot;Einloggen fehlgeschlagen. Bitte überprüfen Sie Ihre Logindaten.&quot;</string>
+    
+</resources>

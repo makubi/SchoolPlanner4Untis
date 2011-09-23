@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="timetable_create_objects">Erzeuge Objekte...</string>
+    <string name="timetable_load_data">Lade Daten...</string>
+    <string name="timetable_loading_display">Lade Anzeige...</string>
+    
+    <string name="timetable_week_header_monday_short">Mo</string>
+    <string name="timetable_week_header_tuesday_short">Di</string>
+    <string name="timetable_week_header_wednesday_short">Mi</string>
+    <string name="timetable_week_header_thursday_short">Do</string>
+    <string name="timetable_week_header_friday_short">Fr</string>
+    <string name="timetable_week_header_saturday_short">Sa</string>
+    <string name="timetable_week_header_sunday_short">So</string>
+    
+    
+    <string name="timetable_overlay_lesson_can">Entfall</string>
+    <string name="timetable_overlay_lesson_irr">Irregulär</string>
+    <string name="timetable_overlay_lesson_sub">Supplierung</string>
+    
+    <string-array name="timetable_overlay_month_header_name">
+        <item></item>
+        <item>M</item>
+        <item>D</item>
+        <item>M</item>
+        <item>D</item>
+        <item>F</item>
+        <item>S</item>
+        <item>S</item>
+    </string-array>
+    
+    
+</resources>
