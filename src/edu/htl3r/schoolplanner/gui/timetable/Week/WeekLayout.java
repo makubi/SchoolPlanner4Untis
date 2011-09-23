@@ -25,7 +25,7 @@ public class WeekLayout extends ViewGroup{
 	private final int HEADER_HEIGHT = getResources().getDimensionPixelSize(R.dimen.gui_header_height);
 	private final int TIMEGRID_WIDTH = getResources().getDimensionPixelSize(R.dimen.gui_timegrid_width);
 
-	private final int BORDERWIDTH = 2;
+	private final int BORDERWIDTH = getResources().getDimensionPixelSize(R.dimen.gui_stroke_width_2);
 
 	private int ID;
 
@@ -71,6 +71,9 @@ public class WeekLayout extends ViewGroup{
 		for (int i = getChildCount() - 1; i >= 0; i--) {
 			drawChild(canvas, getChildAt(i), 0);
 		}
+		if (getChildCount() != 0) {
+			zeichneGatter(canvas);
+		}
 
 	}
 
@@ -98,7 +101,7 @@ public class WeekLayout extends ViewGroup{
 
 			switch (c.getId()) {
 			case GUIWeekView.LESSON_ID:
-				measureChild(c, MeasureSpec.makeMeasureSpec((int) widthlesson - 4, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) heightlesson - 4, MeasureSpec.EXACTLY));
+				measureChild(c, MeasureSpec.makeMeasureSpec((int) widthlesson - (BORDERWIDTH*2), MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) heightlesson - (BORDERWIDTH*2), MeasureSpec.EXACTLY));
 				break;
 			case GUIWeekView.HEADER_ID:
 				measureChild(c, MeasureSpec.makeMeasureSpec((int) width - TIMEGRID_WIDTH, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec((int) HEADER_HEIGHT, MeasureSpec.EXACTLY));

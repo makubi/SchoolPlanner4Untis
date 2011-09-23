@@ -36,7 +36,7 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 		paint = new Paint();
 		paint.setStyle(Style.STROKE);
 		paint.setAntiAlias(true);
-		paint.setStrokeWidth(4);
+		paint.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_4));
 		paint.setColor( getResources().getColor(R.color.background_stundenplan));
 		setOnTouchListener(this);
 	}
@@ -68,7 +68,7 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 		
 		
 		TextPaint tp = new TextPaint(paint);
-		tp.setStrokeWidth(2);
+		tp.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_2));
 		tp.setStyle(Style.FILL_AND_STROKE);
 		tp.setTextSize(getResources().getDimension(R.dimen.gui_header_line1_size));
 		canvas.translate(0, offsettop+(((height-offsettop)/hours)/4));

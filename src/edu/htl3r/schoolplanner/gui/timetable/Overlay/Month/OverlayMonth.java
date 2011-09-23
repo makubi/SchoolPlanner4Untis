@@ -136,7 +136,9 @@ public class OverlayMonth extends Dialog implements OnClickListener {
 
 		RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
 		layout.addRule(RelativeLayout.BELOW, R.id.overlay_mont_header);
-		layout.setMargins(0, 20, 0, 0);
+		
+		int top = getContext().getResources().getDimensionPixelSize(R.dimen.gui_overlay_month_marign_top);
+		layout.setMargins(0, top, 0, 0);
 		calendar.setLayoutParams(layout);
 		month_container.addView(calendar);
 		setHeader();

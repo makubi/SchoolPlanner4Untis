@@ -52,7 +52,7 @@ public class OverlayInfoLesson extends View {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		Paint p = new Paint();
-		p.setStrokeWidth(10);
+		p.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_10));
 		p.setColor(Color.BLACK);
 		p.setTextSize(getResources().getDimension(R.dimen.gui_overlay_text_size_medium));
 		p.setAntiAlias(true);
@@ -69,7 +69,7 @@ public class OverlayInfoLesson extends View {
 		
 		
 		if(lcode instanceof LessonCodeCancelled){
-			p.setStrokeWidth(5);
+			p.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_5));
 			canvas.drawLine(0, 0, width, height, p);
 		}
 		
