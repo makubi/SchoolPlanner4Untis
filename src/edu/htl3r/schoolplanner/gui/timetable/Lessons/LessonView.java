@@ -38,7 +38,7 @@ public class LessonView extends GUIWeekView {
 		setID(LESSON_ID);
 		paint = new Paint();
 		paint.setColor(Color.BLACK);
-		paint.setStrokeWidth(5);
+		paint.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_5));
 		paint.setStyle(Style.FILL);
 		paint.setTextSize(23);
 		paint.setAntiAlias(true);
@@ -231,17 +231,18 @@ public class LessonView extends GUIWeekView {
 		Paint p = new Paint();
 		p.setColor(Color.RED);
 		p.setAlpha(100);
-		p.setStrokeWidth(8);
+		p.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_8));
 		p.setStyle(Style.STROKE);
 		p.setAntiAlias(true);
 
-		c.drawLine(0, 0, width + 2, 0, p);
-		c.drawLine(0, 0, 0, height + 2, p);
-		c.drawLine(0, height + 2, width + 2, height + 2, p);
-		c.drawLine(width + 2, 0, width + 2, height + 2, p);
+		int halfborder = getResources().getDimensionPixelSize(R.dimen.gui_stroke_width_4)/2;
+		c.drawLine(0, 0, width + halfborder, 0, p);
+		c.drawLine(0, 0, 0, height + halfborder, p);
+		c.drawLine(0, height + halfborder, width + halfborder, height + halfborder, p);
+		c.drawLine(width + halfborder, 0, width + halfborder, height + halfborder, p);
 
 		if (lessoncontainer.allCancelled() && lessoncontainer.isSomethinStrange() != GUILessonContainer.STRANGE_NORMAL) {
-			p.setStrokeWidth(4);
+			p.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_4));
 			c.drawLine(0, 0, width + 2, height + 2, p);
 		}
 	}

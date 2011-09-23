@@ -18,7 +18,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import edu.htl3r.schoolplanner.DateTime;
-import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
 
 public class OverlayCalendarView extends View implements OnTouchListener {
@@ -28,6 +27,8 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 	private DateTime firstDay;
 	private int width, height;
 	private int colwidth, rowheight;
+	private int textpadding;
+	
 	private TextPaint tp;
 	private OverlayMonth overlaymonth;
 	
@@ -44,9 +45,9 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 		super(context);
 		overlaymonth = om;
 		tp = new TextPaint();
-		tp.setStrokeWidth(2);
+		tp.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_2));
 		tp.setAntiAlias(true);
-		tp.setTextSize(25);
+		tp.setTextSize(getResources().getDimension(R.dimen.gui_overlay_month_text_size));
 		tp.setColor(Color.WHITE);
 		setOnTouchListener(this);
 	}
@@ -55,9 +56,20 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		width = getMeasuredWidth();
+		height = getMeasuredHeight();
+		
 		colwidth = width / 8;
-		rowheight = colwidth;
-		height = rowheight * 7;
+		
+		if(height < width){
+			rowheight = height/7;
+		}else{
+			rowheight = colwidth;
+			height = rowheight * 7;
+		}
+		
+		int txtsize = getResources().getDimensionPixelSize(R.dimen.gui_overlay_month_text_size);
+		textpadding = (rowheight - txtsize)/2;
+		
 		setMeasuredDimension(width, height);
 	}
 
@@ -65,35 +77,36 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 
-		canvas.save();
-
 		if (showhighlight) {
 			showhighlight = false;
 			showHighLight(highx, highy, canvas);
 		}
-
+		
+		canvas.save();
+		paintFirstRow(canvas);
 		canvas.restore();
 
-		paintFirstRow(canvas);
+		
+		canvas.save();
 		paintDays(canvas);
+		canvas.restore();
+		
+		canvas.save();
 		paintWeekNumber(canvas);
-
 		canvas.restore();
 
 	}
 
 	private void paintFirstRow(Canvas canvas) {
 		tp.setColor(resources.getColor(R.color.month_overlay_legend));
-		tp.setStrokeWidth(2);
-
+		
 		String title[] = getResources().getStringArray(R.array.timetable_overlay_month_header_name);
-		canvas.translate(0, 15);
 		for (int i = 0; i < title.length; i++) {
 			StaticLayout s = new StaticLayout(title[i], tp, colwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 			s.draw(canvas);
 			canvas.translate(colwidth, 0);
 		}
-		canvas.translate(-(colwidth * title.length), -15);
+		canvas.translate(-(colwidth * title.length), -textpadding);
 		canvas.drawLine(0, rowheight, width, rowheight, tp);
 	}
 
@@ -101,20 +114,25 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 
 		tp.setColor(resources.getColor(R.color.month_overlay_on_touch));
 		tp.setStyle(Style.FILL);
+		RectF r = null;
 		
-		RectF r = new RectF(x*colwidth, y*rowheight, (x+1)*colwidth, (y+1)*rowheight);
-
+		if(colwidth == rowheight){
+			r = new RectF(x*colwidth, y*rowheight, (x+1)*colwidth, (y+1)*rowheight);
+		} else if(colwidth > rowheight){
+			r = new RectF((x*colwidth) + ((colwidth/2) - (rowheight/2)) , y*rowheight, (x*colwidth) + ((colwidth/2) + (rowheight/2)), (y+1)*rowheight);
+		}
+		
 		canvas.drawArc(r, 0, 360, true, tp);
 		
 	}
 
 	private void paintDays(Canvas canvas) {
 
-		canvas.save();
-		canvas.translate(getOffsetFaktor() * colwidth, 15 + rowheight);
+		canvas.translate(getOffsetFaktor() * colwidth, textpadding + rowheight);
 		DateTime tmp = firstDay.clone();
 
-		tp.setStrokeWidth(3);
+		tp.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_3));
+		
 		int count = 0;
 		boolean firstrow = true;
 		ArrayList<Integer> line = new ArrayList<Integer>();
@@ -155,8 +173,7 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 		for (int i = line.size(); i < 7; i++)
 			line.add(DEAD_DAY);
 		buffer.add(line);
-
-		canvas.restore();
+		tp.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_2));
 	}
 	
 	private void paintDay(int day, TextPaint tp, Canvas canvas){
@@ -184,12 +201,11 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 	private void paintWeekNumber(Canvas canvas) {
 
 		tp.setColor(resources.getColor(R.color.month_overlay_legend));
-		tp.setStrokeWidth(2);
+		tp.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_3));
 		
 		DateTime tmp = firstDay.clone();
-		canvas.save();
 
-		canvas.translate(0, rowheight + 15);
+		canvas.translate(0, rowheight + textpadding);
 		int weeknumber = -1;
 		StaticLayout s = null;
 
@@ -202,7 +218,6 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 			}
 			tmp.increaseDay();
 		}
-		canvas.restore();
 	}
 
 	private int getOffsetFaktor() {

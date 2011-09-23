@@ -35,7 +35,7 @@ public class WeekHeader extends GUIWeekView {
 		paint = new Paint();
 		paint.setStyle(Style.STROKE);
 		paint.setAntiAlias(true);
-		paint.setStrokeWidth(4);
+		paint.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_4));
 	}
 
 	public void setMonday(ArrayList<DateTime> dt) {
@@ -69,12 +69,12 @@ public class WeekHeader extends GUIWeekView {
 	private void zeichenInfos(Canvas canvas) {
 		paint.setColor(getResources().getColor(R.color.background_stundenplan));
 		TextPaint tp = new TextPaint(paint);
-		tp.setStrokeWidth(2);
+		tp.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_2));
 		tp.setTextSize(getResources().getDimension(R.dimen.gui_header_line1_size));
 		tp.setStyle(Style.FILL_AND_STROKE);
 		
 		TextPaint tp2 = new TextPaint(paint);
-		tp2.setStrokeWidth(1);
+		tp2.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_1));
 		tp2.setTextSize(getResources().getDimension(R.dimen.gui_header_line2_size));
 		tp2.setTypeface(Typeface.DEFAULT);
 		tp2.setStyle(Style.FILL_AND_STROKE);
