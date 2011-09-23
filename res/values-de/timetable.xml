@@ -17,6 +17,9 @@
     <string name="timetable_overlay_lesson_irr">Irregulär</string>
     <string name="timetable_overlay_lesson_sub">Supplierung</string>
     
+    <string name="timetable_menu_title_month">Monat</string>
+    
+    
     <string-array name="timetable_overlay_month_header_name">
         <item></item>
         <item>M</item>
