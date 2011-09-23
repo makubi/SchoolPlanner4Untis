@@ -73,7 +73,6 @@ public class SelectScreen extends SchoolPlannerActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.select_screen);
 		
-		
 		initSpinner();
 	}
 
