@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="resync_masterdata_in_progress">Aktualisiere Stammdaten...</string>
+    <string name="resync_masterdata_finished_successful">Stammdaten erfolgreich aktualisiert</string>
+    <string name="resync_masterdata_finished_error">Fehler beim aktualisieren der Stammdaten</string>
+    
+    <string name="login_in_progress">Login wird durchgeführt...</string>
+    
+    <string name="loading_school_classes">Lade Schulklassen...</string>
+    <string name="loading_school_teacher">Lade Schullehrer...</string>
+    <string name="loading_school_rooms">Lade Schulräume...</string>
+    <string name="loading_school_subjects">Lade Schulfächer...</string>
+    
+    <string name="loading_next_screen">Lade nächsten Bildschirm...</string>
+</resources>

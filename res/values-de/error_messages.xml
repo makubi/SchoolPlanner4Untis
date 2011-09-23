@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="error_occurred">Ein Fehler ist aufgetreten. Bitte überprüfen Sie Ihre Logs.</string>
+
+    <string name="error_connection_refused">Verbindung zum Host abgelehnt:</string>
+    <string name="error_unknown_host">Unbekannter Host:</string>
+    <string name="error_ssl_forced_but_unavailable">SSL erzwungen, ist aber nicht verfügbar: </string>
+    
+    <string name="error_webuntis_no_right_for_timetable">Keine Rechte zum Anzeigen des Stundenplans</string>
+</resources>

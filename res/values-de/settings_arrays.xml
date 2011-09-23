@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="settings_autoselect_type_entries">
+		<item>Klassen</item>
+		<item>Lehrer</item>
+		<item>Räume</item>
+		<item>Fächer</item>
+	</string-array>
+	<string-array name="settings_autoselect_type_entryvalues">
+		<item>@string/settings_autoselect_type_class</item>
+		<item>@string/settings_autoselect_type_teacher</item>
+		<item>@string/settings_autoselect_type_room</item>
+		<item>@string/settings_autoselect_type_subject</item>
+	</string-array>
+</resources>
