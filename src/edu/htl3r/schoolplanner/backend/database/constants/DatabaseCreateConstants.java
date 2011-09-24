@@ -24,25 +24,17 @@ public interface DatabaseCreateConstants {
 	public static final String TABLE_LOGINSET_KEY = "loginSetKey";
 	
 	public static final String TABLE_VIEW_TYPE_COLUMN_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, " +
-			DatabaseViewTypeConstants.ID
-			+ " INTEGER, "
-			+ DatabaseViewTypeConstants.NAME
-			+ " TEXT, "
-			+ DatabaseViewTypeConstants.LONG_NAME
-			+ " TEXT, "
-			+ DatabaseViewTypeConstants.FORE_COLOR
-			+ " TEXT, "
+			  DatabaseViewTypeConstants.ID + " INTEGER, "
+			+ DatabaseViewTypeConstants.NAME + " TEXT, "
+			+ DatabaseViewTypeConstants.LONG_NAME + " TEXT, "
+			+ DatabaseViewTypeConstants.FORE_COLOR + " TEXT, "
 			+ DatabaseViewTypeConstants.BACK_COLOR + " TEXT";
 
 	public static final String TABLE_SCHOOL_HOLIDAY_COLUMN_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, " +
-			DatabaseSchoolHolidayConstants.ID
-			+ " INTEGER, "
-			+ DatabaseSchoolHolidayConstants.NAME
-			+ " TEXT, "
-			+ DatabaseSchoolHolidayConstants.LONG_NAME
-			+ " TEXT, "
-			+ DatabaseSchoolHolidayConstants.START_DATE
-			+ " INTEGER, "
+			  DatabaseSchoolHolidayConstants.ID + " INTEGER, "
+			+ DatabaseSchoolHolidayConstants.NAME + " TEXT, "
+			+ DatabaseSchoolHolidayConstants.LONG_NAME + " TEXT, "
+			+ DatabaseSchoolHolidayConstants.START_DATE + " INTEGER, "
 			+ DatabaseSchoolHolidayConstants.END_DATE + " INTEGER";
 
 	public static final String TABLE_TIMEGRID_COLUMN_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, " + 
