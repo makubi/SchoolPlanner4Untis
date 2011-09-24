@@ -21,8 +21,8 @@ public class StatusData {
 
 	private Class<?> relatedStatusDataClass;
 	private String code;
-	private int fgColor;
-	private int bgColor;
+	private String foreColor;
+	private String backColor;
 	
 	// TODO: Farbe als String speichern
 	
@@ -32,29 +32,30 @@ public class StatusData {
 	public void setCode(String code) {
 		this.code = code;
 	}
-	public int getFgColor() {
-		return fgColor;
-	}
-	public void setFgColor(int fgColor) {
-		this.fgColor = fgColor;
-	}
-	public int getBgColor() {
-		return bgColor;
-	}
-	public void setBgColor(int bgColor) {
-		this.bgColor = bgColor;
-	}
 	public Class<?> getRelatedStatusDataClass() {
 		return relatedStatusDataClass;
 	}
 	public void setRelatedStatusDataClass(Class<?> relatedStatusDataClass) {
 		this.relatedStatusDataClass = relatedStatusDataClass;
+	}	
+	public String getForeColor() {
+		return foreColor;
+	}
+	public void setForeColor(String foreColor) {
+		this.foreColor = foreColor;
+	}
+	public String getBackColor() {
+		return backColor;
+	}
+	public void setBackColor(String backColor) {
+		this.backColor = backColor;
 	}
 	
 	@Override
 	public String toString() {
-		return "StatusData [code=" + code + ", fgColor=" + fgColor
-				+ ", bgColor=" + bgColor + "]";
+		return "StatusData [relatedStatusDataClass=" + relatedStatusDataClass
+				+ ", code=" + code + ", foreColor=" + foreColor
+				+ ", backColor=" + backColor + "]";
 	}
 	
 }

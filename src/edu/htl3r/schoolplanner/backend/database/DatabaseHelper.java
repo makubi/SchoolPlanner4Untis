@@ -42,7 +42,7 @@ import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
 
-	private final static int DATABASE_VERSION = 5;
+	private final static int DATABASE_VERSION = 6;
 	private final static String DATABASE_NAME = "db_schoolplanner_data";
 	
 	private final List<String> CREATE_TABLE_STATEMENTS = new ArrayList<String>();
@@ -94,7 +94,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		
+		if(oldVersion < 6) {
+			db.beginTransaction();
+			db.execSQL("DROP TABLE " + DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME);
+			db.execSQL("CREATE TABLE " + DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME + "(" + DatabaseCreateConstants.TABLE_STATUS_DATA_COLUMN_DEFINITIONS + ");");
+			db.setTransactionSuccessful();
+			db.endTransaction();
+		}
 	}
 	
 	private void removeV1Database() {

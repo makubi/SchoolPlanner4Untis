@@ -158,13 +158,13 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 		
 		while(query.moveToNext()) {
 			String code = query.getString(indexCode);
-			int foreColor = query.getInt(indexForeColor);
-			int backColor = query.getInt(indexBackColor);
+			String foreColor = query.getString(indexForeColor);
+			String backColor = query.getString(indexBackColor);
 			
 			StatusData statusData = new StatusData();
 			statusData.setCode(code);
-			statusData.setFgColor(foreColor);
-			statusData.setBgColor(backColor);
+			statusData.setForeColor(foreColor);
+			statusData.setBackColor(backColor);
 			
 			statusDataList.add(statusData);
 		}
@@ -335,8 +335,8 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 			ContentValues values = new ContentValues();
 			values.put(DatabaseCreateConstants.TABLE_LOGINSET_KEY, this.database.getLoginSetKeyForTable());
 			values.put(DatabaseStatusDataConstants.CODE, statusData.getCode());
-			values.put(DatabaseStatusDataConstants.FORE_COLOR, statusData.getFgColor());
-			values.put(DatabaseStatusDataConstants.BACK_COLOR, statusData.getBgColor());
+			values.put(DatabaseStatusDataConstants.FORE_COLOR, statusData.getForeColor());
+			values.put(DatabaseStatusDataConstants.BACK_COLOR, statusData.getBackColor());
 			
 			this.database.insert(database, table, values);
 		}

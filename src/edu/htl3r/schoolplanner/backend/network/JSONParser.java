@@ -29,7 +29,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.graphics.Color;
 import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
@@ -280,14 +279,12 @@ public class JSONParser {
 						if(concreteLessonType != null) {
 							String foreColor = getValueFromJSON(concreteLessonType, "foreColor", "");
 							String backColor = getValueFromJSON(concreteLessonType, "backColor", "");
-							int fgColor = foreColor.length() > 0 ? Color.parseColor("#" + foreColor) : 0;
-							int bgColor = backColor.length() > 0 ? Color.parseColor("#" + backColor) : 0;
 							
 							StatusData statusData = new StatusData();
 							statusData.setRelatedStatusDataClass(relatedStatusData.getClass());
 							statusData.setCode(lsType);
-							statusData.setFgColor(fgColor);
-							statusData.setBgColor(bgColor);
+							statusData.setForeColor(foreColor);
+							statusData.setBackColor(backColor);
 							
 							statusDataList.add(statusData);
 						}
@@ -315,14 +312,12 @@ public class JSONParser {
 					if(concreteLessonCode != null) {
 						String foreColor = getValueFromJSON(concreteLessonCode, "foreColor", "");
 						String backColor = getValueFromJSON(concreteLessonCode, "backColor", "");
-						int fgColor = foreColor.length() > 0 ? Color.parseColor("#" + foreColor) : 0;
-						int bgColor = backColor.length() > 0 ? Color.parseColor("#" + backColor) : 0;
 						
 						StatusData statusData = new StatusData();
 						statusData.setCode(lsCode);
 						statusData.setRelatedStatusDataClass(lessonCodeCreator.createLessonCode(lsCode).getClass());
-						statusData.setFgColor(fgColor);
-						statusData.setBgColor(bgColor);
+						statusData.setForeColor(foreColor);
+						statusData.setBackColor(backColor);
 						
 						statusDataList.add(statusData);
 					}

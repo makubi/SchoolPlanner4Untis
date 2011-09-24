@@ -55,8 +55,8 @@ public interface DatabaseCreateConstants {
 			DatabaseStatusDataConstants.CODE
 			+ " TEXT, "
 			+ DatabaseStatusDataConstants.FORE_COLOR
-			+ " INTEGER, "
-			+ DatabaseStatusDataConstants.BACK_COLOR + " INTEGER";
+			+ " TEXT, "
+			+ DatabaseStatusDataConstants.BACK_COLOR + " TEXT";
 	
 	public static final String TABLE_PERMANENT_LESSONS_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, "
 			+ DatabasePermanentLessonConstants.ROWID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
