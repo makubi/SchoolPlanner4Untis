@@ -47,7 +47,7 @@ import edu.htl3r.schoolplanner.gui.selectScreen.MasterdataInstanceBundle;
 import edu.htl3r.schoolplanner.gui.selectScreen.SpinnerMemory;
 import edu.htl3r.schoolplanner.gui.selectScreen.ViewTypeOnClickListener;
 import edu.htl3r.schoolplanner.gui.selectScreen.ViewTypeSpinnerOnItemSelectedListener;
-import edu.htl3r.schoolplanner.gui.timetable.ViewBasti;
+import edu.htl3r.schoolplanner.gui.timetable.WeekView;
 
 public class SelectScreen extends SchoolPlannerActivity {
 
@@ -142,16 +142,16 @@ public class SelectScreen extends SchoolPlannerActivity {
 
 		if (classData.isSuccessful() && teacherData.isSuccessful() && roomData.isSuccessful() && subjectData.isSuccessful()) {
 
-			Intent classIntent = new Intent(SelectScreen.this, ViewBasti.class);
+			Intent classIntent = new Intent(SelectScreen.this, WeekView.class);
 			classSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, classIntent, classList, spinnerMemory));
 
-			Intent teacherIntent = new Intent(SelectScreen.this, ViewBasti.class);
+			Intent teacherIntent = new Intent(SelectScreen.this, WeekView.class);
 			teacherSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, teacherIntent, teacherList, spinnerMemory));
 
-			Intent roomIntent = new Intent(SelectScreen.this, ViewBasti.class);
+			Intent roomIntent = new Intent(SelectScreen.this, WeekView.class);
 			roomSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, roomIntent, roomList, spinnerMemory));
 
-			Intent subjectIntent = new Intent(SelectScreen.this, ViewBasti.class);
+			Intent subjectIntent = new Intent(SelectScreen.this, WeekView.class);
 			subjectSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, subjectIntent, subjectList, spinnerMemory));
 
 			int classSpinnerLastPos = getPositionForItem(classSpinner, spinnerMemory.getClassListLastElement());
@@ -257,16 +257,16 @@ public class SelectScreen extends SchoolPlannerActivity {
 		ImageView imageSubject = (ImageView) findViewById(R.id.selectScreen_imageSubject);
 
 		if (enabled) {
-			Intent basti4 = new Intent(SelectScreen.this, ViewBasti.class);
+			Intent basti4 = new Intent(SelectScreen.this, WeekView.class);
 			imageClass.setOnClickListener(new ViewTypeOnClickListener(this, basti4, classList, classSpinner));
 
-			Intent basti = new Intent(SelectScreen.this, ViewBasti.class);
+			Intent basti = new Intent(SelectScreen.this, WeekView.class);
 			imageSubject.setOnClickListener(new ViewTypeOnClickListener(this, basti, subjectList, subjectSpinner));
 
-			Intent basti2 = new Intent(SelectScreen.this, ViewBasti.class);
+			Intent basti2 = new Intent(SelectScreen.this, WeekView.class);
 			imageRoom.setOnClickListener(new ViewTypeOnClickListener(this, basti2, roomList, roomSpinner));
 
-			Intent basti3 = new Intent(SelectScreen.this, ViewBasti.class);
+			Intent basti3 = new Intent(SelectScreen.this, WeekView.class);
 			imageTeacher.setOnClickListener(new ViewTypeOnClickListener(this, basti3, teacherList, teacherSpinner));
 		} else {
 			OnClickListener unableToDisplayTimetableOnClickListener = new OnClickListener() {

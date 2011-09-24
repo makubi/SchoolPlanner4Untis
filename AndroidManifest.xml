@@ -17,7 +17,7 @@
 		<activity android:name=".gui.SelectScreen" android:theme="@android:style/Theme.NoTitleBar" />
 		<activity android:name=".gui.settings.SettingsScreen" android:theme="@android:style/Theme.NoTitleBar" />
 		
-		<activity android:name=".gui.timetable.ViewBasti" android:theme="@android:style/Theme.NoTitleBar" />
+		<activity android:name=".gui.timetable.WeekView" android:theme="@android:style/Theme.NoTitleBar" />
 		
 		<receiver android:name=".gui.timetable.GUIErrorHandler">
 			<intent-filter>

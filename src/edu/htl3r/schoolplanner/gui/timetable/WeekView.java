@@ -40,7 +40,7 @@ import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
 import edu.htl3r.schoolplanner.gui.timetable.Overlay.Month.OverlayMonth;
 
-public class ViewBasti extends SchoolPlannerActivity {
+public class WeekView extends SchoolPlannerActivity {
 
 	private ViewPager myViewPager;
 	private WeekViewPageAdapter wvpageadapter;

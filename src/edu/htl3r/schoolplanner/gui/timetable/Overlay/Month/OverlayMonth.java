@@ -32,7 +32,7 @@ import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
-import edu.htl3r.schoolplanner.gui.timetable.ViewBasti;
+import edu.htl3r.schoolplanner.gui.timetable.WeekView;
 
 public class OverlayMonth extends Dialog implements OnClickListener {
 
@@ -45,12 +45,12 @@ public class OverlayMonth extends Dialog implements OnClickListener {
 	private OverlayCalendarView calendar;
 	private RelativeLayout month_container;
 
-	private ViewBasti viewbasti;
+	private WeekView viewbasti;
 
 	private List<SchoolHoliday> holidays;
 	private List<Integer> holidays_day = new ArrayList<Integer>();
 
-	public OverlayMonth(Context context, ViewBasti vb, List<SchoolHoliday> hol) {
+	public OverlayMonth(Context context, WeekView vb, List<SchoolHoliday> hol) {
 		super(context);
 		viewbasti = vb;
 		holidays = hol;

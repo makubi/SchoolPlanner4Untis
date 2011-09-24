@@ -31,7 +31,7 @@ class LoadDataTask extends AsyncTask<Void, String, Void> {
 	private Context context;
 	private Cache cache;
 	private GUIContentManager contentmanager = new GUIContentManager();
-	private ViewBasti viewbasti;
+	private WeekView viewbasti;
 	private ViewType viewtype;
 	private BlockingDownloadQueue downloadschlange;
 	private Settings settings;
@@ -87,7 +87,7 @@ class LoadDataTask extends AsyncTask<Void, String, Void> {
 		super.onPostExecute(result);
 	}
 
-	public void setData(Context context, Cache c, ViewBasti vb, ViewType vt,BlockingDownloadQueue bdq, Settings settings) {
+	public void setData(Context context, Cache c, WeekView vb, ViewType vt,BlockingDownloadQueue bdq, Settings settings) {
 		this.context = context;
 		cache = c;
 		viewtype = vt;
