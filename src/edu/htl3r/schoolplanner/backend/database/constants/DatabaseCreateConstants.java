@@ -46,16 +46,14 @@ public interface DatabaseCreateConstants {
 			+ DatabaseSchoolHolidayConstants.END_DATE + " INTEGER";
 
 	public static final String TABLE_TIMEGRID_COLUMN_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, " + 
-			DatabaseTimegridConstants.DAY
-			+ " INTEGER, "
-			+ DatabaseTimegridConstants.START_TIME
-			+ " INTEGER, " + DatabaseTimegridConstants.END_TIME + " INTEGER";
+			  DatabaseTimegridConstants.DAY + " INTEGER, "
+			+ DatabaseTimegridConstants.NAME + " TEXT, "
+			+ DatabaseTimegridConstants.START_TIME + " INTEGER, "
+			+ DatabaseTimegridConstants.END_TIME + " INTEGER";
 
 	public static final String TABLE_STATUS_DATA_COLUMN_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, " + 
-			DatabaseStatusDataConstants.CODE
-			+ " TEXT, "
-			+ DatabaseStatusDataConstants.FORE_COLOR
-			+ " TEXT, "
+			  DatabaseStatusDataConstants.CODE + " TEXT, "
+			+ DatabaseStatusDataConstants.FORE_COLOR + " TEXT, "
 			+ DatabaseStatusDataConstants.BACK_COLOR + " TEXT";
 	
 	public static final String TABLE_PERMANENT_LESSONS_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, "

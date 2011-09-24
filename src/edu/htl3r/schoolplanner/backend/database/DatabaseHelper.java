@@ -95,12 +95,19 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		if(oldVersion < 6) {
-			db.beginTransaction();
-			db.execSQL("DROP TABLE " + DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME);
-			db.execSQL("CREATE TABLE " + DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME + "(" + DatabaseCreateConstants.TABLE_STATUS_DATA_COLUMN_DEFINITIONS + ");");
-			db.setTransactionSuccessful();
-			db.endTransaction();
+			recreateTable(db, DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME, DatabaseCreateConstants.TABLE_STATUS_DATA_COLUMN_DEFINITIONS);
 		}
+		if(oldVersion < 7) {
+			recreateTable(db, DatabaseTimegridConstants.TABLE_TIMEGRID_NAME, DatabaseCreateConstants.TABLE_TIMEGRID_COLUMN_DEFINITIONS);
+		}
+	}
+	
+	private void recreateTable(SQLiteDatabase db, String table, String coloumnDefinitions) {
+		db.beginTransaction();
+		db.execSQL("DROP TABLE "+ table);
+		db.execSQL("CREATE TABLE " + table + "(" + coloumnDefinitions + ");");
+		db.setTransactionSuccessful();
+		db.endTransaction();
 	}
 	
 	private void removeV1Database() {

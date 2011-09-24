@@ -123,15 +123,18 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 		Cursor query = this.database.queryWithLoginSetKey(database, DatabaseTimegridConstants.TABLE_TIMEGRID_NAME);
 		
 		int indexDay = query.getColumnIndex(DatabaseTimegridConstants.DAY);
+		int indexName = query.getColumnIndex(DatabaseTimegridConstants.NAME);
 		int indexStartTime = query.getColumnIndex(DatabaseTimegridConstants.START_TIME);
 		int indexEndTime = query.getColumnIndex(DatabaseTimegridConstants.END_TIME);
 		
 		while(query.moveToNext()) {
 			int day = query.getInt(indexDay);
+			String name = query.getString(indexName);
 			long startTime = query.getLong(indexStartTime);
 			long endTime = query.getLong(indexEndTime);
-			// TODO Name / description / etc. hinzufuegen
+			
 			TimegridUnit timegridUnit = new TimegridUnit();
+			timegridUnit.setName(name);
 			timegridUnit.setStart(this.database.millisToDateTime(startTime));
 			timegridUnit.setEnd(this.database.millisToDateTime(endTime));
 			
@@ -308,9 +311,10 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 					ContentValues values = new ContentValues();
 					values.put(DatabaseCreateConstants.TABLE_LOGINSET_KEY, this.database.getLoginSetKeyForTable());
 					values.put(DatabaseTimegridConstants.DAY, day);
+					values.put(DatabaseTimegridConstants.NAME, timegridUnit.getName());
 					values.put(DatabaseTimegridConstants.START_TIME, this.database.dateTimeToMillis(timegridUnit.getStart()));
 					values.put(DatabaseTimegridConstants.END_TIME, this.database.dateTimeToMillis(timegridUnit.getEnd()));
-					// TODO Name / description / etc. hinzufuegen
+					
 					this.database.insert(database, table, values);
 				}
 			}

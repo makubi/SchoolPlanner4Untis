@@ -21,6 +21,7 @@ public interface DatabaseTimegridConstants {
 	public static final String TABLE_TIMEGRID_NAME = "timegrid";
 	
 	public static final String DAY = "day";
+	public static final String NAME = "name";
 	public static final String START_TIME = "startTime";
 	public static final String END_TIME = "endTime";
 	
