@@ -328,7 +328,7 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		
 		data.setData(masterData);
 		
-		/*
+		
 		// update database
 		database.setSchoolClassList(schoolClassList.getData());
 		database.setSchoolTeacherList(schoolTeacherList.getData());
@@ -337,7 +337,7 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		database.setSchoolHolidayList(schoolHolidayList.getData());
 		database.setTimegrid(timegrid.getData());
 		database.setStatusData(statusData.getData());
-		*/
+		
 		return data;
 	}
 
