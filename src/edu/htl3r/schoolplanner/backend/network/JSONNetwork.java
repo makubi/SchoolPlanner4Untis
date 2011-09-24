@@ -653,28 +653,6 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	}
 
 	/**
-	 * Initialisiert die Farben der LessonTypes und -Codes.
-	 * 
-	 * @throws IOException
-	 *             Wenn ein Fehler bei der Uebertragung auftritt
-	 * @deprecated See {@link #getStatusData()}
-	 */
-	@Deprecated
-	public void initStatusData() throws IOException {
-		final String id = getNextID();
-		final String method = JSONGetMethods.getStatusData;
-
-		JSONObject response;
-		try {
-			response = requestList(id, method);
-			JSONObject result = response.getJSONObject("result");
-			jsonParser.resyncStatusData(result);
-		} catch (JSONException e) {
-			Log.e("JSON", "Unable to parse JSON-String", e);
-		}
-	}
-
-	/**
 	 * Liefert den Zeitpunkt des letzten Imports des Stundenplans.
 	 * 
 	 * @return Den Zeitpunkt des letzten Imports des Stundenplans

@@ -474,63 +474,6 @@ public class JSONParser {
 		}
 		return lessonList;
 	}
-	
-	@Deprecated
-	public void resyncStatusData(JSONObject result) throws JSONException {
-		JSONArray lessonTypes = result.getJSONArray("lstypes");
-		
-		List<String> lessonTypeList = new LinkedList<String>();
-		lessonTypeList.add(WebUntis.BREAKSUPERVISION);
-		lessonTypeList.add(WebUntis.EXAMINATION);
-		lessonTypeList.add(WebUntis.OFFICEHOUR);
-		lessonTypeList.add(WebUntis.STANDBY);
-		
-		// TODO: Setzen der "ls"-Farbe!
-		
-		for(int i = 0; i < lessonTypes.length(); i++) {
-			JSONObject lessonType = lessonTypes.getJSONObject(i);
-			
-			for(String lsType : lessonTypeList) {
-				if(lessonType.has(lsType)) {
-					JSONObject concreteLessonType = lessonType.getJSONObject(lsType);
-				
-					if(concreteLessonType != null) {
-						String foreColor = getValueFromJSON(concreteLessonType, "foreColor", "");
-						String backColor = getValueFromJSON(concreteLessonType, "backColor", "");
-						int fgColor = foreColor.length() > 0 ? Color.parseColor("#" + foreColor) : 0;
-						int bgColor = backColor.length() > 0 ? Color.parseColor("#" + backColor) : 0;
-						lessonTypeCreator.setLessonTypeColor(lsType, fgColor, bgColor);
-					}
-				}
-			}
-		}
-		
-		JSONArray lessonCodes = result.getJSONArray("codes");
-		
-		List<String> lessonCodeList = new LinkedList<String>();
-		lessonCodeList.add(WebUntis.CANCELLED);
-		
-		for(int i = 0; i < lessonCodes.length(); i++) {
-			JSONObject lessonCode = lessonCodes.getJSONObject(i);
-		
-			for(String lsCode : lessonCodeList) {
-				if(lessonCode.has(lsCode)) {
-					JSONObject concreteLessonCode = lessonCode.getJSONObject(lsCode);
-			
-					if(concreteLessonCode != null) {
-						String foreColor = getValueFromJSON(concreteLessonCode, "foreColor", "");
-						String backColor = getValueFromJSON(concreteLessonCode, "backColor", "");
-						int fgColor = foreColor.length() > 0 ? Color.parseColor("#" + foreColor) : 0;
-						int bgColor = backColor.length() > 0 ? Color.parseColor("#" + backColor) : 0;
-						lessonCodeCreator.setLessonCodeColor(lsCode, fgColor, bgColor);
-					}
-				}
-			}
-		}
-		
-		// TODO: irregular stunde
-		// TODO: farbe der supplierstunden?
-	}
 
 	private String getMinute(String time) {
 		return time.length() <= 2 ? time : time.substring(time.length()-2);

@@ -58,12 +58,4 @@ public class LessonTypeFactory {
 		}
 	}
 	
-	@Deprecated
-	public void setLessonTypeColor(String lsType, int fgColor, int bgColor) {
-		LessonType lt = lessonTypes.get(lsType);
-		if(lt != null) {
-			lt.setFgColor(fgColor);
-			lt.setBgColor(bgColor);
-		}
-	}
 }

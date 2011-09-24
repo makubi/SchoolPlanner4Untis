@@ -61,19 +61,4 @@ public class LessonCodeFactory {
 			return new LessonCodeSubstitute();
 		}
 	}
-	
-	@Deprecated
-	public void setLessonCodeColor(String lessonCode, int fgColor, int bgColor) {
-		LessonCode lc = lessonCodes.get(lessonCode);
-		if(lc != null) {
-			lc.setFgColor(fgColor);
-			lc.setBgColor(bgColor);
-		}
-	}
-	
-	@Deprecated
-	public void setLessonCodeSubstitudeColor(int fgColor, int bgColor) {
-		lessonCodeSubstitude.setFgColor(fgColor);
-		lessonCodeSubstitude.setBgColor(bgColor);
-	}
 }

@@ -20,50 +20,9 @@ package edu.htl3r.schoolplanner.backend.schoolObjects.lesson;
 
 import java.io.Serializable;
 
-import edu.htl3r.schoolplanner.backend.StatusData;
-
 public abstract class LessonType implements Serializable,Cloneable {
 	
 	private static final long serialVersionUID = -5398377247201519880L;
-	
-	@Deprecated protected int fgColor;
-	@Deprecated protected int bgColor;
-	
-	/**
-	 * @return
-	 * @deprecated See {@link StatusData}
-	 */
-	@Deprecated
-	public int getFgColor() {
-		return fgColor;
-	}
-	
-	/**
-	 * @return
-	 * @deprecated See {@link StatusData}
-	 */
-	@Deprecated
-	public int getBgColor() {
-		return bgColor;
-	}
-	
-	/**
-	 * @param fgColor
-	 * @deprecated See {@link StatusData}
-	 */
-	@Deprecated
-	protected void setFgColor(int fgColor) {
-		this.fgColor = fgColor;
-	}
-	
-	/**
-	 * @param bgColor
-	 * @deprecated See {@link StatusData}
-	 */
-	@Deprecated
-	protected void setBgColor(int bgColor) {
-		this.bgColor = bgColor;
-	}
 	
 	@Override
 	public Object clone() throws CloneNotSupportedException {
