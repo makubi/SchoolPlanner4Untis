@@ -173,11 +173,11 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		DataFacade<Timegrid> timegrid = new DataFacade<Timegrid>();
 
 		// Check database
-//		Timegrid data = database.getTimegrid();
-//		if (data != null) {
-//			Log.v("data_source","timegrid: database");
-//			timegrid.setData(data);
-//		}
+		Timegrid data = database.getTimegrid();
+		if (data != null) {
+			Log.v("data_source","timegrid: database");
+			timegrid.setData(data);
+		}
 		// Check network
 		//else 
 		if (networkAvailable) {
