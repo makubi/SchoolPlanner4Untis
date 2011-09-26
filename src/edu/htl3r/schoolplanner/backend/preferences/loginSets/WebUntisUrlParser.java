@@ -21,6 +21,11 @@ import java.util.regex.Pattern;
 
 public class WebUntisUrlParser {
 	
+	/**
+	 * Liefert die URL oder einen Leerstring, wenn die URL nicht geparst werden konnte.
+	 * @param url URL, die geparst werden soll
+	 * @return Die geparste URL oder einen Leerstring, wenn sie nicht geparst werden konnte
+	 */
 	public String parseUrl(String url) {
 		if(url.length() <= 0) {
 			return "";
@@ -35,7 +40,7 @@ public class WebUntisUrlParser {
 				applicableUrl = applicableUrl.substring(0, applicableUrl.length()-1);
 			}
 			
-		return applicableUrl;
+			return applicableUrl;
 		}
 		
 		return "";

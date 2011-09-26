@@ -41,10 +41,10 @@ import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
-import edu.htl3r.schoolplanner.backend.preferences.loginSets.asyncUpdateTasks.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 import edu.htl3r.schoolplanner.constants.WelcomeScreenConstants;
 import edu.htl3r.schoolplanner.gui.listener.LoginListener;
+import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenContextMenu;
 
 public class WelcomeScreen extends SchoolPlannerActivity{
