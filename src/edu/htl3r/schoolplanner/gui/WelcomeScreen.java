@@ -24,6 +24,7 @@ import android.app.Dialog;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -225,11 +226,9 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		try {
 			return task.get();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.w("login_sets","Trying to add login set: "+name+","+serverUrl+","+school+","+username+","+password+","+sslOnly,e);
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.w("login_sets","Trying to add login set: "+name+","+serverUrl+","+school+","+username+","+password+","+sslOnly,e);
 		}
 		return false;
 	}
@@ -261,11 +260,9 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		try {
 			return task.get();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.w("login_sets","Trying to edit login set: "+oldName+"/"+name+","+oldServerUrl+"/"+serverUrl+","+oldSchool+"/"+school+","+username+","+password+","+checked,e);
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.w("login_sets","Trying to edit login set: "+oldName+"/"+name+","+oldServerUrl+"/"+serverUrl+","+oldSchool+"/"+school+","+username+","+password+","+checked,e);
 		}
 		return false;
 	}

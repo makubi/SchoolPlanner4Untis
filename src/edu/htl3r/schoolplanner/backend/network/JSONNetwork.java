@@ -62,7 +62,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	/**
 	 * JSON-RPC Version, die der Untis-Server verwendet.
 	 */
-	private final String jsonrpcVersion = "2.0";
+	public static final String JSON_RPC_VERSION = "2.0";
 
 	private final Network network = new Network();
 	private final JSONParser jsonParser = new JSONParser();
@@ -109,8 +109,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		JSONObject response = parseData(network.getResponse(request.toString()));
 		if(response.has("error")) {
 			JSONObject errorObject = response.getJSONObject("error");
-			//if(errorObject.getInt("code") == -8520 && errorObject.getString("message").equals("not authenticated")) {
-			if(errorObject.getInt("code") == -8520 || errorObject.getString("message").equals("not authenticated")) {
+			if(errorObject.getInt("code") == WebUntisErrorCodes.WEBUNTIS_NOT_AUTHENTICATED || errorObject.getString("message").equals("not authenticated")) {
 				Log.i("Network", "Reauthenticating");
 				authenticate();
 				response = parseData(network.getResponse(request.toString()));
@@ -147,11 +146,11 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			throws JSONException, IOException {
 		final JSONObject request = new JSONObject();
 
-		request.put("jsonrpc", jsonrpcVersion);
-		request.put("method", method);
-		request.put("id", id);
+		request.put(JSONRequestObjectKeys.JSON_RPC_VERSION, JSON_RPC_VERSION);
+		request.put(JSONRequestObjectKeys.METHOD, method);
+		request.put(JSONRequestObjectKeys.ID, id);
 		// Server benoetigt leere Params
-		request.put("params", "");
+		request.put(JSONRequestObjectKeys.PARAMS, "");
 
 		return getJSONData(request);
 	}
@@ -237,7 +236,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 				data.setErrorMessage(errorMessage);
 			}
 
-			JSONArray result = responseObject.getJSONArray("result");
+			JSONArray result = responseObject.getJSONArray(JSONResponseObjectKeys.RESULT);
 
 			if (method.equals(JSONGetMethods.getHolidays)) {
 				data.setData(jsonParser.jsonToHolidayList(result));
@@ -278,7 +277,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 
 		try {
 			JSONObject responseObject = requestList(id, method);
-			JSONArray result = responseObject.getJSONArray("result");
+			JSONArray result = responseObject.getJSONArray(JSONResponseObjectKeys.RESULT);
 
 			if (method.equals(JSONGetMethods.getTimegridUnits)) {
 				data.setData(jsonParser.jsonToTimegrid(result));
@@ -456,7 +455,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		JSONObject response;
 		try {
 			response = requestList(id, method);
-			JSONObject result = response.getJSONObject("result");
+			JSONObject result = response.getJSONObject(JSONResponseObjectKeys.RESULT);
 			List<StatusData> statusData = jsonParser.jsonToStatusData(result);
 			data.setData(statusData);
 		} catch (JSONException e) {
@@ -539,10 +538,10 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			params.put("startDate", startYear + startMonth + startDay);
 			params.put("endDate", endYear + endMonth + endDay);
 	
-			request.put("jsonrpc", jsonrpcVersion);
-			request.put("method", method);
-			request.put("id", id);
-			request.put("params", params);
+			request.put(JSONRequestObjectKeys.JSON_RPC_VERSION, JSON_RPC_VERSION);
+			request.put(JSONRequestObjectKeys.METHOD, method);
+			request.put(JSONRequestObjectKeys.ID, id);
+			request.put(JSONRequestObjectKeys.PARAMS, params);
 	
 			// Netzwerkanfrage
 			JSONObject response = getJSONData(request);
@@ -550,14 +549,13 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			ErrorMessage errorMessage = getErrorMessage(response);
 			if(errorMessage == null) {
 				// Extrahiere Nutzdaten
-				JSONArray result = response.getJSONArray("result");
+				JSONArray result = response.getJSONArray(JSONResponseObjectKeys.RESULT);
 			
 				// Parse die JSON-Response zu passender Map
 				lessonMap = jsonParser.jsonToLessonMap(result);
 				
 				// Fuege leere Listen fuer Daten ohne Stunden hinzu
-				lessonProcessor.addEmptyDaysToLessonMap(lessonMap, startDate,
-					endDate);
+				lessonProcessor.addEmptyDaysToLessonMap(lessonMap, startDate, endDate);
 	
 				data.setData(lessonMap);
 			}
@@ -605,10 +603,10 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			params.put("user", loginCredentials.getUsername());
 			params.put("password", loginCredentials.getPassword());
 
-			request.put("jsonrpc", jsonrpcVersion);
-			request.put("method", method);
-			request.put("params", params);
-			request.put("id", id);
+			request.put(JSONRequestObjectKeys.JSON_RPC_VERSION, JSON_RPC_VERSION);
+			request.put(JSONRequestObjectKeys.METHOD, method);
+			request.put(JSONRequestObjectKeys.PARAMS, params);
+			request.put(JSONRequestObjectKeys.ID, id);
 
 			response = getJSONData(request);
 
@@ -629,7 +627,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 
 				// TODO: Pruefung auf ID und jsonrpc-version?
 				if (response != null) {
-					JSONObject result = response.getJSONObject("result");
+					JSONObject result = response.getJSONObject(JSONResponseObjectKeys.RESULT);
 					if (result != null) {
 						String sessionId = result.getString("sessionId");
 						if (!result.equals("null")) {
@@ -669,7 +667,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		try {
 			JSONObject response = requestList(id, method);
 			latestImport = response.getLong("result");
-			Log.v("Misc", "Last import time: " + response.get("result"));
+			Log.v("Misc", "Last import time: " + response.get(JSONResponseObjectKeys.RESULT));
 		} catch (JSONException e) {
 			Log.e("JSON", "Unable to parse JSON-String", e);
 		}

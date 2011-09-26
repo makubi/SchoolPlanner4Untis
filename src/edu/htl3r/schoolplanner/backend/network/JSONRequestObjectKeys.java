@@ -16,9 +16,11 @@
 */
 package edu.htl3r.schoolplanner.backend.network;
 
-public interface WebUntisErrorCodes {
-	
-	public static final int WEBUNTIS_NO_RIGHT_FOR_TIMETABLE = -8509;
-	public static final int WEBUNTIS_NOT_AUTHENTICATED = -8520;
+public interface JSONRequestObjectKeys {
+
+	public static final String JSON_RPC_VERSION = "jsonrpc";
+	public static final String METHOD = "method";
+	public static final String PARAMS = "params";
+	public static final String ID = "id";
 	
 }

@@ -24,8 +24,6 @@ public class StatusData {
 	private String foreColor;
 	private String backColor;
 	
-	// TODO: Farbe als String speichern
-	
 	public String getCode() {
 		return code;
 	}
