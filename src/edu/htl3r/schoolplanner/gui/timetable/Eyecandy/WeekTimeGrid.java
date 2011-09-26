@@ -28,6 +28,7 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -42,6 +43,7 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 	private int width,height,hours,offsettop;
 	private Paint paint;
 	private List<TimegridUnit> timegrid = new ArrayList<TimegridUnit>();
+	private boolean landscape = false;
 	
 	public WeekTimeGrid(Context context) {
 		super(context);
@@ -55,6 +57,11 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 		paint.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_4));
 		paint.setColor( getResources().getColor(R.color.background_stundenplan));
 		setOnTouchListener(this);
+		
+		int h = getResources().getDisplayMetrics().heightPixels;
+		int w = getResources().getDisplayMetrics().widthPixels;
+		if(h < w)
+			landscape = true;
 	}
 	
 	@Override
@@ -87,14 +94,39 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 		tp.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_2));
 		tp.setStyle(Style.FILL_AND_STROKE);
 		tp.setTextSize(getResources().getDimension(R.dimen.gui_header_line1_size));
-		canvas.translate(0, offsettop+(((height-offsettop)/hours)/4));
-		int padding_right = getResources().getDimensionPixelSize(R.dimen.gui_timegrid_padding_right);
 		
+		TextPaint tp2 = new TextPaint(paint);
+		tp2.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_1));
+		tp2.setStyle(Style.FILL_AND_STROKE);
+		tp2.setTextSize(getResources().getDimension(R.dimen.gui_header_line2_size));
+		
+		int padding_right = getResources().getDimensionPixelSize(R.dimen.gui_timegrid_padding_right);
+		int padding_top = getResources().getDimensionPixelSize(R.dimen.gui_timegrid_padding_top);
+		canvas.translate(0, offsettop+padding_top);
+
 		for(int i=0; i<hours; i++){
 			
 			String anz = (timegrid.get(i).getName()).length() <=2 ? (timegrid.get(i).getName()) : (timegrid.get(i).getName()).substring(0, 2);
 			StaticLayout s = new StaticLayout(anz, tp, width-padding_right, Layout.Alignment.ALIGN_OPPOSITE, 0, 0, false);
 			s.draw(canvas);
+			
+			if(landscape){
+				String start = timegrid.get(i).getStart().getHour() + ":" + ((timegrid.get(i).getStart().getMinute()+"").length()==1 ? "0"+ timegrid.get(i).getStart().getMinute(): timegrid.get(i).getStart().getMinute()+"");
+				String end = timegrid.get(i).getEnd().getHour() + ":" + ((timegrid.get(i).getEnd().getMinute()+"").length()==1 ? "0"+ timegrid.get(i).getEnd().getMinute(): timegrid.get(i).getEnd().getMinute()+"");
+				
+				canvas.translate(0, getResources().getDimension(R.dimen.gui_header_line1_line1_padding));
+				s = new StaticLayout(start, tp2, width-padding_right, Layout.Alignment.ALIGN_OPPOSITE, 0, 0, false);
+				s.draw(canvas);
+				
+				canvas.translate(0, getResources().getDimension(R.dimen.gui_timegrid_padding_line2_line3));
+				
+				s = new StaticLayout(end, tp2, width-padding_right, Layout.Alignment.ALIGN_OPPOSITE, 0, 0, false);
+				s.draw(canvas);
+				
+				canvas.translate(0, -(getResources().getDimension(R.dimen.gui_header_line1_line1_padding) + 
+						getResources().getDimension(R.dimen.gui_timegrid_padding_line2_line3)));
+				
+			}
 			canvas.translate(0, (height-offsettop)/hours);
 		}
 	}

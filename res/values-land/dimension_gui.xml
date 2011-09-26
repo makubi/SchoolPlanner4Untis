@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="gui_timegrid_width">30dip</dimen>
+    <dimen name="gui_timegrid_width">40dip</dimen>
     <dimen name="gui_timegrid_padding_right">5dip</dimen>
     <dimen name="gui_timegrid_padding_top">10dip</dimen>
     <dimen name="gui_timegrid_padding_line2_line3">12dip</dimen>
+    
     
     
     <dimen name="gui_header_height">45dip</dimen>
