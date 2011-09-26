@@ -111,7 +111,8 @@ public class OverlayInfoLesson extends View {
 		if (viewtype instanceof SchoolClass) {
 			vt = lesson.getSchoolSubjects();
 		} else if (viewtype instanceof SchoolTeacher) {
-			vt = lesson.getSchoolClasses();
+			//vt = lesson.getSchoolClasses();
+			vt = lesson.getSchoolSubjects();
 		} else if (viewtype instanceof SchoolRoom) {
 			vt = lesson.getSchoolClasses();
 		} else if (viewtype instanceof SchoolSubject) {

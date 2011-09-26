@@ -214,10 +214,10 @@ public class LessonView extends GUIWeekView {
 		lessoncontainer = l;
 		viewtype = vt;
 		time = lessoncontainer.getDate();
-		__setBackgroundColor();
+		setBackgroundColor();
 	}
 
-	private void __setBackgroundColor() {
+	private void setBackgroundColor() {
 
 		List<Lesson> lessons = giveMeTheCorrectList();
 
@@ -227,7 +227,8 @@ public class LessonView extends GUIWeekView {
 			if (viewtype instanceof SchoolClass) {
 				vt = lessons.get(0).getSchoolSubjects();
 			} else if (viewtype instanceof SchoolTeacher) {
-				vt = lessons.get(0).getSchoolClasses();
+				//vt = lessons.get(0).getSchoolClasses();
+				vt = lessons.get(0).getSchoolSubjects();
 			} else if (viewtype instanceof SchoolRoom) {
 				vt = lessons.get(0).getSchoolClasses();
 			} else if (viewtype instanceof SchoolSubject) {
