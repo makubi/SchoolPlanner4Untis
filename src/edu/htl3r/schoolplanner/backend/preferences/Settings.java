@@ -83,6 +83,10 @@ public class Settings {
 		return autoSelect;
 	}
 	
+	/**
+	 * Liefert die Art des Stundenplans, die beim AutoSelect ausgewaehlt werden soll. Ist ein Wert aus der Liste {{@link SettingsConstants#AUTOSELECT_TYPE_CLASS}, {@link SettingsConstants#AUTOSELECT_TYPE_TEACHER}, {@link SettingsConstants#AUTOSELECT_TYPE_ROOM}, {@link SettingsConstants#AUTOSELECT_TYPE_SUBJECT}}.
+	 * @return Konstante zur Art des Stundenplans oder einen Leerstring, falls noch nicht gesetzt
+	 */
 	public String getAutoSelectType() {
 		return autoSelectType;
 	}

@@ -25,6 +25,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
@@ -83,13 +84,15 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		removeV1Database();
-		
 		for(String sqlStatement : CREATE_TABLE_STATEMENTS) {
 			db.execSQL(sqlStatement);
 		}
 		
-		transferLoginDataToLoginSet(db);
+		final String v1_DatabaseName = "HTL3R_SchoolPlanner";
+		ContextWrapper c = new ContextWrapper(SchoolplannerContext.context);
+		
+		transferLoginDataToLoginSet(db, c, v1_DatabaseName);
+		removeV1Database(c, v1_DatabaseName);
 	}
 	
 	@Override
@@ -110,9 +113,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		db.endTransaction();
 	}
 	
-	private void removeV1Database() {
-		final String v1_DatabaseName = "HTL3R_SchoolPlanner";
-		ContextWrapper c = new ContextWrapper(SchoolplannerContext.context);
+	private void removeV1Database(ContextWrapper c, String v1_DatabaseName) {
 		for(String name : c.databaseList()) {
 			if(v1_DatabaseName.equals(name)) {
 				Log.i("database","Deleted old database: "+c.deleteDatabase(name));
@@ -120,7 +121,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		}
 	}
 	
-	private void transferLoginDataToLoginSet(SQLiteDatabase db) {
+	private void transferLoginDataToLoginSet(SQLiteDatabase db, ContextWrapper c, String v1_DatabaseName) {		
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SchoolplannerContext.context);
 		final String v1_pref_key_serverurl = "serverURL";
 		final String v1_pref_key_school = "school";
@@ -145,10 +146,54 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 			db.insert(DatabaseLoginSetConstants.TABLE_LOGIN_SETS_NAME, null, values);
 			db.setTransactionSuccessful();
 			db.endTransaction();
+			
+			Log.i("database","Transferred old login data: "+school);
 		}
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.clear();
 		editor.commit();
+		
+		SQLiteDatabase v1_db = c.openOrCreateDatabase(v1_DatabaseName, ContextWrapper.MODE_PRIVATE, null);
+		v1_db.execSQL("CREATE TABLE IF NOT EXISTS Presets (title TEXT, serverUrl TEXT, school TEXT, username TEXT, password TEXT);");
+		Cursor query = v1_db.query("Presets", null, null, null, null, null, null);
+		
+		final String v1_presets_title = "title";
+		final String v1_presets_serverUrl = "serverUrl";
+		final String v1_presets_school = "school";
+		final String v1_presets_username = "username";
+		final String v1_presets_password = "password";
+		
+		int titleIndex = query.getColumnIndex(v1_presets_title);
+		int serverUrlIndex = query.getColumnIndex(v1_presets_serverUrl);
+		int schoolIndex = query.getColumnIndex(v1_presets_school);
+		int usernameIndex = query.getColumnIndex(v1_presets_username);
+		int passwordIndex = query.getColumnIndex(v1_presets_password);
+		
+		while(query.moveToNext()) {
+			String presetTitle = query.getString(titleIndex);
+			String presetServerUrl = query.getString(serverUrlIndex);
+			String presetSchool = query.getString(schoolIndex);
+			String presetUsername = query.getString(usernameIndex);
+			String presetPassword = query.getString(passwordIndex);
+			
+			if(db.query(DatabaseLoginSetConstants.TABLE_LOGIN_SETS_NAME, new String[]{LoginSetConstants.nameKey}, LoginSetConstants.nameKey+"=?", new String[]{presetTitle}, null, null, null).getCount() < 1) {
+				ContentValues values = new ContentValues();
+				values.put(LoginSetConstants.nameKey, presetTitle);
+				values.put(LoginSetConstants.serverUrlKey, presetServerUrl);
+				values.put(LoginSetConstants.schoolKey, presetSchool);
+				values.put(LoginSetConstants.usernameKey, presetUsername);
+				values.put(LoginSetConstants.passwordKey, presetPassword);
+				values.put(LoginSetConstants.sslOnlyKey, false);
+			
+				db.beginTransaction();
+				db.insert(DatabaseLoginSetConstants.TABLE_LOGIN_SETS_NAME, null, values);
+				db.setTransactionSuccessful();
+				db.endTransaction();
+				
+				Log.i("database","Transferred login set: "+presetTitle);
+			}
+		}
+	
 	}
 
 }
