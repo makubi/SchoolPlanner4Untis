@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.LoginSetHandler;
 import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
@@ -33,7 +32,7 @@ public class LoginSetManager {
 	
 	private WebUntisUrlParser urlParser = new WebUntisUrlParser();
 	
-	public LoginSetManager(Cache data) {
+	public LoginSetManager(LoginSetHandler data) {
 		this.loginSetHandler = data;
 		loginSets = data.getAllLoginSets();
 	}

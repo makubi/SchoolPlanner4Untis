@@ -25,12 +25,13 @@
     
     <string name="settings_autoselect_header">Auto-Auswahl Optionen</string>
     <string name="settings_autoselect_enabled_title">Auto-Auswahl Stundenplan</string>
-    <string name="settings_autoselect_enabled_summary">Auto-Auswahl des Stundenplans beim Login?</string>
-    <string name="settings_autoselect_type_title">Auto-Auswahl Typ</string>
-    <string name="settings_autoselect_type_summary">Wählen Sie den Typ des Stundenplans für die Auto-Auswahl</string>
-    <string name="settings_autoselect_value_title">Auto-Auswahl Wert</string>
-    <string name="settings_autoselect_value_summary">Wählen Sie den Wert des Stundenplans für die Auto-Auswahl</string>
+    <string name="settings_autoselect_enabled_summary">Auto-Auswahl des Stundenplans nach dem Login?</string>
     
+    <string name="settings_autoselect_type_title">Auto-Auswahl Art</string>
+    <string name="settings_autoselect_type_summary">Typ des Stundenplans, der nach dem Login angezeigt werden soll</string>
+    <string name="settings_autoselect_type_dialog_title">Auto-Auswahl Art</string>
+    
+        
     <string name="settings_display_header">Anzeige Optionen</string>
     <string name="settings_display_show_saturday_title">Samstag anzeigen</string>
     <string name="settings_display_show_saturday_summary">Zeige Samstag im Stundenplan an</string>

@@ -24,12 +24,14 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
-public class MasterdataInstanceBundle {
+public class SelectScreenInstanceBundle {
 	
 	private DataFacade<List<SchoolClass>> classData;
 	private DataFacade<List<SchoolTeacher>> teacherData;
 	private DataFacade<List<SchoolRoom>> roomData;
 	private DataFacade<List<SchoolSubject>> subjectData;
+	
+	private boolean autoSelectDone;
 	
 	public DataFacade<List<SchoolClass>> getClassData() {
 		return classData;
@@ -54,5 +56,11 @@ public class MasterdataInstanceBundle {
 	}
 	public void setSubjectData(DataFacade<List<SchoolSubject>> subjectData) {
 		this.subjectData = subjectData;
+	}
+	public boolean isAutoSelectDone() {
+		return autoSelectDone;
+	}
+	public void setAutoSelectDone(boolean autoSelectDone) {
+		this.autoSelectDone = autoSelectDone;
 	}
 }

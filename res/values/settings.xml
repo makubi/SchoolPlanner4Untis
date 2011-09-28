@@ -22,14 +22,13 @@
     <string name="settings_login_autologin_set_dialog_title">Login set</string>
     
     
-    
     <string name="settings_autoselect_header">Autoselect options</string>
     <string name="settings_autoselect_enabled_title">Autoselect timetable</string>
-    <string name="settings_autoselect_enabled_summary">Autoselect timetable on login?</string>
+    <string name="settings_autoselect_enabled_summary">Autoselect timetable after login?</string>
+    
     <string name="settings_autoselect_type_title">Autoselect type</string>
-    <string name="settings_autoselect_type_summary">Select type of timetable to show on autoselect</string>
-    <string name="settings_autoselect_value_title">Autoselect value</string>
-    <string name="settings_autoselect_value_summary">Select value of timetable to show on autoselect</string>
+    <string name="settings_autoselect_type_summary">Select type of timetable to show after login</string>
+    <string name="settings_autoselect_type_dialog_title">Autoselect type</string>	
     
     <string name="settings_display_header">Display options</string>
     <string name="settings_display_show_saturday_title">Display saturday</string>

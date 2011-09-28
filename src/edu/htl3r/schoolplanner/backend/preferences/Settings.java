@@ -30,11 +30,9 @@ public class Settings {
 	private boolean autoLogin;
 	private String autoLoginSet;
 
-//	private boolean autoSelect;
-//	private String autoSelectType;
-//	private String autoSelectValue;
+	private boolean autoSelect;
+	private String autoSelectType;
 	
-	private String defaultView;
 	private boolean displaySaturday;
 	private boolean displayZerothLesson;
 	
@@ -61,9 +59,8 @@ public class Settings {
 		autoLoginSet = preferences.getString(getString(R.string.settings_key_autologin_set), "");
 		
 		// autoselect options
-//		autoSelect = preferences.getBoolean(getString(R.string.settings_key_autoselect), false);
-//		autoSelectType = preferences.getString(getString(R.string.settings_key_autoselect_type), "");
-//		autoSelectValue = preferences.getString(getString(R.string.settings_key_autoselect_value), "");
+		autoSelect = preferences.getBoolean(getString(R.string.settings_key_autoselect), false);
+		autoSelectType = preferences.getString(getString(R.string.settings_key_autoselect_type), "");
 		
 		// display options
 		displaySaturday = preferences.getBoolean(getString(R.string.settings_key_show_saturday), false);
@@ -82,12 +79,12 @@ public class Settings {
 		return autoLoginSet;
 	}
 
-	/**
-	 * Liefert die gesetzte Standardansicht. Der ermittelte Wert ist einer aus der Liste {{@link SettingsConstants#DEFAULT_VIEW_DAY}, {@link SettingsConstants#DEFAULT_VIEW_WEEK}, {@link SettingsConstants#DEFAULT_VIEW_MONTH}}.
-	 * @return
-	 */
-	public String getDefaultView() {
-		return defaultView;
+	public boolean isAutoSelect() {
+		return autoSelect;
+	}
+	
+	public String getAutoSelectType() {
+		return autoSelectType;
 	}
 
 	public boolean isDisplaySaturday() {
@@ -101,4 +98,5 @@ public class Settings {
 	private String getString(int resId) {
 		return SchoolplannerContext.context.getString(resId);
 	}
+	
 }

@@ -51,21 +51,25 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 		
 		// Hack, damit beim Initialisieren des Spinners nicht automatisch eine Action ausgefuehrt wird		
 		if (lastSelectedPosition > -1 && lastSelectedPosition != position) {			
-			ViewType item = getViewType(position);
-			
-			if(spinnerMemory != null) spinnerMemory.setSelectedViewType(item);
-			
-			Bundle bundle = new Bundle();
-			bundle.putSerializable(BundleConstants.SELECTED_VIEW_TYPE, item);
-			intent.putExtras(bundle);
-			this.parent.startActivity(intent);
+			fireEvent(position);
 		}
 		
 		lastSelectedPosition = position;
 	}
 
-	protected ViewType getViewType(int position) {
+	private ViewType getViewType(int position) {
 		return list.get(position);
+	}
+	
+	public void fireEvent(int position) {
+		ViewType item = getViewType(position);
+		// Falls kein SpinnerMemory verwendet wird
+		if(spinnerMemory != null) spinnerMemory.setSelectedViewType(item);
+		
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(BundleConstants.SELECTED_VIEW_TYPE, item);
+		intent.putExtras(bundle);
+		this.parent.startActivity(intent);
 	}
 
 	@Override
