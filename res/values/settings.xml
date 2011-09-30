@@ -31,8 +31,8 @@
     <string name="settings_autoselect_type_dialog_title">Autoselect type</string>	
     
     <string name="settings_display_header">Display options</string>
-    <string name="settings_display_show_saturday_title">Display saturday</string>
-    <string name="settings_display_show_saturday_summary">Display saturday in timetable</string>
+    <string name="settings_display_show_saturday_title">Display Saturday</string>
+    <string name="settings_display_show_saturday_summary">Display Saturday in timetable</string>
     <string name="settings_display_show_zeroth_lesson_title">Display zeroth lesson</string>
     <string name="settings_display_show_zeroth_lesson_summary">Display zeroth lesson in timetable</string>
 </resources>
