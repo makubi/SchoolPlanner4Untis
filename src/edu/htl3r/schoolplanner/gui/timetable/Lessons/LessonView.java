@@ -42,7 +42,7 @@ import edu.htl3r.schoolplanner.gui.timetable.Week.GUIWeekView;
 public class LessonView extends GUIWeekView {
 
 	private GUILessonContainer lessoncontainer;
-	private Paint paint;
+	private Paint paint = new Paint();
 	private int width, height;
 	private ViewType viewtype;
 
@@ -52,8 +52,6 @@ public class LessonView extends GUIWeekView {
 		super(context);
 
 		setID(LESSON_ID);
-		paint = new Paint();
-		paint.setColor(Color.BLACK);
 		paint.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_5));
 		paint.setStyle(Style.FILL);
 		paint.setTextSize(23);
@@ -214,10 +212,10 @@ public class LessonView extends GUIWeekView {
 		lessoncontainer = l;
 		viewtype = vt;
 		time = lessoncontainer.getDate();
-		setBackgroundColor();
+		setTextColor(setBackgroundColor());
 	}
 
-	private void setBackgroundColor() {
+	private int setBackgroundColor() {
 
 		List<Lesson> lessons = giveMeTheCorrectList();
 
@@ -239,8 +237,27 @@ public class LessonView extends GUIWeekView {
 				String bcolor = vt.get(0).getBackColor();
 				if (!bcolor.equalsIgnoreCase("")) {
 					setBackgroundColor(Color.parseColor("#55" + bcolor));
+					return Color.parseColor("#55" + bcolor);
 				}
 			}
+		}
+		return Color.WHITE;
+	}
+	
+	private void setTextColor(int color){
+		int red = Color.red(color);
+		int green = Color.green(color);
+		int blue = Color.blue(color);
+		
+		
+		// Magisch Formel von: http://www.nbdtech.com/Blog/archive/2008/04/27/Calculating-the-Perceived-Brightness-of-a-Color.aspx
+		double brightness =  Math.sqrt( red * red * .241 + green * green * .691 +  blue * blue * .068);
+		
+		if(brightness > 100){
+			paint.setColor(Color.BLACK);
+		}else{
+			paint.setColor(Color.WHITE);
+
 		}
 	}
 
