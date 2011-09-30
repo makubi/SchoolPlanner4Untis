@@ -27,8 +27,6 @@ import android.graphics.Paint.Style;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -142,7 +140,6 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 	public void setTimeGrid(List<TimegridUnit> time){
 		timegrid = time;
 		setHours(time.size());
-		Log.d("basti", timegrid.get(0).getName() + " " + timegrid.get(0).getStart());
 	}
 	
 

@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.htl3r.schoolplanner.gui.timetable.GUIData;
 
 import java.util.ArrayList;
@@ -87,6 +87,7 @@ public class RenderInfoWeekTable implements WebUntis {
 			DateTime dateTime = (DateTime) element;
 			List<Lesson> lessons = weekdata.get(DateTimeUtils.toISO8601Date(dateTime));
 			GUIDay d = analyseDay(dateTime, lessons);
+			Log.d("basti", lessons.toString());
 			week.setGUIDay(dateTime, d);
 		}
 		week.setViewType(viewtype);
@@ -103,31 +104,28 @@ public class RenderInfoWeekTable implements WebUntis {
 		day.setDate(date);
 		boolean dispZerolesson = settings.isDisplayZerothLesson();
 
-		if (timegridForDateTimeDay == null) { // TODO Das WochenGRID wird auf
-												// Montag gesynct
-			timegridForDateTimeDay = new ArrayList<TimegridUnit>();
-			List<TimegridUnit> timegridForDay = timegrid.getTimegridForDay(WebUntis.MONDAY);
-			
-			webuntisOnlyZeroTimegridUnitsHack(timegridForDay);
+		timegridForDateTimeDay = new ArrayList<TimegridUnit>();
+		List<TimegridUnit> timegridForDay = timegrid.getTimegridForDateTimeDay(date.getWeekDay());
 
-			// FIXME Gruber and Petters!
-			// An mich:
-			// Hier wird die Einstellung Display Zero Lesson implementiert
-			// Das Problem ist folgendes, es gibt Schulen deren Timegrid namen
-			// alle 0 sind - das ist bloed. Deswegen ueberpruefe ich hier ob die
-			// stunde eh vor 8:00 uhr aufhoert - taddaaa
-			// workaround done
+		webuntisOnlyZeroTimegridUnitsHack(timegridForDay);
 
-			for (TimegridUnit timegridUnit : timegridForDay) {
-				if (!dispZerolesson) {
-					if (timegridUnit.getName().equals("0") && timegridUnit.getEnd().getHour() <= 8 && timegridUnit.getEnd().getMinute() == 0) {
-						zerolesson = timegridUnit;
-					} else {
-						timegridForDateTimeDay.add(timegridUnit);
-					}
+		// FIXME Gruber and Petters!
+		// An mich:
+		// Hier wird die Einstellung Display Zero Lesson implementiert
+		// Das Problem ist folgendes, es gibt Schulen deren Timegrid namen
+		// alle 0 sind - das ist bloed. Deswegen ueberpruefe ich hier ob die
+		// stunde eh vor 8:00 uhr aufhoert - taddaaa
+		// workaround done
+
+		for (TimegridUnit timegridUnit : timegridForDay) {
+			if (!dispZerolesson) {
+				if (timegridUnit.getName().equals("0") && timegridUnit.getEnd().getHour() <= 8 && timegridUnit.getEnd().getMinute() == 0) {
+					zerolesson = timegridUnit;
 				} else {
 					timegridForDateTimeDay.add(timegridUnit);
 				}
+			} else {
+				timegridForDateTimeDay.add(timegridUnit);
 			}
 		}
 
@@ -154,6 +152,7 @@ public class RenderInfoWeekTable implements WebUntis {
 			for (int j = 0; j < lessons.size(); j++) {
 				Lesson lesson = lessons.get(j);
 
+				// Normale Stunden
 				if (lesson.getStartTime().getMinute() == timegridUnit.getStart().getMinute() && lesson.getStartTime().getHour() == timegridUnit.getStart().getHour()
 						&& lesson.getEndTime().getMinute() == timegridUnit.getEnd().getMinute() && lesson.getEndTime().getHour() == timegridUnit.getEnd().getHour()) {
 
@@ -163,11 +162,14 @@ public class RenderInfoWeekTable implements WebUntis {
 						lessoncon.addStandardLesson(lesson);
 					}
 
-				} else if(!dispZerolesson && zerolesson != null && lessonsSameStartTime(lesson, zerolesson) && lessonSameEndTime(lesson, zerolesson)){
+				}
+				// Ist die Anzeige der 0ten Stunden deaktiviert, wird sie hier
+				// aus verbannt
+				else if (!dispZerolesson && zerolesson != null && lessonsSameStartTime(lesson, zerolesson) && lessonSameEndTime(lesson, zerolesson)) {
 					lessons.remove(j);
-					Log.d("basti", "toete nullte stunde: " + lesson);
-				}else if (lesson.getStartTime().getMinute() == timegridUnit.getStart().getMinute() && lesson.getStartTime().getHour() == timegridUnit.getStart().getHour()
-				
+				}
+				// Hier werden Ueberlange Stunden zerhackt
+				else if (lesson.getStartTime().getMinute() == timegridUnit.getStart().getMinute() && lesson.getStartTime().getHour() == timegridUnit.getStart().getHour()
 						&& (lesson.getEndTime().getMinute() != timegridUnit.getEnd().getMinute() || lesson.getEndTime().getHour() != timegridUnit.getEnd().getHour())) {
 
 					lessons.remove(j);
@@ -201,7 +203,10 @@ public class RenderInfoWeekTable implements WebUntis {
 					}
 					lessons.add(tmp1);
 
-				} else if ((lesson.getStartTime().getHour() < timegridForDateTimeDay.get(0).getStart().getHour())) {
+				}
+				// Stunden die frueher beginnen als die erste TimeGridUnit
+				// werden hier auf das erste TimeGridUnit gesynct
+				else if ((lesson.getStartTime().getHour() < timegridForDateTimeDay.get(0).getStart().getHour())) {
 
 					lessons.remove(j);
 
@@ -219,47 +224,60 @@ public class RenderInfoWeekTable implements WebUntis {
 					lessons.add(tmp1);
 
 				}
+				// Hier werden Stunden behandelt, die nicht genau dem TimeGrid
+				// entsprechen d.h. doof sind
+				else if (lesson.getStartTime().getMinute() >= timegridUnit.getStart().getMinute() && lesson.getStartTime().getHour() >= timegridUnit.getStart().getHour()
+						&& lesson.getEndTime().getMinute() <= timegridUnit.getEnd().getMinute() && lesson.getEndTime().getHour() <= timegridUnit.getEnd().getHour()) {
+					if (lesson.getLessonCode() instanceof LessonCodeIrregular || lesson.getLessonCode() instanceof LessonCodeCancelled || lesson.getLessonCode() instanceof LessonCodeSubstitute) {
+						lessoncon.addSpecialLesson(lesson);
+					} else {
+						lessoncon.addStandardLesson(lesson);
+					}
+				}
 
 			}
 			day.addLessonContainer(timegridUnit.getStart(), lessoncon);
 		}
 		return day;
 	}
-	
-	private boolean lessonsSameStartTime(Lesson l1, TimegridUnit l2){
-		return ((l1.getStartTime().getHour() == l2.getStart().getHour()) &&(l1.getStartTime().getMinute() == l2.getStart().getMinute()));
+
+	private boolean lessonsSameStartTime(Lesson l1, TimegridUnit l2) {
+		return ((l1.getStartTime().getHour() == l2.getStart().getHour()) && (l1.getStartTime().getMinute() == l2.getStart().getMinute()));
 	}
-	private boolean lessonSameEndTime(Lesson l1, TimegridUnit l2){
-		return ((l1.getEndTime().getHour() == l2.getEnd().getHour()) &&(l1.getEndTime().getMinute() == l2.getEnd().getMinute()));
+
+	private boolean lessonSameEndTime(Lesson l1, TimegridUnit l2) {
+		return ((l1.getEndTime().getHour() == l2.getEnd().getHour()) && (l1.getEndTime().getMinute() == l2.getEnd().getMinute()));
 	}
+
 	/*
-	private boolean lessonsSameStartTime(Lesson l1, Lesson l2){
-		return ((l1.getStartTime().getHour() == l2.getStartTime().getHour()) &&(l1.getStartTime().getMinute() == l2.getStartTime().getMinute()));
-	}
-	private boolean lessonSameEndTime(Lesson l1, Lesson l2){
-		return ((l1.getEndTime().getHour() == l2.getEndTime().getHour()) &&(l1.getEndTime().getMinute() == l2.getEndTime().getMinute()));
-	}
+	 * private boolean lessonsSameStartTime(Lesson l1, Lesson l2){ return
+	 * ((l1.getStartTime().getHour() == l2.getStartTime().getHour())
+	 * &&(l1.getStartTime().getMinute() == l2.getStartTime().getMinute())); }
+	 * private boolean lessonSameEndTime(Lesson l1, Lesson l2){ return
+	 * ((l1.getEndTime().getHour() == l2.getEndTime().getHour())
+	 * &&(l1.getEndTime().getMinute() == l2.getEndTime().getMinute())); }
 	 */
 	/**
-	 * Temporaer, bis von WebUntis bei Standardeinstellungen die Stundenbezeichnungen passen geliefert werden.
+	 * Temporaer, bis von WebUntis bei Standardeinstellungen die
+	 * Stundenbezeichnungen passen geliefert werden.
+	 * 
 	 * @param timegridForDay
 	 */
-	private void webuntisOnlyZeroTimegridUnitsHack(
-			List<TimegridUnit> timegridForDay) {
+	private void webuntisOnlyZeroTimegridUnitsHack(List<TimegridUnit> timegridForDay) {
 		final String zeroString = "0";
-		
+
 		int zeroCount = 0;
-		for(TimegridUnit timegridUnit : timegridForDay) {
-			if(timegridUnit.getName().equals(zeroString)) {
+		for (TimegridUnit timegridUnit : timegridForDay) {
+			if (timegridUnit.getName().equals(zeroString)) {
 				zeroCount++;
 			}
 		}
-		
-		if(zeroCount > 1) {
+
+		if (zeroCount > 1) {
 			Collections.sort(timegridForDay);
-			for(int i = 0; i < timegridForDay.size(); i++) {
+			for (int i = 0; i < timegridForDay.size(); i++) {
 				// Standard is to start at lesson '1'
-				timegridForDay.get(i).setName(""+(i+1));
+				timegridForDay.get(i).setName("" + (i + 1));
 			}
 		}
 	}
