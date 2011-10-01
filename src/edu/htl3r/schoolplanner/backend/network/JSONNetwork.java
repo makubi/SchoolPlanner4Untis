@@ -109,7 +109,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		JSONObject response = parseData(network.getResponse(request.toString()));
 		if(response.has("error")) {
 			JSONObject errorObject = response.getJSONObject("error");
-			if(errorObject.getInt("code") == WebUntisErrorCodes.WEBUNTIS_NOT_AUTHENTICATED || errorObject.getString("message").equals("not authenticated")) {
+			if(errorObject.getInt("code") == WebUntisErrorCodes.WEBUNTIS_NOT_AUTHENTICATED) {
 				Log.i("Network", "Reauthenticating");
 				authenticate();
 				response = parseData(network.getResponse(request.toString()));
@@ -163,16 +163,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			JSONObject responseObject = requestList(id, method);
 
 			if (responseObject.has("error")) {
-				JSONObject errorObject = responseObject.getJSONObject("error");
-				int errorCode = errorObject.getInt("code");
-				String errorString = errorObject.getString("message");
-				Log.d("JSON", "Received error code: " + errorCode
-						+ ", message: " + errorString);
-
-				ErrorMessage errorMessage = new ErrorMessage();
-				errorMessage.setErrorCode(ErrorCodes.SERVICE_ERROR);
-				errorMessage.setAdditionalInfo(errorCode+": "+errorString);
-				data.setErrorMessage(errorMessage);
+				data.setErrorMessage(getWebUntisErrorMessage(responseObject));
 			}
 
 			else {
@@ -187,15 +178,12 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 				} else if (method.equals(JSONGetMethods.getRooms)) {
 					data.setData(jsonParser.jsonToRoomList(result));
 				} else {
-					Log.e("JSON", "Unknown request method: " + method);
+					Log.w("JSON", "Unknown request method: " + method);
 				}
 
 			}
 		} catch (JSONException e) {
-			ErrorMessage errorMessage = new ErrorMessage();
-			errorMessage.setErrorCode(ErrorCodes.JSON_EXCEPTION);
-			errorMessage.setException(e);
-			data.setErrorMessage(errorMessage);
+			data.setErrorMessage(getErrorMessage(e));
 		} catch (IOException e) {
 			data.setErrorMessage(getErrorMessage(e));
 		}
@@ -224,15 +212,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			JSONObject responseObject = requestList(id, method);
 
 			if (responseObject.has("error")) {
-				JSONObject errorObject = responseObject.getJSONObject("error");
-				int errorCode = errorObject.getInt("code");
-				String errorString = errorObject.getString("message");
-				Log.d("JSON", "Received error code: " + errorCode
-						+ ", message: " + errorString);
-
-				ErrorMessage errorMessage = new ErrorMessage();
-				errorMessage.setErrorCode(ErrorCodes.SERVICE_ERROR);
-				errorMessage.setAdditionalInfo(errorCode+": "+errorString);
+				ErrorMessage errorMessage = getWebUntisErrorMessage(responseObject);
 				data.setErrorMessage(errorMessage);
 			}
 
@@ -241,19 +221,13 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			if (method.equals(JSONGetMethods.getHolidays)) {
 				data.setData(jsonParser.jsonToHolidayList(result));
 			} else {
-				Log.e("JSON", "Unknown request method: " + method);
+				Log.w("JSON", "Unknown request method: " + method);
 			}
 
 		} catch (JSONException e) {
-			ErrorMessage errorMessage = new ErrorMessage();
-			errorMessage.setErrorCode(ErrorCodes.JSON_EXCEPTION);
-			errorMessage.setException(e);
-			data.setErrorMessage(errorMessage);
+			data.setErrorMessage(getErrorMessage(e));
 		} catch (IOException e) {
-			ErrorMessage errorMessage = new ErrorMessage();
-			errorMessage.setErrorCode(ErrorCodes.IO_EXCEPTION);
-			errorMessage.setException(e);
-			data.setErrorMessage(errorMessage);
+			data.setErrorMessage(getErrorMessage(e));
 		}
 		return data;
 	}
@@ -282,19 +256,13 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			if (method.equals(JSONGetMethods.getTimegridUnits)) {
 				data.setData(jsonParser.jsonToTimegrid(result));
 			} else {
-				Log.e("JSON", "Unknown request method: " + method);
+				Log.w("JSON", "Unknown request method: " + method);
 			}
 
 		} catch (JSONException e) {
-			ErrorMessage errorMessage = new ErrorMessage();
-			errorMessage.setErrorCode(ErrorCodes.JSON_EXCEPTION);
-			errorMessage.setException(e);
-			data.setErrorMessage(errorMessage);
+			data.setErrorMessage(getErrorMessage(e));
 		} catch (IOException e) {
-			ErrorMessage errorMessage = new ErrorMessage();
-			errorMessage.setErrorCode(ErrorCodes.IO_EXCEPTION);
-			errorMessage.setException(e);
-			data.setErrorMessage(errorMessage);
+			data.setErrorMessage(getErrorMessage(e));
 		}
 		return data;
 	}
@@ -459,15 +427,9 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			List<StatusData> statusData = jsonParser.jsonToStatusData(result);
 			data.setData(statusData);
 		} catch (JSONException e) {
-			ErrorMessage errorMessage = new ErrorMessage();
-			errorMessage.setErrorCode(ErrorCodes.JSON_EXCEPTION);
-			errorMessage.setException(e);
-			data.setErrorMessage(errorMessage);
+			data.setErrorMessage(getErrorMessage(e));
 		} catch (IOException e) {
-			ErrorMessage errorMessage = new ErrorMessage();
-			errorMessage.setErrorCode(ErrorCodes.IO_EXCEPTION);
-			errorMessage.setException(e);
-			data.setErrorMessage(errorMessage);
+			data.setErrorMessage(getErrorMessage(e));
 		}
 	
 		return data;
@@ -546,7 +508,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			// Netzwerkanfrage
 			JSONObject response = getJSONData(request);
 			
-			ErrorMessage errorMessage = getErrorMessage(response);
+			ErrorMessage errorMessage = getWebUntisErrorMessage(response);
 			if(errorMessage == null) {
 				// Extrahiere Nutzdaten
 				JSONArray result = response.getJSONArray(JSONResponseObjectKeys.RESULT);
@@ -564,15 +526,9 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			}
 	
 		} catch (JSONException e) {
-			ErrorMessage errorMessage = new ErrorMessage();
-			errorMessage.setErrorCode(ErrorCodes.JSON_EXCEPTION);
-			errorMessage.setException(e);
-			data.setErrorMessage(errorMessage);
+			data.setErrorMessage(getErrorMessage(e));
 		} catch (IOException e) {
-			ErrorMessage errorMessage = new ErrorMessage();
-			errorMessage.setErrorCode(ErrorCodes.IO_EXCEPTION);
-			errorMessage.setException(e);
-			data.setErrorMessage(errorMessage);
+			data.setErrorMessage(getErrorMessage(e));
 		}
 	
 		return data;
@@ -613,18 +569,13 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			if (response.has("error")) {
 				JSONObject errorObject = response.getJSONObject("error");
 				int errorCode = errorObject.getInt("code");
-				String errorString = errorObject.getString("message");
-				Log.d("JSON", "Received error code: " + errorCode
-						+ ", message: " + errorString);
-
-				ErrorMessage errorMessage = new ErrorMessage();
-				errorMessage.setErrorCode(ErrorCodes.SERVICE_ERROR);
-				errorMessage.setAdditionalInfo(errorCode+": "+errorString);
-				data.setErrorMessage(errorMessage);
+				
+				if(!(errorCode == WebUntisErrorCodes.WEBUNTIS_BAD_CREDENTIALS)) {
+					data.setErrorMessage(getWebUntisErrorMessage(response));
+				}					
 			}
 
 			else {
-
 				// TODO: Pruefung auf ID und jsonrpc-version?
 				if (response != null) {
 					JSONObject result = response.getJSONObject(JSONResponseObjectKeys.RESULT);
@@ -640,10 +591,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 				}
 			}
 		} catch (JSONException e) {
-			ErrorMessage errorMessage = new ErrorMessage();
-			errorMessage.setErrorCode(ErrorCodes.JSON_EXCEPTION);
-			errorMessage.setException(e);
-			data.setErrorMessage(errorMessage);
+			data.setErrorMessage(getErrorMessage(e));
 		} catch (IOException e) {
 			data.setErrorMessage(getErrorMessage(e));
 		}
@@ -708,6 +656,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	private ErrorMessage getErrorMessage(IOException e) {
 		ErrorMessage errorMessage = new ErrorMessage();
 		int errorCode = ErrorCodes.IO_EXCEPTION;
+		
 		if(e instanceof HttpHostConnectException) errorCode = ErrorCodes.HTTP_HOST_CONNECTION_EXCEPTION;
 		else if (e instanceof UnknownHostException) errorCode = ErrorCodes.UNKNOWN_HOST_EXCEPTION;
 		else if (e instanceof SSLForcedButUnavailableException) errorCode = ErrorCodes.SSL_FORCED_BUT_UNAVAILABLE;
@@ -718,7 +667,18 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		return errorMessage;
 	}
 	
-	private ErrorMessage getErrorMessage(JSONObject jsonObject) throws JSONException {
+
+	private ErrorMessage getErrorMessage(JSONException e) {
+		ErrorMessage errorMessage = new ErrorMessage();
+		int errorCode = ErrorCodes.JSON_EXCEPTION;
+		
+		errorMessage.setErrorCode(errorCode);
+		errorMessage.setException(e);
+		
+		return errorMessage;
+	}
+	
+	private ErrorMessage getWebUntisErrorMessage(JSONObject jsonObject) throws JSONException {
 		if(jsonObject.has("error")) {
 			try {
 				ErrorMessage errorMessage = new ErrorMessage();

@@ -139,21 +139,33 @@ public class LoginListener implements OnItemClickListener, Serializable {
 					Throwable exception = error.getException();
 					
 					switch (errorCode) {
+					
 					case ErrorCodes.HTTP_HOST_CONNECTION_EXCEPTION:
-						errorMessage = welcomescreen.getString(R.string.error_connection_refused) + " " + selectedEntry.getServerUrl();
+						errorMessage = getString(R.string.error_connection_refused) + " " + selectedEntry.getServerUrl();
 						break;
+						
 					case ErrorCodes.UNKNOWN_HOST_EXCEPTION:
-						errorMessage = welcomescreen.getString(R.string.error_unknown_host) + " " + selectedEntry.getServerUrl();
+						errorMessage = getString(R.string.error_unknown_host) + " " + selectedEntry.getServerUrl();
 						break;
+						
 					case ErrorCodes.SSL_FORCED_BUT_UNAVAILABLE:
-						errorMessage = welcomescreen.getString(R.string.error_ssl_forced_but_unavailable) + " " + selectedEntry.getServerUrl();
+						errorMessage = getString(R.string.error_ssl_forced_but_unavailable) + " " + selectedEntry.getServerUrl();
 						break;
+						
+					case ErrorCodes.WEBUNTIS_SERVICE_EXCEPTION:
+						errorMessage = getString(R.string.webuntis_error_occurred) + " " + errorCode+":"+additionalInfo;
+						break;
+							
+					case ErrorCodes.JSON_EXCEPTION:
+						errorMessage = getString(R.string.json_exception);
+						break;
+						
 					default:
-						errorMessage = welcomescreen.getString(R.string.error_occurred);
+						errorMessage = getString(R.string.error_occurred) + " "+errorCode+":"+additionalInfo;
 						Log.e("login","========== ERROR");
 						Log.e("login","info: "+additionalInfo);
 						Log.e("login","code: "+errorCode);
-						Log.e("login","e: "+exception.getMessage(),exception);
+						if(exception != null) Log.e("login","e: "+exception.getMessage(),exception);
 						break;
 					}
 					
@@ -206,6 +218,10 @@ public class LoginListener implements OnItemClickListener, Serializable {
 
 	public AsyncTask<Void, AsyncTaskProgress, Void> getLoginTask() {
 		return loginTask;
+	}
+	
+	private String getString(int resId) {
+		return welcomescreen.getString(resId);
 	}
 
 }

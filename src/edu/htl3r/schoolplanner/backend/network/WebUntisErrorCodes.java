@@ -20,5 +20,7 @@ public interface WebUntisErrorCodes {
 	
 	public static final int WEBUNTIS_NO_RIGHT_FOR_TIMETABLE = -8509;
 	public static final int WEBUNTIS_NOT_AUTHENTICATED = -8520;
+	public static final int WEBUNTIS_BAD_CREDENTIALS = -8504;
+
 	
 }
