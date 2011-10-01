@@ -16,7 +16,6 @@
  */
 package edu.htl3r.schoolplanner.gui.timetable;
 
-import java.util.Calendar;
 import java.util.List;
 
 import android.content.res.Resources;
@@ -32,6 +31,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
@@ -66,9 +66,7 @@ public class WeekView extends SchoolPlannerActivity {
 	}
 
 	private DateTime getMonday() {
-		DateTime d = new DateTime();
-		Calendar c = Calendar.getInstance();
-		d.set(c.get(Calendar.DATE), c.get(Calendar.MONTH) + 1, c.get(Calendar.YEAR));
+		DateTime d = DateTimeUtils.getNow();
 
 		if (d.getWeekDay() == Time.SUNDAY) {
 			d.increaseDay();
@@ -139,7 +137,7 @@ public class WeekView extends SchoolPlannerActivity {
 		case R.id.timetable_month:
 			if (holidays != null) {
 				overlaymonth = new OverlayMonth(this, this, holidays);
-				overlaymonth.setDate(getMonday());
+				overlaymonth.setDate(DateTimeUtils.getNow());
 				overlaymonth.show();
 			}
 			return true;

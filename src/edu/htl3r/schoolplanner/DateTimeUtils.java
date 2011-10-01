@@ -121,4 +121,10 @@ public class DateTimeUtils {
 	private static String getString(int resId) {
 		return context.getString(resId);
 	}
+
+	public static DateTime getNow() {
+		DateTime now = new DateTime();
+		now.getAndroidTime().setToNow();
+		return now;
+	}
 }

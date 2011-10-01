@@ -76,6 +76,8 @@ public class OverlayMonth extends Dialog implements OnClickListener {
 	public void setDate(DateTime d) {
 		date = new DateTime();
 		date.set(1, d.getMonth(), d.getYear());
+		
+		
 
 		if (start == null && end == null) {
 			start = new DateTime();
