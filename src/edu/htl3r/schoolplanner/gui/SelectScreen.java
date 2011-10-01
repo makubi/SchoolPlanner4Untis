@@ -156,13 +156,16 @@ public class SelectScreen extends SchoolPlannerActivity {
 			classSpinner.setOnItemSelectedListener(classSpinnerOnItemSelectedListener);
 
 			Intent teacherIntent = new Intent(SelectScreen.this, WeekView.class);
-			teacherSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, teacherIntent, teacherList, spinnerMemory));
+			ViewTypeSpinnerOnItemSelectedListener teacherSpinnerOnItemSelectedListener = new ViewTypeSpinnerOnItemSelectedListener(this, teacherIntent, teacherList, spinnerMemory);
+			teacherSpinner.setOnItemSelectedListener(teacherSpinnerOnItemSelectedListener);
 
 			Intent roomIntent = new Intent(SelectScreen.this, WeekView.class);
-			roomSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, roomIntent, roomList, spinnerMemory));
+			ViewTypeSpinnerOnItemSelectedListener roomSpinnerOnItemSelectedListener = new ViewTypeSpinnerOnItemSelectedListener(this, roomIntent, roomList, spinnerMemory);
+			roomSpinner.setOnItemSelectedListener(roomSpinnerOnItemSelectedListener);
 
 			Intent subjectIntent = new Intent(SelectScreen.this, WeekView.class);
-			subjectSpinner.setOnItemSelectedListener(new ViewTypeSpinnerOnItemSelectedListener(this, subjectIntent, subjectList, spinnerMemory));
+			ViewTypeSpinnerOnItemSelectedListener subjectSpinnerOnItemSelectedListener = new ViewTypeSpinnerOnItemSelectedListener(this, subjectIntent, subjectList, spinnerMemory);
+			subjectSpinner.setOnItemSelectedListener(subjectSpinnerOnItemSelectedListener);
 
 			// Setze die zuletzt ausgewaehlten Positionen der Spinner
 			int classSpinnerLastPos = getPositionForItem(classSpinner, spinnerMemory.getClassListLastElement());
@@ -195,13 +198,13 @@ public class SelectScreen extends SchoolPlannerActivity {
 						classSpinnerOnItemSelectedListener.fireEvent(classSpinner.getSelectedItemPosition());
 					}
 					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_TEACHER)) {
-						startActivity(teacherIntent);
+						teacherSpinnerOnItemSelectedListener.fireEvent(teacherSpinner.getSelectedItemPosition());
 					}
 					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_ROOM)) {
-						startActivity(roomIntent);
+						roomSpinnerOnItemSelectedListener.fireEvent(roomSpinner.getSelectedItemPosition());
 					}
 					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_SUBJECT)) {
-						startActivity(subjectIntent);
+						subjectSpinnerOnItemSelectedListener.fireEvent(subjectSpinner.getSelectedItemPosition());
 					}
 				}
 			}
