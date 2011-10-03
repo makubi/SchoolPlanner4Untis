@@ -92,83 +92,144 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 	}
 
 	@Override
-	public List<SchoolClass> getSchoolClassList() {
+	public synchronized List<SchoolClass> getSchoolClassList() {
 		return masterDataDatabase.getSchoolClassList();
 	}
 
 	@Override
-	public List<SchoolTeacher> getSchoolTeacherList() {
+	public synchronized List<SchoolTeacher> getSchoolTeacherList() {
 		return masterDataDatabase.getSchoolTeacherList();
 	}
 
 	@Override
-	public List<SchoolRoom> getSchoolRoomList() {
+	public synchronized List<SchoolRoom> getSchoolRoomList() {
 		return masterDataDatabase.getSchoolRoomList();
 	}
 
 	@Override
-	public List<SchoolSubject> getSchoolSubjectList() {
+	public synchronized List<SchoolSubject> getSchoolSubjectList() {
 		return masterDataDatabase.getSchoolSubjectList();
 	}
 
 	@Override
-	public List<SchoolHoliday> getSchoolHolidayList() {
+	public synchronized List<SchoolHoliday> getSchoolHolidayList() {
 		return masterDataDatabase.getSchoolHolidayList();
 	}
 
 	@Override
-	public Timegrid getTimegrid() {
+	public synchronized Timegrid getTimegrid() {
 		return masterDataDatabase.getTimegrid();
 	}
 
 	@Override
-	public List<StatusData> getStatusData() {
+	public synchronized List<StatusData> getStatusData() {
 		return masterDataDatabase.getStatusData();
 	}
 
 	@Override
-	public void setSchoolClassList(List<SchoolClass> schoolClasses) {
+	public synchronized void setSchoolClassList(List<SchoolClass> schoolClasses) {
 		masterDataDatabase.setSchoolClassList(schoolClasses);
 	}
 
 	@Override
-	public void setSchoolTeacherList(List<SchoolTeacher> schoolTeachers) {
+	public synchronized void setSchoolTeacherList(List<SchoolTeacher> schoolTeachers) {
 		masterDataDatabase.setSchoolTeacherList(schoolTeachers);
 	}
 
 	@Override
-	public void setSchoolSubjectList(List<SchoolSubject> schoolSubjects) {
+	public synchronized void setSchoolSubjectList(List<SchoolSubject> schoolSubjects) {
 		masterDataDatabase.setSchoolSubjectList(schoolSubjects);
 	}
 
 	@Override
-	public void setSchoolRoomList(List<SchoolRoom> schoolRooms) {
+	public synchronized void setSchoolRoomList(List<SchoolRoom> schoolRooms) {
 		masterDataDatabase.setSchoolRoomList(schoolRooms);
 	}
 
 	@Override
-	public void setSchoolHolidayList(List<SchoolHoliday> holidayList) {
+	public synchronized void setSchoolHolidayList(List<SchoolHoliday> holidayList) {
 		masterDataDatabase.setSchoolHolidayList(holidayList);
 	}
 
 	@Override
-	public void setTimegrid(Timegrid timegrid) {
+	public synchronized void setTimegrid(Timegrid timegrid) {
 		masterDataDatabase.setTimegrid(timegrid);
 	}
 
 	@Override
-	public void setStatusData(List<StatusData> statusData) {
+	public synchronized void setStatusData(List<StatusData> statusData) {
 		masterDataDatabase.setStatusData(statusData);
+	}
+
+	@Override
+	public synchronized List<Lesson> getPermanentLessons() {
+		return lessonHelperDatabase.getPermanentLessons();
+	}
+
+	@Override
+	public synchronized void setPermanentLesson(Lesson lesson) {
+		lessonHelperDatabase.setPermanentLesson(lesson);
+	}
+
+	@Override
+	public synchronized void saveLoginSet(LoginSet loginSet) {
+		loginSetDatabase.saveLoginSet(loginSet);
+	}
+	
+	@Override
+	public synchronized void removeLoginSet(LoginSet loginSet) {
+		String loginSetKey = md5(loginSet.getServerUrl()+loginSet.getSchool());
+		deleteMasterdataForLoginSetKey(loginSetKey);
+		loginSetDatabase.removeLoginSet(loginSet);
+	}
+
+	@Override
+	public synchronized void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked, String oldServerUrl, String oldSchool) {
+		if(!serverUrl.equals(oldServerUrl) || !school.equals(oldSchool)) {
+			String loginSetKey = md5(serverUrl+school);
+			deleteMasterdataForLoginSetKey(loginSetKey);
+		}
+		loginSetDatabase.editLoginSet(name, serverUrl, school, username, password, checked);
+	}
+
+	@Override
+	public synchronized List<LoginSet> getAllLoginSets() {
+		return loginSetDatabase.getAllLoginSets();
+	}
+	
+	public synchronized void deleteMasterdataForLoginSetKey(String loginSetKey) {
+		masterDataDatabase.deleteAllRowsFromSchoolClassListWithLoginSetKey(loginSetKey);
+		masterDataDatabase.deleteAllRowsFromSchoolTeacherListWithLoginSetKey(loginSetKey);
+		masterDataDatabase.deleteAllRowsFromSchoolRoomListWithLoginSetKey(loginSetKey);
+		masterDataDatabase.deleteAllRowsFromSchoolSubjectListWithLoginSetKey(loginSetKey);
+		
+		masterDataDatabase.deleteAllRowsFromSchoolHolidayListWithLoginSetKey(loginSetKey);
+		masterDataDatabase.deleteAllRowsFromTimegridWithLoginSetKey(loginSetKey);
+		masterDataDatabase.deleteAllRowsFromStatusDataListWithLoginSetKey(loginSetKey);
+	}
+
+	public long dateTimeToMillis(DateTime dateTime) {
+		return dateTime.getAndroidTime().toMillis(true);
+	}
+
+	public DateTime millisToDateTime(long millis) {
+		DateTime dateTime = new DateTime();
+		dateTime.getAndroidTime().set(millis);
+		return dateTime;
+	}
+
+	public void setCache(Cache cache) {
+		lessonHelperDatabase.setUnsaveDataSourceMasterdataProvider(cache);
 	}
 
 	public void setActiveLoginSet(LoginSet activeLoginSet) {
 		loginSetKey = md5(activeLoginSet.getServerUrl()+activeLoginSet.getSchool());
 	}
-	
+
 	public String getLoginSetKeyForTable() {
 		return loginSetKey;
 	}
-	
+
 	/**
 	 * Generiert einen MD5 Hash
 	 * @param s der zu verhasende String
@@ -181,7 +242,7 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 					.getInstance("MD5");
 			digest.update(s.getBytes());
 			byte messageDigest[] = digest.digest();
-
+	
 			// Create Hex String
 			StringBuffer hexString = new StringBuffer();
 			for (int i = 0; i < messageDigest.length; i++) {
@@ -191,72 +252,11 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 				hexString.append(h);
 			}
 			return hexString.toString();
-
+	
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
 		return "";
-	}
-
-	@Override
-	public List<Lesson> getPermanentLessons() {
-		return lessonHelperDatabase.getPermanentLessons();
-	}
-
-	@Override
-	public void setPermanentLesson(Lesson lesson) {
-		lessonHelperDatabase.setPermanentLesson(lesson);
-	}
-
-	public long dateTimeToMillis(DateTime dateTime) {
-		return dateTime.getAndroidTime().toMillis(true);
-	}
-
-	public DateTime millisToDateTime(long millis) {
-		DateTime dateTime = new DateTime();
-		dateTime.getAndroidTime().set(millis);
-		return dateTime;
-	}
-	
-	@Override
-	public void saveLoginSet(LoginSet loginSet) {
-		loginSetDatabase.saveLoginSet(loginSet);
-	}
-	
-	@Override
-	public void removeLoginSet(LoginSet loginSet) {
-		String loginSetKey = md5(loginSet.getServerUrl()+loginSet.getSchool());
-		deleteMasterdataForLoginSetKey(loginSetKey);
-		loginSetDatabase.removeLoginSet(loginSet);
-	}
-
-	@Override
-	public void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked, String oldServerUrl, String oldSchool) {
-		if(!serverUrl.equals(oldServerUrl) || !school.equals(oldSchool)) {
-			String loginSetKey = md5(serverUrl+school);
-			deleteMasterdataForLoginSetKey(loginSetKey);
-		}
-		loginSetDatabase.editLoginSet(name, serverUrl, school, username, password, checked);
-	}
-
-	@Override
-	public List<LoginSet> getAllLoginSets() {
-		return loginSetDatabase.getAllLoginSets();
-	}
-	
-	public void deleteMasterdataForLoginSetKey(String loginSetKey) {
-		masterDataDatabase.deleteAllRowsFromSchoolClassListWithLoginSetKey(loginSetKey);
-		masterDataDatabase.deleteAllRowsFromSchoolTeacherListWithLoginSetKey(loginSetKey);
-		masterDataDatabase.deleteAllRowsFromSchoolRoomListWithLoginSetKey(loginSetKey);
-		masterDataDatabase.deleteAllRowsFromSchoolSubjectListWithLoginSetKey(loginSetKey);
-		
-		masterDataDatabase.deleteAllRowsFromSchoolHolidayListWithLoginSetKey(loginSetKey);
-		masterDataDatabase.deleteAllRowsFromTimegridWithLoginSetKey(loginSetKey);
-		masterDataDatabase.deleteAllRowsFromStatusDataListWithLoginSetKey(loginSetKey);
-	}
-
-	public void setCache(Cache cache) {
-		lessonHelperDatabase.setUnsaveDataSourceMasterdataProvider(cache);
 	}
 	
 }
