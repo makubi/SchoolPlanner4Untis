@@ -6,6 +6,6 @@
     
     <string name="info_dialog_names">Sebastian Chlan &amp; Mathias Kub</string>
     <string name="info_dialog_thanks">Vielen Dank an alle, die uns beim Entwickeln dieser App helfen und unterstützen.</string>
-    <string name="info_dialog_development">Entwickelt nach bestem Wissen und Gewissen. Bei Risiken oder Nebenwirkungen, frage Sie uns.</string>
+    <string name="info_dialog_development">Entwickelt nach bestem Wissen und Gewissen. Bei Risiken oder Nebenwirkungen, fragen Sie uns.</string>
     <string name="info_dialog_license">Diese App ist unter der GPLv3 lizenziert</string>
 </resources>

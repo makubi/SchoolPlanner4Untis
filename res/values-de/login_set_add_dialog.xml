@@ -10,4 +10,7 @@
     
     <string name="login_set_add_ssl_only">Nur SSL</string>
     <string name="login_set_add_save">Speichern</string>
+    
+    <string name="error_login_set_exists">Ein LoginSet mit diesem Namen existiert bereits</string>
+    <string name="error_login_set_information_missing">Bitte geben Sie zumindest Name, Server URL, Schule und Benutzername ein</string>
 </resources>

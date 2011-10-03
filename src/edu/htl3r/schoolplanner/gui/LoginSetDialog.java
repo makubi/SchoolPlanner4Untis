@@ -112,11 +112,11 @@ public class LoginSetDialog extends Dialog{
 	    			dismiss();
 	    		}
 	    		else {
-	    			showErrorMessage("A LoginSet with that name already exists");
+	    			showErrorMessage(getString(R.string.error_login_set_exists));
 	    		}
 	    	}
 	    	else {
-	    		showErrorMessage("Please enter at least name, server url, school and username");
+	    		showErrorMessage(getString(R.string.error_login_set_information_missing));
 	    	}
 	    }
 	}
@@ -129,11 +129,11 @@ public class LoginSetDialog extends Dialog{
 	    			dismiss();
 	    		}
 	    		else {
-	    			showErrorMessage("A LoginSet with that name already exists");
+	    			showErrorMessage(getString(R.string.error_login_set_exists));
 	    		}
 	    	}
 	    	else {
-	    		showErrorMessage("Please enter at least name, server url, school and username");
+	    		showErrorMessage(getString(R.string.error_login_set_information_missing));
 	    	}
 	    }
 	}
@@ -141,6 +141,10 @@ public class LoginSetDialog extends Dialog{
 	private void showErrorMessage(String message) {
 		Toast errorMessage = Toast.makeText(context, message, Toast.LENGTH_SHORT);
 		errorMessage.show();
+	}
+	
+	private String getString(int resId) {
+		return parent.getString(resId);
 	}
 	
 }
