@@ -19,6 +19,7 @@ package edu.htl3r.schoolplanner.gui;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -50,7 +51,7 @@ public class LoginSetDialog extends Dialog{
 	 * @param context
 	 */
 	public LoginSetDialog(Context context) {
-		super(context);
+		super(context, R.style.full_height_dialog);
 		this.context = context;
 		init();
 
@@ -63,7 +64,7 @@ public class LoginSetDialog extends Dialog{
 	 * @param loginSet LoginSet mit neuen Daten
 	 */
 	public LoginSetDialog(Context context, final LoginSet loginSet) {
-		super(context);
+		super(context, R.style.full_height_dialog);
 		this.context = context;
 		init();
 		
@@ -83,7 +84,8 @@ public class LoginSetDialog extends Dialog{
 	
 	private void init() {
 		setContentView(R.layout.login_set_add_dialog);
-	    setTitle(R.string.login_set_add_title);
+		
+//	    setTitle(R.string.login_set_add_title);
 	    setCancelable(true);
 	    
 	    nameInput = (EditText) findViewById(R.id.login_set_add_name_input);

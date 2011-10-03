@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Hack to prevent layout from being cut off. Implement layout for landscape 
-	mode. -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	style="@style/background_layout">
 

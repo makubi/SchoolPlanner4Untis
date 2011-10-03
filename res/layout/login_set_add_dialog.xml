@@ -9,10 +9,12 @@
 	android:layout_gravity="center"
 	android:gravity="center">
 	
+	<!-- Name -->
 	<TextView
-	android:id="@+id/login_set_add_name_text"
-	android:text="@string/login_set_add_name_text"
-	android:layout_width="wrap_content" android:layout_height="wrap_content" />
+		android:id="@+id/login_set_add_name_text"
+		android:text="@string/login_set_add_name_text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" />
 	<EditText
         android:id="@+id/login_set_add_name_input"
         android:layout_width="fill_parent"
@@ -20,11 +22,13 @@
         android:layout_below="@id/login_set_add_name_text"
         android:inputType="text" />
         
+    <!-- URL -->   
 	<TextView
-	android:id="@+id/login_set_add_server_url_text"
-	android:text="@string/login_set_add_server_url_text"
-	android:layout_width="wrap_content" android:layout_height="wrap_content"
-	android:layout_below="@id/login_set_add_name_input" />
+		android:id="@+id/login_set_add_server_url_text"
+		android:text="@string/login_set_add_server_url_text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/login_set_add_name_input" />
 	<EditText
         android:id="@+id/login_set_add_server_url_input"
         android:layout_width="fill_parent"
@@ -32,11 +36,13 @@
         android:layout_below="@id/login_set_add_server_url_text"
         android:inputType="text" />
         
+     <!-- School -->   
     <TextView
-	android:id="@+id/login_set_add_school_text"
-	android:text="@string/login_set_add_school_text"
-	android:layout_width="wrap_content" android:layout_height="wrap_content"
-	android:layout_below="@id/login_set_add_server_url_input" />
+		android:id="@+id/login_set_add_school_text"
+		android:text="@string/login_set_add_school_text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/login_set_add_server_url_input" />
 	<EditText
         android:id="@+id/login_set_add_school_input"
         android:layout_width="fill_parent"
@@ -44,43 +50,48 @@
         android:layout_below="@id/login_set_add_school_text"
         android:inputType="text" />
 
+	<!-- Username -->
 	<TextView
-	android:id="@+id/login_set_add_username_text"
-	android:text="@string/login_set_add_username_text"
-	android:layout_width="wrap_content" android:layout_height="wrap_content"
-	android:layout_below="@id/login_set_add_school_input" />
+		android:id="@+id/login_set_add_username_text"
+		android:text="@string/login_set_add_username_text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/login_set_add_school_input" />
 	<EditText
         android:id="@+id/login_set_add_username_input"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/login_set_add_username_text"
         android:inputType="text" />
-        
+    
+    <!-- Password -->    
 	<TextView
-	android:id="@+id/login_set_add_password_text"
-	android:text="@string/login_set_add_password_text"
-	android:layout_width="wrap_content" android:layout_height="wrap_content"
-	android:layout_below="@id/login_set_add_username_input" />
+		android:id="@+id/login_set_add_password_text"
+		android:text="@string/login_set_add_password_text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/login_set_add_username_input" />
 	<EditText
         android:id="@+id/login_set_add_password_input"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/login_set_add_password_text"
         android:inputType="text|textPassword" />
-        
+    
+    <!-- SSL only -->    
 	<CheckBox android:id="@+id/login_set_add_ssl_only"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_set_add_ssl_only"
         android:layout_below="@id/login_set_add_password_input" />
-        
+    
+    <!-- Save -->    
     <Button
         android:id="@+id/login_set_add_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login_set_add_save"
-        android:layout_below="@id/login_set_add_ssl_only"
-         />
+        android:layout_below="@id/login_set_add_ssl_only" />
         
 </RelativeLayout>
 </ScrollView>
