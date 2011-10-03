@@ -327,4 +327,10 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 	}
 	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		setInProgress("", false);
+	}
+	
 }

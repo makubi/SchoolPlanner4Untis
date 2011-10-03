@@ -19,12 +19,15 @@ package edu.htl3r.schoolplanner.gui.selectScreen;
 import java.util.List;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Spinner;
+import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
+import edu.htl3r.schoolplanner.gui.SelectScreen;
 
 public class ViewTypeOnClickListener extends AnimatedOnClickListener{
 	
@@ -44,10 +47,28 @@ public class ViewTypeOnClickListener extends AnimatedOnClickListener{
 	@Override
 	public void onClick(View v) {
 		super.onClick(v);
-		Bundle bundle = new Bundle();
-		bundle.putSerializable(BundleConstants.SELECTED_VIEW_TYPE, list.get(spinner.getSelectedItemPosition()));
-		intent.putExtras(bundle);
-		parent.startActivity(intent);
+		AsyncTask<Void, Void, Void> backgroundTask = new AsyncTask<Void, Void, Void>() {
+
+			@Override
+			protected Void doInBackground(Void... params) {
+				Bundle bundle = new Bundle();
+				bundle.putSerializable(BundleConstants.SELECTED_VIEW_TYPE, list.get(spinner.getSelectedItemPosition()));
+				intent.putExtras(bundle);
+				parent.startActivity(intent);
+				return null;
+			}
+			
+			@Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+				parent.setInProgress(parent.getString(R.string.loading_next_screen), true);
+			}
+		};
+		
+		// Wird verwendet, damit der Stundenplan / die naechste Activity nur geladen wird, wenn nicht schon ein/e andere/r geladen wird. 
+		if(parent instanceof SelectScreen && !((SelectScreen) parent).isLoadingTimetable()) {
+			backgroundTask.execute();
+		}
 	}
 
 }

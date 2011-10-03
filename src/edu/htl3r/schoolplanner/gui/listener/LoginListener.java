@@ -202,12 +202,6 @@ public class LoginListener implements OnItemClickListener, Serializable {
 				}
 				
 			}
-
-			@Override
-			protected void onPostExecute(Void result) {
-				super.onPostExecute(result);
-				welcomescreen.setInProgress("", false);
-			}
 			
 			@Override
 			protected void onCancelled() {

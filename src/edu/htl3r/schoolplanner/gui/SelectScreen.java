@@ -72,6 +72,8 @@ public class SelectScreen extends SchoolPlannerActivity {
 	private DataFacade<List<SchoolSubject>> subjectData;
 	
 	private boolean autoSelectDone = false;
+	
+	private boolean loadingTimetable = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -320,8 +322,29 @@ public class SelectScreen extends SchoolPlannerActivity {
 		}
 	}
 	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		setInProgress("", false);
+		loadingTimetable = false;
+	}
+	
 	private void showToastMessage(String message) {
 		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+	}
+	
+	@Override
+	public void setInProgress(String message, boolean active) {
+		super.setInProgress(message, active);
+		active = true;
+	}
+
+	/**
+	 * Gibt 'true' zurueck, wenn das Laden des Stundenplans aktiv ist, ansonsten 'false'.
+	 * @return 'true', wenn das Laden des Stundeplans aktiv ist
+	 */
+	public boolean isLoadingTimetable() {
+		return loadingTimetable;
 	}
 
 }
