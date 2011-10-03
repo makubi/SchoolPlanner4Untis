@@ -114,6 +114,18 @@
 	</style>
 	
 	<style name="full_height_dialog" parent="android:style/Theme.Dialog">
-   <item name="android:windowNoTitle">true</item>
-</style>
+		<item name="android:windowNoTitle">true</item>
+	</style>
+	
+	<style name="login_set_dialog_text">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+	
+	<style name="login_set_dialog_input">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">48dp</item>
+        <item name="android:inputType">text</item>
+        <item name="android:textSize">16sp</item>   
+	</style>
 </resources>
