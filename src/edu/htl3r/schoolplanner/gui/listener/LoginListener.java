@@ -51,8 +51,8 @@ public class LoginListener implements OnItemClickListener, Serializable {
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-		final LoginSet selectedEntry = welcomescreen.getLoginManager().getLoginSetOnPosition(position);
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		final LoginSet selectedEntry = welcomescreen.getLoginManager().getLoginSetOnPosition((int) id);
 		performLogin(selectedEntry);
 	}
 	

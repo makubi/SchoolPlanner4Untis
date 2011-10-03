@@ -82,6 +82,8 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		loginListener = new LoginListener(this);
 		mainListView.setOnItemClickListener(loginListener);
 		
+		
+		
 		initContextMenu();
 	}
 	

@@ -19,7 +19,6 @@ package edu.htl3r.schoolplanner.gui;
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;

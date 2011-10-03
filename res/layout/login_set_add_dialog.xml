@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
@@ -27,7 +27,7 @@
         android:layout_below="@id/login_set_add_server_url_text"
         style="@style/login_set_dialog_input" />
         
-     <!-- School -->   
+    <!-- School -->   
     <TextView
 		android:id="@+id/login_set_add_school_text"
 		android:text="@string/login_set_add_school_text"

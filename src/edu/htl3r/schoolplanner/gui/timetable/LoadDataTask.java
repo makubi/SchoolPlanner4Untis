@@ -54,7 +54,7 @@ class LoadDataTask extends AsyncTask<Void, String, Void> {
 			try {
 				d = downloadschlange.take();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				return null;
 			}
 			
 			if(d.isBomb())
