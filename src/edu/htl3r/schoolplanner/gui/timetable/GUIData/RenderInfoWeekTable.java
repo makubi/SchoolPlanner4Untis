@@ -107,6 +107,16 @@ public class RenderInfoWeekTable implements WebUntis {
 		timegridForDateTimeDay = new ArrayList<TimegridUnit>();
 		List<TimegridUnit> timegridForDay = timegrid.getTimegridForDateTimeDay(date.getWeekDay());
 
+		if (lessons.size() == 0 || timegridForDay == null) {
+			for (TimegridUnit timegridUnit : timegridForDateTimeDay) {
+				GUILessonContainer lessoncon = new GUILessonContainer();
+				lessoncon.setTime(timegridUnit.getStart(), timegridUnit.getEnd());
+				lessoncon.setDate(date);
+				day.addLessonContainer(timegridUnit.getStart(), lessoncon);
+			}
+			return day;
+		}
+		
 		webuntisOnlyZeroTimegridUnitsHack(timegridForDay);
 
 		// FIXME Gruber and Petters!
@@ -132,15 +142,7 @@ public class RenderInfoWeekTable implements WebUntis {
 		if (zerolesson != null)
 			Log.d("basti", "zero: " + zerolesson.getStart() + " " + zerolesson.getEnd() + " " + date.toString());
 
-		if (lessons.size() == 0) {
-			for (TimegridUnit timegridUnit : timegridForDateTimeDay) {
-				GUILessonContainer lessoncon = new GUILessonContainer();
-				lessoncon.setTime(timegridUnit.getStart(), timegridUnit.getEnd());
-				lessoncon.setDate(date);
-				day.addLessonContainer(timegridUnit.getStart(), lessoncon);
-			}
-			return day;
-		}
+	
 
 		for (int i = 0; i < timegridForDateTimeDay.size(); i++) {
 			TimegridUnit timegridUnit = timegridForDateTimeDay.get(i);
