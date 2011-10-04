@@ -148,7 +148,10 @@ public class WeekView extends SchoolPlannerActivity {
 
 	public void setDateforDialog(DateTime date) {
 		DateTime d = date.clone();
-
+		d.setHour(0);
+		d.setMinute(0);
+		d.setSecond(0);
+		
 		Log.d("basti", "Gewaehltes Datum : " + date);
 		Toast.makeText(this, date.getDay()+"."+date.getMonth()+"."+date.getYear(), Toast.LENGTH_SHORT).show();
 		if (d.getWeekDay() == Time.SUNDAY) {
@@ -158,8 +161,14 @@ public class WeekView extends SchoolPlannerActivity {
 				d.decreaseDay();
 			}
 		}
+		
 		DateTime now = getMonday().clone();
-
+		now.setHour(0);
+		now.setMinute(0);
+		now.setSecond(0);
+		
+		Log.d("basti", "Wahl: " + d + " Monday: " + now);
+		
 		int count = 0;
 
 		if (d.compareTo(now) < 0) {
