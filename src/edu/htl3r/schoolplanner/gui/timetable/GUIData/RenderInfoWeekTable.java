@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import android.text.format.Time;
 import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
@@ -96,8 +97,9 @@ public class RenderInfoWeekTable implements WebUntis {
 		return week;
 	}
 
-	List<TimegridUnit> timegridForDateTimeDay;
-	TimegridUnit zerolesson = null;
+	private List<TimegridUnit> timegridForDateTimeDay;
+	private TimegridUnit zerolesson = null;
+	private List<TimegridUnit> timegridForDay = null;
 
 	private GUIDay analyseDay(DateTime date, List<Lesson> lessons) {
 		GUIDay day = new GUIDay();
@@ -105,19 +107,12 @@ public class RenderInfoWeekTable implements WebUntis {
 		boolean dispZerolesson = settings.isDisplayZerothLesson();
 
 		timegridForDateTimeDay = new ArrayList<TimegridUnit>();
-		List<TimegridUnit> timegridForDay = timegrid.getTimegridForDateTimeDay(date.getWeekDay());
-
-		if (lessons.size() == 0 || timegridForDay == null) {
-			for (TimegridUnit timegridUnit : timegridForDateTimeDay) {
-				GUILessonContainer lessoncon = new GUILessonContainer();
-				lessoncon.setTime(timegridUnit.getStart(), timegridUnit.getEnd());
-				lessoncon.setDate(date);
-				day.addLessonContainer(timegridUnit.getStart(), lessoncon);
-			}
-			return day;
-		}
 		
-		webuntisOnlyZeroTimegridUnitsHack(timegridForDay);
+		// Der Montag ist sicher nie null ansonsten stimmt was anders nicht
+		// Ist jedoch zB. der Samstag null dann wird das TimeGrid von Freitag benutzt
+		if(timegrid.getTimegridForDateTimeDay(date.getWeekDay()) != null){		
+			timegridForDay = timegrid.getTimegridForDateTimeDay(date.getWeekDay());
+		}
 
 		// FIXME Gruber and Petters!
 		// An mich:
@@ -138,6 +133,20 @@ public class RenderInfoWeekTable implements WebUntis {
 				timegridForDateTimeDay.add(timegridUnit);
 			}
 		}
+		
+		if (lessons.size() == 0) {
+			for (TimegridUnit timegridUnit : timegridForDateTimeDay) {
+				GUILessonContainer lessoncon = new GUILessonContainer();
+				lessoncon.setTime(timegridUnit.getStart(), timegridUnit.getEnd());
+				lessoncon.setDate(date);
+				day.addLessonContainer(timegridUnit.getStart(), lessoncon);
+			}
+			return day;
+		}
+		
+		
+		webuntisOnlyZeroTimegridUnitsHack(timegridForDay);
+
 
 		if (zerolesson != null)
 			Log.d("basti", "zero: " + zerolesson.getStart() + " " + zerolesson.getEnd() + " " + date.toString());
