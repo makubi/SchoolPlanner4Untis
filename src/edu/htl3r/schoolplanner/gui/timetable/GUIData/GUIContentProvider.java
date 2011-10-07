@@ -162,7 +162,7 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 				return getString(R.string.error_webuntis_no_right_for_timetable);
 			}
 		}
-		return exception.getMessage()+": "+errorMessage.getAdditionalInfo();
+		return getString(R.string.error_occurred) + " " + (exception != null ? exception.getMessage() : errorMessage.getErrorCode())+": "+errorMessage.getAdditionalInfo();
 	}
 
 	private String getString(int resId) {
