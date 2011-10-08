@@ -273,8 +273,8 @@ public class Network {
 	 * @throws URISyntaxException Wenn die URL nicht gesetzt werden konnte
 	 */
 	private void setSchool(String school) throws UnsupportedEncodingException, URISyntaxException, SSLException {
-			// Encode school as iso-8859-1 string
-			String encodedSchool = UriUtils.encodeQuery(school,"ISO-8859-1");
+			// Encode school as UTF-8 string
+			String encodedSchool = UriUtils.encodeQuery(school, "UTF-8");
 			
 			if(loginCredentials.isSslOnly() && !sslAvailable) {
 				throw new SSLForcedButUnavailableException(httpsServerUrl.toString()+":"+httpsServerUrl.getPort()+" does not have SSL enabled");
