@@ -28,11 +28,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
@@ -42,7 +44,6 @@ import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.constants.LoginSetConstants;
-import edu.htl3r.schoolplanner.constants.WelcomeScreenConstants;
 import edu.htl3r.schoolplanner.gui.listener.LoginListener;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenContextMenu;
@@ -53,8 +54,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	
 	private LoginSetDialog dialog;
 	
-	private RelativeLayout mainLayout;
-	private TextView emptyListTextView;
+	private ScrollView emptyListView;
 	
 	private LoginSetManager loginmanager;
 	private LoginListener loginListener;
@@ -70,8 +70,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		
 		mainListView = (ListView) findViewById(R.id.loginList);
 		
-		buildEmptyListTextView();
-		mainLayout = (RelativeLayout) findViewById(R.id.welcome_main_layout);
+		initEmptyListTextView();
 		
 		loginmanager = ((SchoolPlannerApp) getApplication()).getLoginSetManager();
 		
@@ -102,20 +101,8 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		}
 	}
 	
-	private void buildEmptyListTextView() {
-		RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-		        ViewGroup.LayoutParams.WRAP_CONTENT);
-
-		// Set parent view
-		p.addRule(RelativeLayout.BELOW, R.id.welcome_title);
-		
-		emptyListTextView = new TextView(this);
-		emptyListTextView.setTextSize(14);
-		emptyListTextView.setPadding(5, 0, 0, 0);
-		emptyListTextView.setTextColor(getResources().getColor(R.color.text));
-		emptyListTextView.setText(R.string.login_sets_list_empty);
-		emptyListTextView.setLayoutParams(p);
-		emptyListTextView.setTag(WelcomeScreenConstants.EMPTY_LIST_TEXTVIEW_ADDED);
+	private void initEmptyListTextView() {
+		emptyListView = (ScrollView) findViewById(R.id.login_set_list_empty_view);
 	}
 	
 	@Override
@@ -163,12 +150,10 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		List<Map<String, String>> allLoginSetsForListAdapter = loginmanager.getAllLoginSetsForListAdapter();
 		
 		if (allLoginSetsForListAdapter.size() <= 0) {
-			emptyListTextView.setTag(WelcomeScreenConstants.EMPTY_LIST_TEXTVIEW_ADDED);
-			mainLayout.addView(emptyListTextView);
+			emptyListView.setVisibility(View.VISIBLE);
 		}
-		else if(WelcomeScreenConstants.EMPTY_LIST_TEXTVIEW_ADDED.equals(emptyListTextView.getTag())) {
-				emptyListTextView.setTag(WelcomeScreenConstants.EMPTY_LIST_TEXTVIEW_REMOVED);
-				mainLayout.removeView(emptyListTextView);
+		else if(emptyListView.getVisibility() == View.VISIBLE) {
+				emptyListView.setVisibility(View.INVISIBLE);
 		}
 		
 		String [] list_keys = new String[] {LoginSetConstants.nameKey, LoginSetConstants.serverUrlKey, LoginSetConstants.schoolKey, LoginSetConstants.usernameKey};

@@ -13,6 +13,21 @@
 		android:layout_below="@id/welcome_title" android:cacheColorHint="#00000000" 
 		android:background="@color/element_background" />
 		
+	<ScrollView android:id="@+id/login_set_list_empty_view"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/welcome_title"
+		android:layout_marginBottom="22dip"
+		android:visibility="invisible">
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="14sp"
+			android:paddingLeft="5sp"
+			android:textColor="@color/text"
+			android:text="@string/login_sets_list_empty" />
+		</ScrollView>
+		
 	<include layout="@layout/progress_bar"/>
 
 
