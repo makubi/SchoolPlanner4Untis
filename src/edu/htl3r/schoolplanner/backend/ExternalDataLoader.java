@@ -179,8 +179,7 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 			timegrid.setData(data);
 		}
 		// Check network
-		//else 
-		if (networkAvailable) {
+		else if (networkAvailable) {
 			if ((timegrid = network.getTimegrid()).isSuccessful()) {
 				Log.v("data_source","timegrid: network");
 				database.setTimegrid(timegrid.getData());
