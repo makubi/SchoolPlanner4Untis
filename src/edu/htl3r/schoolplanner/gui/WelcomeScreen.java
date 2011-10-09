@@ -29,10 +29,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -107,7 +104,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	
 	@Override
 	public void onBackPressed() {
-		AsyncTask<Void, AsyncTaskProgress, Void> loginTask = loginListener.getLoginTask();
+		AsyncTask<Void, AsyncTaskProgress, Boolean> loginTask = loginListener.getLoginTask();
 		if(loginTask != null && !loginTask.isCancelled() && !(loginTask.getStatus() == Status.FINISHED)) {
 			loginTask.cancel(true);
 		}
