@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import android.text.format.Time;
 import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
@@ -145,7 +144,7 @@ public class RenderInfoWeekTable implements WebUntis {
 		}
 		
 		
-		webuntisOnlyZeroTimegridUnitsHack(timegridForDay);
+		webuntisOnlyZeroTimegridUnitsHack(timegridForDateTimeDay);
 
 
 		if (zerolesson != null)
