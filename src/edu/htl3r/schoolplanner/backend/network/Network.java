@@ -26,6 +26,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.security.KeyStore;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +52,6 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
-import org.springframework.web.util.UriUtils;
 
 import android.util.Log;
 import edu.htl3r.schoolplanner.R;
@@ -274,7 +274,7 @@ public class Network {
 	 */
 	private void setSchool(String school) throws UnsupportedEncodingException, URISyntaxException, SSLException {
 			// Encode school as UTF-8 string
-			String encodedSchool = UriUtils.encodeQuery(school, "UTF-8");
+			String encodedSchool = URLEncoder.encode(school, "UTF-8");
 			
 			if(loginCredentials.isSslOnly() && !sslAvailable) {
 				throw new SSLForcedButUnavailableException(httpsServerUrl.toString()+":"+httpsServerUrl.getPort()+" does not have SSL enabled");
