@@ -2,7 +2,7 @@
 <resources>
     <string name="info_dialog_title">Info</string>
     <string name="info_dialog_header">SchoolPlanner4Untis</string>
-    <string name="info_dialog_version">Version 2.0.3</string>
+    <string name="info_dialog_version">Version 2.0.4</string>
     
     <string name="info_dialog_names">Sebastian Chlan &amp; Mathias Kub</string>
     <string name="info_dialog_thanks">Thanks to everyone supporting and helping us develope this app.</string>
