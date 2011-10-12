@@ -63,9 +63,7 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 	}
 
 	@Override
-	public void finishUpdate(View arg0) {
-		// TODO Auto-generated method stub
-	}
+	public void finishUpdate(View arg0) {}
 
 	@Override
 	public int getCount() {
@@ -106,21 +104,16 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 	}
 
 	@Override
-	public void restoreState(Parcelable arg0, ClassLoader arg1) {
-		// TODO Auto-generated method stub
-
-	}
+	public void restoreState(Parcelable arg0, ClassLoader arg1) {	}
 
 	@Override
 	public Parcelable saveState() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void startUpdate(View arg0) {
-		// TODO Auto-generated method stub
-	}
+	public void startUpdate(View arg0) {}
+	
 
 	public int getItemPosition(Object object) {
 		return oldpos - 1;

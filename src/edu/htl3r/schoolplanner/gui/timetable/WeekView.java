@@ -60,7 +60,7 @@ public class WeekView extends SchoolPlannerActivity {
 		initViewPager();
 
 		viewtype = (ViewType) getIntent().getExtras().getSerializable(BundleConstants.SELECTED_VIEW_TYPE);
-		loadweekdata = new LoadDataTask();
+		loadweekdata  = new LoadDataTask();
 		loadweekdata.setData(this, ((SchoolPlannerApp) getApplication()).getData(), this, viewtype, downloadschlange, ((SchoolPlannerApp) getApplication()).getSettings());
 		loadweekdata.execute();
 	}
@@ -152,7 +152,6 @@ public class WeekView extends SchoolPlannerActivity {
 		d.setMinute(0);
 		d.setSecond(0);
 		
-		Log.d("basti", "Gewaehltes Datum : " + date);
 		Toast.makeText(this, date.getDay()+"."+date.getMonth()+"."+date.getYear(), Toast.LENGTH_SHORT).show();
 		if (d.getWeekDay() == Time.SUNDAY) {
 			d.increaseDay();
@@ -166,9 +165,7 @@ public class WeekView extends SchoolPlannerActivity {
 		now.setHour(0);
 		now.setMinute(0);
 		now.setSecond(0);
-		
-		Log.d("basti", "Wahl: " + d + " Monday: " + now);
-		
+				
 		int count = 0;
 
 		if (d.compareTo(now) < 0) {
