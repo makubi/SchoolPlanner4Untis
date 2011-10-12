@@ -23,11 +23,13 @@ import java.util.Map;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.ErrorMessage;
+import edu.htl3r.schoolplanner.backend.network.ErrorCodes;
 import edu.htl3r.schoolplanner.backend.network.WebUntisErrorCodes;
 import edu.htl3r.schoolplanner.backend.network.exceptions.WebUntisServiceException;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
@@ -155,14 +157,36 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 	}
 	
 	private String getDisplayErrorMessage(ErrorMessage errorMessage) {
+		String additionalInfo = errorMessage.getAdditionalInfo();
+		int errorCode = errorMessage.getErrorCode();
 		Throwable exception = errorMessage.getException();
-		if(exception instanceof WebUntisServiceException) {
+		
+		switch (errorCode) {
+		
+		case ErrorCodes.WEBUNTIS_SERVICE_EXCEPTION:
 			final int webUntisErrorCode = ((WebUntisServiceException) exception).getWebUntisErrorCode();
 			if(webUntisErrorCode == WebUntisErrorCodes.WEBUNTIS_NO_RIGHT_FOR_TIMETABLE) {
 				return getString(R.string.error_webuntis_no_right_for_timetable);
 			}
+			else {
+				return getString(R.string.webuntis_error_occurred) + " " + errorCode+":"+additionalInfo;
+			}
+			
+		case ErrorCodes.SOCKET_TIMEOUT_EXCEPTION:
+			return getString(R.string.error_socket_timeout);
+			
+		default:
+			return logDefaultErrorMessage(additionalInfo, errorCode, exception);
 		}
-		return getString(R.string.error_occurred) + " " + (exception != null ? exception.getMessage() : errorMessage.getErrorCode())+": "+errorMessage.getAdditionalInfo();
+	}
+
+	private String logDefaultErrorMessage(String additionalInfo, int errorCode, Throwable exception) {
+		Log.e("login","========== ERROR");
+		Log.e("login","info: "+additionalInfo);
+		Log.e("login","code: "+errorCode);
+		
+		if(exception != null) Log.e("login","e: "+exception.getMessage(), exception);
+		return getString(R.string.error_occurred) + " " + (exception != null ? exception.getMessage() : errorCode)+": "+additionalInfo;
 	}
 
 	private String getString(int resId) {

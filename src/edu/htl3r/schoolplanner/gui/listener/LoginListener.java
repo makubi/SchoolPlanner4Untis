@@ -44,7 +44,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 	private static final long serialVersionUID = 1L;
 	private WelcomeScreen welcomescreen;
 	
-	private AsyncTask<Void, AsyncTaskProgress, Void> loginTask;
+	private AsyncTask<Void, AsyncTaskProgress, Boolean> loginTask;
 	
 	public LoginListener(WelcomeScreen ws) {
 		welcomescreen = ws;
@@ -57,10 +57,10 @@ public class LoginListener implements OnItemClickListener, Serializable {
 	}
 	
 	public void performLogin(final LoginSet selectedEntry) {
-		loginTask = new AsyncTask<Void, AsyncTaskProgress, Void>() {
+		loginTask = new AsyncTask<Void, AsyncTaskProgress, Boolean>() {
 
 			@Override
-			protected Void doInBackground(Void... params) {
+			protected Boolean doInBackground(Void... params) {
 				
 				SchoolPlannerApp app = (SchoolPlannerApp) welcomescreen.getApplication();
 				
@@ -121,6 +121,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 							
 							t.putExtras(bundle);
 							welcomescreen.startActivity(t);
+							return true;
 						}
 					}
 					else {
@@ -177,7 +178,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 				}
 				
 				}
-				return null;
+				return false;
 			}
 
 			@Override
@@ -204,6 +205,13 @@ public class LoginListener implements OnItemClickListener, Serializable {
 			}
 			
 			@Override
+			protected void onPostExecute(Boolean result) {
+				super.onPostExecute(result);
+				if(!result)
+					welcomescreen.setInProgress("", false);
+			}
+			
+			@Override
 			protected void onCancelled() {
 				super.onCancelled();
 				welcomescreen.setInProgress("", false);
@@ -213,7 +221,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 		loginTask.execute();
 	}
 
-	public AsyncTask<Void, AsyncTaskProgress, Void> getLoginTask() {
+	public AsyncTask<Void, AsyncTaskProgress, Boolean> getLoginTask() {
 		return loginTask;
 	}
 	
