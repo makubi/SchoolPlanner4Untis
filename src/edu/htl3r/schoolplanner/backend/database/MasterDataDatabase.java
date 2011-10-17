@@ -138,7 +138,7 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 			timegridUnit.setStart(this.database.millisToDateTime(startTime));
 			timegridUnit.setEnd(this.database.millisToDateTime(endTime));
 			
-			timegrid.putTimegridUnit(day, timegridUnit);
+			timegrid.putTimegridUnitForDateTimeDay(day, timegridUnit);
 		}
 		query.close();
 		this.database.closeDatabase(database);

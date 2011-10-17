@@ -70,6 +70,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		initEmptyListTextView();
 		
 		loginmanager = ((SchoolPlannerApp) getApplication()).getLoginSetManager();
+		loginmanager.addLoginSet("HTL Rennweg", "urania.webuntis.com", "htl3r", "htl3r", "htl3r", false);
 		
 		registerForContextMenu(mainListView);
 		
@@ -274,8 +275,11 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 			protected Boolean doInBackground(Void... params) {
 				Cache cache = ((SchoolPlannerApp)getApplication()).getData();
 				cache.setLoginCredentials(loginSet);
+				cache.clearInternalCache();
+				DataFacade<Boolean> authenticate = cache.authenticate();
 				DataFacade<Boolean> resyncMasterData = null;
-				if(cache.authenticate().isSuccessful() && cache.authenticate().getData()) {
+				
+				if(authenticate.isSuccessful() && authenticate.getData()) {
 					resyncMasterData = cache.resyncMasterData();
 				}
 				

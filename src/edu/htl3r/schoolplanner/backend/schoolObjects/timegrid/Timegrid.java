@@ -97,10 +97,17 @@ public class Timegrid implements SchoolObject {
 		days.put(day,gridDay);
 	}
 	
-	public void putTimegridUnit(int day, TimegridUnit timegridUnit) {
-		if(!days.containsKey(day)) days.put(day, new TimegridDay());
+	/**
+	 * Fuegt eine Zeitraster-Einheit zu einem {@link Time}-Tag hinzu.
+	 * @param day Time-Tag, zu dem die Zeitraster-Einheit hinzugefuegt werden soll
+	 * @param timegridUnit Zeitraster-Einheit, die hinzugefuegt werden soll
+	 */
+	public void putTimegridUnitForDateTimeDay(int day, TimegridUnit timegridUnit) {
+		int webuntisDay = staticTimeDayMapping.get(day);
 		
-		days.get(day).addTimegridUnit(timegridUnit);
+		if(!days.containsKey(webuntisDay)) days.put(webuntisDay, new TimegridDay());
+		
+		days.get(webuntisDay).addTimegridUnit(timegridUnit);
 	}
 
 	@Override
