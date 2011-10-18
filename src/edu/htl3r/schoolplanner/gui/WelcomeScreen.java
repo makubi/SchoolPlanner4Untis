@@ -41,7 +41,7 @@ import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.constants.LoginSetConstants;
-import edu.htl3r.schoolplanner.gui.listener.LoginListener;
+import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginListener;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenContextMenu;
 
@@ -70,7 +70,6 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		initEmptyListTextView();
 		
 		loginmanager = ((SchoolPlannerApp) getApplication()).getLoginSetManager();
-		loginmanager.addLoginSet("HTL Rennweg", "urania.webuntis.com", "htl3r", "htl3r", "htl3r", false);
 		
 		registerForContextMenu(mainListView);
 		
@@ -78,8 +77,6 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		
 		loginListener = new LoginListener(this);
 		mainListView.setOnItemClickListener(loginListener);
-		
-		
 		
 		initContextMenu();
 	}

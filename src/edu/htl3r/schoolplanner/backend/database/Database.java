@@ -226,6 +226,11 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 		loginSetKey = md5(activeLoginSet.getServerUrl()+activeLoginSet.getSchool());
 	}
 
+	/**
+	 * Liefert den LoginSet-Key, der sich aus Server-URL + Schulname zusammensetzt.
+	 * Dieser wird beim Setzen des zu verwendenden LoginSets generiert.
+	 * @return Den LoginSet-Key zum aktuell gesetzten LoginSet
+	 */
 	public String getLoginSetKeyForTable() {
 		return loginSetKey;
 	}

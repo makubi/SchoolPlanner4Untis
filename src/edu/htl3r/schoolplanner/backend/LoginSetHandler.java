@@ -18,15 +18,44 @@ package edu.htl3r.schoolplanner.backend;
 
 import java.util.List;
 
+import edu.htl3r.schoolplanner.backend.database.Database;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 
+/**
+ * Stellt Methoden zum Managen von Login-Sets zur Verfuegung.
+ */
 public interface LoginSetHandler {
 
+	/**
+	 * Speichere ein LoginSet.
+	 * @param loginSet LoginSet, das gespeichert werden soll
+	 */
 	public void saveLoginSet(LoginSet loginSet);
 	
+	/**
+	 * Loesche eine LoginSet.
+	 * @param loginSet LoginSet, das geloescht werden soll
+	 */
 	public void removeLoginSet(LoginSet loginSet);
 
+	/**
+	 * Editiere ein LoginSet.
+	 * Benoetige alte Server-URL + alte Schule, um (Stamm-)Daten zum dazugehoerigen LoginSet-Key zu loeschen.
+	 * @param name Name des zu speichernden LoginSets
+	 * @param serverUrl Server-URL nach dem Editieren des LoginSets
+	 * @param school Schulname nach dem Editieren des LoginSets
+	 * @param username Benutzername des zu speichernden LoginSets
+	 * @param password Passwort des zu speichernden LoginSets
+	 * @param checked Status des SSL-Only-Flags des zu speichernden LoginSets
+	 * @param oldServerUrl Server-URL vor dem Editieren des LoginSets
+	 * @param oldSchool Schulname vor dem Editieren des LoginSets
+	 * @see Database#getLoginSetKeyForTable()
+	 */
 	public void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked, String oldServerUrl, String oldSchool);
 
+	/**
+	 * Liefert eine Liste mit allen LoginSets.
+	 * @return
+	 */
 	public List<LoginSet> getAllLoginSets();
 }
