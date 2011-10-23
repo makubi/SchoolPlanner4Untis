@@ -17,6 +17,7 @@ public class OverlayInfoViewTypeChangeListener implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 			ViewTypeBox vtb = (ViewTypeBox)v;
+			vtb.setBackground(true);
 			overlay.dismiss();
 			weekview.changeViewType(vtb.getViewType());
 	}

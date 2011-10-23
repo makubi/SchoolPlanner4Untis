@@ -4,7 +4,7 @@
 	android:versionName="2.0.4">
 	
 	<application android:icon="@drawable/logo"
-		android:label="@string/app_name" android:name="edu.htl3r.schoolplanner.SchoolPlannerApp" 
+		android:label="@string/app_name" android:name=".SchoolPlannerApp" 
 		style="@style/background_layout">
 		
 		<activity android:name=".gui.WelcomeScreen" android:theme="@android:style/Theme.NoTitleBar" android:configChanges="orientation|keyboardHidden">

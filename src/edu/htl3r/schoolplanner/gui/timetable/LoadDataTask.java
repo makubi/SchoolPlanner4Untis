@@ -26,7 +26,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIContentManager;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIWeek;
 
-class LoadDataTask extends AsyncTask<Void, String, Void> {
+public class LoadDataTask extends AsyncTask<Void, String, Void> {
 
 	private Context context;
 	private Cache cache;

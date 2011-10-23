@@ -25,11 +25,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.text.format.Time;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ScrollView;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
@@ -39,6 +37,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
+import edu.htl3r.schoolplanner.gui.timetable.Overlay.Info.ViewTypeSwitcherTask;
 import edu.htl3r.schoolplanner.gui.timetable.Overlay.Month.OverlayMonth;
 
 public class WeekView extends SchoolPlannerActivity {
@@ -185,18 +184,20 @@ public class WeekView extends SchoolPlannerActivity {
 	}
 	
 	public void changeViewType(ViewType vt){
-		viewtype = vt;
-		loadweekdata.changeViewType(vt);
-		wvpageadapter.reset(this);
-
-		for(int i=0; i<myViewPager.getChildCount(); i++){
-			ScrollView scr = (ScrollView)myViewPager.getChildAt(i);
-			scr.removeAllViews();
-		}
-		myViewPager.removeAllViews();
-		wvpageadapter.notifyDataSetChanged();
-		
-		Log.d("basti",vt.getName() + " weekview");
-		Toast.makeText(this, vt.getName(), Toast.LENGTH_SHORT).show();
+		ViewTypeSwitcherTask viewTypeSwitcher = new ViewTypeSwitcherTask(this, myViewPager, wvpageadapter, loadweekdata, vt);
+		viewTypeSwitcher.execute();
+//		viewtype = vt;
+//		loadweekdata.changeViewType(vt);
+//		wvpageadapter.reset(this);
+//
+//		for(int i=0; i<myViewPager.getChildCount(); i++){
+//			ScrollView scr = (ScrollView)myViewPager.getChildAt(i);
+//			scr.removeAllViews();
+//		}
+//		myViewPager.removeAllViews();
+//		wvpageadapter.notifyDataSetChanged();
+//		
+//		Log.d("basti",vt.getName() + " weekview");
+//		Toast.makeText(this, vt.getName(), Toast.LENGTH_SHORT).show();
 	}
 }
