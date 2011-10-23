@@ -96,6 +96,11 @@ class LoadDataTask extends AsyncTask<Void, String, Void> {
 		this.settings = settings;
 	}
 	
+	public void changeViewType(ViewType newvt){
+		viewtype = newvt;
+		contentmanager.setViewType(viewtype);
+	}
+	
 	private String getString(int resId) {
 		return context.getString(resId);
 	}

@@ -28,6 +28,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.gui.timetable.WeekView;
 import edu.htl3r.schoolplanner.gui.timetable.Eyecandy.WeekHeader;
 import edu.htl3r.schoolplanner.gui.timetable.Eyecandy.WeekTimeGrid;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIDay;
@@ -61,11 +63,15 @@ public class WeekLayout extends ViewGroup{
 	
 	private OnLessonsClickListener clicklistener;
 	private OverlayInfo weekoverlay;
+	
+	private WeekView weekview;
 
-	public WeekLayout(Context context, int id) {
+	public WeekLayout(Context context, int id, WeekView wv) {
 		super(context);
 		this.context = context;
 		this.ID = id;
+		this.weekview = wv;
+		
 		
 		clicklistener = new OnLessonsClickListener();
 		weekoverlay = new OverlayInfo(context);
@@ -253,12 +259,15 @@ public class WeekLayout extends ViewGroup{
 		return (isDataHere()) ? weekdata.getSortDates().get(0) : new DateTime();
 	}
 	
+	public ViewType getVT(){
+		return weekdata.getViewType();
+	}
 	
 	private class OnLessonsClickListener implements OnClickListener{
 		@Override
 		public void onClick(View v) {
 			LessonView l = (LessonView)v;
-			weekoverlay.setData(l.getLessonsContainer(),l.getViewType());
+			weekoverlay.setData(l.getLessonsContainer(),l.getViewType(),weekview);
 			weekoverlay.show();
 			Log.d("basti",l.getTime().toString());			
 		}

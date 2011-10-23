@@ -36,22 +36,24 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 	private int oldpos = NUM_SCREENS / 2;
 	private WeekLayout view_cach[] = new WeekLayout[NUM_SCREENS];
 	private BlockingDownloadQueue downloadschlange;
+	private WeekView weekview;
 	
 	public void setDate(DateTime dt) {
 		date = dt;
 	}
-
+	
 	public synchronized void setWeeData(GUIWeek data, int pos) {
 		if (!view_cach[pos].isDataHere() && data != null) {
 			view_cach[pos].setWeekData(data);
 		}
 	}
 
-	public void setContext(Context c, BlockingDownloadQueue bd) {
+	public void setContext(Context c, BlockingDownloadQueue bd, WeekView wv) {
 		context = c;
 		downloadschlange = bd;
+		weekview = wv;
 		for (int i = 0; i < view_cach.length; i++) {
-			view_cach[i] = new WeekLayout(context, i);
+			view_cach[i] = new WeekLayout(context, i, wv);
 		}
 	}
 
@@ -116,7 +118,11 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 	
 
 	public int getItemPosition(Object object) {
-		return oldpos - 1;
+		return POSITION_NONE;
+	}
+	
+	public int getPosition(){
+		return oldpos-1;
 	}
 
 	@Override
@@ -125,6 +131,14 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 		DateTime ad = new DateTime();
 		ad.set(date.getDay() + (di * 7), date.getMonth(), date.getYear());
 		return ad.getDay() + "." + ad.getMonth() + "." + ad.getYear();
+	}
+	
+	public void reset(WeekView wv){
+		weekview = wv;
+		view_cach = new WeekLayout[NUM_SCREENS];
+		for (int i = 0; i < view_cach.length; i++) {
+			view_cach[i] = new WeekLayout(context, i, wv);
+		}
 	}
 
 }

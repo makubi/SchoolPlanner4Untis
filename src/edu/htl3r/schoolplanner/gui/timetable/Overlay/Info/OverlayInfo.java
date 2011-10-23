@@ -27,6 +27,7 @@ import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
+import edu.htl3r.schoolplanner.gui.timetable.WeekView;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUILessonContainer;
 
 public class OverlayInfo extends Dialog{
@@ -36,6 +37,7 @@ public class OverlayInfo extends Dialog{
 	private LinearLayout container;
 	private HorizontalScrollView scrollview;
 	private ArrayList<OverlayInfoLesson> overlaylessons = new ArrayList<OverlayInfoLesson>();
+	private OverlayInfoViewTypeChangeListener changevtlistener = new OverlayInfoViewTypeChangeListener();
 	
 	public OverlayInfo(Context context) {
 		super(context);
@@ -47,7 +49,7 @@ public class OverlayInfo extends Dialog{
 	}
 
 
-	public void setData(GUILessonContainer lessonsContainer, ViewType viewType) {
+	public void setData(GUILessonContainer lessonsContainer, ViewType viewType, WeekView wv) {
 		lessons = lessonsContainer;
 		scrollview.scrollTo(0, 0);
 		DateTime start = lessons.getStart();
@@ -61,10 +63,12 @@ public class OverlayInfo extends Dialog{
 		container.removeAllViews();
 		overlaylessons.clear();
 		
+		changevtlistener.setData(this, wv);
+		
 		ArrayList<Lesson> allLessons = lessons.getAllLessons();
 		for(Lesson l :  allLessons){
 			OverlayInfoLesson ol = new OverlayInfoLesson(getContext());
-			ol.setData(l,viewType);
+			ol.setData(l,viewType,changevtlistener);
 			overlaylessons.add(ol);
 			ScrollView scr = new ScrollView(getContext());
 			scr.addView(ol);

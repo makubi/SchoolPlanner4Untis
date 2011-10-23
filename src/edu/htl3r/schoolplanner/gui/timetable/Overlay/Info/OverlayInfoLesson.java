@@ -48,15 +48,17 @@ public class OverlayInfoLesson extends ViewGroup {
 	private LessonCode lcode;
 	private ViewType viewtype;
 	private int width, height;
+	private OverlayInfoViewTypeChangeListener changevtlistener;
 
 	public OverlayInfoLesson(Context context) {
 		super(context);
 	}
 
-	public void setData(Lesson l, ViewType vt) {
+	public void setData(Lesson l, ViewType vt, OverlayInfoViewTypeChangeListener listener) {
 		lesson = l;
 		lcode = lesson.getLessonCode();
 		viewtype = vt;
+		changevtlistener = listener;
 		setBackground();
 		paintText();
 	}
@@ -71,7 +73,6 @@ public class OverlayInfoLesson extends ViewGroup {
 				continue;
 			}
 			ViewTypeBox c = (ViewTypeBox) getChildAt(i);
-			Log.d("basti", "breit: " + c.getDesiredWidth());
 			measureChild(c, MeasureSpec.makeMeasureSpec(c.getDesiredWidth(), MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(c.getDesiredHeight(), MeasureSpec.EXACTLY));
 		}
 		setMeasuredDimension(width, height);
@@ -134,9 +135,6 @@ public class OverlayInfoLesson extends ViewGroup {
 		String line2 = start + " - " + end;
 		canvas.drawText(line1, width - marginleft - StaticLayout.getDesiredWidth(line1, new TextPaint(p)), height-marginbottom-(linespace/2), p);
 		canvas.drawText(line2, width - marginleft - StaticLayout.getDesiredWidth(line2, new TextPaint(p)), height-marginbottom, p);
-		
-		
-		
 	}
 
 	private void setBackground() {
@@ -173,18 +171,26 @@ public class OverlayInfoLesson extends ViewGroup {
 		List<SchoolTeacher> schoolTeachers = lesson.getSchoolTeachers();
 
 		int color = getBackgroundColor();
-		
+		ViewTypeBox vtb;
 		for (SchoolClass s : schoolClasses) {
-			addView(new ViewTypeBox(getContext(), s,color));
+			vtb = new ViewTypeBox(getContext(), s,color);
+			vtb.setOnClickListener(changevtlistener);
+			addView(vtb);
 		}
 		for (SchoolRoom s : schoolRooms) {
-			addView(new ViewTypeBox(getContext(), s,color));
+			vtb = new ViewTypeBox(getContext(), s,color);
+			vtb.setOnClickListener(changevtlistener);
+			addView(vtb);
 		}
 		for (SchoolSubject s : schoolSubjects) {
-			addView(new ViewTypeBox(getContext(), s,color));
+			vtb = new ViewTypeBox(getContext(), s,color);
+			vtb.setOnClickListener(changevtlistener);
+			addView(vtb);
 		}
 		for (SchoolTeacher s : schoolTeachers) {
-			addView(new ViewTypeBox(getContext(), s,color));
+			vtb = new ViewTypeBox(getContext(), s,color);
+			vtb.setOnClickListener(changevtlistener);
+			addView(vtb);
 		}
 	}
 
@@ -270,26 +276,6 @@ public class OverlayInfoLesson extends ViewGroup {
 			len+=v.getDesiredWidth()+20;
 		}
 		return len;
-	}
-	
-
-	private ArrayList<String> splitString(String s, TextPaint tp) {
-
-		String[] tmp = s.split(" ");
-		StringBuilder sb = new StringBuilder();
-		ArrayList<String> ret = new ArrayList<String>();
-
-		for (int i = 0; i < tmp.length; i++) {
-			if (StaticLayout.getDesiredWidth(sb.toString() + " " + tmp[i], tp) > width) {
-				ret.add(sb.toString().trim());
-				sb = new StringBuilder();
-				sb.append(tmp[i]);
-			} else {
-				sb.append(" " + tmp[i]);
-			}
-		}
-		ret.add(sb.toString());
-		return ret;
 	}
 
 }

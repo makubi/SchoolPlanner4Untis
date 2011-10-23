@@ -87,7 +87,6 @@ public class RenderInfoWeekTable implements WebUntis {
 			DateTime dateTime = (DateTime) element;
 			List<Lesson> lessons = weekdata.get(DateTimeUtils.toISO8601Date(dateTime));
 			GUIDay d = analyseDay(dateTime, lessons);
-			Log.d("basti", lessons.toString());
 			week.setGUIDay(dateTime, d);
 		}
 		week.setViewType(viewtype);

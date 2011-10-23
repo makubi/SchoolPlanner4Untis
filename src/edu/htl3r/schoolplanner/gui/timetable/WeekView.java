@@ -29,6 +29,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ScrollView;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
@@ -107,7 +108,7 @@ public class WeekView extends SchoolPlannerActivity {
 		indicator = (ViewPagerIndicator) findViewById(R.id.week_indicator);
 
 		wvpageadapter = new WeekViewPageAdapter();
-		wvpageadapter.setContext(this, downloadschlange);
+		wvpageadapter.setContext(this, downloadschlange,this);
 		wvpageadapter.setDate(getMonday());
 
 		myViewPager.setAdapter(wvpageadapter);
@@ -182,5 +183,20 @@ public class WeekView extends SchoolPlannerActivity {
 		}
 		myViewPager.setCurrentItem(50 + count);
 	}
+	
+	public void changeViewType(ViewType vt){
+		viewtype = vt;
+		loadweekdata.changeViewType(vt);
+		wvpageadapter.reset(this);
 
+		for(int i=0; i<myViewPager.getChildCount(); i++){
+			ScrollView scr = (ScrollView)myViewPager.getChildAt(i);
+			scr.removeAllViews();
+		}
+		myViewPager.removeAllViews();
+		wvpageadapter.notifyDataSetChanged();
+		
+		Log.d("basti",vt.getName() + " weekview");
+		Toast.makeText(this, vt.getName(), Toast.LENGTH_SHORT).show();
+	}
 }

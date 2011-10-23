@@ -50,15 +50,28 @@ public class ViewTypeBox extends View {
 
 		s = new StaticLayout(toString(), paint, getDesiredWidth(),Alignment.ALIGN_CENTER, 0, 0, true);
 		
+		setBackground(false);
+
+	}
+	
+	public void setBackground(boolean touch){
+		int colors [] = new int[2];
 		if(background != Color.WHITE){
 			int startg = Color.argb(10, Color.red(background),Color.green(background), Color.blue(background));
 			int endg = Color.argb(100, Color.red(background),Color.green(background), Color.blue(background));
-			int colors[] = { endg, startg };
+			
+			if(!touch){
+				 colors[0] = endg;
+				 colors[1] = startg;
+			}else{
+				 colors[1] = 17170457;
+				 colors[0] = 17170457;
+			}
+			
 			GradientDrawable drawable = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, colors);
 			// 	drawable.setAlpha(80);
 			setBackgroundDrawable(drawable);
 		}
-
 	}
 
 	@Override
