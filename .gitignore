@@ -1,6 +1,7 @@
 .classpath
 .project
 .settings/
+project.properties
 bin/
 doc/
 gen/

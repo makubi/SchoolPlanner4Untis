@@ -58,11 +58,21 @@ public class WeekView extends SchoolPlannerActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.basti_weekview);
 		initViewPager();
-
-		viewtype = (ViewType) getIntent().getExtras().getSerializable(BundleConstants.SELECTED_VIEW_TYPE);
+		loadViewType();
+		
 		loadweekdata  = new LoadDataTask();
 		loadweekdata.setData(this, ((SchoolPlannerApp) getApplication()).getData(), this, viewtype, downloadschlange, ((SchoolPlannerApp) getApplication()).getSettings());
 		loadweekdata.execute();
+	}
+	
+	private void loadViewType(){
+	    final Object data = getLastNonConfigurationInstance();
+	    
+	    if(data == null){
+			viewtype = (ViewType) getIntent().getExtras().getSerializable(BundleConstants.SELECTED_VIEW_TYPE);
+	    }else{
+	    	viewtype = (ViewType)data;
+	    }
 	}
 
 	private DateTime getMonday() {
@@ -184,20 +194,13 @@ public class WeekView extends SchoolPlannerActivity {
 	}
 	
 	public void changeViewType(ViewType vt){
+		viewtype = vt;
 		ViewTypeSwitcherTask viewTypeSwitcher = new ViewTypeSwitcherTask(this, myViewPager, wvpageadapter, loadweekdata, vt);
 		viewTypeSwitcher.execute();
-//		viewtype = vt;
-//		loadweekdata.changeViewType(vt);
-//		wvpageadapter.reset(this);
-//
-//		for(int i=0; i<myViewPager.getChildCount(); i++){
-//			ScrollView scr = (ScrollView)myViewPager.getChildAt(i);
-//			scr.removeAllViews();
-//		}
-//		myViewPager.removeAllViews();
-//		wvpageadapter.notifyDataSetChanged();
-//		
-//		Log.d("basti",vt.getName() + " weekview");
-//		Toast.makeText(this, vt.getName(), Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	public Object onRetainNonConfigurationInstance() {
+		return viewtype;
 	}
 }
