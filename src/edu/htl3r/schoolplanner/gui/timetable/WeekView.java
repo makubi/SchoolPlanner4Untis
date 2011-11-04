@@ -59,20 +59,23 @@ public class WeekView extends SchoolPlannerActivity {
 		setContentView(R.layout.basti_weekview);
 		initViewPager();
 		loadViewType();
-		
-		loadweekdata  = new LoadDataTask();
-		loadweekdata.setData(this, ((SchoolPlannerApp) getApplication()).getData(), this, viewtype, downloadschlange, ((SchoolPlannerApp) getApplication()).getSettings());
-		loadweekdata.execute();
+		initDownloadQueue();		
+	}
+
+	private void loadViewType() {
+		final Object data = getLastNonConfigurationInstance();
+
+		if (data == null) {
+			viewtype = (ViewType) getIntent().getExtras().getSerializable(BundleConstants.SELECTED_VIEW_TYPE);
+		} else {
+			viewtype = (ViewType) data;
+		}
 	}
 	
-	private void loadViewType(){
-	    final Object data = getLastNonConfigurationInstance();
-	    
-	    if(data == null){
-			viewtype = (ViewType) getIntent().getExtras().getSerializable(BundleConstants.SELECTED_VIEW_TYPE);
-	    }else{
-	    	viewtype = (ViewType)data;
-	    }
+	private void initDownloadQueue(){
+		loadweekdata = new LoadDataTask();
+		loadweekdata.setData(this,((SchoolPlannerApp) getApplication()).getData(), this,viewtype, downloadschlange,	((SchoolPlannerApp) getApplication()).getSettings());
+		loadweekdata.execute();
 	}
 
 	private DateTime getMonday() {
@@ -95,7 +98,7 @@ public class WeekView extends SchoolPlannerActivity {
 			OutputTransferObject result = (OutputTransferObject) msg.obj;
 			wvpageadapter.setWeeData(result.getWeek(), result.getPos());
 
-			if (result.getWeek() !=null && holidays == null)
+			if (result.getWeek() != null && holidays == null)
 				holidays = result.getWeek().getHolidays();
 		}
 	};
@@ -112,12 +115,30 @@ public class WeekView extends SchoolPlannerActivity {
 		super.onDestroy();
 	}
 
+	@Override
+	protected void onResume() {
+		if (downloadschlange.isInterrupted()) {
+			downloadschlange.reset();
+			initDownloadQueue();		
+		}
+		super.onResume();
+	}
+
+	@Override
+	protected void onRestart() {
+		if (downloadschlange.isInterrupted()) {
+			downloadschlange.reset();			
+			initDownloadQueue();		
+		}
+		super.onRestart();
+	}
+
 	private void initViewPager() {
 		myViewPager = (ViewPager) findViewById(R.id.week_pager);
 		indicator = (ViewPagerIndicator) findViewById(R.id.week_indicator);
 
 		wvpageadapter = new WeekViewPageAdapter();
-		wvpageadapter.setContext(this, downloadschlange,this);
+		wvpageadapter.setContext(this, downloadschlange, this);
 		wvpageadapter.setDate(getMonday());
 
 		myViewPager.setAdapter(wvpageadapter);
@@ -151,6 +172,9 @@ public class WeekView extends SchoolPlannerActivity {
 				overlaymonth.show();
 			}
 			return true;
+		case R.id.timetable_refresh:
+			changeViewType(viewtype);
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -161,8 +185,10 @@ public class WeekView extends SchoolPlannerActivity {
 		d.setHour(0);
 		d.setMinute(0);
 		d.setSecond(0);
-		
-		Toast.makeText(this, date.getDay()+"."+date.getMonth()+"."+date.getYear(), Toast.LENGTH_SHORT).show();
+
+		Toast.makeText(this,
+				date.getDay() + "." + date.getMonth() + "." + date.getYear(),
+				Toast.LENGTH_SHORT).show();
 		if (d.getWeekDay() == Time.SUNDAY) {
 			d.increaseDay();
 		} else {
@@ -170,12 +196,12 @@ public class WeekView extends SchoolPlannerActivity {
 				d.decreaseDay();
 			}
 		}
-		
+
 		DateTime now = getMonday().clone();
 		now.setHour(0);
 		now.setMinute(0);
 		now.setSecond(0);
-				
+
 		int count = 0;
 
 		if (d.compareTo(now) < 0) {
@@ -192,13 +218,14 @@ public class WeekView extends SchoolPlannerActivity {
 		}
 		myViewPager.setCurrentItem(50 + count);
 	}
-	
-	public void changeViewType(ViewType vt){
+
+	public void changeViewType(ViewType vt) {
 		viewtype = vt;
-		ViewTypeSwitcherTask viewTypeSwitcher = new ViewTypeSwitcherTask(this, myViewPager, wvpageadapter, loadweekdata, vt);
+		ViewTypeSwitcherTask viewTypeSwitcher = new ViewTypeSwitcherTask(this,
+				myViewPager, wvpageadapter, loadweekdata, vt);
 		viewTypeSwitcher.execute();
 	}
-	
+
 	@Override
 	public Object onRetainNonConfigurationInstance() {
 		return viewtype;

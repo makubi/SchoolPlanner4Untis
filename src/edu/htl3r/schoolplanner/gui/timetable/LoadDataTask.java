@@ -38,7 +38,7 @@ public class LoadDataTask extends AsyncTask<Void, String, Void> {
 
 	@Override
 	protected void onPreExecute() {
-		publishProgress(getString(R.string.timetable_create_objects), "true");	// TODO: Ist diese Anzeige fuer den Benutzer wichtig?
+		//publishProgress(getString(R.string.timetable_create_objects), "true");	// TODO: Ist diese Anzeige fuer den Benutzer wichtig?
 		contentmanager.setNeededData(context, cache);
 		contentmanager.setViewType(viewtype);
 		contentmanager.setSettings(settings);

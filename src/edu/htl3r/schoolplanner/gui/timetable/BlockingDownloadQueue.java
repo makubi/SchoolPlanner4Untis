@@ -35,4 +35,9 @@ public class BlockingDownloadQueue extends LinkedBlockingQueue<TransferObject> {
 		return isInterrupted;
 	}
 
+	public void reset(){
+		this.clear();
+		isInterrupted = false;
+	}
+	
 }

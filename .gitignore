@@ -2,6 +2,7 @@
 .project
 .settings/
 project.properties
+default.properties
 bin/
 doc/
 gen/

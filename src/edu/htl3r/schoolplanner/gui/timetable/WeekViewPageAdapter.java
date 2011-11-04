@@ -35,7 +35,7 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 	private Context context;
 	private int oldpos = NUM_SCREENS / 2;
 	private WeekLayout view_cach[] = new WeekLayout[NUM_SCREENS];
-	private BlockingDownloadQueue downloadschlange;
+	private BlockingDownloadQueue downloadschlange = new BlockingDownloadQueue();
 	private WeekView weekview;
 	
 	public void setDate(DateTime dt) {
