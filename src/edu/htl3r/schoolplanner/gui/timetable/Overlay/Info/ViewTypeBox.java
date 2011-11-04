@@ -38,10 +38,12 @@ public class ViewTypeBox extends View {
 	private TextPaint paint;
 	private int background;
 	private StaticLayout s;
+	private boolean substiviewtype = false;
 
-	public ViewTypeBox(Context context, ViewType vt, int background) {
+	public ViewTypeBox(Context context, ViewType vt, int background, boolean subs) {
 		super(context);
 		viewtype = vt;
+		this.substiviewtype = subs;
 		this.background = background;
 		paint = new TextPaint();
 		paint.setColor(Color.BLACK);
@@ -100,7 +102,7 @@ public class ViewTypeBox extends View {
 	}
 
 	public int getDesiredWidth() {
-		return (int) StaticLayout.getDesiredWidth(viewtype.getName(), paint);
+		return (int) StaticLayout.getDesiredWidth(toString(), paint);
 	}
 
 	public int getDesiredHeight() {
@@ -109,6 +111,10 @@ public class ViewTypeBox extends View {
 
 	@Override
 	public String toString() {
-		return viewtype.getName();
+		if(!substiviewtype)
+			return viewtype.getName();
+		else
+			return "("+viewtype.getName()+")";
 	}
+	
 }

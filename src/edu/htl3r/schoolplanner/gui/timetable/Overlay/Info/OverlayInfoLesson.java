@@ -33,9 +33,11 @@ import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCode;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeCancelled;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeIrregular;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeStandby;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
@@ -169,29 +171,48 @@ public class OverlayInfoLesson extends ViewGroup {
 		List<SchoolRoom> schoolRooms = lesson.getSchoolRooms();
 		List<SchoolSubject> schoolSubjects = lesson.getSchoolSubjects();
 		List<SchoolTeacher> schoolTeachers = lesson.getSchoolTeachers();
-
 		int color = getBackgroundColor();
 		ViewTypeBox vtb;
+		
 		for (SchoolClass s : schoolClasses) {
-			vtb = new ViewTypeBox(getContext(), s,color);
+			vtb = new ViewTypeBox(getContext(), s,color,false);
 			vtb.setOnClickListener(changevtlistener);
 			addView(vtb);
+			
 		}
 		for (SchoolRoom s : schoolRooms) {
-			vtb = new ViewTypeBox(getContext(), s,color);
+			vtb = new ViewTypeBox(getContext(), s,color,false);
 			vtb.setOnClickListener(changevtlistener);
 			addView(vtb);
 		}
 		for (SchoolSubject s : schoolSubjects) {
-			vtb = new ViewTypeBox(getContext(), s,color);
+			vtb = new ViewTypeBox(getContext(), s,color,false);
 			vtb.setOnClickListener(changevtlistener);
 			addView(vtb);
 		}
 		for (SchoolTeacher s : schoolTeachers) {
-			vtb = new ViewTypeBox(getContext(), s,color);
+			vtb = new ViewTypeBox(getContext(), s,color,false);
 			vtb.setOnClickListener(changevtlistener);
 			addView(vtb);
 		}
+		
+		
+		
+		if(lesson.getLessonCode() instanceof LessonCodeSubstitute){
+			LessonCodeSubstitute lc = (LessonCodeSubstitute) lesson.getLessonCode();
+			if(lc.getOriginSchoolRoom() != null){
+				vtb = new ViewTypeBox(getContext(), lc.getOriginSchoolRoom(), color, true);
+				vtb.setOnClickListener(changevtlistener);
+				addView(vtb);
+			}
+			if(lc.getOriginSchoolTeacher() != null){
+				vtb = new ViewTypeBox(getContext(), lc.getOriginSchoolTeacher(), color, true);
+				vtb.setOnClickListener(changevtlistener);
+				addView(vtb);
+			}
+			
+		}
+		
 	}
 
 	@Override
