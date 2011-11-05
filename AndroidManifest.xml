@@ -1,33 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="edu.htl3r.schoolplanner" android:versionCode="26"
-	android:versionName="2.0.4">
-	
-	<application android:icon="@drawable/logo"
-		android:label="@string/app_name" android:name=".SchoolPlannerApp" 
-		style="@style/background_layout">
-		
-		<activity android:name=".gui.WelcomeScreen" android:theme="@android:style/Theme.NoTitleBar" android:configChanges="orientation|keyboardHidden">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
+    package="edu.htl3r.schoolplanner"
+    android:versionCode="26"
+    android:versionName="2.0.4" >
 
-		<activity android:name=".gui.SelectScreen" android:theme="@android:style/Theme.NoTitleBar" />
-		<activity android:name=".gui.settings.SettingsScreen" android:theme="@android:style/Theme.NoTitleBar" />
-		
-		<activity android:name=".gui.timetable.WeekView" android:theme="@android:style/Theme.NoTitleBar" />
-		
-		<receiver android:name=".gui.timetable.GUIErrorHandler">
-			<intent-filter>
-    			<action android:name="edu.htl3r.schoolplanner.gui.ERRORMSG" />
-  			</intent-filter>
-		</receiver>
-	</application>
+    <application
+        style="@style/background_layout"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:name=".SchoolPlannerApp" >
+        <activity android:configChanges="orientation|keyboardHidden" android:name=".gui.WelcomeScreen" android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name=".gui.SelectScreen" android:theme="@android:style/Theme.NoTitleBar" android:launchMode="singleTop">
+            
+            <intent-filter >
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
 
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        
+        <provider android:name="edu.htl3r.schoolplanner.gui.SelectScreenSavedSearches" android:authorities="edu.htl3r.schoolplanner.gui.SelectScreenSavedSearches" />
+            
+           
+        
+        <activity
+            android:name=".gui.settings.SettingsScreen"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        
+        <activity
+            android:name=".gui.timetable.WeekView"
+            android:theme="@android:style/Theme.NoTitleBar" />
 
-	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-	<uses-sdk android:minSdkVersion="7" android:targetSdkVersion="7"></uses-sdk>
-</manifest> 
+        <receiver android:name=".gui.timetable.GUIErrorHandler" >
+            <intent-filter >
+                <action android:name="edu.htl3r.schoolplanner.gui.ERRORMSG" />
+            </intent-filter>
+        </receiver>
+        
+            
+            
+    </application>
+
+    <uses-permission android:name="android.permission.INTERNET" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
+    </uses-permission>
+
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="7" >
+    </uses-sdk>
+
+</manifest>

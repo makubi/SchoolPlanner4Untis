@@ -57,7 +57,7 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 		lastSelectedPosition = position;
 	}
 
-	private ViewType getViewType(int position) {
+	public ViewType getViewType(int position) {
 		return list.get(position);
 	}
 	

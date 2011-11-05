@@ -19,7 +19,9 @@ package edu.htl3r.schoolplanner.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.SearchManager;
 import android.content.Intent;
+import android.content.SearchRecentSuggestionsProvider;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
@@ -29,12 +31,16 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Adapter;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
@@ -81,6 +87,49 @@ public class SelectScreen extends SchoolPlannerActivity {
 		setContentView(R.layout.select_screen);
 		
 		initSpinner();
+		checkSearch(getIntent());
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		setIntent(intent);
+		checkSearch(intent);
+	}
+	
+	private void checkSearch(Intent intent){
+	    if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+	      String query = intent.getStringExtra(SearchManager.QUERY);
+	      Log.d("basti", "Search String: " + query);
+	      
+	      SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SelectScreenSavedSearches.AUTHORITY, SelectScreenSavedSearches.MODE);	 
+	      suggestions.saveRecentQuery(query, null);
+	      
+	      if(searchForSearchResults(classSpinner, query))return;
+	      if(searchForSearchResults(roomSpinner, query))return;
+	      if(searchForSearchResults(teacherSpinner, query))return;
+	      if(searchForSearchResults(subjectSpinner, query))return;
+	      
+	      Toast.makeText(this, "Nothing found", Toast.LENGTH_SHORT).show();
+	    }
+	}
+	
+	private boolean searchForSearchResults(Spinner spinner, String query){
+	      ArrayAdapter<String> spinneradapter = (ArrayAdapter<String>) spinner.getAdapter();
+		  ViewTypeSpinnerOnItemSelectedListener onItemClickListener = (ViewTypeSpinnerOnItemSelectedListener) spinner.getOnItemSelectedListener();
+		  
+	      for(int i=0; i<spinneradapter.getCount(); i++){
+	    	  String sname = onItemClickListener.getViewType(i).getName();
+	    	  String lname = onItemClickListener.getViewType(i).getLongName();
+	    	  if(sname.equalsIgnoreCase(query)){
+	    		  onItemClickListener.fireEvent(i);
+	    		  return true;
+	    	  }
+	    	  if(lname.length() > 4 && lname.toLowerCase().contains(query.toLowerCase())){
+	    		  onItemClickListener.fireEvent(i);
+	    		  return true;
+	    	  }
+	      }
+	      return false;
 	}
 
 	private void retrieveSpinnerData() {
@@ -347,4 +396,10 @@ public class SelectScreen extends SchoolPlannerActivity {
 		return loadingTimetable;
 	}
 
+	@Override
+	public boolean onSearchRequested() {
+		
+		return super.onSearchRequested();
+	}
+	
 }
