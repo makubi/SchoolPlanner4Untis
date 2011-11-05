@@ -6,4 +6,11 @@
     <string name="info_dialog_thanks">Vielen Dank an alle, die uns beim Entwickeln dieser App helfen und unterstützen.</string>
     <string name="info_dialog_development">Entwickelt nach bestem Wissen und Gewissen. Bei Risiken oder Nebenwirkungen, fragen Sie uns.</string>
     <string name="info_dialog_license">Diese App ist unter der GPLv3 lizenziert</string>
+    <string name="info_dialog_web">
+    Weitere Informationen sind unter folgenden Addressen zu finden:
+    \n\nteam@schoolplanner.at
+    \n\nhttp://www.schoolplanner.at
+    \n\nhttp://www.facebook.com/SchoolPlanner4Untis
+    \n\nhttps://github.com/makubi/SchoolPlanner4Untis
+    </string>
 </resources>

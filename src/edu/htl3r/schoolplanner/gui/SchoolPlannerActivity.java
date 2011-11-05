@@ -20,6 +20,9 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -67,7 +70,24 @@ public abstract class SchoolPlannerActivity extends Activity {
 		super.onPostCreate(savedInstanceState);
 		progressWheel = (ProgressBar) findViewById(R.id.loginProgress);
 		loginProgressText = (TextView) findViewById(R.id.loginProgressText);
+		
+		buildInfoDialog();
 	}
+
+	private void buildInfoDialog() {
+		infoDialog = new Dialog(this);
+		infoDialog.setContentView(R.layout.info_dialog);
+		infoDialog.setTitle(R.string.info_dialog_title);
+		infoDialog.setCancelable(true);
+		
+		// Links clickable
+		final TextView infoDialogLinks = (TextView) infoDialog.findViewById(R.id.info_dialog_links);
+		final SpannableString clickableText = new SpannableString(infoDialogLinks.getText());
+		Linkify.addLinks(clickableText, Linkify.ALL);
+		infoDialogLinks.setText(clickableText);
+		infoDialogLinks.setMovementMethod(LinkMovementMethod.getInstance());
+	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -85,10 +105,6 @@ public abstract class SchoolPlannerActivity extends Activity {
 			startActivity(new Intent(this, SettingsScreen.class));
 			return true;
 		case R.id.menu_info:
-			infoDialog = new Dialog(this);
-			infoDialog.setContentView(R.layout.info_dialog);
-			infoDialog.setTitle(R.string.info_dialog_title);
-			infoDialog.setCancelable(true);
 			infoDialog.show();
 		default:
 			return super.onOptionsItemSelected(item);
