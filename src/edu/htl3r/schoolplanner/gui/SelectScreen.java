@@ -21,7 +21,6 @@ import java.util.List;
 
 import android.app.SearchManager;
 import android.content.Intent;
-import android.content.SearchRecentSuggestionsProvider;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
@@ -33,14 +32,15 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Adapter;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
@@ -400,6 +400,25 @@ public class SelectScreen extends SchoolPlannerActivity {
 	public boolean onSearchRequested() {
 		
 		return super.onSearchRequested();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.selectscreen_menu, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.selectscreen_menu_search:
+			onSearchRequested();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 	
 }

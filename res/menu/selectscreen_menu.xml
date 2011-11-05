@@ -1,0 +1,6 @@
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<item android:id="@+id/selectscreen_menu_search" 
+		android:icon="@drawable/ic_menu_search" android:title="@string/selectscreen_menu_search_title" />
+</menu>

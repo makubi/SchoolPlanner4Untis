@@ -9,4 +9,7 @@
     
     <string name="selectscreen_search">Search through master data</string>
     <string name="selectscreen_search_fail">Nothing found</string>
+    
+    <!-- Menu -->
+    <string name="selectscreen_menu_search_title">Search</string>
 </resources>

@@ -10,4 +10,6 @@
     <string name="selectscreen_search">Suche Stammdaten</string>
     <string name="selectscreen_search_fail">Nichts gefunden</string>
     
+    <!-- Menu -->
+    <string name="selectscreen_menu_search_title">Suche</string>
 </resources>
