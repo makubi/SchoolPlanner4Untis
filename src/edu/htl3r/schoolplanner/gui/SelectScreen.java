@@ -105,8 +105,8 @@ public class SelectScreen extends SchoolPlannerActivity {
 	      suggestions.saveRecentQuery(query, null);
 	      
 	      if(searchForSearchResults(classSpinner, query))return;
-	      if(searchForSearchResults(roomSpinner, query))return;
 	      if(searchForSearchResults(teacherSpinner, query))return;
+	      if(searchForSearchResults(roomSpinner, query))return;
 	      if(searchForSearchResults(subjectSpinner, query))return;
 	      
 	      Toast.makeText(this, getResources().getString(R.string.selectscreen_search_fail), Toast.LENGTH_SHORT).show();
