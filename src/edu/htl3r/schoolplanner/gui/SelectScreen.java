@@ -109,7 +109,7 @@ public class SelectScreen extends SchoolPlannerActivity {
 	      if(searchForSearchResults(teacherSpinner, query))return;
 	      if(searchForSearchResults(subjectSpinner, query))return;
 	      
-	      Toast.makeText(this, "Nothing found", Toast.LENGTH_SHORT).show();
+	      Toast.makeText(this, getResources().getString(R.string.selectscreen_search_fail), Toast.LENGTH_SHORT).show();
 	    }
 	}
 	

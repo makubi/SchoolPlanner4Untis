@@ -6,4 +6,8 @@
     <string name="selectscreen_teacher">Lehrer</string>
     <string name="selectscreen_rooms">Räume</string>
     <string name="selectscreen_subjects">Fächer</string>
+    
+    <string name="selectscreen_search">Suche Stammdaten</string>
+    <string name="selectscreen_search_fail">Nichts gefunden</string>
+    
 </resources>

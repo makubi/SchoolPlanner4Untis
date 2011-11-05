@@ -6,4 +6,7 @@
     <string name="selectscreen_teacher">Teachers</string>
     <string name="selectscreen_rooms">Rooms</string>
     <string name="selectscreen_subjects">Subjects</string>
+    
+    <string name="selectscreen_search">Search through master data</string>
+    <string name="selectscreen_search_fail">Nothing found</string>
 </resources>
