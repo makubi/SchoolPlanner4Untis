@@ -17,12 +17,15 @@
 package edu.htl3r.schoolplanner.gui.timetable.GUIData;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import android.text.format.Time;
 import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
@@ -41,7 +44,7 @@ public class RenderInfoWeekTable implements WebUntis {
 
 	private Map<String, List<Lesson>> weekdata;
 
-	private Timegrid timegrid;
+	private Timegrid timegridRaw;	
 	private List<SchoolHoliday> holidays;
 	private ViewType viewtype;
 
@@ -60,7 +63,7 @@ public class RenderInfoWeekTable implements WebUntis {
 	}
 
 	public void setTimeGrid(Timegrid t) {
-		timegrid = t;
+		timegridRaw = t;
 	}
 
 	public void setViewType(ViewType vt) {
@@ -80,60 +83,96 @@ public class RenderInfoWeekTable implements WebUntis {
 			String string = (String) element;
 			dates.add(DateTimeUtils.iso8601StringToDateTime(string));
 		}
-
+		
+		HashMap<DateTime, List<TimegridUnit>> timegrid = initTimeGrid(timegridRaw, dates);
 		GUIWeek week = new GUIWeek();
 
+		
 		for (Object element : dates) {
 			DateTime dateTime = (DateTime) element;
 			List<Lesson> lessons = weekdata.get(DateTimeUtils.toISO8601Date(dateTime));
-			GUIDay d = analyseDay(dateTime, lessons);
+			GUIDay d = analyseDay(dateTime, lessons, timegrid.get(dateTime));
 			week.setGUIDay(dateTime, d);
 		}
 		week.setViewType(viewtype);
-		week.setTimegrid(timegridForDateTimeDay);
+		week.setTimegrid(getMondayTimeGrid(timegrid));
 		week.setHolidays(holidays);
 		return week;
 	}
 
-	private List<TimegridUnit> timegridForDateTimeDay;
 	private TimegridUnit zerolesson = null;
-	private List<TimegridUnit> timegridForDay = null;
 
-	private GUIDay analyseDay(DateTime date, List<Lesson> lessons) {
+	
+	private List<TimegridUnit> getMondayTimeGrid(HashMap<DateTime, List<TimegridUnit>> timegrid){
+		Set<DateTime> keySet = timegrid.keySet();
+		List<TimegridUnit> ret = null;
+		for(DateTime d : keySet){
+			if(d.getWeekDay() == Time.MONDAY){
+				ret = timegrid.get(d);
+				break;
+			}else{
+				ret = timegrid.get(d);
+			}
+		}
+		return ret;
+	}
+	
+	private HashMap<DateTime, List<TimegridUnit>> initTimeGrid(Timegrid timegrid, TreeSet<DateTime> dates){
+		
+		boolean dispZerolesson = settings.isDisplayZerothLesson();
+		HashMap<DateTime, List<TimegridUnit>> ergebnis = new HashMap<DateTime, List<TimegridUnit>>();
+		
+		for(DateTime tmp : dates){
+			List<TimegridUnit> timegridraw = timegrid.getTimegridForDateTimeDay(tmp.getWeekDay());
+			List<TimegridUnit> tmplist = new ArrayList<TimegridUnit>();
+			
+			
+			if(timegridraw != null){
+				for(TimegridUnit tunit : timegridraw){
+					
+					if (!dispZerolesson) {
+						if (tunit.getName().equals("0") && tunit.getEnd().getHour() <= 8 && tunit.getEnd().getMinute() == 0) {
+							zerolesson = tunit;
+						} else {
+							tmplist.add(tunit);
+						}
+					} else {
+						tmplist.add(tunit);
+					}	
+				}
+				
+			}else{
+				Log.e("basti", "No Timegrid for day: " + tmp.toString());
+				if(ergebnis.size() > 0){
+					Set<DateTime> keySet = ergebnis.keySet();
+					DateTime substi =null;
+					for(DateTime mp1: keySet){
+						substi = mp1;
+						break;
+					}
+					tmplist = ergebnis.get(substi);
+					Log.e("basti", "Use Timegrid from this day: " + substi + "  " + tmp.toString());
+				}else{
+					Log.e("basti", "Your WebUnits is strange :S , use a empty Timegrid. No hours will be displayd for this day :(");
+					tmplist = new ArrayList<TimegridUnit>();
+				}
+				
+			}		
+			webuntisOnlyZeroTimegridUnitsHack(tmplist);
+			ergebnis.put(tmp, tmplist);
+		}
+		return ergebnis;
+	}
+	
+	
+	private GUIDay analyseDay(DateTime date, List<Lesson> lessons, List<TimegridUnit> filteredTimegrid) {
 		GUIDay day = new GUIDay();
 		day.setDate(date);
 		boolean dispZerolesson = settings.isDisplayZerothLesson();
 
-		timegridForDateTimeDay = new ArrayList<TimegridUnit>();
-		
-		// Der Montag ist sicher nie null ansonsten stimmt was anders nicht
-		// Ist jedoch zB. der Samstag null dann wird das TimeGrid von Freitag benutzt
-		if(timegrid.getTimegridForDateTimeDay(date.getWeekDay()) != null){		
-			timegridForDay = timegrid.getTimegridForDateTimeDay(date.getWeekDay());
-		}
-
-		// FIXME Gruber and Petters!
-		// An mich:
-		// Hier wird die Einstellung Display Zero Lesson implementiert
-		// Das Problem ist folgendes, es gibt Schulen deren Timegrid namen
-		// alle 0 sind - das ist bloed. Deswegen ueberpruefe ich hier ob die
-		// stunde eh vor 8:00 uhr aufhoert - taddaaa
-		// workaround done
-
-		for (TimegridUnit timegridUnit : timegridForDay) {
-			if (!dispZerolesson) {
-				if (timegridUnit.getName().equals("0") && timegridUnit.getEnd().getHour() <= 8 && timegridUnit.getEnd().getMinute() == 0) {
-					zerolesson = timegridUnit;
-				} else {
-					timegridForDateTimeDay.add(timegridUnit);
-				}
-			} else {
-				timegridForDateTimeDay.add(timegridUnit);
-			}
-		}
 		
 		if (lessons.size() == 0) {
-			for (TimegridUnit timegridUnit : timegridForDateTimeDay) {
+			for (TimegridUnit timegridUnit : filteredTimegrid) {
 				GUILessonContainer lessoncon = new GUILessonContainer();
 				lessoncon.setTime(timegridUnit.getStart(), timegridUnit.getEnd());
 				lessoncon.setDate(date);
@@ -142,17 +181,12 @@ public class RenderInfoWeekTable implements WebUntis {
 			return day;
 		}
 		
-		
-		webuntisOnlyZeroTimegridUnitsHack(timegridForDateTimeDay);
-
-
 		if (zerolesson != null)
 			Log.d("basti", "zero: " + zerolesson.getStart() + " " + zerolesson.getEnd() + " " + date.toString());
 
-	
 
-		for (int i = 0; i < timegridForDateTimeDay.size(); i++) {
-			TimegridUnit timegridUnit = timegridForDateTimeDay.get(i);
+		for (int i = 0; i < filteredTimegrid.size(); i++) {
+			TimegridUnit timegridUnit = filteredTimegrid.get(i);
 
 			GUILessonContainer lessoncon = new GUILessonContainer();
 			lessoncon.setTime(timegridUnit.getStart(), timegridUnit.getEnd());
@@ -195,10 +229,10 @@ public class RenderInfoWeekTable implements WebUntis {
 					tmp1.setSchoolSubjects(lesson.getSchoolSubjects());
 					tmp1.setSchoolTeachers(lesson.getSchoolTeachers());
 
-					if (i != timegridForDateTimeDay.size() - 1) {
+					if (i != filteredTimegrid.size() - 1) {
 						Lesson tmp2 = new Lesson();
 						tmp2.setDate(lesson.getDate().getYear(), lesson.getDate().getMonth(), lesson.getDate().getDay());
-						tmp2.setStartTime(timegridForDateTimeDay.get(i + 1).getStart().getHour(), timegridForDateTimeDay.get(i + 1).getStart().getMinute());
+						tmp2.setStartTime(filteredTimegrid.get(i + 1).getStart().getHour(), filteredTimegrid.get(i + 1).getStart().getMinute());
 						tmp2.setEndTime(lesson.getEndTime().getHour(), lesson.getEndTime().getMinute());
 						tmp2.setId(lesson.getId());
 						tmp2.setLessonCode(lesson.getLessonCode());
@@ -215,13 +249,13 @@ public class RenderInfoWeekTable implements WebUntis {
 				}
 				// Stunden die frueher beginnen als die erste TimeGridUnit
 				// werden hier auf das erste TimeGridUnit gesynct
-				else if ((lesson.getStartTime().getHour() < timegridForDateTimeDay.get(0).getStart().getHour())) {
+				else if ((lesson.getStartTime().getHour() < filteredTimegrid.get(0).getStart().getHour())) {
 
 					lessons.remove(j);
 
 					Lesson tmp1 = new Lesson();
 					tmp1.setDate(lesson.getDate().getYear(), lesson.getDate().getMonth(), lesson.getDate().getDay());
-					tmp1.setStartTime(timegridForDateTimeDay.get(0).getStart().getHour(), timegridForDateTimeDay.get(0).getStart().getMinute());
+					tmp1.setStartTime(filteredTimegrid.get(0).getStart().getHour(), filteredTimegrid.get(0).getStart().getMinute());
 					tmp1.setEndTime(lesson.getEndTime().getHour(), lesson.getEndTime().getMinute());
 					tmp1.setId(lesson.getId());
 					tmp1.setLessonCode(lesson.getLessonCode());
