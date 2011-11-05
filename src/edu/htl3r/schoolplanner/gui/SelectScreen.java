@@ -121,10 +121,12 @@ public class SelectScreen extends SchoolPlannerActivity {
 	    	  String sname = onItemClickListener.getViewType(i).getName();
 	    	  String lname = onItemClickListener.getViewType(i).getLongName();
 	    	  if(sname.equalsIgnoreCase(query)){
+	    		  Log.d("basti", "result: " + sname);
 	    		  onItemClickListener.fireEvent(i);
 	    		  return true;
 	    	  }
-	    	  if(lname.length() > 4 && lname.toLowerCase().contains(query.toLowerCase())){
+	    	  if(query.length() > 4 && lname.toLowerCase().contains(query.toLowerCase())){
+	    		  Log.d("basti", "result: " + lname);
 	    		  onItemClickListener.fireEvent(i);
 	    		  return true;
 	    	  }
