@@ -231,7 +231,6 @@ public class OverlayInfoLesson extends ViewGroup {
 				continue;
 			}
 			ViewTypeBox vtb = (ViewTypeBox) getChildAt(i);
-			Log.d("basti",vtb.toString());
 			if (vtb.getViewType() instanceof SchoolClass) {
 				classes.add(vtb);
 			} else if (vtb.getViewType() instanceof SchoolRoom) {
@@ -266,7 +265,7 @@ public class OverlayInfoLesson extends ViewGroup {
 				count++;
 			}
 			vtb.layout(marginleft,margintop, marginleft+vtb.getDesiredWidth(), margintop+vtb.getDesiredHeight());
-			marginleft+=vtb.getDesiredWidth()+20;
+			marginleft+=vtb.getDesiredWidth()+getResources().getDimensionPixelSize(R.dimen.gui_overlay_vtb_abstand_left);
 		}
 		return margintop;
 	}

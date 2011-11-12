@@ -106,7 +106,7 @@ public class ViewTypeBox extends View {
 	}
 
 	public int getDesiredHeight() {
-		return (int) paint.getTextSize() + 15;
+		return (int) paint.getTextSize() + getResources().getDimensionPixelSize(R.dimen.gui_overlay_vtb_height);
 	}
 
 	@Override
