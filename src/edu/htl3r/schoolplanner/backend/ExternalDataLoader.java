@@ -26,6 +26,7 @@ import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.database.Database;
 import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
+import edu.htl3r.schoolplanner.backend.preferences.AutoSelectSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
@@ -41,7 +42,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see Database
  * @see JSONNetwork
  */
-public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider, LessonHelper, LoginSetHandler {
+public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider, LessonHelper, LoginSetHandler, AutoSelectHandler {
 
 	private Database database = new Database();
 	private JSONNetwork network = new JSONNetwork();
@@ -395,6 +396,16 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 	@Override
 	public List<LoginSet> getAllLoginSets() {
 		return database.getAllLoginSets();
+	}
+
+	@Override
+	public AutoSelectSet getAutoSelect() {
+		return database.getAutoSelect();
+	}
+
+	@Override
+	public void setAutoSelect(AutoSelectSet autoSelectSet) {
+		database.setAutoSelect(autoSelectSet);
 	}
 	
 }

@@ -66,6 +66,11 @@ public interface DatabaseCreateConstants {
     		+ LoginSetConstants.passwordKey + " TEXT, "
     		+ LoginSetConstants.sslOnlyKey + " BOOLEAN";
 	
+	public static final String TABLE_AUTO_SELECT_DEFINITIONS = DatabaseCreateConstants.TABLE_LOGINSET_KEY + " TEXT, "
+			+ DatabaseAutoSelectConstants.ENABLED + " BOOLEAN, "
+			+ DatabaseAutoSelectConstants.TYPE + " TEXT, "
+			+ DatabaseAutoSelectConstants.VALUE + " INTEGER";
+	
 	/*public static final String TABLE_LESSONS_COLUMN_DEFINITIONS = LoginSetConstants.nameKey + " TEXT UNIQUE, "
 			+ DatabaseLessonConstants.ID+ " INTEGER, "
 			+ DatabaseLessonConstants.DATE + " INTEGER, "

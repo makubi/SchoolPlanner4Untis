@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autoselect_dialog_title">Autoselect</string>
+    <string name="autoselect_dialog_save">Save</string>
+    
+    <string name="autoselect_dialog_enabled_on">Autoselect enabled</string>
+    <string name="autoselect_dialog_enabled_off">Autoselect disabled</string>
+</resources>

@@ -44,14 +44,16 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
+import edu.htl3r.schoolplanner.backend.AutoSelectHandler;
 import edu.htl3r.schoolplanner.backend.DataFacade;
-import edu.htl3r.schoolplanner.backend.preferences.Settings;
+import edu.htl3r.schoolplanner.backend.preferences.AutoSelectSet;
 import edu.htl3r.schoolplanner.backend.preferences.SettingsConstants;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
+import edu.htl3r.schoolplanner.gui.selectScreen.AutoselectDialog;
 import edu.htl3r.schoolplanner.gui.selectScreen.SelectScreenInstanceBundle;
 import edu.htl3r.schoolplanner.gui.selectScreen.SpinnerMemory;
 import edu.htl3r.schoolplanner.gui.selectScreen.ViewTypeOnClickListener;
@@ -80,16 +82,37 @@ public class SelectScreen extends SchoolPlannerActivity {
 	private boolean autoSelectDone = false;
 	
 	private boolean loadingTimetable = false;
+	
+	private boolean listsAvailable = false;
+	
+	private AutoSelectHandler cache;
+	
+	private AutoselectDialog autoselectDialog;
+	private AutoSelectSet autoSelect;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.select_screen);
 		
+		cache = ((SchoolPlannerApp) getApplication()).getData();
+		autoSelect = cache.getAutoSelect();
+		
 		initSpinner();
+		initAutoSelect();
 		checkSearch(getIntent());
 	}
 	
+	private void initAutoSelect() {
+		autoselectDialog = new AutoselectDialog(this);
+		autoselectDialog.setViewTypeLists(classList, teacherList, roomList, subjectList);
+		autoselectDialog.setAutoSelectSet(autoSelect);
+	}
+	
+	public void setAutoSelect(AutoSelectSet autoSelectSet) {
+		cache.setAutoSelect(autoSelectSet);
+	}
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		setIntent(intent);
@@ -202,7 +225,8 @@ public class SelectScreen extends SchoolPlannerActivity {
 
 		// Ueberprufe, ob alle Listen verfuegbar sind
 		if (classData.isSuccessful() && teacherData.isSuccessful() && roomData.isSuccessful() && subjectData.isSuccessful()) {
-
+			listsAvailable = true;
+			
 			// Initialisiere OnItemSelectListener der Spinner
 			Intent classIntent = new Intent(SelectScreen.this, WeekView.class);
 			ViewTypeSpinnerOnItemSelectedListener classSpinnerOnItemSelectedListener = new ViewTypeSpinnerOnItemSelectedListener(this, classIntent, classList, spinnerMemory);
@@ -244,26 +268,29 @@ public class SelectScreen extends SchoolPlannerActivity {
 			// Waehle automatisch Stundenplan
 			if(!autoSelectDone) {
 				autoSelectDone = true;
-				Settings settings = ((SchoolPlannerApp) getApplication()).getSettings();
-				if(settings.isAutoSelect() && settings.getAutoSelectType().length() > 0) {
-					String autoSelectType = settings.getAutoSelectType();
+				String autoSelectType = autoSelect.getAutoSelectType();
+				int autoSelectValue = autoSelect.getAutoSelectValue();
+				
+				if(autoSelect.isEnabled() && autoSelectType.length() > 0 && autoSelectValue >= 0) {
 					if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_CLASS)) {
-						classSpinnerOnItemSelectedListener.fireEvent(classSpinner.getSelectedItemPosition());
+						if(viewTypeExistsInList(autoSelectValue, classList)) classSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
 					}
 					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_TEACHER)) {
-						teacherSpinnerOnItemSelectedListener.fireEvent(teacherSpinner.getSelectedItemPosition());
+						if(viewTypeExistsInList(autoSelectValue, teacherList)) teacherSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
 					}
 					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_ROOM)) {
-						roomSpinnerOnItemSelectedListener.fireEvent(roomSpinner.getSelectedItemPosition());
+						if(viewTypeExistsInList(autoSelectValue, roomList)) roomSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
 					}
 					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_SUBJECT)) {
-						subjectSpinnerOnItemSelectedListener.fireEvent(subjectSpinner.getSelectedItemPosition());
+						if(viewTypeExistsInList(autoSelectValue, subjectList)) subjectSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
 					}
 				}
 			}
 
 			addImageOnClickListener(true);
 		} else {
+			listsAvailable = false;
+			
 			classSpinner.setEnabled(false);
 			teacherSpinner.setEnabled(false);
 			roomSpinner.setEnabled(false);
@@ -274,6 +301,15 @@ public class SelectScreen extends SchoolPlannerActivity {
 	}
 	
 	
+	private boolean viewTypeExistsInList(int viewTypeId, List<? extends ViewType> list) {
+		for(ViewType viewType : list) {
+			if(viewType.getId() == viewTypeId) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public Object onRetainNonConfigurationInstance() {
 		final SelectScreenInstanceBundle bundle = new SelectScreenInstanceBundle();
@@ -418,9 +454,19 @@ public class SelectScreen extends SchoolPlannerActivity {
 		case R.id.selectscreen_menu_search:
 			onSearchRequested();
 			return true;
+		case R.id.selectscreen_menu_autoselect:
+			autoselectDialog.show();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem autoselectMenuItem = menu.findItem(R.id.selectscreen_menu_autoselect);
+		autoselectMenuItem.setEnabled(listsAvailable);
+		return super.onPrepareOptionsMenu(menu);
 	}
 	
 }
