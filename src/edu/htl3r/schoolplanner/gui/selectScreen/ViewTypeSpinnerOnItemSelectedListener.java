@@ -18,6 +18,7 @@ package edu.htl3r.schoolplanner.gui.selectScreen;
 
 import java.util.List;
 
+import junit.framework.Assert;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -73,11 +74,18 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 	}
 	
 	/**
-	 * Fires event but does not remember position
-	 * @param position
+	 * Fires event but does not remember position.
+	 * @param viewTypeId ID of the ViewType, retrieved via {@link ViewType#getId()}.
 	 */
-	public void fireEventAndDontRemember(int position) {
-		ViewType item = getViewType(position);
+	public void fireEventByIdAndDontRemember(int viewTypeId) {
+		ViewType item = null;
+		for(ViewType viewType : list) {
+			if(viewType.getId() == viewTypeId) {
+				item = viewType;
+				break;
+			}
+		}
+		Assert.assertNotNull("ViewType for ID "+viewTypeId+" not found. Unable to continue.", item);
 		
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(BundleConstants.SELECTED_VIEW_TYPE, item);

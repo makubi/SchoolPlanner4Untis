@@ -47,7 +47,6 @@ import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.AutoSelectHandler;
 import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.preferences.AutoSelectSet;
-import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.preferences.SettingsConstants;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
@@ -271,18 +270,19 @@ public class SelectScreen extends SchoolPlannerActivity {
 				autoSelectDone = true;
 				String autoSelectType = autoSelect.getAutoSelectType();
 				int autoSelectValue = autoSelect.getAutoSelectValue();
+				
 				if(autoSelect.isEnabled() && autoSelectType.length() > 0 && autoSelectValue >= 0) {
 					if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_CLASS)) {
-						classSpinnerOnItemSelectedListener.fireEventAndDontRemember(autoSelectValue);
+						classSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
 					}
 					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_TEACHER)) {
-						teacherSpinnerOnItemSelectedListener.fireEventAndDontRemember(autoSelectValue);
+						teacherSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
 					}
 					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_ROOM)) {
-						roomSpinnerOnItemSelectedListener.fireEventAndDontRemember(autoSelectValue);
+						roomSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
 					}
 					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_SUBJECT)) {
-						subjectSpinnerOnItemSelectedListener.fireEventAndDontRemember(autoSelectValue);
+						subjectSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
 					}
 				}
 			}
