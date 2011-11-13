@@ -12,6 +12,8 @@
 	<string name="settings_key_show_saturday">show_saturday</string>
 	<string name="settings_key_show_zeroth_lesson">show_zeroth_lesson</string>	
 	
+	<string name="settings_autoselect_deprecated_title">Veraltete Auto-Auswahl Einstellungen</string>
+	<string name="settings_autoselect_deprecated_summary">Die Auto-Auswahl Einstellungen sind ab jetzt über den Auswahl-Bildschirm verwaltbar</string>
 	
 	<!-- Strings on UI -->
     <string name="settings_login_header">Login Optionen</string>

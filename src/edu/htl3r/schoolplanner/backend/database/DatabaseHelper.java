@@ -111,6 +111,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 			db.execSQL("CREATE TABLE " + DatabaseAutoSelectConstants.TABLE_AUTO_SELECT_NAME + "(" + DatabaseCreateConstants.TABLE_AUTO_SELECT_DEFINITIONS + ");");
 			db.setTransactionSuccessful();
 			db.endTransaction();
+			
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SchoolplannerContext.context);
+			SharedPreferences.Editor editor = preferences.edit();
+			preferences.edit().remove("autoselect");
+			preferences.edit().remove("autoselect_type");
+			editor.commit();
+			
 		}
 	}
 	

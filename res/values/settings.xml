@@ -12,6 +12,8 @@
 	<string name="settings_key_show_saturday">show_saturday</string>
 	<string name="settings_key_show_zeroth_lesson">show_zeroth_lesson</string>	
 	
+	<string name="settings_autoselect_deprecated_title">Deprecated Autoselect settings</string>
+	<string name="settings_autoselect_deprecated_summary">The autoselect preference can be managed via the select screen now</string>
 	
 	<!-- Strings on UI -->
     <string name="settings_login_header">Login options</string>

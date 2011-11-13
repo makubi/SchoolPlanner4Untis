@@ -29,9 +29,6 @@ public class Settings {
 	
 	private boolean autoLogin;
 	private String autoLoginSet;
-
-	private boolean autoSelect;
-	private String autoSelectType;
 	
 	private boolean displaySaturday;
 	private boolean displayZerothLesson;
@@ -58,10 +55,6 @@ public class Settings {
 		autoLogin = preferences.getBoolean(getString(R.string.settings_key_autologin), false);
 		autoLoginSet = preferences.getString(getString(R.string.settings_key_autologin_set), "");
 		
-		// autoselect options
-		autoSelect = preferences.getBoolean(getString(R.string.settings_key_autoselect), false);
-		autoSelectType = preferences.getString(getString(R.string.settings_key_autoselect_type), "");
-		
 		// display options
 		displaySaturday = preferences.getBoolean(getString(R.string.settings_key_show_saturday), false);
 		displayZerothLesson = preferences.getBoolean(getString(R.string.settings_key_show_zeroth_lesson), false);
@@ -77,18 +70,6 @@ public class Settings {
 	 */
 	public String getAutoLoginSet() {
 		return autoLoginSet;
-	}
-
-	public boolean isAutoSelect() {
-		return autoSelect;
-	}
-	
-	/**
-	 * Liefert die Art des Stundenplans, die beim AutoSelect ausgewaehlt werden soll. Ist ein Wert aus der Liste {{@link SettingsConstants#AUTOSELECT_TYPE_CLASS}, {@link SettingsConstants#AUTOSELECT_TYPE_TEACHER}, {@link SettingsConstants#AUTOSELECT_TYPE_ROOM}, {@link SettingsConstants#AUTOSELECT_TYPE_SUBJECT}}.
-	 * @return Konstante zur Art des Stundenplans oder einen Leerstring, falls noch nicht gesetzt
-	 */
-	public String getAutoSelectType() {
-		return autoSelectType;
 	}
 
 	public boolean isDisplaySaturday() {

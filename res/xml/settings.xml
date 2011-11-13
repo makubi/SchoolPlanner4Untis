@@ -22,20 +22,9 @@
     <PreferenceCategory
             android:title="@string/settings_autoselect_header">
 
-        <CheckBoxPreference
-                android:key="@string/settings_key_autoselect"
-                android:title="@string/settings_autoselect_enabled_title"
-                android:summary="@string/settings_autoselect_enabled_summary" />
-
-		<ListPreference
-                android:key="@string/settings_key_autoselect_type"
-                android:title="@string/settings_autoselect_type_title"
-                android:summary="@string/settings_autoselect_type_summary"
-                android:entries="@array/settings_autoselect_type_entries"
-                android:entryValues="@array/settings_autoselect_type_entryvalues"
-                android:dialogTitle="@string/settings_autoselect_type_dialog_title"
-                android:dependency="@string/settings_key_autoselect" />
-    </PreferenceCategory>
+	<Preference android:title="@string/settings_autoselect_deprecated_title" android:summary="@string/settings_autoselect_deprecated_summary" />
+	
+	</PreferenceCategory>
     
     <PreferenceCategory
             android:title="@string/settings_display_header">
