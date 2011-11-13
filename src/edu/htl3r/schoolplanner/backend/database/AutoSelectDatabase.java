@@ -16,7 +16,8 @@
 */
 package edu.htl3r.schoolplanner.backend.database;
 
-import junit.framework.Assert;
+import org.springframework.util.Assert;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -41,7 +42,7 @@ public class AutoSelectDatabase implements AutoSelectHandler{
 		
 		Cursor query = this.database.queryWithLoginSetKey(database, DatabaseAutoSelectConstants.TABLE_AUTO_SELECT_NAME);
 		
-		Assert.assertTrue("More than one auto-select entry for "+this.database.getLoginSetKeyForTable()+".", query.getCount() <= 1);
+		Assert.isTrue(query.getCount() <= 1, "More than one auto-select entry for "+this.database.getLoginSetKeyForTable()+".");
 		
 		int indexEnabled = query.getColumnIndex(DatabaseAutoSelectConstants.ENABLED);
 		int indexType = query.getColumnIndex(DatabaseAutoSelectConstants.TYPE);

@@ -18,7 +18,8 @@ package edu.htl3r.schoolplanner.gui.selectScreen;
 
 import java.util.List;
 
-import junit.framework.Assert;
+import org.springframework.util.Assert;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -85,7 +86,7 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 				break;
 			}
 		}
-		Assert.assertNotNull("ViewType for ID "+viewTypeId+" not found. Unable to continue.", item);
+		Assert.notNull(item, "ViewType for ID "+viewTypeId+" not found. Unable to continue.");
 		
 		Bundle bundle = new Bundle();
 		bundle.putSerializable(BundleConstants.SELECTED_VIEW_TYPE, item);
