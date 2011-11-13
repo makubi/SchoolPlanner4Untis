@@ -44,7 +44,7 @@ import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
 
-	private final static int DATABASE_VERSION = 9;
+	private final static int DATABASE_VERSION = 8;
 	private final static String DATABASE_NAME = "db_schoolplanner_data";
 	
 	private final List<String> CREATE_TABLE_STATEMENTS = new ArrayList<String>();
@@ -111,9 +111,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 			db.execSQL("CREATE TABLE " + DatabaseAutoSelectConstants.TABLE_AUTO_SELECT_NAME + "(" + DatabaseCreateConstants.TABLE_AUTO_SELECT_DEFINITIONS + ");");
 			db.setTransactionSuccessful();
 			db.endTransaction();
-		}
-		if(oldVersion < 9) {
-			recreateTable(db, DatabaseAutoSelectConstants.TABLE_AUTO_SELECT_NAME, DatabaseCreateConstants.TABLE_AUTO_SELECT_DEFINITIONS);
 		}
 	}
 	

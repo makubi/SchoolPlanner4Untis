@@ -184,6 +184,7 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 	public synchronized void removeLoginSet(LoginSet loginSet) {
 		String loginSetKey = md5(loginSet.getServerUrl()+loginSet.getSchool());
 		deleteMasterdataForLoginSetKey(loginSetKey);
+		autoselectDatabase.deleteAllRowsFromAutoSelectWithLoginSetKey(loginSetKey);
 		loginSetDatabase.removeLoginSet(loginSet);
 	}
 
@@ -192,6 +193,7 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 		if(!serverUrl.equals(oldServerUrl) || !school.equals(oldSchool)) {
 			String loginSetKey = md5(serverUrl+school);
 			deleteMasterdataForLoginSetKey(loginSetKey);
+			autoselectDatabase.deleteAllRowsFromAutoSelectWithLoginSetKey(loginSetKey);
 		}
 		loginSetDatabase.editLoginSet(name, serverUrl, school, username, password, checked);
 	}

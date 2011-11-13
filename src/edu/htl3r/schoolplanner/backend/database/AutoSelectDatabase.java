@@ -85,6 +85,19 @@ public class AutoSelectDatabase implements AutoSelectHandler{
 		this.database.closeDatabase(database);
 	}
 	
+	private void deleteAllRowsFromDatabaseTransaction(String table, String loginSetKey) {
+		SQLiteDatabase database = this.database.openDatabase(true);
+		database.beginTransaction();
+		
+		this.database.deleteAllRowsWithLoginSetKey(database, table, loginSetKey);
+		
+		database.setTransactionSuccessful();
+		database.endTransaction();
+		this.database.closeDatabase(database);
+	}
 	
+	public void deleteAllRowsFromAutoSelectWithLoginSetKey(String loginSetKey) {
+		deleteAllRowsFromDatabaseTransaction(DatabaseAutoSelectConstants.TABLE_AUTO_SELECT_NAME, loginSetKey);
+	}
 	
 }

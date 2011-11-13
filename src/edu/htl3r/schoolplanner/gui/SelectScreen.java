@@ -273,16 +273,16 @@ public class SelectScreen extends SchoolPlannerActivity {
 				
 				if(autoSelect.isEnabled() && autoSelectType.length() > 0 && autoSelectValue >= 0) {
 					if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_CLASS)) {
-						classSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
+						if(viewTypeExistsInList(autoSelectValue, classList)) classSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
 					}
 					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_TEACHER)) {
-						teacherSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
+						if(viewTypeExistsInList(autoSelectValue, teacherList)) teacherSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
 					}
 					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_ROOM)) {
-						roomSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
+						if(viewTypeExistsInList(autoSelectValue, roomList)) roomSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
 					}
 					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_SUBJECT)) {
-						subjectSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
+						if(viewTypeExistsInList(autoSelectValue, subjectList)) subjectSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
 					}
 				}
 			}
@@ -301,6 +301,15 @@ public class SelectScreen extends SchoolPlannerActivity {
 	}
 	
 	
+	private boolean viewTypeExistsInList(int viewTypeId, List<? extends ViewType> list) {
+		for(ViewType viewType : list) {
+			if(viewType.getId() == viewTypeId) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public Object onRetainNonConfigurationInstance() {
 		final SelectScreenInstanceBundle bundle = new SelectScreenInstanceBundle();
