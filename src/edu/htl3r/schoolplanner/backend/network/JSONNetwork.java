@@ -577,7 +577,6 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			}
 
 			else {
-				// TODO: Pruefung auf ID und jsonrpc-version?
 				if (response != null) {
 					JSONObject result = response.getJSONObject(JSONResponseObjectKeys.RESULT);
 					if (result != null) {
