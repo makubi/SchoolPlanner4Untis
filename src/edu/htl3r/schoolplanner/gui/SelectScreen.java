@@ -19,7 +19,6 @@ package edu.htl3r.schoolplanner.gui;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -93,6 +92,7 @@ public class SelectScreen extends SchoolPlannerActivity {
 		setContentView(R.layout.select_screen);
 		
 		autoselectDialog = new AutoselectDialog(this);
+		autoselectDialog.setAutoSelectHandler(((SchoolPlannerApp) getApplication()).getData());
 		
 		initSpinner();
 		autoselectDialog.setViewTypeLists(classList, teacherList, roomList, subjectList);

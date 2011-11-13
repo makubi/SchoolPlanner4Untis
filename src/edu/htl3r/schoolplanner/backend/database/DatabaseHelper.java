@@ -31,6 +31,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
+import edu.htl3r.schoolplanner.backend.database.constants.DatabaseAutoSelectConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseCreateConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseLoginSetConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabasePermanentLessonConstants;
@@ -43,7 +44,7 @@ import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
 
-	private final static int DATABASE_VERSION = 7;
+	private final static int DATABASE_VERSION = 8;
 	private final static String DATABASE_NAME = "db_schoolplanner_data";
 	
 	private final List<String> CREATE_TABLE_STATEMENTS = new ArrayList<String>();
@@ -72,8 +73,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		coloumnDefinitions.put(DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_TEACHER_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
 		coloumnDefinitions.put(DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_ROOMS_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
 		coloumnDefinitions.put(DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_SUBJECTS_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
-		
+				
 		coloumnDefinitions.put(DatabaseLoginSetConstants.TABLE_LOGIN_SETS_NAME, "("+DatabaseCreateConstants.TABLE_LOGIN_SETS_DEFINITIONS+");");
+		
+		coloumnDefinitions.put(DatabaseAutoSelectConstants.TABLE_AUTO_SELECT_NAME, "("+DatabaseCreateConstants.TABLE_AUTO_SELECT_DEFINITIONS+");");
 		
 		for(String tableName : coloumnDefinitions.keySet()) {
 			createStatements.add(CREATE_TABLE_SQL+" "+tableName+" "+coloumnDefinitions.get(tableName));
@@ -102,6 +105,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		}
 		if(oldVersion < 7) {
 			recreateTable(db, DatabaseTimegridConstants.TABLE_TIMEGRID_NAME, DatabaseCreateConstants.TABLE_TIMEGRID_COLUMN_DEFINITIONS);
+		}
+		if(oldVersion < 8) {
+			db.beginTransaction();
+			db.execSQL("CREATE TABLE " + DatabaseAutoSelectConstants.TABLE_AUTO_SELECT_NAME + "(" + DatabaseCreateConstants.TABLE_AUTO_SELECT_DEFINITIONS + ");");
+			db.setTransactionSuccessful();
+			db.endTransaction();
 		}
 	}
 	

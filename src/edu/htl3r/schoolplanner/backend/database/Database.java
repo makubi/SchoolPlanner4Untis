@@ -25,6 +25,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
+import edu.htl3r.schoolplanner.backend.AutoSelectHandler;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.LessonHelper;
 import edu.htl3r.schoolplanner.backend.LoginSetHandler;
@@ -32,6 +33,7 @@ import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.MasterdataStore;
 import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseCreateConstants;
+import edu.htl3r.schoolplanner.backend.preferences.AutoSelectSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetDatabase;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
@@ -42,7 +44,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
-public class Database implements MasterdataStore, MasterdataProvider, LessonHelper, LoginSetHandler {
+public class Database implements MasterdataStore, MasterdataProvider, LessonHelper, LoginSetHandler, AutoSelectHandler {
 	
 	private DatabaseHelper databaseHelper = new DatabaseHelper(SchoolplannerContext.context);
 
@@ -50,6 +52,8 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 	private LessonHelperDatabase lessonHelperDatabase = new LessonHelperDatabase(this);
 	
 	private LoginSetDatabase loginSetDatabase = new LoginSetDatabase(this);
+	
+	private AutoSelectDatabase autoselectDatabase = new AutoSelectDatabase(this);
 	
 	private String loginSetKey;
 	
@@ -262,6 +266,16 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 			e.printStackTrace();
 		}
 		return "";
+	}
+
+	@Override
+	public AutoSelectSet getAutoSelect() {
+		return autoselectDatabase.getAutoSelect();
+	}
+
+	@Override
+	public void setAutoSelect(AutoSelectSet autoSelectSet) {
+		autoselectDatabase.setAutoSelect(autoSelectSet);
 	}
 	
 }

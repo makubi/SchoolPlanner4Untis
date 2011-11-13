@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.backend.preferences.AutoSelectSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
@@ -37,7 +38,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see InternalMemory
  * @see ExternalDataLoader
  */
-public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider, LessonHelper, LoginSetHandler {
+public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider, LessonHelper, LoginSetHandler, AutoSelectHandler {
 	
 	private InternalMemory internalMemory = new InternalMemory();
 	private ExternalDataLoader externalDataLoader = new ExternalDataLoader();
@@ -303,5 +304,15 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	@Override
 	public List<LoginSet> getAllLoginSets() {
 		return externalDataLoader.getAllLoginSets();
+	}
+
+	@Override
+	public AutoSelectSet getAutoSelect() {
+		return externalDataLoader.getAutoSelect();
+	}
+
+	@Override
+	public void setAutoSelect(AutoSelectSet autoSelectSet) {
+		externalDataLoader.setAutoSelect(autoSelectSet);
 	}
 }
