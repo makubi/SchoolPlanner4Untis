@@ -71,6 +71,19 @@ public class ViewTypeSpinnerOnItemSelectedListener implements OnItemSelectedList
 		intent.putExtras(bundle);
 		this.parent.startActivity(intent);
 	}
+	
+	/**
+	 * Fires event but does not remember position
+	 * @param position
+	 */
+	public void fireEventAndDontRemember(int position) {
+		ViewType item = getViewType(position);
+		
+		Bundle bundle = new Bundle();
+		bundle.putSerializable(BundleConstants.SELECTED_VIEW_TYPE, item);
+		intent.putExtras(bundle);
+		this.parent.startActivity(intent);
+	}
 
 	@Override
 	public void onNothingSelected(AdapterView<?> parent) {}

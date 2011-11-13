@@ -43,13 +43,16 @@ public class AutoSelectDatabase implements AutoSelectHandler{
 		
 		Assert.assertTrue("More than one auto-select entry for "+this.database.getLoginSetKeyForTable()+".", query.getCount() <= 1);
 		
+		int indexEnabled = query.getColumnIndex(DatabaseAutoSelectConstants.ENABLED);
 		int indexType = query.getColumnIndex(DatabaseAutoSelectConstants.TYPE);
 		int indexValue = query.getColumnIndex(DatabaseAutoSelectConstants.VALUE);
 		
 		while(query.moveToNext()) {
+			boolean enabled = query.getInt(indexEnabled)>0;
 			String type = query.getString(indexType);
 			int value = query.getInt(indexValue);
 			
+			autoSelectSet.setEnabled(enabled);
 			autoSelectSet.setAutoSelectType(type);
 			autoSelectSet.setAutoSelectValue(value);
 		}
@@ -69,6 +72,7 @@ public class AutoSelectDatabase implements AutoSelectHandler{
 		
 		ContentValues values = new ContentValues();
 		values.put(DatabaseCreateConstants.TABLE_LOGINSET_KEY, this.database.getLoginSetKeyForTable());
+		values.put(DatabaseAutoSelectConstants.ENABLED, autoSelectSet.isEnabled());
 		values.put(DatabaseAutoSelectConstants.TYPE, autoSelectSet.getAutoSelectType());
 		values.put(DatabaseAutoSelectConstants.VALUE, autoSelectSet.getAutoSelectValue());
 		

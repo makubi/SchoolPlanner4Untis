@@ -44,7 +44,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
+import edu.htl3r.schoolplanner.backend.AutoSelectHandler;
 import edu.htl3r.schoolplanner.backend.DataFacade;
+import edu.htl3r.schoolplanner.backend.preferences.AutoSelectSet;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.preferences.SettingsConstants;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
@@ -84,21 +86,34 @@ public class SelectScreen extends SchoolPlannerActivity {
 	
 	private boolean listsAvailable = false;
 	
+	private AutoSelectHandler cache;
+	
 	private AutoselectDialog autoselectDialog;
+	private AutoSelectSet autoSelect;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.select_screen);
 		
-		autoselectDialog = new AutoselectDialog(this);
-		autoselectDialog.setAutoSelectHandler(((SchoolPlannerApp) getApplication()).getData());
+		cache = ((SchoolPlannerApp) getApplication()).getData();
+		autoSelect = cache.getAutoSelect();
 		
 		initSpinner();
-		autoselectDialog.setViewTypeLists(classList, teacherList, roomList, subjectList);
+		initAutoSelect();
 		checkSearch(getIntent());
 	}
 	
+	private void initAutoSelect() {
+		autoselectDialog = new AutoselectDialog(this);
+		autoselectDialog.setViewTypeLists(classList, teacherList, roomList, subjectList);
+		autoselectDialog.setAutoSelectSet(autoSelect);
+	}
+	
+	public void setAutoSelect(AutoSelectSet autoSelectSet) {
+		cache.setAutoSelect(autoSelectSet);
+	}
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		setIntent(intent);
@@ -254,20 +269,20 @@ public class SelectScreen extends SchoolPlannerActivity {
 			// Waehle automatisch Stundenplan
 			if(!autoSelectDone) {
 				autoSelectDone = true;
-				Settings settings = ((SchoolPlannerApp) getApplication()).getSettings();
-				if(settings.isAutoSelect() && settings.getAutoSelectType().length() > 0) {
-					String autoSelectType = settings.getAutoSelectType();
+				String autoSelectType = autoSelect.getAutoSelectType();
+				int autoSelectValue = autoSelect.getAutoSelectValue();
+				if(autoSelect.isEnabled() && autoSelectType.length() > 0 && autoSelectValue >= 0) {
 					if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_CLASS)) {
-						classSpinnerOnItemSelectedListener.fireEvent(classSpinner.getSelectedItemPosition());
+						classSpinnerOnItemSelectedListener.fireEventAndDontRemember(autoSelectValue);
 					}
 					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_TEACHER)) {
-						teacherSpinnerOnItemSelectedListener.fireEvent(teacherSpinner.getSelectedItemPosition());
+						teacherSpinnerOnItemSelectedListener.fireEventAndDontRemember(autoSelectValue);
 					}
 					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_ROOM)) {
-						roomSpinnerOnItemSelectedListener.fireEvent(roomSpinner.getSelectedItemPosition());
+						roomSpinnerOnItemSelectedListener.fireEventAndDontRemember(autoSelectValue);
 					}
 					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_SUBJECT)) {
-						subjectSpinnerOnItemSelectedListener.fireEvent(subjectSpinner.getSelectedItemPosition());
+						subjectSpinnerOnItemSelectedListener.fireEventAndDontRemember(autoSelectValue);
 					}
 				}
 			}

@@ -20,6 +20,7 @@ public interface DatabaseAutoSelectConstants {
 
 	public static final String TABLE_AUTO_SELECT_NAME = "autoSelect";
 	
+	public static final String ENABLED = "enabled";
 	public static final String TYPE = "type";
 	public static final String VALUE = "value";
 }

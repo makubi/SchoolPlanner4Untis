@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,31 +29,31 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.ToggleButton;
 import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.backend.AutoSelectHandler;
 import edu.htl3r.schoolplanner.backend.preferences.AutoSelectSet;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
+import edu.htl3r.schoolplanner.gui.SelectScreen;
 
 public class AutoselectDialog extends Dialog {
-
-	private AutoSelectHandler autoSelectHandler;
 	
-	private Context context;
+	private SelectScreen context;
 	private String[] typeEntries;
 	
 	private Spinner typeSpinner;
 	private Spinner valueSpinner;
+	private ToggleButton enabledButton;
 	private Button saveButton;
 	
 	private Map<String, List<? extends ViewType>> spinnerWire = new HashMap<String, List<? extends ViewType>>();
 	
 	private AutoSelectSet autoSelectSet;
 	
-	public AutoselectDialog(Context context) {
+	public AutoselectDialog(SelectScreen context) {
 		super(context);
 		this.context = context;
 	}
@@ -68,14 +67,13 @@ public class AutoselectDialog extends Dialog {
 		
 		typeEntries = context.getResources().getStringArray(R.array.settings_autoselect_type_entryvalues);
 		
-		initButton();
+		initSaveButton();
+		initEnabledButton();
 		initSpinner();
 		initAutoSelectSet();
 	}
 	
-	private void initAutoSelectSet() {
-		autoSelectSet = autoSelectHandler.getAutoSelect();
-		
+	private void initAutoSelectSet() {		
 		int typeSpinnerPos = -1;
 		int valueSpinnerPos = -1;
 		
@@ -163,21 +161,30 @@ public class AutoselectDialog extends Dialog {
 		adapter.notifyDataSetChanged();
 	}
 	
-	private void initButton() {
+	private void initSaveButton() {
 		saveButton = (Button) findViewById(R.id.autoselect_dialog_save);
 		
 		saveButton.setOnClickListener(new Button.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				autoSelectHandler.setAutoSelect(autoSelectSet);
+				context.setAutoSelect(autoSelectSet);
 				dismiss();
 			}
 		});
 	}
-	
-	public void setAutoSelectHandler(AutoSelectHandler autoSelectHandler) {
-		this.autoSelectHandler = autoSelectHandler;
+
+	private void initEnabledButton() {
+		enabledButton = (ToggleButton) findViewById(R.id.autoselect_dialog_enabled);
+		enabledButton.setChecked(autoSelectSet.isEnabled());
+		
+		enabledButton.setOnClickListener(new ToggleButton.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				autoSelectSet.setEnabled(enabledButton.isChecked());
+			}
+		});
 	}
 
 	public void setViewTypeLists(List<SchoolClass> classList, List<SchoolTeacher> teacherList, List<SchoolRoom> roomList, List<SchoolSubject> subjectList) {
@@ -189,5 +196,9 @@ public class AutoselectDialog extends Dialog {
 	
 	private String getString (int resId) {
 		return context.getString(resId);
+	}
+
+	public void setAutoSelectSet(AutoSelectSet autoSelectSet) {
+		this.autoSelectSet = autoSelectSet;
 	}
 }

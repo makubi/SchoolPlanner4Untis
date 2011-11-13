@@ -2,13 +2,22 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
-    <Spinner android:id="@+id/autoselect_dialog_type_spinner" android:layout_width="wrap_content" android:layout_height="wrap_content" android:entries="@array/settings_autoselect_type_entries" android:entryValues="@array/settings_autoselect_type_entryvalues" />
-    <Spinner android:id="@+id/autoselect_dialog_value_spinner" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:padding="10dip">
+    <Spinner android:layout_marginBottom="2dip" android:id="@+id/autoselect_dialog_type_spinner" android:layout_width="fill_parent" android:layout_height="wrap_content" android:entries="@array/settings_autoselect_type_entries" android:entryValues="@array/settings_autoselect_type_entryvalues" />
+    <Spinner android:layout_marginBottom="20dip" android:id="@+id/autoselect_dialog_value_spinner" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    <ToggleButton android:id="@+id/autoselect_dialog_enabled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        
+        android:textOn="@string/autoselect_dialog_enabled_on"
+        android:textOff="@string/autoselect_dialog_enabled_off"/>
+        <View android:layout_marginBottom="25dip" style="@style/delimiter" />
     <Button
         android:id="@+id/autoselect_dialog_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="@string/autoselect_dialog_save" />
 </LinearLayout>

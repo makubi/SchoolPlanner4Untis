@@ -18,7 +18,8 @@ package edu.htl3r.schoolplanner.backend.preferences;
 
 public class AutoSelectSet {
 
-	private String autoSelectType;
+	private boolean enabled = false;
+	private String autoSelectType = "";
 	private int autoSelectValue = -1;
 	
 	public String getAutoSelectType() {
@@ -35,5 +36,13 @@ public class AutoSelectSet {
 	
 	public void setAutoSelectValue(int autoSelectValue) {
 		this.autoSelectValue = autoSelectValue;
+	}
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }
