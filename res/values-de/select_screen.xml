@@ -12,4 +12,5 @@
     
     <!-- Menu -->
     <string name="selectscreen_menu_search_title">Suche</string>
+    <string name="selectscreen_menu_autoselect_title">Auto-Auswahl</string>
 </resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent">
+    <Spinner android:id="@+id/autoselect_dialog_type_spinner" android:layout_width="wrap_content" android:layout_height="wrap_content" android:entries="@array/settings_autoselect_type_entries" android:entryValues="@array/settings_autoselect_type_entryvalues" />
+    <Spinner android:id="@+id/autoselect_dialog_value_spinner" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/autoselect_dialog_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/autoselect_dialog_save" />
+</LinearLayout>

@@ -19,6 +19,7 @@ package edu.htl3r.schoolplanner.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -52,6 +53,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
+import edu.htl3r.schoolplanner.gui.selectScreen.AutoselectDialog;
 import edu.htl3r.schoolplanner.gui.selectScreen.SelectScreenInstanceBundle;
 import edu.htl3r.schoolplanner.gui.selectScreen.SpinnerMemory;
 import edu.htl3r.schoolplanner.gui.selectScreen.ViewTypeOnClickListener;
@@ -80,13 +82,20 @@ public class SelectScreen extends SchoolPlannerActivity {
 	private boolean autoSelectDone = false;
 	
 	private boolean loadingTimetable = false;
+	
+	private boolean listsAvailable = false;
+	
+	private AutoselectDialog autoselectDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.select_screen);
 		
+		autoselectDialog = new AutoselectDialog(this);
+		
 		initSpinner();
+		autoselectDialog.setViewTypeLists(classList, teacherList, roomList, subjectList);
 		checkSearch(getIntent());
 	}
 	
@@ -202,7 +211,8 @@ public class SelectScreen extends SchoolPlannerActivity {
 
 		// Ueberprufe, ob alle Listen verfuegbar sind
 		if (classData.isSuccessful() && teacherData.isSuccessful() && roomData.isSuccessful() && subjectData.isSuccessful()) {
-
+			listsAvailable = true;
+			
 			// Initialisiere OnItemSelectListener der Spinner
 			Intent classIntent = new Intent(SelectScreen.this, WeekView.class);
 			ViewTypeSpinnerOnItemSelectedListener classSpinnerOnItemSelectedListener = new ViewTypeSpinnerOnItemSelectedListener(this, classIntent, classList, spinnerMemory);
@@ -264,6 +274,8 @@ public class SelectScreen extends SchoolPlannerActivity {
 
 			addImageOnClickListener(true);
 		} else {
+			listsAvailable = false;
+			
 			classSpinner.setEnabled(false);
 			teacherSpinner.setEnabled(false);
 			roomSpinner.setEnabled(false);
@@ -418,9 +430,19 @@ public class SelectScreen extends SchoolPlannerActivity {
 		case R.id.selectscreen_menu_search:
 			onSearchRequested();
 			return true;
+		case R.id.selectscreen_menu_autoselect:
+			autoselectDialog.show();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem autoselectMenuItem = menu.findItem(R.id.selectscreen_menu_autoselect);
+		autoselectMenuItem.setEnabled(listsAvailable);
+		return super.onPrepareOptionsMenu(menu);
 	}
 	
 }
