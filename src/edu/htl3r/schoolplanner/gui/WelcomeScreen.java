@@ -313,7 +313,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	@Override
 	protected void onResume() {
 		super.onResume();
-		setInProgress("", false);
+		if(loginListener.getLoginTask().getStatus() != Status.RUNNING) setInProgress("", false);
 	}
 	
 }
