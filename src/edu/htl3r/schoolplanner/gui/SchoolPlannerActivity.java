@@ -30,6 +30,10 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.SchoolPlannerApp;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
+import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 import edu.htl3r.schoolplanner.gui.settings.SettingsScreen;
 
 /**
@@ -63,7 +67,6 @@ public abstract class SchoolPlannerActivity extends Activity {
 			progressWheel.setVisibility(View.INVISIBLE);
 		}
 	}
-
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
@@ -108,6 +111,34 @@ public abstract class SchoolPlannerActivity extends Activity {
 			infoDialog.show();
 		default:
 			return super.onOptionsItemSelected(item);
+		}
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		LoginSetManager loginSetManager = ((SchoolPlannerApp) getApplication()).getLoginSetManager();
+		LoginSet activeLoginSet;
+		if((activeLoginSet = loginSetManager.getActiveLoginSet()) != null) {
+			outState.putString(LoginSetConstants.nameKey, activeLoginSet.getName());
+			outState.putString(LoginSetConstants.serverUrlKey, activeLoginSet.getServerUrl());
+			outState.putString(LoginSetConstants.schoolKey, activeLoginSet.getSchool());
+			outState.putString(LoginSetConstants.usernameKey, activeLoginSet.getUsername());
+			outState.putString(LoginSetConstants.passwordKey, activeLoginSet.getPassword());
+			outState.putBoolean(LoginSetConstants.sslOnlyKey, activeLoginSet.isSslOnly());
+		}
+		super.onSaveInstanceState(outState);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		SchoolPlannerApp app = ((SchoolPlannerApp)getApplication());
+		LoginSetManager loginSetManager = app.getLoginSetManager();
+		
+		if(loginSetManager.getActiveLoginSet() == null) {
+			LoginSet loginSet = new LoginSet(savedInstanceState.getString(LoginSetConstants.nameKey),savedInstanceState.getString(LoginSetConstants.serverUrlKey),savedInstanceState.getString(LoginSetConstants.schoolKey),savedInstanceState.getString(LoginSetConstants.usernameKey),savedInstanceState.getString(LoginSetConstants.passwordKey),savedInstanceState.getBoolean(LoginSetConstants.sslOnlyKey));
+			app.getData().setLoginCredentials(loginSet);
+			loginSetManager.setActiveLoginSet(loginSet);
 		}
 	}
 }

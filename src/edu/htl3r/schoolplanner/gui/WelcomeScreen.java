@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;

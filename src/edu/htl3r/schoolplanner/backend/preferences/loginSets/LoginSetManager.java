@@ -32,6 +32,8 @@ public class LoginSetManager {
 	
 	private WebUntisUrlParser urlParser = new WebUntisUrlParser();
 	
+	private LoginSet activeLoginSet;
+	
 	public LoginSetManager(LoginSetHandler data) {
 		this.loginSetHandler = data;
 		loginSets = data.getAllLoginSets();
@@ -146,6 +148,14 @@ public class LoginSetManager {
 		
 		removeLoginEntry(getLoginSet(oldName));
 		return addLoginSet(name, parsedServerUrl, school, username, password, checked);
+	}
+	
+	public LoginSet getActiveLoginSet() {
+		return activeLoginSet;
+	}
+
+	public void setActiveLoginSet(LoginSet activeLoginSet) {
+		this.activeLoginSet = activeLoginSet;
 	}
 	
 }

@@ -69,6 +69,11 @@ public class SchoolPlannerApp extends Application {
 		data.networkAvailabilityChanged(isNetworkAvailable);
 	}
 	
+	/**
+	 * @return
+	 * @deprecated Use {@link #getLoginSetManager()}
+	 */
+	@Deprecated
 	public LoginSetManager getLoginManager() {
 		return loginManager;
 	}

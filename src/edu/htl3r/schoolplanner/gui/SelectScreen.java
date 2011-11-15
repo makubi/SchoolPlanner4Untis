@@ -89,6 +89,11 @@ public class SelectScreen extends SchoolPlannerActivity {
 	
 	private AutoselectDialog autoselectDialog;
 	private AutoSelectSet autoSelect;
+	
+	private ViewTypeSpinnerOnItemSelectedListener classSpinnerOnItemSelectedListener;
+	private ViewTypeSpinnerOnItemSelectedListener teacherSpinnerOnItemSelectedListener;
+	private ViewTypeSpinnerOnItemSelectedListener roomSpinnerOnItemSelectedListener;
+	private ViewTypeSpinnerOnItemSelectedListener subjectSpinnerOnItemSelectedListener;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,13 +101,44 @@ public class SelectScreen extends SchoolPlannerActivity {
 		setContentView(R.layout.select_screen);
 		
 		cache = ((SchoolPlannerApp) getApplication()).getData();
-		autoSelect = cache.getAutoSelect();
 		
 		initSpinner();
-		initAutoSelect();
-		checkSearch(getIntent());
+		checkSearch(getIntent());		
 	}
 	
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		handleAutoSelect();
+	}
+	
+	private void handleAutoSelect() {
+		autoSelect = cache.getAutoSelect();
+		initAutoSelect();
+		
+		// Waehle automatisch Stundenplan
+		if(!autoSelectDone) {
+			autoSelectDone = true;
+			String autoSelectType = autoSelect.getAutoSelectType();
+			int autoSelectValue = autoSelect.getAutoSelectValue();
+			
+			if(autoSelect.isEnabled() && autoSelectType.length() > 0 && autoSelectValue >= 0) {
+				if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_CLASS)) {
+					if(viewTypeExistsInList(autoSelectValue, classList)) classSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
+				}
+				else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_TEACHER)) {
+					if(viewTypeExistsInList(autoSelectValue, teacherList)) teacherSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
+				}
+				else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_ROOM)) {
+					if(viewTypeExistsInList(autoSelectValue, roomList)) roomSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
+				}
+				else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_SUBJECT)) {
+					if(viewTypeExistsInList(autoSelectValue, subjectList)) subjectSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
+				}
+			}
+		}
+	}
+
 	private void initAutoSelect() {
 		autoselectDialog = new AutoselectDialog(this);
 		autoselectDialog.setViewTypeLists(classList, teacherList, roomList, subjectList);
@@ -229,19 +265,19 @@ public class SelectScreen extends SchoolPlannerActivity {
 			
 			// Initialisiere OnItemSelectListener der Spinner
 			Intent classIntent = new Intent(SelectScreen.this, WeekView.class);
-			ViewTypeSpinnerOnItemSelectedListener classSpinnerOnItemSelectedListener = new ViewTypeSpinnerOnItemSelectedListener(this, classIntent, classList, spinnerMemory);
+			classSpinnerOnItemSelectedListener = new ViewTypeSpinnerOnItemSelectedListener(this, classIntent, classList, spinnerMemory);
 			classSpinner.setOnItemSelectedListener(classSpinnerOnItemSelectedListener);
 
 			Intent teacherIntent = new Intent(SelectScreen.this, WeekView.class);
-			ViewTypeSpinnerOnItemSelectedListener teacherSpinnerOnItemSelectedListener = new ViewTypeSpinnerOnItemSelectedListener(this, teacherIntent, teacherList, spinnerMemory);
+			teacherSpinnerOnItemSelectedListener = new ViewTypeSpinnerOnItemSelectedListener(this, teacherIntent, teacherList, spinnerMemory);
 			teacherSpinner.setOnItemSelectedListener(teacherSpinnerOnItemSelectedListener);
 
 			Intent roomIntent = new Intent(SelectScreen.this, WeekView.class);
-			ViewTypeSpinnerOnItemSelectedListener roomSpinnerOnItemSelectedListener = new ViewTypeSpinnerOnItemSelectedListener(this, roomIntent, roomList, spinnerMemory);
+			roomSpinnerOnItemSelectedListener = new ViewTypeSpinnerOnItemSelectedListener(this, roomIntent, roomList, spinnerMemory);
 			roomSpinner.setOnItemSelectedListener(roomSpinnerOnItemSelectedListener);
 
 			Intent subjectIntent = new Intent(SelectScreen.this, WeekView.class);
-			ViewTypeSpinnerOnItemSelectedListener subjectSpinnerOnItemSelectedListener = new ViewTypeSpinnerOnItemSelectedListener(this, subjectIntent, subjectList, spinnerMemory);
+			subjectSpinnerOnItemSelectedListener = new ViewTypeSpinnerOnItemSelectedListener(this, subjectIntent, subjectList, spinnerMemory);
 			subjectSpinner.setOnItemSelectedListener(subjectSpinnerOnItemSelectedListener);
 
 			// Setze die zuletzt ausgewaehlten Positionen der Spinner
@@ -264,29 +300,6 @@ public class SelectScreen extends SchoolPlannerActivity {
 			if (subjectSpinnerLastPos > -1) {
 				subjectSpinner.setSelection(subjectSpinnerLastPos);
 			}
-			
-			// Waehle automatisch Stundenplan
-			if(!autoSelectDone) {
-				autoSelectDone = true;
-				String autoSelectType = autoSelect.getAutoSelectType();
-				int autoSelectValue = autoSelect.getAutoSelectValue();
-				
-				if(autoSelect.isEnabled() && autoSelectType.length() > 0 && autoSelectValue >= 0) {
-					if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_CLASS)) {
-						if(viewTypeExistsInList(autoSelectValue, classList)) classSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
-					}
-					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_TEACHER)) {
-						if(viewTypeExistsInList(autoSelectValue, teacherList)) teacherSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
-					}
-					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_ROOM)) {
-						if(viewTypeExistsInList(autoSelectValue, roomList)) roomSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
-					}
-					else if(autoSelectType.equals(SettingsConstants.AUTOSELECT_TYPE_SUBJECT)) {
-						if(viewTypeExistsInList(autoSelectValue, subjectList)) subjectSpinnerOnItemSelectedListener.fireEventByIdAndDontRemember(autoSelectValue);
-					}
-				}
-			}
-
 			addImageOnClickListener(true);
 		} else {
 			listsAvailable = false;

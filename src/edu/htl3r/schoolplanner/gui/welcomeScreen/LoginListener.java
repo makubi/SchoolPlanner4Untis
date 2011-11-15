@@ -68,6 +68,8 @@ public class LoginListener implements OnItemClickListener, Serializable {
 				app.getData().clearInternalCache();
 				
 				app.getData().setLoginCredentials(selectedEntry);
+				app.getLoginSetManager().setActiveLoginSet(selectedEntry);
+				
 				if(!isCancelled()) {
 					DataFacade<Boolean> authenticate = app.getData().authenticate();
 				if(authenticate.isSuccessful()) {
