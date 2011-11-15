@@ -43,7 +43,7 @@ public class SettingsScreen extends PreferenceActivity{
 	
     private String[] getLoginSetNames() {
         List<String> loginSetNames = new ArrayList<String>();
-    	for(LoginSet loginSet : ((SchoolPlannerApp)getApplication()).getLoginManager().getAllLoginSets()) {
+    	for(LoginSet loginSet : ((SchoolPlannerApp)getApplication()).getLoginSetManager().getAllLoginSets()) {
     		loginSetNames.add(loginSet.getName());
     	}
     	return loginSetNames.toArray(new String[loginSetNames.size()]);
