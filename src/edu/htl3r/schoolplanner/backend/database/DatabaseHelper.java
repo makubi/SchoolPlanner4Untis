@@ -53,38 +53,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		
-		CREATE_TABLE_STATEMENTS.addAll(getCreateViewTypeTables());
+		CREATE_TABLE_STATEMENTS.addAll(getCreateMasterDataTables());
+		CREATE_TABLE_STATEMENTS.addAll(getCreatePermanentLessonTables());
+		CREATE_TABLE_STATEMENTS.addAll(getCreateSettingsTables());
 	}
 	
-	private List<String> getCreateViewTypeTables() {
-		final List<String> createStatements = new ArrayList<String>();
-		
-		final Map<String, String> coloumnDefinitions = new HashMap<String, String>();
-		coloumnDefinitions.put(DatabaseViewTypeConstants.TABLE_SCHOOL_CLASSES_NAME, "("+DatabaseCreateConstants.TABLE_VIEW_TYPE_COLUMN_DEFINITIONS+");");
-		coloumnDefinitions.put(DatabaseViewTypeConstants.TABLE_SCHOOL_TEACHER_NAME, "("+DatabaseCreateConstants.TABLE_VIEW_TYPE_COLUMN_DEFINITIONS+");");
-		coloumnDefinitions.put(DatabaseViewTypeConstants.TABLE_SCHOOL_ROOMS_NAME, "("+DatabaseCreateConstants.TABLE_VIEW_TYPE_COLUMN_DEFINITIONS+");");
-		coloumnDefinitions.put(DatabaseViewTypeConstants.TABLE_SCHOOL_SUBJECTS_NAME, "("+DatabaseCreateConstants.TABLE_VIEW_TYPE_COLUMN_DEFINITIONS+");");
-		coloumnDefinitions.put(DatabaseSchoolHolidayConstants.TABLE_SCHOOL_HOLIDAYS_NAME, "("+DatabaseCreateConstants.TABLE_SCHOOL_HOLIDAY_COLUMN_DEFINITIONS+");");
-		coloumnDefinitions.put(DatabaseTimegridConstants.TABLE_TIMEGRID_NAME, "("+DatabaseCreateConstants.TABLE_TIMEGRID_COLUMN_DEFINITIONS+");");
-		coloumnDefinitions.put(DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME, "("+DatabaseCreateConstants.TABLE_STATUS_DATA_COLUMN_DEFINITIONS+");");
-		
-		coloumnDefinitions.put(DatabasePermanentLessonConstants.TABLE_PERMANENT_LESSONS_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_DEFINITIONS+");");
-		coloumnDefinitions.put(DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_CLASSES_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
-		coloumnDefinitions.put(DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_TEACHER_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
-		coloumnDefinitions.put(DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_ROOMS_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
-		coloumnDefinitions.put(DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_SUBJECTS_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
-				
-		coloumnDefinitions.put(DatabaseLoginSetConstants.TABLE_LOGIN_SETS_NAME, "("+DatabaseCreateConstants.TABLE_LOGIN_SETS_DEFINITIONS+");");
-		
-		coloumnDefinitions.put(DatabaseAutoSelectConstants.TABLE_AUTO_SELECT_NAME, "("+DatabaseCreateConstants.TABLE_AUTO_SELECT_DEFINITIONS+");");
-		
-		for(String tableName : coloumnDefinitions.keySet()) {
-			createStatements.add(CREATE_TABLE_SQL+" "+tableName+" "+coloumnDefinitions.get(tableName));
-		}
-		
-		return createStatements;
-	}
-
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		for(String sqlStatement : CREATE_TABLE_STATEMENTS) {
@@ -114,13 +87,64 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 			
 			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SchoolplannerContext.context);
 			SharedPreferences.Editor editor = preferences.edit();
-			preferences.edit().remove("autoselect");
-			preferences.edit().remove("autoselect_type");
+			editor.remove("autoselect");
+			editor.remove("autoselect_type");
 			editor.commit();
 			
 		}
 	}
 	
+	private List<String> getCreateMasterDataTables() {		
+		final Map<String, String> coloumnDefinitions = new HashMap<String, String>();
+		
+		addColoumnDefinition(coloumnDefinitions, DatabaseViewTypeConstants.TABLE_SCHOOL_CLASSES_NAME, "("+DatabaseCreateConstants.TABLE_VIEW_TYPE_COLUMN_DEFINITIONS+");");
+		addColoumnDefinition(coloumnDefinitions, DatabaseViewTypeConstants.TABLE_SCHOOL_TEACHER_NAME, "("+DatabaseCreateConstants.TABLE_VIEW_TYPE_COLUMN_DEFINITIONS+");");
+		addColoumnDefinition(coloumnDefinitions, DatabaseViewTypeConstants.TABLE_SCHOOL_ROOMS_NAME, "("+DatabaseCreateConstants.TABLE_VIEW_TYPE_COLUMN_DEFINITIONS+");");
+		addColoumnDefinition(coloumnDefinitions, DatabaseViewTypeConstants.TABLE_SCHOOL_SUBJECTS_NAME, "("+DatabaseCreateConstants.TABLE_VIEW_TYPE_COLUMN_DEFINITIONS+");");
+		
+		addColoumnDefinition(coloumnDefinitions, DatabaseSchoolHolidayConstants.TABLE_SCHOOL_HOLIDAYS_NAME, "("+DatabaseCreateConstants.TABLE_SCHOOL_HOLIDAY_COLUMN_DEFINITIONS+");");
+		addColoumnDefinition(coloumnDefinitions, DatabaseTimegridConstants.TABLE_TIMEGRID_NAME, "("+DatabaseCreateConstants.TABLE_TIMEGRID_COLUMN_DEFINITIONS+");");
+		addColoumnDefinition(coloumnDefinitions, DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME, "("+DatabaseCreateConstants.TABLE_STATUS_DATA_COLUMN_DEFINITIONS+");");
+		
+		return getSQLCreateStatement(coloumnDefinitions);
+	}
+
+	private List<String> getCreatePermanentLessonTables() {		
+		final Map<String, String> coloumnDefinitions = new HashMap<String, String>();
+		
+		addColoumnDefinition(coloumnDefinitions, DatabasePermanentLessonConstants.TABLE_PERMANENT_LESSONS_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_DEFINITIONS+");");
+		addColoumnDefinition(coloumnDefinitions, DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_CLASSES_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
+		addColoumnDefinition(coloumnDefinitions, DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_TEACHER_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
+		addColoumnDefinition(coloumnDefinitions, DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_ROOMS_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
+		addColoumnDefinition(coloumnDefinitions, DatabasePermanentLessonViewTypeConstants.TABLE_PERMANENT_LESSONS_SCHOOL_SUBJECTS_NAME, "("+DatabaseCreateConstants.TABLE_PERMANENT_LESSONS_VIEW_TYPE_DEFINITIONS+");");
+		
+		return getSQLCreateStatement(coloumnDefinitions);
+	}
+
+	private List<String> getCreateSettingsTables() {
+		final Map<String, String> coloumnDefinitions = new HashMap<String, String>();
+		
+		addColoumnDefinition(coloumnDefinitions, DatabaseLoginSetConstants.TABLE_LOGIN_SETS_NAME, "("+DatabaseCreateConstants.TABLE_LOGIN_SETS_DEFINITIONS+");");
+		
+		addColoumnDefinition(coloumnDefinitions, DatabaseAutoSelectConstants.TABLE_AUTO_SELECT_NAME, "("+DatabaseCreateConstants.TABLE_AUTO_SELECT_DEFINITIONS+");");
+		
+		return getSQLCreateStatement(coloumnDefinitions);
+	}
+
+	private void addColoumnDefinition(Map<String, String> coloumnDefinitions, String tableName, String coloumDefinition) {
+		coloumnDefinitions.put(tableName, coloumDefinition);
+	}
+
+	private List<String> getSQLCreateStatement(Map<String, String> coloumnDefinitions) {
+		final List<String> createStatements = new ArrayList<String>();
+		
+		for(String tableName : coloumnDefinitions.keySet()) {
+			createStatements.add(CREATE_TABLE_SQL+" "+tableName+" "+coloumnDefinitions.get(tableName));
+		}
+		
+		return createStatements;
+	}
+
 	private void recreateTable(SQLiteDatabase db, String table, String coloumnDefinitions) {
 		db.beginTransaction();
 		db.execSQL("DROP TABLE "+ table);
