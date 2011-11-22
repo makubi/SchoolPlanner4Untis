@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -59,6 +60,7 @@ public class AutoselectDialog extends Dialog {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setCanceledOnTouchOutside(true);
 		setContentView(R.layout.autoselect_dialog);
 		setTitle(R.string.autoselect_dialog_title);
 		setCancelable(true);
@@ -68,14 +70,26 @@ public class AutoselectDialog extends Dialog {
 		initEnabledButton();
 		initSpinner();
 		initAutoSelectSet();
+		
+		setOnCancelListener(new OnCancelListener() {
+			
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				saveAutoSelectSet();
+			}
+		});
 	}
 	
 	@Override
 	public void onBackPressed() {
-		context.setAutoSelect(autoSelectSet);
+		saveAutoSelectSet();
 		super.onBackPressed();
 	}
 	
+	private void saveAutoSelectSet() {
+		context.setAutoSelect(autoSelectSet);
+	}
+
 	private void initAutoSelectSet() {		
 		int typeSpinnerPos = -1;
 		int valueSpinnerPos = -1;
