@@ -27,7 +27,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.ToggleButton;
 import edu.htl3r.schoolplanner.R;
@@ -47,7 +46,6 @@ public class AutoselectDialog extends Dialog {
 	private Spinner typeSpinner;
 	private Spinner valueSpinner;
 	private ToggleButton enabledButton;
-	private Button saveButton;
 	
 	private Map<String, List<? extends ViewType>> spinnerWire = new HashMap<String, List<? extends ViewType>>();
 	
@@ -67,10 +65,15 @@ public class AutoselectDialog extends Dialog {
 		
 		typeEntries = context.getResources().getStringArray(R.array.settings_autoselect_type_entryvalues);
 		
-		initSaveButton();
 		initEnabledButton();
 		initSpinner();
 		initAutoSelectSet();
+	}
+	
+	@Override
+	public void onBackPressed() {
+		context.setAutoSelect(autoSelectSet);
+		super.onBackPressed();
 	}
 	
 	private void initAutoSelectSet() {		
@@ -159,19 +162,6 @@ public class AutoselectDialog extends Dialog {
 		spinner.setAdapter(adapter);
 		
 		adapter.notifyDataSetChanged();
-	}
-	
-	private void initSaveButton() {
-		saveButton = (Button) findViewById(R.id.autoselect_dialog_save);
-		
-		saveButton.setOnClickListener(new Button.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				context.setAutoSelect(autoSelectSet);
-				dismiss();
-			}
-		});
 	}
 
 	private void initEnabledButton() {
