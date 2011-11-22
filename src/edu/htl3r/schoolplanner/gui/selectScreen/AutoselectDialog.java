@@ -52,6 +52,8 @@ public class AutoselectDialog extends Dialog {
 	
 	private AutoSelectSet autoSelectSet;
 	
+	private int lastSelectedPosition = -1;
+	
 	public AutoselectDialog(SelectScreen context) {
 		super(context);
 		this.context = context;
@@ -99,7 +101,8 @@ public class AutoselectDialog extends Dialog {
 		if(type != null) {
 			typeSpinnerPos = getTypeSpinnerPos(type);
 			
-			List<? extends ViewType> viewTypeList = spinnerWire.get(type);			
+			List<? extends ViewType> viewTypeList = spinnerWire.get(type);
+			initSpinner(valueSpinner, viewTypeList);
 			
 			final int valueSpinnerId = autoSelectSet.getAutoSelectValue();
 			if(valueSpinnerId > 0) valueSpinnerPos = getValueSpinnerPos(viewTypeList, valueSpinnerId);
@@ -107,7 +110,6 @@ public class AutoselectDialog extends Dialog {
 		
 		if(typeSpinnerPos >= 0) typeSpinner.setSelection(typeSpinnerPos);
 		if(valueSpinnerPos >= 0) valueSpinner.setSelection(valueSpinnerPos);
-
 	}
 
 	private void initSpinner() {
@@ -118,10 +120,15 @@ public class AutoselectDialog extends Dialog {
 
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				String selectedTypeEntry = typeEntries[position];
-				initSpinner(valueSpinner, spinnerWire.get(selectedTypeEntry));
 				
-				autoSelectSet.setAutoSelectType(selectedTypeEntry);
+				if(lastSelectedPosition > -1 && lastSelectedPosition != position) {
+					String selectedTypeEntry = typeEntries[position];
+					initSpinner(valueSpinner, spinnerWire.get(selectedTypeEntry));
+					
+					autoSelectSet.setAutoSelectType(selectedTypeEntry);
+				}
+				
+				lastSelectedPosition = position;
 			}
 
 			@Override
@@ -131,8 +138,7 @@ public class AutoselectDialog extends Dialog {
 		valueSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
 
 			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				ViewType viewType = spinnerWire.get(autoSelectSet.getAutoSelectType()).get(position);
 				autoSelectSet.setAutoSelectValue(viewType.getId());
 			}
