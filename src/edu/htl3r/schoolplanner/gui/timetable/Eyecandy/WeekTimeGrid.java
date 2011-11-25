@@ -17,6 +17,7 @@
 package edu.htl3r.schoolplanner.gui.timetable.Eyecandy;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
@@ -24,13 +25,17 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.Toast;
+import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
 import edu.htl3r.schoolplanner.gui.timetable.Week.GUIWeekView;
@@ -87,6 +92,8 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 	private void zeichenInfos(Canvas canvas){
 		paint.setColor( getResources().getColor(R.color.background_stundenplan));
 		
+		highlight(canvas);
+
 		
 		TextPaint tp = new TextPaint(paint);
 		tp.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_2));
@@ -102,6 +109,7 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 		int padding_top = getResources().getDimensionPixelSize(R.dimen.gui_timegrid_padding_top);
 		canvas.translate(0, offsettop+padding_top);
 
+		
 		for(int i=0; i<hours; i++){
 			
 			String anz = (timegrid.get(i).getName()).length() <=2 ? (timegrid.get(i).getName()) : (timegrid.get(i).getName()).substring(0, 2);
@@ -133,6 +141,43 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 		hours = h;
 	}
 	
+	private void highlight(Canvas canvas){
+		DateTime now = new DateTime();
+		now.setHour(DateTimeUtils.getNow().getHour());
+		now.setMinute(DateTimeUtils.getNow().getMinute());
+	
+		Log.d("basti", now.toString());
+		
+		Collections.sort(timegrid);
+		int position = -1;
+		
+		for(TimegridUnit tu : timegrid){
+			DateTime start = new DateTime();
+			start.setHour(tu.getStart().getHour());
+			start.setMinute(tu.getStart().getMinute());
+			DateTime end = new DateTime();
+			end.setHour(tu.getEnd().getHour());
+			end.setMinute(tu.getEnd().getMinute());
+
+			if(now.compareTo(start) >= 0 && now.compareTo(end) <= 0){
+				position = timegrid.indexOf(tu);
+				break;
+			}
+		}
+				
+		if(position != -1){
+			int lessonheight = ((height-offsettop)/hours);
+			int border = getResources().getDimensionPixelSize(R.dimen.gui_stroke_width_4)/2;
+			
+			Rect r = new Rect(0, offsettop+(position*lessonheight)+border, width-border, ((position+1)*lessonheight)+offsettop-border);
+			Paint p = new Paint();
+			p.setStyle(Style.FILL);
+			p.setColor(getResources().getColor(R.color.month_overlay_today));
+			canvas.drawRect(r, p);	
+		}
+	}
+	
+	
 	public void setOffsetTop(int off){
 		offsettop = off;
 	}
@@ -160,8 +205,9 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 				Toast.makeText(getContext(), name + ": "+start +" - "+end, Toast.LENGTH_SHORT).show();
 			}
 		}
-		
 		return true;
 	}
+	
+	
 
 }

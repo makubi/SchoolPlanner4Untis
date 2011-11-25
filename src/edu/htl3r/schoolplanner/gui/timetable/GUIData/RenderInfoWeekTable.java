@@ -180,10 +180,7 @@ public class RenderInfoWeekTable implements WebUntis {
 			}
 			return day;
 		}
-		
-		if (zerolesson != null)
-			Log.d("basti", "zero: " + zerolesson.getStart() + " " + zerolesson.getEnd() + " " + date.toString());
-
+	
 
 		for (int i = 0; i < filteredTimegrid.size(); i++) {
 			TimegridUnit timegridUnit = filteredTimegrid.get(i);

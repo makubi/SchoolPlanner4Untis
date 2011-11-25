@@ -23,10 +23,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.text.format.Time;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
@@ -95,6 +97,8 @@ public class WeekHeader extends GUIWeekView {
 		tp2.setTypeface(Typeface.DEFAULT);
 		tp2.setStyle(Style.FILL_AND_STROKE);
 		
+		highlightToday(canvas);
+		
 		int paddint_top = getResources().getDimensionPixelSize(R.dimen.gui_header_paddting_top);
 		int padding_bottom = getResources().getDimensionPixelSize(R.dimen.gui_header_line1_line1_padding);
 		for (int i = 0; i < days; i++) {
@@ -109,6 +113,25 @@ public class WeekHeader extends GUIWeekView {
 			s = new StaticLayout(dateTime.getDay() + "." + dateTime.getMonth() + "." + dateTime.getYear(), tp2, lessonwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 			s.draw(canvas);
 			canvas.translate(lessonwidth, -(padding_bottom+paddint_top));
+		}
+	}
+	
+	private void highlightToday(Canvas canvas){
+		DateTime today = DateTimeUtils.getNow();
+		int position = -1;
+		for(DateTime d : datum){
+			if(d.getYear() == today.getYear() && d.getMonth() == today.getMonth() && d.getDay() == today.getDay()){
+				position = datum.indexOf(d);
+				break;
+			}
+		}
+		if(position != -1){
+			int border = getResources().getDimensionPixelSize(R.dimen.gui_stroke_width_4)/2;
+			Rect r = new Rect(border + lessonwidth*position, 0 , (lessonwidth*position)+lessonwidth, height-border);
+			Paint p = new Paint();
+			p.setStyle(Style.FILL);
+			p.setColor(getResources().getColor(R.color.month_overlay_today));
+			canvas.drawRect(r, p);
 		}
 	}
 
