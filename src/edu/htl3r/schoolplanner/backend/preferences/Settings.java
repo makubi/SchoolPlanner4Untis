@@ -32,6 +32,7 @@ public class Settings {
 	
 	private boolean displaySaturday;
 	private boolean displayZerothLesson;
+	private boolean highlightCurrentLesson;
 	
 	public Settings() {
 		 preferences = PreferenceManager.getDefaultSharedPreferences(SchoolplannerContext.context);
@@ -58,6 +59,7 @@ public class Settings {
 		// display options
 		displaySaturday = preferences.getBoolean(getString(R.string.settings_key_show_saturday), false);
 		displayZerothLesson = preferences.getBoolean(getString(R.string.settings_key_show_zeroth_lesson), false);
+		highlightCurrentLesson = preferences.getBoolean(getString(R.string.settings_key_highlight_current_lesson), false);
 	}
 	
 	public boolean isAutoLogin() {
@@ -78,6 +80,10 @@ public class Settings {
 
 	public boolean isDisplayZerothLesson() {
 		return displayZerothLesson;
+	}
+
+	public boolean isHighlightCurrentLesson() {
+		return highlightCurrentLesson;
 	}
 
 	private String getString(int resId) {

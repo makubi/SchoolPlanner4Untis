@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-	<!-- Keys for shared preferences -->
-	<string name="settings_key_autologin">autologin</string>
-	<string name="settings_key_autologin_set">autologin_set</string>
-	
-	<string name="settings_key_autoselect">autoselect</string>
-	<string name="settings_key_autoselect_type">autoselect_type</string>
-	<string name="settings_key_autoselect_value">autoselect_value</string>
-	
-	<string name="settings_key_default_view">default_view</string>
-	<string name="settings_key_show_saturday">show_saturday</string>
-	<string name="settings_key_show_zeroth_lesson">show_zeroth_lesson</string>	
-	
+<resources>	
 	<string name="settings_autoselect_deprecated_title">Veraltete Auto-Auswahl Einstellungen</string>
 	<string name="settings_autoselect_deprecated_summary">Die Auto-Auswahl Einstellungen sind ab jetzt über den Auswahl-Bildschirm verwaltbar</string>
 	
@@ -24,7 +12,6 @@
     <string name="settings_login_autologin_set_dialog_title">Login Set</string>
     
     
-    
     <string name="settings_autoselect_header">Auto-Auswahl Optionen</string>
     <string name="settings_autoselect_enabled_title">Auto-Auswahl Stundenplan</string>
     <string name="settings_autoselect_enabled_summary">Auto-Auswahl des Stundenplans nach dem Login?</string>
@@ -33,10 +20,11 @@
     <string name="settings_autoselect_type_summary">Typ des Stundenplans, der nach dem Login angezeigt werden soll</string>
     <string name="settings_autoselect_type_dialog_title">Auto-Auswahl Art</string>
     
-        
     <string name="settings_display_header">Anzeige Optionen</string>
     <string name="settings_display_show_saturday_title">Samstag anzeigen</string>
     <string name="settings_display_show_saturday_summary">Zeige Samstag im Stundenplan an</string>
     <string name="settings_display_show_zeroth_lesson_title">Nullte Stunde anzeigen</string>
     <string name="settings_display_show_zeroth_lesson_summary">Zeige nullte Stunde im Stundenplan an</string>
+    <string name="settings_display_highlight_current_lesson_title">Aktuelle Stunde markieren</string>
+    <string name="settings_display_highlight_current_lesson_summary">Markiere aktuelle Stunde im Stundenplan</string>
 </resources>

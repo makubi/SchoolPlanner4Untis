@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Keys for shared preferences -->
+	<string name="settings_key_autologin">autologin</string>
+	<string name="settings_key_autologin_set">autologin_set</string>
+	
+	<string name="settings_key_autoselect">autoselect</string>
+	<string name="settings_key_autoselect_type">autoselect_type</string>
+	<string name="settings_key_autoselect_value">autoselect_value</string>
+	
+	<string name="settings_key_default_view">default_view</string>
+	<string name="settings_key_show_saturday">show_saturday</string>
+	<string name="settings_key_show_zeroth_lesson">show_zeroth_lesson</string>
+	<string name="settings_key_highlight_current_lesson">highlight_current_lesson</string>
+</resources>

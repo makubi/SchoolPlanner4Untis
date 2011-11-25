@@ -38,6 +38,12 @@
                 android:key="@string/settings_key_show_zeroth_lesson"
                 android:title="@string/settings_display_show_zeroth_lesson_title"
                 android:summary="@string/settings_display_show_zeroth_lesson_summary" />
+                
+        <CheckBoxPreference
+                android:key="@string/settings_key_highlight_current_lesson"
+                android:title="@string/settings_display_highlight_current_lesson_title"
+                android:summary="@string/settings_display_highlight_current_lesson_summary" />
+                
     </PreferenceCategory>
 
 </PreferenceScreen>
