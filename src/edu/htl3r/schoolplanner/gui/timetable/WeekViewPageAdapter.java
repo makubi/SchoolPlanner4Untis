@@ -23,6 +23,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ScrollView;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIWeek;
 import edu.htl3r.schoolplanner.gui.timetable.Week.WeekLayout;
 
@@ -36,7 +37,6 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 	private int oldpos = NUM_SCREENS / 2;
 	private WeekLayout view_cach[] = new WeekLayout[NUM_SCREENS];
 	private BlockingDownloadQueue downloadschlange = new BlockingDownloadQueue();
-	private WeekView weekview;
 	
 	public void setDate(DateTime dt) {
 		date = dt;
@@ -48,12 +48,11 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 		}
 	}
 
-	public void setContext(Context c, BlockingDownloadQueue bd, WeekView wv) {
+	public void setContext(Context c, BlockingDownloadQueue bd, WeekView wv, Settings settings) {
 		context = c;
 		downloadschlange = bd;
-		weekview = wv;
 		for (int i = 0; i < view_cach.length; i++) {
-			view_cach[i] = new WeekLayout(context, i, wv);
+			view_cach[i] = new WeekLayout(context, i, wv, settings);
 		}
 	}
 
@@ -133,11 +132,10 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 		return ad.getDay() + "." + ad.getMonth() + "." + ad.getYear();
 	}
 	
-	public void reset(WeekView wv){
-		weekview = wv;
+	public void reset(WeekView wv, Settings settings){
 		view_cach = new WeekLayout[NUM_SCREENS];
 		for (int i = 0; i < view_cach.length; i++) {
-			view_cach[i] = new WeekLayout(context, i, wv);
+			view_cach[i] = new WeekLayout(context, i, wv, settings);
 		}
 	}
 

@@ -47,10 +47,13 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 	private Paint paint;
 	private List<TimegridUnit> timegrid = new ArrayList<TimegridUnit>();
 	private boolean landscape = false;
+	private boolean highlight;
 	
-	public WeekTimeGrid(Context context) {
+	public WeekTimeGrid(Context context, boolean highlight) {
 		super(context);
 		setID(TIMGRID_ID);
+		this.highlight = highlight;
+		
 		int color = getResources().getColor(R.color.header_background);
 		setBackgroundColor(Color.argb(200, Color.red(color), Color.green(color), Color.blue(color)));
 		
@@ -70,6 +73,8 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 	@Override
 	protected void onDraw(Canvas canvas) {
 		zeichenGatter(canvas);
+		if(highlight)
+			highlight(canvas);
 		zeichenInfos(canvas);
 		super.onDraw(canvas);
 	}
@@ -91,10 +96,7 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 	
 	private void zeichenInfos(Canvas canvas){
 		paint.setColor( getResources().getColor(R.color.background_stundenplan));
-		
-		highlight(canvas);
-
-		
+	
 		TextPaint tp = new TextPaint(paint);
 		tp.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_2));
 		tp.setStyle(Style.FILL_AND_STROKE);

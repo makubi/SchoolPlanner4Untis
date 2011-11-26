@@ -33,6 +33,7 @@ import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
+import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
@@ -48,6 +49,7 @@ public class WeekView extends SchoolPlannerActivity {
 	private ViewPagerIndicator indicator;
 	private ViewType viewtype;
 	private OverlayMonth overlaymonth;
+	private Settings settings;
 
 	private List<SchoolHoliday> holidays;
 
@@ -56,10 +58,11 @@ public class WeekView extends SchoolPlannerActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		settings = ((SchoolPlannerApp) getApplication()).getSettings();
 		setContentView(R.layout.basti_weekview);
 		initViewPager();
 		loadViewType();
-		initDownloadQueue();		
+		initDownloadQueue();	
 	}
 
 	private void loadViewType() {
@@ -74,7 +77,7 @@ public class WeekView extends SchoolPlannerActivity {
 	
 	private void initDownloadQueue(){
 		loadweekdata = new LoadDataTask();
-		loadweekdata.setData(this,((SchoolPlannerApp) getApplication()).getData(), this,viewtype, downloadschlange,	((SchoolPlannerApp) getApplication()).getSettings());
+		loadweekdata.setData(this,((SchoolPlannerApp) getApplication()).getData(), this,viewtype, downloadschlange,	settings);
 		loadweekdata.execute();
 	}
 
@@ -134,15 +137,14 @@ public class WeekView extends SchoolPlannerActivity {
 	}
 
 	private void initViewPager() {
+		
 		myViewPager = (ViewPager) findViewById(R.id.week_pager);
 		indicator = (ViewPagerIndicator) findViewById(R.id.week_indicator);
-
 		wvpageadapter = new WeekViewPageAdapter();
-		wvpageadapter.setContext(this, downloadschlange, this);
+
+		wvpageadapter.setContext(this, downloadschlange, this,((SchoolPlannerApp) getApplication()).getSettings());
 		wvpageadapter.setDate(getMonday());
-
 		myViewPager.setAdapter(wvpageadapter);
-
 		myViewPager.setOnPageChangeListener(indicator);
 		indicator.init(50, wvpageadapter.getCount(), wvpageadapter);
 
@@ -229,5 +231,9 @@ public class WeekView extends SchoolPlannerActivity {
 	@Override
 	public Object onRetainNonConfigurationInstance() {
 		return viewtype;
+	}
+	
+	public Settings getSettings(){
+		return settings;
 	}
 }

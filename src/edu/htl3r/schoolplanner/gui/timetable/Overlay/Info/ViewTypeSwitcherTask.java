@@ -53,7 +53,7 @@ public class ViewTypeSwitcherTask extends AsyncTask<Void, Void, Void>{
 	@Override
 	protected void onPostExecute(Void result) {
 		super.onPostExecute(result);
-		wvpageadapter.reset(weekView);
+		wvpageadapter.reset(weekView,weekView.getSettings());
 
 		for(int i=0; i<myViewPager.getChildCount(); i++){
 			ScrollView scr = (ScrollView)myViewPager.getChildAt(i);

@@ -32,6 +32,7 @@ import android.text.format.Time;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.gui.timetable.Week.GUIWeekView;
 
 public class WeekHeader extends GUIWeekView {
@@ -41,9 +42,11 @@ public class WeekHeader extends GUIWeekView {
 	private Paint paint;
 
 	private ArrayList<DateTime> datum = new ArrayList<DateTime>();
-
-	public WeekHeader(Context context) {
+	private boolean highlight;
+	
+	public WeekHeader(Context context, boolean highlight) {
 		super(context);
+		this.highlight = highlight;
 		
 		setID(HEADER_ID);
 
@@ -64,7 +67,11 @@ public class WeekHeader extends GUIWeekView {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		zeichenGatter(canvas);
+		
+		if(highlight)
+			highlightToday(canvas);
 		zeichenInfos(canvas);
+
 		super.onDraw(canvas);
 	}
 
@@ -97,7 +104,6 @@ public class WeekHeader extends GUIWeekView {
 		tp2.setTypeface(Typeface.DEFAULT);
 		tp2.setStyle(Style.FILL_AND_STROKE);
 		
-		highlightToday(canvas);
 		
 		int paddint_top = getResources().getDimensionPixelSize(R.dimen.gui_header_paddting_top);
 		int padding_bottom = getResources().getDimensionPixelSize(R.dimen.gui_header_line1_line1_padding);

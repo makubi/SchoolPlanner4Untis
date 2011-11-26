@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.timetable.WeekView;
 import edu.htl3r.schoolplanner.gui.timetable.Eyecandy.WeekHeader;
@@ -65,19 +66,22 @@ public class WeekLayout extends ViewGroup{
 	private OverlayInfo weekoverlay;
 	
 	private WeekView weekview;
+	
+	private Settings settings;
 
-	public WeekLayout(Context context, int id, WeekView wv) {
+	public WeekLayout(Context context, int id, WeekView wv, Settings settings) {
 		super(context);
 		this.context = context;
 		this.ID = id;
 		this.weekview = wv;
+		this.settings = settings;
 		
-		
+		boolean highlightCurrentHour = settings.isHighlightCurrentLesson();
 		clicklistener = new OnLessonsClickListener();
 		weekoverlay = new OverlayInfo(context);
 		
-		weekheader = new WeekHeader(context);
-		weektimegrid = new WeekTimeGrid(context);
+		weekheader = new WeekHeader(context,highlightCurrentHour);
+		weektimegrid = new WeekTimeGrid(context,highlightCurrentHour);
 		initDrawingStuff();
 
 		weekdata = new GUIWeek();
