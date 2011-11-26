@@ -56,7 +56,8 @@ public class WeekHeader extends GUIWeekView {
 		paint = new Paint();
 		paint.setStyle(Style.STROKE);
 		paint.setAntiAlias(true);
-		paint.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_4));
+		paint.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_2));
+		paint.setColor(Color.BLACK);
 	}
 
 	public void setMonday(ArrayList<DateTime> dt) {
@@ -132,7 +133,7 @@ public class WeekHeader extends GUIWeekView {
 			}
 		}
 		if(position != -1){
-			int border = getResources().getDimensionPixelSize(R.dimen.gui_stroke_width_4)/2;
+			int border = getResources().getDimensionPixelSize(R.dimen.gui_stroke_width_2)/2;
 			Rect r = new Rect(border + lessonwidth*position, 0 , (lessonwidth*position)+lessonwidth, height-border);
 			Paint p = new Paint();
 			p.setStyle(Style.FILL);

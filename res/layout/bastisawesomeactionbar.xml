@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edu.htl3r.schoolplanner.gui.timetable.baactionbar.BastisAwesomeActionBar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/baactionbar"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/gui_actionbar_height"
+    android:layout_alignParentTop="true"
+    android:background="@drawable/baactionbar_background" >
+
+    <edu.htl3r.schoolplanner.gui.timetable.baactionbar.BAHomeAction
+        android:id="@+id/baactionbar_home"
+        style="@style/baa_icon"
+        android:layout_alignParentLeft="true" >
+
+        <ProgressBar
+            android:id="@+id/baactionbar_home_progress"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+        
+    </edu.htl3r.schoolplanner.gui.timetable.baactionbar.BAHomeAction>
+
+    <android.view.View
+        android:id="@+id/baactionbar_sep1"
+        style="@style/baa_seperator"
+        android:layout_alignRight="@id/baactionbar_home" />
+
+    <TextView
+        android:id="@+id/baactionbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/baactionbar_sep1"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dip"
+        android:text="HeyHo"
+        android:textColor="#ffffff"
+        android:textSize="18sp" />
+
+    <edu.htl3r.schoolplanner.gui.timetable.baactionbar.BAAction
+        android:id="@+id/baactionbar_dropdown_action"
+        style="@style/baa_icon"
+        android:layout_alignParentRight="true" />
+
+    <android.view.View
+        android:id="@+id/baactionbar_sep3"
+        style="@style/baa_seperator"
+        android:layout_alignLeft="@id/baactionbar_dropdown_action" />
+
+    <edu.htl3r.schoolplanner.gui.timetable.baactionbar.BAAction
+        android:id="@+id/baactionbar_month"
+        style="@style/baa_icon"
+        android:layout_alignRight="@id/baactionbar_sep3" />
+
+    <android.view.View
+        android:id="@+id/baactionbar_sep2"
+        style="@style/baa_seperator"
+        android:layout_alignLeft="@id/baactionbar_month" />
+
+</edu.htl3r.schoolplanner.gui.timetable.baactionbar.BastisAwesomeActionBar>

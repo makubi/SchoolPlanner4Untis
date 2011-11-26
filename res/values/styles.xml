@@ -134,4 +134,18 @@
 		<item name="android:layout_width">fill_parent</item>
 		<item name="android:background">@color/delimiter</item>
 	</style>
+	
+	<style name="baa_seperator">
+		<item name="android:layout_height">fill_parent</item>
+		<item name="android:layout_width">1dip</item>
+		<item name="android:background">#29000000</item>
+	</style>
+	
+	<style name="baa_icon">
+		<item name="android:layout_height">@dimen/gui_actionbar_width_height_item</item>
+		<item name="android:layout_width">@dimen/gui_actionbar_width_height_item</item>
+		<item name="android:paddingRight">@dimen/gui_actionbar_item_margin</item>
+		<item name="android:paddingLeft">@dimen/gui_actionbar_item_margin</item> 
+		<item name="android:clickable">true</item>
+	</style>
 </resources>

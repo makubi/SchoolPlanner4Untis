@@ -60,7 +60,7 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 		paint = new Paint();
 		paint.setStyle(Style.STROKE);
 		paint.setAntiAlias(true);
-		paint.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_4));
+		paint.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_2));
 		paint.setColor( getResources().getColor(R.color.background_stundenplan));
 		setOnTouchListener(this);
 		
@@ -147,9 +147,7 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 		DateTime now = new DateTime();
 		now.setHour(DateTimeUtils.getNow().getHour());
 		now.setMinute(DateTimeUtils.getNow().getMinute());
-	
-		Log.d("basti", now.toString());
-		
+			
 		Collections.sort(timegrid);
 		int position = -1;
 		
@@ -169,7 +167,7 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 				
 		if(position != -1){
 			int lessonheight = ((height-offsettop)/hours);
-			int border = getResources().getDimensionPixelSize(R.dimen.gui_stroke_width_4)/2;
+			int border = getResources().getDimensionPixelSize(R.dimen.gui_stroke_width_2)/2;
 			
 			Rect r = new Rect(0, offsettop+(position*lessonheight)+border, width-border, ((position+1)*lessonheight)+offsettop-border);
 			Paint p = new Paint();

@@ -53,9 +53,9 @@
 	<dimen name="gui_stroke_width_9">6dip</dimen>
 	<dimen name="gui_stroke_width_10">6.66dip</dimen>
 	
+	<dimen name="gui_actionbar_height">45dip</dimen>
+ 	<dimen name="gui_actionbar_width_height_item">45dip</dimen>
+ 	<dimen name="gui_actionbar_item_margin">5dip</dimen>
+ 	
 	
-	
-	
-	
-    
 </resources>

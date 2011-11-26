@@ -40,6 +40,8 @@ import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
 import edu.htl3r.schoolplanner.gui.timetable.Overlay.Info.ViewTypeSwitcherTask;
 import edu.htl3r.schoolplanner.gui.timetable.Overlay.Month.OverlayMonth;
+import edu.htl3r.schoolplanner.gui.timetable.baactionbar.BADropdown;
+import edu.htl3r.schoolplanner.gui.timetable.baactionbar.BastisAwesomeActionBar;
 
 public class WeekView extends SchoolPlannerActivity {
 
@@ -54,17 +56,26 @@ public class WeekView extends SchoolPlannerActivity {
 	private List<SchoolHoliday> holidays;
 
 	public BlockingDownloadQueue downloadschlange = new BlockingDownloadQueue();
+	private BastisAwesomeActionBar actionbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		settings = ((SchoolPlannerApp) getApplication()).getSettings();
 		setContentView(R.layout.basti_weekview);
-		initViewPager();
+		initActionBar();
+
 		loadViewType();
+		initViewPager();
 		initDownloadQueue();	
 	}
 
+	
+	private void initActionBar(){
+		actionbar = (BastisAwesomeActionBar)findViewById(R.id.baactionbar);
+		actionbar.init(((BADropdown)findViewById(R.id.baactionbar_dropdown)));
+	}
+	
 	private void loadViewType() {
 		final Object data = getLastNonConfigurationInstance();
 
@@ -73,6 +84,7 @@ public class WeekView extends SchoolPlannerActivity {
 		} else {
 			viewtype = (ViewType) data;
 		}
+		actionbar.setText(viewtype);
 	}
 	
 	private void initDownloadQueue(){
@@ -223,6 +235,8 @@ public class WeekView extends SchoolPlannerActivity {
 
 	public void changeViewType(ViewType vt) {
 		viewtype = vt;
+		actionbar.setText(viewtype);
+
 		ViewTypeSwitcherTask viewTypeSwitcher = new ViewTypeSwitcherTask(this,
 				myViewPager, wvpageadapter, loadweekdata, vt);
 		viewTypeSwitcher.execute();
@@ -231,6 +245,12 @@ public class WeekView extends SchoolPlannerActivity {
 	@Override
 	public Object onRetainNonConfigurationInstance() {
 		return viewtype;
+	}
+	
+	
+	@Override
+	public void setInProgress(String message, boolean active) {
+		actionbar.setProgress(active);
 	}
 	
 	public Settings getSettings(){

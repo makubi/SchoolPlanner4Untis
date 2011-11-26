@@ -1,41 +1,40 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" style="@style/background_layout"
+	android:id="@+id/week_container">
 
-<RelativeLayout android:layout_width="fill_parent"
-	android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
-	style="@style/background_layout" android:id="@+id/week_container">
+
+	<include layout="@layout/bastisawesomeactionbar" android:id="@+id/baactionbar" />
+
 
 	<RelativeLayout android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:background="@color/element_background"
-		android:layout_alignParentTop="true" android:id="@+id/week_indicator_container">
+		android:id="@+id/week_indicator_container"
+		android:layout_alignParentBottom="true">
+
+		<View android:layout_width="fill_parent" android:layout_height="1px"
+			android:layout_alignTop="@+id/week_indicator" android:background="#ffbdbdbd" />
 
 		<edu.htl3r.schoolplanner.gui.timetable.ViewPagerIndicator
 			android:id="@+id/week_indicator" android:layout_width="fill_parent"
 			android:layout_height="wrap_content" android:paddingLeft="5dp"
 			android:paddingRight="5dp" />
 
-		<RelativeLayout android:layout_width="fill_parent" 
-			android:layout_height="wrap_content" android:layout_below="@id/week_indicator"
-			android:id="@+id/indicator_stuff" android:background="@color/element_background">
-
-			<View android:layout_width="fill_parent" android:layout_height="1px"
-				android:layout_alignBottom="@+id/current" android:background="#ffbdbdbd" />
-			<ImageView android:id="@id/current" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:src="@drawable/indicator_current"
-				android:layout_centerInParent="true" android:layout_alignParentTop="true" />
-		</RelativeLayout>
-
 	</RelativeLayout>
-
-	<include layout="@layout/progress_bar" android:id="@+id/include1" /> 
-
 
 	<android.support.v4.view.ViewPager
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:id="@+id/week_pager" android:layout_above="@id/include1" android:layout_below="@id/week_indicator_container">
+		android:id="@+id/week_pager" android:layout_above="@id/week_indicator_container"
+		android:layout_below="@id/baactionbar">
 	</android.support.v4.view.ViewPager>
 
 
-
+	<edu.htl3r.schoolplanner.gui.timetable.baactionbar.BADropdown
+		android:id="@+id/baactionbar_dropdown" android:layout_width="100dip"
+		android:layout_height="wrap_content" android:background="@drawable/baactionbar_dropdown_border"
+		android:layout_below="@id/baactionbar"
+		android:layout_alignParentRight="true" android:visibility="gone">
+	</edu.htl3r.schoolplanner.gui.timetable.baactionbar.BADropdown>
 
 </RelativeLayout>
 	
