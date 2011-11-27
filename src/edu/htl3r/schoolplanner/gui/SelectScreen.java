@@ -195,10 +195,11 @@ public class SelectScreen extends SchoolPlannerActivity {
 
 	private void retrieveSpinnerData() {
 		retrieveSavedBundle();
-		if (classData == null) classData = (DataFacade<List<SchoolClass>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_CLASS_LIST);
-		if (teacherData == null) teacherData = (DataFacade<List<SchoolTeacher>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_TEACHER_LIST);
-		if(roomData == null) roomData = (DataFacade<List<SchoolRoom>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_ROOM_LIST);
-		if(subjectData == null) subjectData = (DataFacade<List<SchoolSubject>>) getIntent().getExtras().getSerializable(BundleConstants.SCHOOL_SUBJECT_LIST);
+		Bundle extras = getIntent().getExtras();
+		if (classData == null) classData = (DataFacade<List<SchoolClass>>) extras.getSerializable(BundleConstants.SCHOOL_CLASS_LIST);
+		if (teacherData == null) teacherData = (DataFacade<List<SchoolTeacher>>) extras.getSerializable(BundleConstants.SCHOOL_TEACHER_LIST);
+		if(roomData == null) roomData = (DataFacade<List<SchoolRoom>>) extras.getSerializable(BundleConstants.SCHOOL_ROOM_LIST);
+		if(subjectData == null) subjectData = (DataFacade<List<SchoolSubject>>) extras.getSerializable(BundleConstants.SCHOOL_SUBJECT_LIST);
 	}
 
 	private void retrieveSavedBundle() {

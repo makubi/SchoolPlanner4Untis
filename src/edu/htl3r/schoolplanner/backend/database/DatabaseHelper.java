@@ -40,7 +40,7 @@ import edu.htl3r.schoolplanner.backend.database.constants.DatabaseSchoolHolidayC
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseStatusDataConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseTimegridConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseViewTypeConstants;
-import edu.htl3r.schoolplanner.constants.LoginSetConstants;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
 

@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
+import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.ErrorMessage;
 import edu.htl3r.schoolplanner.backend.network.ErrorCodes;
@@ -37,22 +38,22 @@ import edu.htl3r.schoolplanner.gui.SelectScreen;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
 
 public class LoginListener implements OnItemClickListener, Serializable {
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	private WelcomeScreen welcomescreen;
 	
 	private AsyncTask<Void, AsyncTaskProgress, Boolean> loginTask;
 	
+	private SchoolPlannerApp app;
+	
 	public LoginListener(WelcomeScreen ws) {
 		welcomescreen = ws;
+		app = (SchoolPlannerApp) ws.getApplication();
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		final LoginSet selectedEntry = welcomescreen.getLoginManager().getLoginSetOnPosition((int) id);
+		final LoginSet selectedEntry = app.getLoginSetManager().getLoginSetOnPosition((int) id);
 		performLogin(selectedEntry);
 	}
 	
@@ -61,17 +62,16 @@ public class LoginListener implements OnItemClickListener, Serializable {
 
 			@Override
 			protected Boolean doInBackground(Void... params) {
-				
-				SchoolPlannerApp app = (SchoolPlannerApp) welcomescreen.getApplication();
+				Cache cache = app.getData();
 				
 				// Beim Login die Daten im RAM leeren, damit aus der Datenbank die passenden Daten geladen werden
-				app.getData().clearInternalCache();
+				cache.clearInternalCache();
 				
-				app.getData().setLoginCredentials(selectedEntry);
+				cache.setLoginCredentials(selectedEntry);
 				app.getLoginSetManager().setActiveLoginSet(selectedEntry);
 				
 				if(!isCancelled()) {
-					DataFacade<Boolean> authenticate = app.getData().authenticate();
+					DataFacade<Boolean> authenticate = cache.authenticate();
 				if(authenticate.isSuccessful()) {
 					boolean auth = authenticate.getData();
 					if(auth) {
@@ -84,7 +84,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 							schoolClassProgress.setShowProgressWheel(true);
 							
 							publishProgress(schoolClassProgress);
-							bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, app.getData().getSchoolClassList());
+							bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, cache.getSchoolClassList());
 						}
 						
 						if(!isCancelled()) {
@@ -93,7 +93,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 							schoolTeacherProgress.setShowProgressWheel(true);
 							
 							publishProgress(schoolTeacherProgress);
-							bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, app.getData().getSchoolTeacherList());
+							bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, cache.getSchoolTeacherList());
 						}
 						
 						if(!isCancelled()) {
@@ -102,7 +102,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 							schoolRoomProgress.setShowProgressWheel(true);
 							
 							publishProgress(schoolRoomProgress);
-							bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, app.getData().getSchoolRoomList());
+							bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, cache.getSchoolRoomList());
 						}
 						
 						if(!isCancelled()) {
@@ -111,7 +111,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 							schoolSubjectProgress.setShowProgressWheel(true);
 							
 							publishProgress(schoolSubjectProgress);
-							bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, app.getData().getSchoolSubjectList());
+							bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, cache.getSchoolSubjectList());
 						}
 						
 						if(!isCancelled()) {

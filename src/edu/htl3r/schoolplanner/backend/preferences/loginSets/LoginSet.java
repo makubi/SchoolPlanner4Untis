@@ -19,7 +19,6 @@ package edu.htl3r.schoolplanner.backend.preferences.loginSets;
 import java.io.Serializable;
 import java.util.Map;
 
-import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class LoginSet implements Serializable {
 	

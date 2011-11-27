@@ -24,7 +24,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import edu.htl3r.schoolplanner.backend.database.Database;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseLoginSetConstants;
-import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class LoginSetDatabase {
 	

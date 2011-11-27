@@ -14,10 +14,19 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.constants;
+package edu.htl3r.schoolplanner.backend.preferences.loginSets;
 
-public interface WelcomeScreenConstants {
 
-	public final String EMPTY_LIST_TEXTVIEW_ADDED = "added";
-	public final String EMPTY_LIST_TEXTVIEW_REMOVED = "removed";
+/**
+ * Stellt Konstanten fuer die Verwaltung der {@link LoginSet}s in Datenbank / Maps zur Verfuegung.
+ */
+public interface LoginSetConstants {
+
+	// Konstanten fuer LoginSets (Datenbank: Spaltennamen, Maps: Keys)
+	public final String nameKey = "name";
+	public final String serverUrlKey = "url";
+	public final String schoolKey = "school";
+	public final String usernameKey = "user";
+	public final String passwordKey = "password";
+	public final String sslOnlyKey = "sslOnly";	
 }
