@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import edu.htl3r.schoolplanner.backend.LoginSetHandler;
-import edu.htl3r.schoolplanner.constants.LoginSetConstants;
 
 public class LoginSetManager {
 	

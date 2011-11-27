@@ -16,7 +16,7 @@
  */
 package edu.htl3r.schoolplanner.backend.database.constants;
 
-import edu.htl3r.schoolplanner.constants.LoginSetConstants;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 
 public interface DatabaseCreateConstants {
 

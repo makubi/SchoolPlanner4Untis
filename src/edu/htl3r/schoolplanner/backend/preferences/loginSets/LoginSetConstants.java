@@ -14,9 +14,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.constants;
+package edu.htl3r.schoolplanner.backend.preferences.loginSets;
 
-import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 
 /**
  * Stellt Konstanten fuer die Verwaltung der {@link LoginSet}s in Datenbank / Maps zur Verfuegung.

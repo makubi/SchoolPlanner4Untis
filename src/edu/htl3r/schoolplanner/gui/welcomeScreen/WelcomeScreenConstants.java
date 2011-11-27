@@ -14,15 +14,10 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.backend;
+package edu.htl3r.schoolplanner.gui.welcomeScreen;
 
-import java.util.List;
+public interface WelcomeScreenConstants {
 
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
-
-public interface LessonHelper {
-
-	public List<Lesson> getPermanentLessons();
-	
-	public void setPermanentLesson(Lesson lesson);
+	public final String EMPTY_LIST_TEXTVIEW_ADDED = "added";
+	public final String EMPTY_LIST_TEXTVIEW_REMOVED = "removed";
 }

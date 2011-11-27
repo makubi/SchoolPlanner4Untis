@@ -26,8 +26,6 @@ import android.database.sqlite.SQLiteDatabase;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.AutoSelectHandler;
-import edu.htl3r.schoolplanner.backend.Cache;
-import edu.htl3r.schoolplanner.backend.LessonHelper;
 import edu.htl3r.schoolplanner.backend.LoginSetHandler;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.MasterdataStore;
@@ -37,19 +35,17 @@ import edu.htl3r.schoolplanner.backend.preferences.AutoSelectSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetDatabase;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
-public class Database implements MasterdataStore, MasterdataProvider, LessonHelper, LoginSetHandler, AutoSelectHandler {
+public class Database implements MasterdataStore, MasterdataProvider, LoginSetHandler, AutoSelectHandler {
 	
 	private DatabaseHelper databaseHelper = new DatabaseHelper(SchoolplannerContext.context);
 
 	private MasterDataDatabase masterDataDatabase = new MasterDataDatabase(this);
-	private LessonHelperDatabase lessonHelperDatabase = new LessonHelperDatabase(this);
 	
 	private LoginSetDatabase loginSetDatabase = new LoginSetDatabase(this);
 	
@@ -166,16 +162,6 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 	}
 
 	@Override
-	public synchronized List<Lesson> getPermanentLessons() {
-		return lessonHelperDatabase.getPermanentLessons();
-	}
-
-	@Override
-	public synchronized void setPermanentLesson(Lesson lesson) {
-		lessonHelperDatabase.setPermanentLesson(lesson);
-	}
-
-	@Override
 	public synchronized void saveLoginSet(LoginSet loginSet) {
 		loginSetDatabase.saveLoginSet(loginSet);
 	}
@@ -222,10 +208,6 @@ public class Database implements MasterdataStore, MasterdataProvider, LessonHelp
 		DateTime dateTime = new DateTime();
 		dateTime.getAndroidTime().set(millis);
 		return dateTime;
-	}
-
-	public void setCache(Cache cache) {
-		lessonHelperDatabase.setUnsaveDataSourceMasterdataProvider(cache);
 	}
 
 	public void setActiveLoginSet(LoginSet activeLoginSet) {
