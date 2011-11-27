@@ -38,7 +38,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see InternalMemory
  * @see ExternalDataLoader
  */
-public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider, LessonHelper, LoginSetHandler, AutoSelectHandler {
+public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider, LoginSetHandler, AutoSelectHandler {
 	
 	private InternalMemory internalMemory = new InternalMemory();
 	private ExternalDataLoader externalDataLoader = new ExternalDataLoader();
@@ -266,23 +266,6 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	@Override
 	public void clearInternalCache() {
 		internalMemory = new InternalMemory();
-	}
-
-	@Override
-	public List<Lesson> getPermanentLessons() {
-//		List<Lesson> permanentLessons = internalMemory.getPermanentLessons();
-//		if(permanentLessons != null) {
-//			return permanentLessons;
-//		}
-//		else {
-			return externalDataLoader.getPermanentLessons();
-//		}
-	}
-
-	@Override
-	public void setPermanentLesson(Lesson lesson) {
-		internalMemory.setPermanentLesson(lesson);
-		externalDataLoader.setPermanentLesson(lesson);
 	}
 
 	@Override
