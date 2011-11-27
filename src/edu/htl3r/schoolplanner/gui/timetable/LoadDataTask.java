@@ -25,6 +25,9 @@ import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIContentManager;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIWeek;
+import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.InputTransferObject;
+import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.OutputTransferObject;
+import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.TransferObject;
 
 public class LoadDataTask extends AsyncTask<Void, String, Void> {
 

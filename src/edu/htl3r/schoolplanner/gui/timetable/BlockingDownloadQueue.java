@@ -18,6 +18,9 @@ package edu.htl3r.schoolplanner.gui.timetable;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
+import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.InterruptTranferObject;
+import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.TransferObject;
+
 public class BlockingDownloadQueue extends LinkedBlockingQueue<TransferObject> {
 
 	

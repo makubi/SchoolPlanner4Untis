@@ -47,6 +47,7 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 
 	public void init(BADropdown dropdown, View everything) {
 		this.dropdown = dropdown;
+		dropdown.setActionBar(this);
 		this.everything = everything;
 		title = (TextView) findViewById(R.id.baactionbar_title);
 		setHomeIcon();
@@ -107,6 +108,7 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 			@Override
 			public void onClick(View v) {
 				dropdown.setVisibility((dropdown.isShown()) ? View.GONE : View.VISIBLE);
+				fireActionBarEvent(DROPDOWN);
 			}
 		});
 

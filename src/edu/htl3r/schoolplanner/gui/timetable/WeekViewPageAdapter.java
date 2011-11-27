@@ -25,6 +25,7 @@ import android.widget.ScrollView;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIWeek;
+import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.InputTransferObject;
 import edu.htl3r.schoolplanner.gui.timetable.Week.WeekLayout;
 
 public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndicator.PageInfoProvider {

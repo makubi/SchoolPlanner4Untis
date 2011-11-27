@@ -14,10 +14,22 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.gui.timetable;
+package edu.htl3r.schoolplanner.gui.timetable.TransportClasses;
 
-public class InterruptTranferObject extends TransferObject{
-	public InterruptTranferObject(){
-		setID(INTERRUPT);
+
+abstract public class TransferObject {
+
+	public static final int INTERRUPT = 1337;
+	public static final int NORMAL = 7331;
+	private int id; 
+	
+	public void setID(int id){
+		this.id = id; 
 	}
+	
+	public boolean isBomb(){
+		return (id == INTERRUPT) ? true : false; 
+	}
+	
+	
 }

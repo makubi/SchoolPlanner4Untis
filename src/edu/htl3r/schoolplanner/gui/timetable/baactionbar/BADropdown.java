@@ -1,16 +1,23 @@
 package edu.htl3r.schoolplanner.gui.timetable.baactionbar;
 
-import edu.htl3r.schoolplanner.R;
+import java.util.HashMap;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import edu.htl3r.schoolplanner.R;
 
-public class BADropdown extends RelativeLayout{
+public class BADropdown extends RelativeLayout implements OnItemClickListener{
 	
 	private ListView list;
+	private BastisAwesomeActionBar actionabar;
+	private HashMap <String, Integer> items = new HashMap<String, Integer>();
 	
 	public BADropdown(Context context) {
 		super(context);
@@ -28,14 +35,32 @@ public class BADropdown extends RelativeLayout{
 	}
 	
 	
+	public void setActionBar(BastisAwesomeActionBar action){
+		this.actionabar = action;
+	}
+	
 	public void init(){
 		list = new ListView(getContext());
+		list.setOnItemClickListener(this);
 		
-		String items[] = {getResources().getString(R.string.selectscreen_class),getResources().getString(R.string.selectscreen_teacher),getResources().getString(R.string.selectscreen_rooms),getResources().getString(R.string.selectscreen_subjects)};
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.baactionbar_dropdown_item, items);
+		items.put(getResources().getString(R.string.selectscreen_class),BastisAwesomeActionBar.LIST_CLASS);
+		items.put(getResources().getString(R.string.selectscreen_teacher), BastisAwesomeActionBar.LIST_TEACHER);
+		items.put(getResources().getString(R.string.selectscreen_rooms), BastisAwesomeActionBar.LIST_ROOMS);
+		items.put(getResources().getString(R.string.selectscreen_subjects), BastisAwesomeActionBar.LIST_SUBJECTS);
+				
+		String [] out = {getResources().getString(R.string.selectscreen_class),getResources().getString(R.string.selectscreen_teacher),getResources().getString(R.string.selectscreen_rooms),getResources().getString(R.string.selectscreen_subjects)};
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.baactionbar_dropdown_item,out);
+		
 		list.setAdapter(adapter);
 		list.setCacheColorHint(Color.parseColor("#00000000"));
 		this.addView(list);
+	}
+
+	
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int pos, long arg3) {
+		actionabar.fireActionBarEvent(items.get(parent.getItemAtPosition(pos)));
+		actionabar.closeDropDown();
 	}
 	
 	

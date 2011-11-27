@@ -33,10 +33,12 @@ import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
 import edu.htl3r.schoolplanner.gui.timetable.Overlay.Info.ViewTypeSwitcherTask;
 import edu.htl3r.schoolplanner.gui.timetable.Overlay.Month.OverlayMonth;
+import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.OutputTransferObject;
 import edu.htl3r.schoolplanner.gui.timetable.baactionbar.BADropdown;
 import edu.htl3r.schoolplanner.gui.timetable.baactionbar.BastisAwesomeActionBar;
 
@@ -51,6 +53,7 @@ public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActi
 	private Settings settings;
 
 	private List<SchoolHoliday> holidays;
+	private ViewTypeListDialog viewtypedialog;
 
 	public BlockingDownloadQueue downloadschlange = new BlockingDownloadQueue();
 	private BastisAwesomeActionBar actionbar;
@@ -64,10 +67,16 @@ public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActi
 		initActionBar();
 		initViewPager();
 
+		initViewTypeDialog();
 		loadViewType();
 		initDownloadQueue();
 	}
-
+	
+	private void initViewTypeDialog(){
+		viewtypedialog = new ViewTypeListDialog(this);
+		viewtypedialog.setData(((SchoolPlannerApp)getApplication()).getData(), this, this);	
+	}
+	
 	private void initActionBar() {
 		actionbar = (BastisAwesomeActionBar) findViewById(R.id.baactionbar);
 		actionbar.init(((BADropdown) findViewById(R.id.baactionbar_dropdown)), findViewById(R.id.week_container));
@@ -243,6 +252,22 @@ public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActi
 			break;
 		case BastisAwesomeActionBar.HOME:
 			finish();
+			break;
+		case BastisAwesomeActionBar.LIST_CLASS:
+			viewtypedialog.setList(BastisAwesomeActionBar.LIST_CLASS);
+			viewtypedialog.show();
+			break;
+		case BastisAwesomeActionBar.LIST_ROOMS:
+			viewtypedialog.setList(BastisAwesomeActionBar.LIST_ROOMS);
+			viewtypedialog.show();
+			break;
+		case BastisAwesomeActionBar.LIST_SUBJECTS:
+			viewtypedialog.setList(BastisAwesomeActionBar.LIST_SUBJECTS);
+			viewtypedialog.show();
+			break;
+		case BastisAwesomeActionBar.LIST_TEACHER:
+			viewtypedialog.setList(BastisAwesomeActionBar.LIST_TEACHER);
+			viewtypedialog.show();
 			break;
 		}
 	}

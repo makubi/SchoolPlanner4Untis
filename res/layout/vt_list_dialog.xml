@@ -1,0 +1,12 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="300dip"
+    android:background="@drawable/baactionbar_dropdown_border" >
+
+    <ListView
+        android:id="@+id/vt_dialog_list"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    </ListView>
+
+</RelativeLayout>

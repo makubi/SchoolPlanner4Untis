@@ -48,6 +48,10 @@ public class OverlayInfoViewTypeChangeListener implements OnClickListener, OnTou
 		if(event.getAction() == MotionEvent.ACTION_UP){
 			vtb.setBackground(false);
 		}
+		if(event.getAction() == MotionEvent.ACTION_OUTSIDE){
+			vtb.setBackground(false);
+		}
+		
 		return false;
 	}
 

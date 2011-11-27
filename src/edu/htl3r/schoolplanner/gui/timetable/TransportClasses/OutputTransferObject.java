@@ -14,7 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.gui.timetable;
+package edu.htl3r.schoolplanner.gui.timetable.TransportClasses;
 
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIWeek;
 
