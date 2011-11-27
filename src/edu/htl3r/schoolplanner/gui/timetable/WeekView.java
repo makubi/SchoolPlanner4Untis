@@ -19,17 +19,12 @@ package edu.htl3r.schoolplanner.gui.timetable;
 import java.util.List;
 
 import android.content.res.Resources;
-import android.graphics.AvoidXfermode;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.text.format.Time;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
@@ -71,7 +66,6 @@ public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActi
 
 		loadViewType();
 		initDownloadQueue();
-
 	}
 
 	private void initActionBar() {
@@ -195,7 +189,6 @@ public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActi
 		int count = 0;
 
 		if (d.compareTo(now) < 0) {
-
 			while (d.compareTo(now) != 0) {
 				now.set(now.getDay() - 7, now.getMonth(), now.getYear());
 				count--;

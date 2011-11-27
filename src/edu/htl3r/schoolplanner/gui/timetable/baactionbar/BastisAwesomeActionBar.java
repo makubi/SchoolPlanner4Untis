@@ -91,7 +91,7 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 
 	private void setRefreshIcon() {
 		refresh = (BAAction) findViewById(R.id.baactionbar_refresh);
-		refresh.setIcon(getResources().getDrawable(R.drawable.ic_actionbar_refesh));
+		refresh.setIcon(getResources().getDrawable(R.drawable.ic_actionbar_refresh));
 
 		refresh.setOnClickListener(new OnClickListener() {
 			@Override
