@@ -34,6 +34,9 @@ import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
+import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
 import edu.htl3r.schoolplanner.gui.timetable.Overlay.Info.ViewTypeSwitcherTask;
@@ -71,12 +74,12 @@ public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActi
 		loadViewType();
 		initDownloadQueue();
 	}
-	
-	private void initViewTypeDialog(){
+
+	private void initViewTypeDialog() {
 		viewtypedialog = new ViewTypeListDialog(this);
-		viewtypedialog.setData(((SchoolPlannerApp)getApplication()).getData(), this, this);	
+		viewtypedialog.setData(((SchoolPlannerApp) getApplication()).getData(), this, this);
 	}
-	
+
 	private void initActionBar() {
 		actionbar = (BastisAwesomeActionBar) findViewById(R.id.baactionbar);
 		actionbar.init(((BADropdown) findViewById(R.id.baactionbar_dropdown)), findViewById(R.id.week_container));
@@ -267,6 +270,18 @@ public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActi
 			break;
 		case BastisAwesomeActionBar.LIST_TEACHER:
 			viewtypedialog.setList(BastisAwesomeActionBar.LIST_TEACHER);
+			viewtypedialog.show();
+			break;
+		case BastisAwesomeActionBar.TEXT:
+			if (viewtype instanceof SchoolClass) {
+				viewtypedialog.setList(BastisAwesomeActionBar.LIST_CLASS);
+			} else if (viewtype instanceof SchoolRoom) {
+				viewtypedialog.setList(BastisAwesomeActionBar.LIST_ROOMS);
+			} else if (viewtype instanceof SchoolSubject) {
+				viewtypedialog.setList(BastisAwesomeActionBar.LIST_SUBJECTS);
+			} else if (viewtype instanceof SchoolTeacher) {
+				viewtypedialog.setList(BastisAwesomeActionBar.LIST_TEACHER);
+			}
 			viewtypedialog.show();
 			break;
 		}

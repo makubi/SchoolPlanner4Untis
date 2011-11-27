@@ -22,7 +22,8 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 	public final static int LIST_TEACHER = 42;
 	public final static int LIST_ROOMS = 43;
 	public final static int LIST_SUBJECTS = 44;
-
+	public final static int TEXT = 5;
+	
 	private BADropdown dropdown;
 	private BAAction month;
 	private BAHomeAction home;
@@ -55,8 +56,20 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 		setDropDownIcon();
 		setRefreshIcon();
 		initActionListenerDropDown();
+		initText();
 	}
 
+	private void initText(){
+		title.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				closeDropDown();
+				fireActionBarEvent(TEXT);
+			}
+		});
+	}
+	
 	private void setHomeIcon() {
 		home = (BAHomeAction) findViewById(R.id.baactionbar_home);
 		home.setIcon(getResources().getDrawable(R.drawable.logo));
