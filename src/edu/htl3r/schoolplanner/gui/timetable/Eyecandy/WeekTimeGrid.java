@@ -43,19 +43,23 @@ import edu.htl3r.schoolplanner.gui.timetable.Week.GUIWeekView;
 public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 
 	
-	private int width,height,hours,offsettop;
+	private int width,height,hours,offsettop,lessongheight;
 	private Paint paint;
 	private List<TimegridUnit> timegrid = new ArrayList<TimegridUnit>();
 	private boolean landscape = false;
 	private boolean highlight;
+	
 	
 	public WeekTimeGrid(Context context, boolean highlight) {
 		super(context);
 		setID(TIMGRID_ID);
 		this.highlight = highlight;
 		
-		int color = getResources().getColor(R.color.header_background);
-		setBackgroundColor(Color.argb(200, Color.red(color), Color.green(color), Color.blue(color)));
+		//int color = getResources().getColor(R.color.header_background);
+		//setBackgroundColor(Color.argb(200, Color.red(color), Color.green(color), Color.blue(color)));
+		
+		int color = getResources().getColor(R.color.element_background);
+		setBackgroundColor(Color.parseColor("#D3D3D3"));
 		
 		paint = new Paint();
 		paint.setStyle(Style.STROKE);
@@ -72,18 +76,26 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
-		zeichenGatter(canvas);
+		canvas.save();
 		if(highlight)
 			highlight(canvas);
+		canvas.restore();
 		zeichenInfos(canvas);
+		canvas.restore();
+		zeichenGatter(canvas);
 		super.onDraw(canvas);
 	}
 	
 	private void zeichenGatter(Canvas canvas){
-		for(int i=offsettop; i<height; i+=((height-offsettop)/hours)){
+		for(int i=offsettop+lessongheight; i<height; i+=lessongheight){
 			canvas.drawLine(0, i, width, i, paint);
 		}
-		canvas.drawLine(width, 0, width-3, height, paint);
+		Paint p = new Paint(paint);
+		int stroke = getResources().getDimensionPixelSize(R.dimen.gui_stroke_width_4);
+		p.setStrokeWidth(stroke);
+		canvas.drawLine(width, 0, width, height, p);
+		canvas.drawLine(0, offsettop-stroke/2, width, offsettop-stroke/2, p);
+
 	}
 	
 	@Override
@@ -91,11 +103,12 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		width = MeasureSpec.getSize(widthMeasureSpec);
 		height = MeasureSpec.getSize(heightMeasureSpec);
+		lessongheight = (height-offsettop)/hours;
 		setMeasuredDimension(width, height);
 	}
 	
 	private void zeichenInfos(Canvas canvas){
-		paint.setColor( getResources().getColor(R.color.background_stundenplan));
+		paint.setColor(Color.BLACK);
 	
 		TextPaint tp = new TextPaint(paint);
 		tp.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_2));
@@ -178,13 +191,10 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 	}
 	
 	
-	public void setOffsetTop(int off){
-		offsettop = off;
-	}
-	
-	public void setTimeGrid(List<TimegridUnit> time){
+	public void setTimeGrid(List<TimegridUnit> time, int off){
 		timegrid = time;
 		setHours(time.size());
+		offsettop = off;
 	}
 	
 

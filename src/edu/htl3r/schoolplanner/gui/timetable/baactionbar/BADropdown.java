@@ -2,6 +2,7 @@ package edu.htl3r.schoolplanner.gui.timetable.baactionbar;
 
 import edu.htl3r.schoolplanner.R;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -33,6 +34,9 @@ public class BADropdown extends RelativeLayout{
 		String items[] = {getResources().getString(R.string.selectscreen_class),getResources().getString(R.string.selectscreen_teacher),getResources().getString(R.string.selectscreen_rooms),getResources().getString(R.string.selectscreen_subjects)};
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.baactionbar_dropdown_item, items);
 		list.setAdapter(adapter);
+		list.setCacheColorHint(Color.parseColor("#00000000"));
 		this.addView(list);
 	}
+	
+	
 }

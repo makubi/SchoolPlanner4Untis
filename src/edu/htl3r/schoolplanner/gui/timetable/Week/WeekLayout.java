@@ -23,7 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import edu.htl3r.schoolplanner.DateTime;
@@ -88,6 +88,7 @@ public class WeekLayout extends ViewGroup{
 		days = 5;
 		hours = 11;
 		
+		setOnTouchListener(clicklistener);		
 	}
 
 	@Override
@@ -221,8 +222,8 @@ public class WeekLayout extends ViewGroup{
 		ArrayList<DateTime> datum = weekdata.getSortDates();
 
 		weekheader.setMonday(datum);
-		weektimegrid.setTimeGrid(week.getTimeGrid());
-		weektimegrid.setOffsetTop(HEADER_HEIGHT);
+		weektimegrid.setTimeGrid(week.getTimeGrid(),HEADER_HEIGHT);
+		
 
 		this.addView(weekheader);
 		this.addView(weektimegrid);
@@ -267,14 +268,21 @@ public class WeekLayout extends ViewGroup{
 		return weekdata.getViewType();
 	}
 	
-	private class OnLessonsClickListener implements OnClickListener{
+	private class OnLessonsClickListener implements OnClickListener, OnTouchListener{
 		@Override
 		public void onClick(View v) {
+			weekview.notifyActionBarTouch();
 			LessonView l = (LessonView)v;
 			weekoverlay.setData(l.getLessonsContainer(),l.getViewType(),weekview);
 			weekoverlay.show();
-			Log.d("basti",l.getTime().toString());			
+		}
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			if(MotionEvent.ACTION_DOWN == event.getAction())
+				return weekview.notifyActionBarTouch();
+			return false;
 		}
 	}
-	
+		
 }

@@ -56,5 +56,15 @@
         android:id="@+id/baactionbar_sep2"
         style="@style/baa_seperator"
         android:layout_alignLeft="@id/baactionbar_month" />
+    
+    <edu.htl3r.schoolplanner.gui.timetable.baactionbar.BAAction
+        android:id="@+id/baactionbar_refresh"
+        style="@style/baa_icon"
+        android:layout_alignRight="@id/baactionbar_sep2" />
+
+    <android.view.View
+        android:id="@+id/baactionbar_sep4"
+        style="@style/baa_seperator"
+        android:layout_alignLeft="@id/baactionbar_refresh" />
 
 </edu.htl3r.schoolplanner.gui.timetable.baactionbar.BastisAwesomeActionBar>

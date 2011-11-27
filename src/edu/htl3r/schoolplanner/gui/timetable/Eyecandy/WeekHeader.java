@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.htl3r.schoolplanner.gui.timetable.Eyecandy;
 
 import java.util.ArrayList;
@@ -36,22 +36,25 @@ import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.gui.timetable.Week.GUIWeekView;
 
 public class WeekHeader extends GUIWeekView {
-	
+
 	private int width, height;
 	private int days, lessonwidth;
 	private Paint paint;
 
 	private ArrayList<DateTime> datum = new ArrayList<DateTime>();
 	private boolean highlight;
-	
+
 	public WeekHeader(Context context, boolean highlight) {
 		super(context);
 		this.highlight = highlight;
-		
+
 		setID(HEADER_ID);
 
-		int color = getResources().getColor(R.color.header_background);
-		setBackgroundColor(Color.argb(200, Color.red(color), Color.green(color), Color.blue(color)));
+		// int color = getResources().getColor(R.color.header_background);
+		// setBackgroundColor(Color.argb(200, Color.red(color),
+		// Color.green(color), Color.blue(color)));
+
+		setBackgroundColor(Color.parseColor("#D3D3D3"));
 
 		paint = new Paint();
 		paint.setStyle(Style.STROKE);
@@ -67,13 +70,14 @@ public class WeekHeader extends GUIWeekView {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		zeichenGatter(canvas);
-		
-		if(highlight)
+		canvas.save();
+		if (highlight)
 			highlightToday(canvas);
 		zeichenInfos(canvas);
-
+		canvas.restore();
+		zeichenGatter(canvas);
 		super.onDraw(canvas);
+
 	}
 
 	@Override
@@ -86,55 +90,59 @@ public class WeekHeader extends GUIWeekView {
 	}
 
 	private void zeichenGatter(Canvas canvas) {
-		for (int i = 0; i < width; i += lessonwidth) {
+		
+		for (int i = lessonwidth; i < width; i += lessonwidth) {
 			canvas.drawLine(i, 0, i, height, paint);
 		}
-		canvas.drawLine(0, height, width, height, paint);
+		int strokewidth = getResources().getDimensionPixelSize(R.dimen.gui_stroke_width_4);
+		Paint p = new Paint(paint);
+		p.setStrokeWidth(strokewidth);
+		canvas.drawLine(0, 0, 0, height, p);
+		canvas.drawLine(0, height-strokewidth/2, width, height-strokewidth/2, p);
 	}
 
 	private void zeichenInfos(Canvas canvas) {
-		paint.setColor(getResources().getColor(R.color.background_stundenplan));
 		TextPaint tp = new TextPaint(paint);
 		tp.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_2));
 		tp.setTextSize(getResources().getDimension(R.dimen.gui_header_line1_size));
 		tp.setStyle(Style.FILL_AND_STROKE);
-		
+
 		TextPaint tp2 = new TextPaint(paint);
 		tp2.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_1));
 		tp2.setTextSize(getResources().getDimension(R.dimen.gui_header_line2_size));
 		tp2.setTypeface(Typeface.DEFAULT);
 		tp2.setStyle(Style.FILL_AND_STROKE);
-		
-		
+
 		int paddint_top = getResources().getDimensionPixelSize(R.dimen.gui_header_paddting_top);
 		int padding_bottom = getResources().getDimensionPixelSize(R.dimen.gui_header_line1_line1_padding);
 		for (int i = 0; i < days; i++) {
 			canvas.translate(0, paddint_top);
-			
+
 			DateTime dateTime = datum.get(i);
-			
+
 			StaticLayout s = new StaticLayout(DateTimeUtils.getShortWeekDayName(dateTime), tp, lessonwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
 			s.draw(canvas);
 			canvas.translate(0, padding_bottom);
 
-			s = new StaticLayout(dateTime.getDay() + "." + dateTime.getMonth() + "." + dateTime.getYear(), tp2, lessonwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+			s = new StaticLayout(dateTime.getDay() + "." + dateTime.getMonth() + "." + dateTime.getYear(), tp2, lessonwidth, Layout.Alignment.ALIGN_CENTER, 0,
+					0, false);
 			s.draw(canvas);
-			canvas.translate(lessonwidth, -(padding_bottom+paddint_top));
+			canvas.translate(lessonwidth, -(padding_bottom + paddint_top));
 		}
 	}
-	
-	private void highlightToday(Canvas canvas){
+
+	private void highlightToday(Canvas canvas) {
 		DateTime today = DateTimeUtils.getNow();
 		int position = -1;
-		for(DateTime d : datum){
-			if(d.getYear() == today.getYear() && d.getMonth() == today.getMonth() && d.getDay() == today.getDay()){
+		for (DateTime d : datum) {
+			if (d.getYear() == today.getYear() && d.getMonth() == today.getMonth() && d.getDay() == today.getDay()) {
 				position = datum.indexOf(d);
 				break;
 			}
 		}
-		if(position != -1){
-			int border = getResources().getDimensionPixelSize(R.dimen.gui_stroke_width_2)/2;
-			Rect r = new Rect(border + lessonwidth*position, 0 , (lessonwidth*position)+lessonwidth, height-border);
+		if (position != -1) {
+			int border = getResources().getDimensionPixelSize(R.dimen.gui_stroke_width_2) / 2;
+			Rect r = new Rect(border + lessonwidth * position, 0, (lessonwidth * position) + lessonwidth, height - border);
 			Paint p = new Paint();
 			p.setStyle(Style.FILL);
 			p.setColor(getResources().getColor(R.color.month_overlay_today));

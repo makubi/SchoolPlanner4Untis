@@ -25,6 +25,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.text.format.Time;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -63,19 +64,20 @@ public class WeekView extends SchoolPlannerActivity {
 		super.onCreate(savedInstanceState);
 		settings = ((SchoolPlannerApp) getApplication()).getSettings();
 		setContentView(R.layout.basti_weekview);
+		
 		initActionBar();
+		initViewPager();
 
 		loadViewType();
-		initViewPager();
-		initDownloadQueue();	
+		initDownloadQueue();
+
 	}
 
-	
-	private void initActionBar(){
-		actionbar = (BastisAwesomeActionBar)findViewById(R.id.baactionbar);
-		actionbar.init(((BADropdown)findViewById(R.id.baactionbar_dropdown)));
+	private void initActionBar() {
+		actionbar = (BastisAwesomeActionBar) findViewById(R.id.baactionbar);
+		actionbar.init(((BADropdown) findViewById(R.id.baactionbar_dropdown)), findViewById(R.id.week_container));
 	}
-	
+
 	private void loadViewType() {
 		final Object data = getLastNonConfigurationInstance();
 
@@ -86,10 +88,10 @@ public class WeekView extends SchoolPlannerActivity {
 		}
 		actionbar.setText(viewtype);
 	}
-	
-	private void initDownloadQueue(){
+
+	private void initDownloadQueue() {
 		loadweekdata = new LoadDataTask();
-		loadweekdata.setData(this,((SchoolPlannerApp) getApplication()).getData(), this,viewtype, downloadschlange,	settings);
+		loadweekdata.setData(this, ((SchoolPlannerApp) getApplication()).getData(), this, viewtype, downloadschlange, settings);
 		loadweekdata.execute();
 	}
 
@@ -134,7 +136,7 @@ public class WeekView extends SchoolPlannerActivity {
 	protected void onResume() {
 		if (downloadschlange.isInterrupted()) {
 			downloadschlange.reset();
-			initDownloadQueue();		
+			initDownloadQueue();
 		}
 		super.onResume();
 	}
@@ -142,19 +144,19 @@ public class WeekView extends SchoolPlannerActivity {
 	@Override
 	protected void onRestart() {
 		if (downloadschlange.isInterrupted()) {
-			downloadschlange.reset();			
-			initDownloadQueue();		
+			downloadschlange.reset();
+			initDownloadQueue();
 		}
 		super.onRestart();
 	}
 
 	private void initViewPager() {
-		
+
 		myViewPager = (ViewPager) findViewById(R.id.week_pager);
 		indicator = (ViewPagerIndicator) findViewById(R.id.week_indicator);
 		wvpageadapter = new WeekViewPageAdapter();
 
-		wvpageadapter.setContext(this, downloadschlange, this,((SchoolPlannerApp) getApplication()).getSettings());
+		wvpageadapter.setContext(this, downloadschlange, this, ((SchoolPlannerApp) getApplication()).getSettings());
 		wvpageadapter.setDate(getMonday());
 		myViewPager.setAdapter(wvpageadapter);
 		myViewPager.setOnPageChangeListener(indicator);
@@ -200,9 +202,7 @@ public class WeekView extends SchoolPlannerActivity {
 		d.setMinute(0);
 		d.setSecond(0);
 
-		Toast.makeText(this,
-				date.getDay() + "." + date.getMonth() + "." + date.getYear(),
-				Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, date.getDay() + "." + date.getMonth() + "." + date.getYear(), Toast.LENGTH_SHORT).show();
 		if (d.getWeekDay() == Time.SUNDAY) {
 			d.increaseDay();
 		} else {
@@ -237,8 +237,7 @@ public class WeekView extends SchoolPlannerActivity {
 		viewtype = vt;
 		actionbar.setText(viewtype);
 
-		ViewTypeSwitcherTask viewTypeSwitcher = new ViewTypeSwitcherTask(this,
-				myViewPager, wvpageadapter, loadweekdata, vt);
+		ViewTypeSwitcherTask viewTypeSwitcher = new ViewTypeSwitcherTask(this, myViewPager, wvpageadapter, loadweekdata, vt);
 		viewTypeSwitcher.execute();
 	}
 
@@ -246,14 +245,19 @@ public class WeekView extends SchoolPlannerActivity {
 	public Object onRetainNonConfigurationInstance() {
 		return viewtype;
 	}
-	
-	
+
 	@Override
 	public void setInProgress(String message, boolean active) {
 		actionbar.setProgress(active);
 	}
-	
-	public Settings getSettings(){
+
+	public Settings getSettings() {
 		return settings;
 	}
+	
+	public boolean notifyActionBarTouch(){
+		Log.d("basti", "touch");
+		return actionbar.touchDetectet();
+	}
+
 }

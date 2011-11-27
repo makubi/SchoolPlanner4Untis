@@ -3,6 +3,7 @@ package edu.htl3r.schoolplanner.gui.timetable.baactionbar;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,7 +16,9 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 	private BAAction month;
 	private BAHomeAction home;
 	private BAAction dropdown_action;
+	private BAAction refresh;
 	private TextView title;
+	private View everything;
 
 	public BastisAwesomeActionBar(Context context) {
 		super(context);
@@ -29,12 +32,14 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 		super(context, attrs, defStyle);
 	}
 
-	public void init(BADropdown dropdown) {
+	public void init(BADropdown dropdown, View everything) {
 		this.dropdown = dropdown;
-		title = (TextView)findViewById(R.id.baactionbar_title);
+		this.everything = everything;
+		title = (TextView) findViewById(R.id.baactionbar_title);
 		setHomeIcon();
 		setMonthIcon();
 		setDropDownIcon();
+		setRefreshIcon();
 		initActionListenerDropDown();
 	}
 
@@ -46,12 +51,17 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 
 	private void setMonthIcon() {
 		month = (BAAction) findViewById(R.id.baactionbar_month);
-		month.setIcon(getResources().getDrawable(R.drawable.ic_menu_month));
+		month.setIcon(getResources().getDrawable(R.drawable.ic_actionbar_month));
 	}
 
 	private void setDropDownIcon() {
 		dropdown_action = (BAAction) findViewById(R.id.baactionbar_dropdown_action);
 		dropdown_action.setIcon(getResources().getDrawable(R.drawable.ic_actionbar_dropdown_list));
+	}
+	
+	private void setRefreshIcon() {
+		refresh = (BAAction) findViewById(R.id.baactionbar_refresh);
+		refresh.setIcon(getResources().getDrawable(R.drawable.ic_actionbar_refesh));
 	}
 
 	private void initActionListenerDropDown() {
@@ -61,18 +71,19 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 				dropdown.setVisibility((dropdown.isShown()) ? View.GONE : View.VISIBLE);
 			}
 		});
-		
-		dropdown.setOnClickListener(new OnClickListener() {
-			
+
+		everything.setOnTouchListener(new OnTouchListener() {
+
 			@Override
-			public void onClick(View v) {
-				Log.d("basti", "autsch");				
+			public boolean onTouch(View v, MotionEvent event) {
+				if(event.getAction()== MotionEvent.ACTION_DOWN)
+					return touchDetectet();
+				return false;
 			}
 		});
-
 	}
-	
-	public void setText(ViewType vt){
+
+	public void setText(ViewType vt) {
 		title.setText(vt.getName());
 	}
 
@@ -80,4 +91,11 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 		home.startProgressBar(active);
 	}
 
+	public boolean touchDetectet() {
+		if (dropdown.isShown()){
+			dropdown.setVisibility(View.GONE);
+			return true;
+		}
+		return false;
+	}
 }
