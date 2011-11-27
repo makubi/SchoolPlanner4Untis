@@ -1,5 +1,7 @@
 package edu.htl3r.schoolplanner.gui.timetable.baactionbar;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -12,6 +14,15 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 
 public class BastisAwesomeActionBar extends RelativeLayout {
 
+	public final static int REFRESH = 1;
+	public final static int MONTH = 2;
+	public final static int HOME = 3;
+	public final static int DROPDOWN = 4;
+	public final static int LIST_CLASS = 41;
+	public final static int LIST_TEACHER = 42;
+	public final static int LIST_ROOMS = 43;
+	public final static int LIST_SUBJECTS = 44;
+
 	private BADropdown dropdown;
 	private BAAction month;
 	private BAHomeAction home;
@@ -19,6 +30,8 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 	private BAAction refresh;
 	private TextView title;
 	private View everything;
+
+	private ArrayList<BAActoinBarEvent> actionbarevent = new ArrayList<BastisAwesomeActionBar.BAActoinBarEvent>();
 
 	public BastisAwesomeActionBar(Context context) {
 		super(context);
@@ -47,21 +60,46 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 		home = (BAHomeAction) findViewById(R.id.baactionbar_home);
 		home.setIcon(getResources().getDrawable(R.drawable.logo));
 		home.initProgressBar();
+
+		home.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				closeDropDown();
+				fireActionBarEvent(HOME);
+			}
+		});
 	}
 
 	private void setMonthIcon() {
 		month = (BAAction) findViewById(R.id.baactionbar_month);
 		month.setIcon(getResources().getDrawable(R.drawable.ic_actionbar_month));
+
+		month.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				closeDropDown();
+				fireActionBarEvent(MONTH);
+			}
+		});
 	}
 
 	private void setDropDownIcon() {
 		dropdown_action = (BAAction) findViewById(R.id.baactionbar_dropdown_action);
 		dropdown_action.setIcon(getResources().getDrawable(R.drawable.ic_actionbar_dropdown_list));
 	}
-	
+
 	private void setRefreshIcon() {
 		refresh = (BAAction) findViewById(R.id.baactionbar_refresh);
 		refresh.setIcon(getResources().getDrawable(R.drawable.ic_actionbar_refesh));
+
+		refresh.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				closeDropDown();
+				fireActionBarEvent(REFRESH);
+			}
+		});
 	}
 
 	private void initActionListenerDropDown() {
@@ -73,11 +111,10 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 		});
 
 		everything.setOnTouchListener(new OnTouchListener() {
-
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-				if(event.getAction()== MotionEvent.ACTION_DOWN)
-					return touchDetectet();
+				if (event.getAction() == MotionEvent.ACTION_DOWN)
+					closeDropDown();
 				return false;
 			}
 		});
@@ -91,11 +128,25 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 		home.startProgressBar(active);
 	}
 
-	public boolean touchDetectet() {
-		if (dropdown.isShown()){
-			dropdown.setVisibility(View.GONE);
-			return true;
+	public void closeDropDown() {
+		dropdown.setVisibility((dropdown.isShown()) ? View.GONE : View.GONE);
+	}
+
+	public void addBAActionBarEvent(BAActoinBarEvent listener) {
+		actionbarevent.add(listener);
+	}
+
+	public void removeBAActionBarEvent(BAActoinBarEvent listener) {
+		actionbarevent.remove(listener);
+	}
+
+	public void fireActionBarEvent(int ID) {
+		for (BAActoinBarEvent a : actionbarevent) {
+			a.onBAActionbarActionClicked(ID);
 		}
-		return false;
+	}
+
+	public interface BAActoinBarEvent {
+		public void onBAActionbarActionClicked(int ID);
 	}
 }

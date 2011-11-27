@@ -19,6 +19,7 @@ package edu.htl3r.schoolplanner.gui.timetable;
 import java.util.List;
 
 import android.content.res.Resources;
+import android.graphics.AvoidXfermode;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,7 +45,7 @@ import edu.htl3r.schoolplanner.gui.timetable.Overlay.Month.OverlayMonth;
 import edu.htl3r.schoolplanner.gui.timetable.baactionbar.BADropdown;
 import edu.htl3r.schoolplanner.gui.timetable.baactionbar.BastisAwesomeActionBar;
 
-public class WeekView extends SchoolPlannerActivity {
+public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActionBar.BAActoinBarEvent {
 
 	private ViewPager myViewPager;
 	private WeekViewPageAdapter wvpageadapter;
@@ -64,7 +65,7 @@ public class WeekView extends SchoolPlannerActivity {
 		super.onCreate(savedInstanceState);
 		settings = ((SchoolPlannerApp) getApplication()).getSettings();
 		setContentView(R.layout.basti_weekview);
-		
+
 		initActionBar();
 		initViewPager();
 
@@ -76,6 +77,7 @@ public class WeekView extends SchoolPlannerActivity {
 	private void initActionBar() {
 		actionbar = (BastisAwesomeActionBar) findViewById(R.id.baactionbar);
 		actionbar.init(((BADropdown) findViewById(R.id.baactionbar_dropdown)), findViewById(R.id.week_container));
+		actionbar.addBAActionBarEvent(this);
 	}
 
 	private void loadViewType() {
@@ -170,32 +172,6 @@ public class WeekView extends SchoolPlannerActivity {
 		myViewPager.setCurrentItem(50);
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.timetable_menu, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.timetable_month:
-			if (holidays != null) {
-				overlaymonth = new OverlayMonth(this, this, holidays);
-				overlaymonth.setDate(DateTimeUtils.getNow());
-				overlaymonth.show();
-			}
-			return true;
-		case R.id.timetable_refresh:
-			changeViewType(viewtype);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
 	public void setDateforDialog(DateTime date) {
 		DateTime d = date.clone();
 		d.setHour(0);
@@ -254,10 +230,28 @@ public class WeekView extends SchoolPlannerActivity {
 	public Settings getSettings() {
 		return settings;
 	}
-	
-	public boolean notifyActionBarTouch(){
-		Log.d("basti", "touch");
-		return actionbar.touchDetectet();
+
+	public void notifyActionBarTouch() {
+		actionbar.closeDropDown();
+	}
+
+	@Override
+	public void onBAActionbarActionClicked(int ID) {
+		switch (ID) {
+		case BastisAwesomeActionBar.REFRESH:
+			changeViewType(viewtype);
+			break;
+		case BastisAwesomeActionBar.MONTH:
+			if (holidays != null) {
+				overlaymonth = new OverlayMonth(this, this, holidays);
+				overlaymonth.setDate(DateTimeUtils.getNow());
+				overlaymonth.show();
+			}
+			break;
+		case BastisAwesomeActionBar.HOME:
+			finish();
+			break;
+		}
 	}
 
 }

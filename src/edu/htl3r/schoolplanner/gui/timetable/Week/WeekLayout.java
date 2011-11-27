@@ -280,7 +280,7 @@ public class WeekLayout extends ViewGroup{
 		@Override
 		public boolean onTouch(View v, MotionEvent event) {
 			if(MotionEvent.ACTION_DOWN == event.getAction())
-				return weekview.notifyActionBarTouch();
+				weekview.notifyActionBarTouch();
 			return false;
 		}
 	}

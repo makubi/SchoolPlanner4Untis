@@ -1,9 +1,0 @@
-
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-	<item android:id="@+id/timetable_month" 
-		android:icon="@drawable/ic_menu_month" android:title="@string/timetable_menu_title_month" />
-		
-	<item android:id="@+id/timetable_refresh" 
-		android:icon="@drawable/ic_menu_refresh" android:title="@string/timetable_menu_title_refresh" />
-</menu>
