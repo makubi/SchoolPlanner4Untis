@@ -177,22 +177,25 @@ public class OverlayInfoLesson extends ViewGroup {
 		for (SchoolClass s : schoolClasses) {
 			vtb = new ViewTypeBox(getContext(), s,color,false);
 			vtb.setOnClickListener(changevtlistener);
+			vtb.setOnTouchListener(changevtlistener);
 			addView(vtb);
-			
 		}
 		for (SchoolRoom s : schoolRooms) {
 			vtb = new ViewTypeBox(getContext(), s,color,false);
 			vtb.setOnClickListener(changevtlistener);
+			vtb.setOnTouchListener(changevtlistener);
 			addView(vtb);
 		}
 		for (SchoolSubject s : schoolSubjects) {
 			vtb = new ViewTypeBox(getContext(), s,color,false);
 			vtb.setOnClickListener(changevtlistener);
+			vtb.setOnTouchListener(changevtlistener);
 			addView(vtb);
 		}
 		for (SchoolTeacher s : schoolTeachers) {
 			vtb = new ViewTypeBox(getContext(), s,color,false);
 			vtb.setOnClickListener(changevtlistener);
+			vtb.setOnTouchListener(changevtlistener);
 			addView(vtb);
 		}
 		

@@ -16,11 +16,13 @@
  */
 package edu.htl3r.schoolplanner.gui.timetable.Overlay.Info;
 
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import edu.htl3r.schoolplanner.gui.timetable.WeekView;
 
-public class OverlayInfoViewTypeChangeListener implements OnClickListener{
+public class OverlayInfoViewTypeChangeListener implements OnClickListener, OnTouchListener{
 
 	private OverlayInfo overlay;
 	private WeekView weekview;
@@ -33,9 +35,20 @@ public class OverlayInfoViewTypeChangeListener implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 			ViewTypeBox vtb = (ViewTypeBox)v;
-			vtb.setBackground(true);
 			overlay.dismiss();
 			weekview.changeViewType(vtb.getViewType());
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		ViewTypeBox vtb = (ViewTypeBox)v;
+		if(event.getAction() == MotionEvent.ACTION_DOWN){
+			vtb.setBackground(true);
+		}
+		if(event.getAction() == MotionEvent.ACTION_UP){
+			vtb.setBackground(false);
+		}
+		return false;
 	}
 
 }
