@@ -263,6 +263,26 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		return lessonMap;
 	}
 
+	@Override
+	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
+			DateTime startDate, DateTime endDate, boolean forceNetwork) {
+		DataFacade<Map<String, List<Lesson>>> lessonMap = new DataFacade<Map<String, List<Lesson>>>();
+		
+		if(forceNetwork) {
+			
+			// Check network
+			if (networkAvailable) {
+				if ((lessonMap = network.getLessons(viewType, startDate, endDate)).isSuccessful()) {
+					//database.setLessons(lessonList.getData());
+				}
+			}
+			else lessonMap.setErrorMessage(getUnableToLoadDataErrorMessage());
+		}
+		else return getLessons(viewType, startDate, endDate);
+		
+		return lessonMap;
+	}
+
 	/**
 	 * Authentifiziert sich mit dem Untis-Server ueber das Netzwerk.
 	 * @return true, wenn die Authentifizierung erfolgreich war, sonst false

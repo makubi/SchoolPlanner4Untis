@@ -46,4 +46,6 @@ public interface UnsaveDataSourceTimetableDataProvider {
  	 * @return Ein {@link DataFacade}-Objekt mit den passenden Daten.
 	 */
 	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType, DateTime startDate, DateTime endDate);
+	
+	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType, DateTime startDate, DateTime endDate, boolean forceNetwork);
 }

@@ -535,6 +535,12 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		return data;
 	}
 
+	@Override
+	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
+			DateTime startDate, DateTime endDate, boolean forceNetwork) {
+		return getLessons(viewType, startDate, endDate);
+	}
+
 	/**
 	 * Versucht, eine Verbindung zum Server herzustellen und sich mit diesem zu
 	 * authentifizieren. Ist dies erfolgreich, wird die SessionID gesetzt, mit

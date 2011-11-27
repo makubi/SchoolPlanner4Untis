@@ -208,7 +208,6 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		Map<String, List<Lesson>> internalLessons = internalMemory.getLessons(viewType, startDate, endDate);
 		
 		if(internalLessons != null) {
-			
 			data = new DataFacade<Map<String, List<Lesson>>>();
 			data.setData(internalLessons);
 		}
@@ -220,6 +219,22 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		}
 		
 		return data;
+	}
+
+	@Override
+	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
+			DateTime startDate, DateTime endDate, boolean forceNetwork) {
+		
+		if(forceNetwork) {
+			DataFacade<Map<String, List<Lesson>>> data = externalDataLoader.getLessons(viewType, startDate, endDate, forceNetwork);
+			if(data.isSuccessful()) {
+				internalMemory.setLessons(viewType, startDate, endDate, data.getData());
+			}
+			return data;
+		}
+		else {
+			return getLessons(viewType, startDate, endDate);
+		}
 	}
 
 	@Override
