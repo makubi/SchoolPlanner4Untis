@@ -140,8 +140,7 @@ public class SelectScreen extends SchoolPlannerActivity {
 	}
 
 	private void initAutoSelect() {
-		autoselectDialog = new AutoselectDialog(this);
-		autoselectDialog.setViewTypeLists(classList, teacherList, roomList, subjectList);
+		autoselectDialog = new AutoselectDialog(this, classList, teacherList, roomList, subjectList);
 		autoselectDialog.setAutoSelectSet(autoSelect);
 	}
 	

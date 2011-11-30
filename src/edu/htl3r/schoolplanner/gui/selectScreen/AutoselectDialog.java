@@ -54,9 +54,10 @@ public class AutoselectDialog extends Dialog {
 	
 	private int lastSelectedPosition = -1;
 	
-	public AutoselectDialog(SelectScreen context) {
+	public AutoselectDialog(SelectScreen context, List<SchoolClass> classList, List<SchoolTeacher> teacherList, List<SchoolRoom> roomList, List<SchoolSubject> subjectList) {
 		super(context);
 		this.context = context;
+		setViewTypeLists(classList, teacherList, roomList, subjectList);
 	}
 	
 	@Override
@@ -96,20 +97,33 @@ public class AutoselectDialog extends Dialog {
 		int typeSpinnerPos = -1;
 		int valueSpinnerPos = -1;
 		
+		// init default
+		if(!isAutoselectSetInitialized(autoSelectSet)) initDefaultAutoSelectSet(autoSelectSet);
+		
 		String type = autoSelectSet.getAutoSelectType();
 		
-		if(type != null) {
-			typeSpinnerPos = getTypeSpinnerPos(type);
-			
-			List<? extends ViewType> viewTypeList = spinnerWire.get(type);
-			initSpinner(valueSpinner, viewTypeList);
-			
-			final int valueSpinnerId = autoSelectSet.getAutoSelectValue();
-			if(valueSpinnerId > 0) valueSpinnerPos = getValueSpinnerPos(viewTypeList, valueSpinnerId);
-		}
+		typeSpinnerPos = getTypeSpinnerPos(type);
+		
+		List<? extends ViewType> viewTypeList = spinnerWire.get(type);
+		initSpinner(valueSpinner, viewTypeList);
+		
+		final int valueSpinnerId = autoSelectSet.getAutoSelectValue();
+		
+		// wenn ein listenelement vorhanden
+		if(valueSpinnerId > 0 && viewTypeList.size() > 0) valueSpinnerPos = getValueSpinnerPos(viewTypeList, valueSpinnerId);
+		
 		
 		if(typeSpinnerPos >= 0) typeSpinner.setSelection(typeSpinnerPos);
 		if(valueSpinnerPos >= 0) valueSpinner.setSelection(valueSpinnerPos);
+	}
+	
+	private void initDefaultAutoSelectSet(AutoSelectSet autoSelectSet) {
+		autoSelectSet.setAutoSelectType(getString(R.string.settings_autoselect_type_class));
+		autoSelectSet.setAutoSelectValue(0);
+	}
+
+	private boolean isAutoselectSetInitialized(AutoSelectSet autoSelectSet) {
+		return autoSelectSet.getAutoSelectType().length() > 0 && autoSelectSet.getAutoSelectValue() >= 0; 
 	}
 
 	private void initSpinner() {
@@ -197,7 +211,7 @@ public class AutoselectDialog extends Dialog {
 		});
 	}
 
-	public void setViewTypeLists(List<SchoolClass> classList, List<SchoolTeacher> teacherList, List<SchoolRoom> roomList, List<SchoolSubject> subjectList) {
+	private void setViewTypeLists(List<SchoolClass> classList, List<SchoolTeacher> teacherList, List<SchoolRoom> roomList, List<SchoolSubject> subjectList) {
 		spinnerWire.put(getString(R.string.settings_autoselect_type_class), classList);
 		spinnerWire.put(getString(R.string.settings_autoselect_type_teacher), teacherList);
 		spinnerWire.put(getString(R.string.settings_autoselect_type_room), roomList);
