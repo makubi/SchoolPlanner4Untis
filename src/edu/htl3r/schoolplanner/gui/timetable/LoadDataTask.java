@@ -19,6 +19,7 @@ package edu.htl3r.schoolplanner.gui.timetable;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Message;
+import android.util.Log;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
@@ -38,7 +39,9 @@ public class LoadDataTask extends AsyncTask<Void, String, Void> {
 	private ViewType viewtype;
 	private BlockingDownloadQueue downloadschlange;
 	private Settings settings;
-
+	private boolean forceNetwork = false;
+	private int forceCount = 0;
+	
 	@Override
 	protected void onPreExecute() {
 		contentmanager.setNeededData(context, cache);
@@ -64,8 +67,15 @@ public class LoadDataTask extends AsyncTask<Void, String, Void> {
 			
 			publishProgress(getString(R.string.timetable_load_data), "true");
 			InputTransferObject input = (InputTransferObject)d;
-			GUIWeek timeTable4GUI = contentmanager.getTimeTable4GUI(input.getDate());
-
+			GUIWeek timeTable4GUI;
+			if(forceNetwork && forceCount < 3){
+				Log.d("basti", "Force Network - Data Task");
+				timeTable4GUI = contentmanager.getTimeTable4GUI(input.getDate(), true);
+				forceCount++;
+			}else{
+				timeTable4GUI = contentmanager.getTimeTable4GUI(input.getDate(), false);
+				forceNetwork = false;
+			}
 			publishProgress(getString(R.string.timetable_loading_display), "true");
 			Message m = new Message();
 			OutputTransferObject r= new OutputTransferObject(timeTable4GUI,input.getPos());
@@ -101,6 +111,11 @@ public class LoadDataTask extends AsyncTask<Void, String, Void> {
 	public void changeViewType(ViewType newvt){
 		viewtype = newvt;
 		contentmanager.setViewType(viewtype);
+	}
+	
+	public void forceNetwork(){
+		forceNetwork = true;
+		forceCount = 0;
 	}
 	
 	private String getString(int resId) {

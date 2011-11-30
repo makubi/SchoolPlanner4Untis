@@ -156,6 +156,18 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 		}
 	}
 	
+	@Override
+	public Map<String,List<Lesson>> getLessonsForSomeTime(ViewType vt, DateTime start, DateTime end, boolean forceNetwork){
+		DataFacade<Map<String, List<Lesson>>> data = cache.getLessons(vt, start, end, forceNetwork);
+		if (data.isSuccessful()) {
+			return data.getData();
+		} else {
+			errorIntent.putExtra(GUIErrorHandler.ERROR_TITLE_FIELD, getDisplayErrorMessage(data.getErrorMessage()));
+			context.sendBroadcast(errorIntent);
+			return new HashMap<String, List<Lesson>>();
+		}
+	}
+	
 	private String getDisplayErrorMessage(ErrorMessage errorMessage) {
 		String additionalInfo = errorMessage.getAdditionalInfo();
 		int errorCode = errorMessage.getErrorCode();

@@ -218,7 +218,12 @@ public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActi
 		viewtype = vt;
 		actionbar.setText(viewtype);
 
-		ViewTypeSwitcherTask viewTypeSwitcher = new ViewTypeSwitcherTask(this, myViewPager, wvpageadapter, loadweekdata, vt);
+		ViewTypeSwitcherTask viewTypeSwitcher = new ViewTypeSwitcherTask(this, myViewPager, wvpageadapter, loadweekdata, vt,false);
+		viewTypeSwitcher.execute();
+	}
+	
+	public void refreshTimeTable(){
+		ViewTypeSwitcherTask viewTypeSwitcher = new ViewTypeSwitcherTask(this, myViewPager, wvpageadapter, loadweekdata, viewtype,true);
 		viewTypeSwitcher.execute();
 	}
 
@@ -244,7 +249,7 @@ public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActi
 	public void onBAActionbarActionClicked(int ID) {
 		switch (ID) {
 		case BastisAwesomeActionBar.REFRESH:
-			changeViewType(viewtype);
+			refreshTimeTable();
 			break;
 		case BastisAwesomeActionBar.MONTH:
 			if (holidays != null) {
