@@ -18,7 +18,6 @@ package edu.htl3r.schoolplanner.gui.timetable.Overlay.Info;
 
 import android.os.AsyncTask;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.widget.ScrollView;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
@@ -33,15 +32,17 @@ public class ViewTypeSwitcherTask extends AsyncTask<Void, Void, Void>{
 	private ViewPager myViewPager;
 	private WeekViewPageAdapter wvpageadapter;
 	private LoadDataTask loadweekdata;
-	
 	private ViewType vt;
 	
-	public ViewTypeSwitcherTask(WeekView weekView, ViewPager myViewPager, WeekViewPageAdapter wvpageadapter, LoadDataTask loadweekdata, ViewType vt) {
+	public ViewTypeSwitcherTask(WeekView weekView, ViewPager myViewPager, WeekViewPageAdapter wvpageadapter, LoadDataTask loadweekdata, ViewType vt, boolean forceNetwork) {
 		this.weekView = weekView;
 		this.myViewPager = myViewPager;
 		this.wvpageadapter = wvpageadapter;
 		this.loadweekdata = loadweekdata;
 		this.vt = vt;
+		
+		if(forceNetwork)
+			loadweekdata.forceNetwork();
 	}
 
 	@Override
@@ -62,7 +63,6 @@ public class ViewTypeSwitcherTask extends AsyncTask<Void, Void, Void>{
 		myViewPager.removeAllViews();
 		wvpageadapter.notifyDataSetChanged();
 		
-		Log.d("basti",vt.getName() + " weekview");
 		Toast.makeText(weekView, vt.getName(), Toast.LENGTH_SHORT).show();
 	}
 	

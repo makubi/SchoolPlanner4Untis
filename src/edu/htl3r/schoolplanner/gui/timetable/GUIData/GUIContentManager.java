@@ -52,7 +52,7 @@ public class GUIContentManager {
 		viewlength = len;
 	}
 	
-	public GUIWeek getTimeTable4GUI(DateTime start){
+	public GUIWeek getTimeTable4GUI(DateTime start, boolean forceNetWork){
 		
 		if(viewlength == WEEK){
 			RenderInfoWeekTable weekinfo = new RenderInfoWeekTable();
@@ -63,8 +63,13 @@ public class GUIContentManager {
 			else
 				end.set(start.getDay()+4, start.getMonth(), start.getYear());
 
+			Map<String, List<Lesson>> lessonsForSomeTime;
+			if(forceNetWork)
+				lessonsForSomeTime = datacenter.getLessonsForSomeTime(viewtype, start, end,true);
+			else
+				lessonsForSomeTime = datacenter.getLessonsForSomeTime(viewtype, start, end);
 			
-			Map<String, List<Lesson>> lessonsForSomeTime = datacenter.getLessonsForSomeTime(viewtype, start, end);
+			
 			if(lessonsForSomeTime.size() != 0 && lessonsForSomeTime != null){
 				weekinfo.setWeekData(lessonsForSomeTime);
 				weekinfo.setHolidays(datacenter.getAllSchoolHolidays());
