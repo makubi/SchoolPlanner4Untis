@@ -194,7 +194,6 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 	
 	public void setTimeGrid(List<TimegridUnit> time, int off){
 		timegrid = time;
-		time.clear();
 		setHours(time.size());
 		offsettop = off;
 	}
