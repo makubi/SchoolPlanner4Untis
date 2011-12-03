@@ -103,13 +103,14 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		width = MeasureSpec.getSize(widthMeasureSpec);
 		height = MeasureSpec.getSize(heightMeasureSpec);
-		lessongheight = (height-offsettop)/hours;
+		lessongheight = (height-offsettop)/ (hours == 0 ? 1 : hours);
 		setMeasuredDimension(width, height);
 	}
 	
 	private void zeichenInfos(Canvas canvas){
 		paint.setColor(Color.BLACK);
-	
+
+		
 		TextPaint tp = new TextPaint(paint);
 		tp.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_2));
 		tp.setStyle(Style.FILL_AND_STROKE);
@@ -178,11 +179,11 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 			}
 		}
 				
+		
 		if(position != -1){
-			int lessonheight = ((height-offsettop)/hours);
 			int border = getResources().getDimensionPixelSize(R.dimen.gui_stroke_width_2)/2;
 			
-			Rect r = new Rect(0, offsettop+(position*lessonheight)+border, width-border, ((position+1)*lessonheight)+offsettop-border);
+			Rect r = new Rect(0, offsettop+(position*lessongheight)+border, width-border, ((position+1)*lessongheight)+offsettop-border);
 			Paint p = new Paint();
 			p.setStyle(Style.FILL);
 			p.setColor(getResources().getColor(R.color.month_overlay_today));
@@ -193,6 +194,7 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 	
 	public void setTimeGrid(List<TimegridUnit> time, int off){
 		timegrid = time;
+		time.clear();
 		setHours(time.size());
 		offsettop = off;
 	}
