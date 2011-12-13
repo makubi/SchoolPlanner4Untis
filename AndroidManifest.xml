@@ -39,15 +39,7 @@
         <activity
             android:name=".gui.timetable.WeekView"
             android:theme="@android:style/Theme.NoTitleBar" />
-
-        <receiver android:name=".gui.timetable.GUIErrorHandler" >
-            <intent-filter >
-                <action android:name="edu.htl3r.schoolplanner.gui.ERRORMSG" />
-            </intent-filter>
-        </receiver>
-        
-            
-            
+                
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" >

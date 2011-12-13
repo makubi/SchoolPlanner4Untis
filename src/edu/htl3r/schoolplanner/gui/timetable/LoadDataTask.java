@@ -20,17 +20,20 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.gui.timetable.LoadDataTask.LogObject;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIContentManager;
+import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIContentProvider;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIWeek;
 import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.InputTransferObject;
 import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.OutputTransferObject;
 import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.TransferObject;
 
-public class LoadDataTask extends AsyncTask<Void, String, Void> {
+public class LoadDataTask extends AsyncTask<Void, LogObject, Void> implements GUIContentProvider.ErrorHandler{
 
 	private Context context;
 	private Cache cache;
@@ -44,15 +47,17 @@ public class LoadDataTask extends AsyncTask<Void, String, Void> {
 	
 	@Override
 	protected void onPreExecute() {
-		contentmanager.setNeededData(context, cache);
+		GUIContentProvider contentprovider = new GUIContentProvider(cache,context);
+		contentprovider.addErrorHandler(this);
+		contentmanager.setNeededData(context, contentprovider);
 		contentmanager.setViewType(viewtype);
 		contentmanager.setSettings(settings);
+		
 		super.onPreExecute();
 	}
 
 	@Override
 	protected Void doInBackground(Void... params) {
-
 
 		while (!downloadschlange.isInterrupted()) {
 			TransferObject d = null;
@@ -65,7 +70,7 @@ public class LoadDataTask extends AsyncTask<Void, String, Void> {
 			if(d.isBomb())
 				return null;
 			
-			publishProgress(getString(R.string.timetable_load_data), "true");
+			publishProgress(new LogObjectProgress(true));
 			InputTransferObject input = (InputTransferObject)d;
 			GUIWeek timeTable4GUI;
 			if(forceNetwork && forceCount < 3){
@@ -76,22 +81,24 @@ public class LoadDataTask extends AsyncTask<Void, String, Void> {
 				timeTable4GUI = contentmanager.getTimeTable4GUI(input.getDate(), false);
 				forceNetwork = false;
 			}
-			publishProgress(getString(R.string.timetable_loading_display), "true");
 			Message m = new Message();
 			OutputTransferObject r= new OutputTransferObject(timeTable4GUI,input.getPos());
 			m.obj = r;
 			viewbasti.h.sendMessage(m);
-			publishProgress("", "false");
+			publishProgress(new LogObjectProgress(false));
 		}
 		return null;
 
 	}
 
 	@Override
-	protected void onProgressUpdate(String... values) {
+	protected void onProgressUpdate(LogObject... values) {
 		super.onProgressUpdate(values);
-		String trennzeichen = (values[0].length() == 0)? "" : "| " ;
-		viewbasti.setInProgress(viewtype.getName() +" "+ trennzeichen + values[0], Boolean.parseBoolean(values[1]));
+		if(values[0] instanceof LogObjectProgress){
+			viewbasti.setInProgress("",((LogObjectProgress)values[0]).getProgress());
+		} else if(values[0] instanceof LogObjectError){
+			Toast.makeText(context, (((LogObjectError)values[0]).getError()), Toast.LENGTH_LONG).show();
+		}
 	}
 
 	@Override
@@ -118,8 +125,34 @@ public class LoadDataTask extends AsyncTask<Void, String, Void> {
 		forceCount = 0;
 	}
 	
+	@Deprecated
 	private String getString(int resId) {
 		return context.getString(resId);
+	}
+
+	@Override
+	public void logToUser(String msg) {
+		publishProgress(new LogObjectError(msg));
+	}
+	
+	public class LogObject{	}
+	public class LogObjectProgress extends LogObject{
+		private boolean progress;
+		public LogObjectProgress(boolean prog){
+			this.progress=prog;
+		}
+		public boolean getProgress(){
+			return progress;
+		}
+	}
+	public class LogObjectError extends LogObject{
+		private String txt;
+		public LogObjectError(String error){
+			this.txt = error;
+		}
+		public String getError(){
+			return txt;
+		}
 	}
 
 }

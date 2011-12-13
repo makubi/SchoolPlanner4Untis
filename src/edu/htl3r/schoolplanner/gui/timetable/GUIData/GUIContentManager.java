@@ -20,18 +20,19 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 
-public class GUIContentManager {
+public class GUIContentManager{
 	
 	public static int WEEK = 55187;
 	public static int DAY = 78155;
 	
-	private GUIContentProviderSpez datacenter;
+	private GUIContentProvider datacenter;
 	private Context context;
 	private ViewType viewtype;
 	private int viewlength = WEEK;
@@ -39,9 +40,9 @@ public class GUIContentManager {
 	
 	public GUIContentManager(){}
 	
-	public void setNeededData(Context context, Cache cache){
+	public void setNeededData(Context context, GUIContentProvider provider){
 		this.context = context;
-		datacenter = new GUIContentProvider(cache, context);
+		datacenter = provider;
 	}
 	
 	public void setViewType(ViewType vt){
@@ -92,5 +93,4 @@ public class GUIContentManager {
 	public Context getContext() {
 		return context;
 	}
-
 }
