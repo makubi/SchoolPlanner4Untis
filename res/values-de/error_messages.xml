@@ -12,4 +12,6 @@
     <string name="json_exception">JSON-Daten konnten nicht geparst werden. Bitte überpruefen Sie Ihre Server URL.</string>
     
     <string name="error_socket_timeout">Verbindung lief ins Timeout. Bitte überprüfen Sie Ihre Internet-Verbindung und versuchen Sie es erneut.</string>
+    
+    <string name="error_network_needed_but_unavailable">Sie sind mit keinem Netzwerk verbunden. Einloggen nicht möglich.</string>
 </resources>

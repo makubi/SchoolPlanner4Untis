@@ -166,6 +166,10 @@ public class LoginListener implements OnItemClickListener, Serializable {
 						errorMessage = getString(R.string.json_exception);
 						break;
 						
+					case ErrorCodes.NETWORK_NEEDED_BUT_UNAVAILABLE:
+						errorMessage = getString(R.string.error_network_needed_but_unavailable);
+						break;
+						
 					default:
 						errorMessage = getString(R.string.error_occurred) + " "+errorCode+":"+additionalInfo;
 						Log.e("login","========== ERROR");

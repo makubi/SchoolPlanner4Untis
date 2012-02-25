@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.backend.network.ErrorCodes;
 import edu.htl3r.schoolplanner.backend.preferences.AutoSelectSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
@@ -42,6 +43,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	
 	private InternalMemory internalMemory = new InternalMemory();
 	private ExternalDataLoader externalDataLoader = new ExternalDataLoader();
+	private boolean networkAvailable;
 	
 	public Cache() {
 		externalDataLoader.setCache(this);
@@ -239,12 +241,23 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 
 	@Override
 	public void networkAvailabilityChanged(boolean networkAvailable) {
+		this.networkAvailable  = networkAvailable;
 		externalDataLoader.networkAvailabilityChanged(networkAvailable);
 	}
 
 	@Override
 	public DataFacade<Boolean> authenticate() {
-		return externalDataLoader.authenticate();
+		DataFacade<Boolean> authenticate = new DataFacade<Boolean>();
+		
+		if(networkAvailable) authenticate = externalDataLoader.authenticate();
+		else {
+			ErrorMessage errorMessage = new ErrorMessage();
+			errorMessage.setErrorCode(ErrorCodes.NETWORK_NEEDED_BUT_UNAVAILABLE);
+			
+			authenticate.setErrorMessage(errorMessage);
+		}
+		
+		return authenticate;
 	}
 
 	@Override
