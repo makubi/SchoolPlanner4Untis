@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.htl3r.schoolplanner.gui.timetable.GUIData;
 
 import java.util.ArrayList;
@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
@@ -40,19 +39,16 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
-import edu.htl3r.schoolplanner.gui.timetable.GUIErrorHandler;
-
 
 public class GUIContentProvider implements GUIContentProviderSpez {
 
 	private Cache cache;
 	private Context context;
-	private Intent errorIntent = new Intent(GUIErrorHandler.ERRORINTENT);
+	private ArrayList<ErrorHandler> errorhandler = new ArrayList<GUIContentProvider.ErrorHandler>();
 
 	public GUIContentProvider(Cache c, Context con) {
 		cache = c;
 		context = con;
-		errorIntent.putExtra(GUIErrorHandler.ERROR_TITLE_FIELD, GUIErrorHandler.ERROR_MESSAGE_TYPE_TOAST);
 	}
 
 	@Override
@@ -61,8 +57,7 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 		if (data.isSuccessful()) {
 			return data.getData();
 		} else {
-			errorIntent.putExtra(GUIErrorHandler.ERROR_TITLE_FIELD, data.getErrorMessage().getAdditionalInfo());
-			context.sendBroadcast(errorIntent);
+			logToUser(getDisplayErrorMessage(data.getErrorMessage()));
 			return new ArrayList<SchoolRoom>();
 		}
 
@@ -74,9 +69,7 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 		if (data.isSuccessful()) {
 			return data.getData();
 		} else {
-			errorIntent.putExtra(GUIErrorHandler.ERROR_TITLE_FIELD, data.getErrorMessage().getAdditionalInfo());
-			context.sendBroadcast(errorIntent);
-
+			logToUser(getDisplayErrorMessage(data.getErrorMessage()));
 			return new ArrayList<SchoolClass>();
 		}
 	}
@@ -87,8 +80,7 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 		if (data.isSuccessful()) {
 			return data.getData();
 		} else {
-			errorIntent.putExtra(GUIErrorHandler.ERROR_TITLE_FIELD, data.getErrorMessage().getAdditionalInfo());
-			context.sendBroadcast(errorIntent);
+			logToUser(getDisplayErrorMessage(data.getErrorMessage()));
 			return new ArrayList<SchoolSubject>();
 		}
 	}
@@ -99,9 +91,7 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 		if (data.isSuccessful()) {
 			return data.getData();
 		} else {
-			errorIntent.putExtra(GUIErrorHandler.ERROR_TITLE_FIELD, data.getErrorMessage().getAdditionalInfo());
-			context.sendBroadcast(errorIntent);
-
+			logToUser(getDisplayErrorMessage(data.getErrorMessage()));
 			return new ArrayList<SchoolTeacher>();
 		}
 	}
@@ -112,9 +102,7 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 		if (data.isSuccessful()) {
 			return data.getData();
 		} else {
-			errorIntent.putExtra(GUIErrorHandler.ERROR_TITLE_FIELD, data.getErrorMessage().getAdditionalInfo());
-			context.sendBroadcast(errorIntent);
-
+			logToUser(getDisplayErrorMessage(data.getErrorMessage()));
 			return new ArrayList<SchoolHoliday>();
 		}
 	}
@@ -125,9 +113,7 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 		if (data.isSuccessful()) {
 			return data.getData();
 		} else {
-			errorIntent.putExtra(GUIErrorHandler.ERROR_TITLE_FIELD, data.getErrorMessage().getAdditionalInfo());
-			context.sendBroadcast(errorIntent);
-
+			logToUser(getDisplayErrorMessage(data.getErrorMessage()));
 			return new Timegrid();
 		}
 	}
@@ -138,8 +124,7 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 		if (data.isSuccessful()) {
 			return data.getData();
 		} else {
-			errorIntent.putExtra(GUIErrorHandler.ERROR_TITLE_FIELD, data.getErrorMessage().getAdditionalInfo());
-			context.sendBroadcast(errorIntent);
+			logToUser(getDisplayErrorMessage(data.getErrorMessage()));
 			return new ArrayList<Lesson>();
 		}
 	}
@@ -150,58 +135,73 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 		if (data.isSuccessful()) {
 			return data.getData();
 		} else {
-			errorIntent.putExtra(GUIErrorHandler.ERROR_TITLE_FIELD, getDisplayErrorMessage(data.getErrorMessage()));
-			context.sendBroadcast(errorIntent);
+			logToUser(getDisplayErrorMessage(data.getErrorMessage()));
 			return new HashMap<String, List<Lesson>>();
 		}
 	}
-	
+
 	@Override
-	public Map<String,List<Lesson>> getLessonsForSomeTime(ViewType vt, DateTime start, DateTime end, boolean forceNetwork){
+	public Map<String, List<Lesson>> getLessonsForSomeTime(ViewType vt, DateTime start, DateTime end, boolean forceNetwork) {
 		DataFacade<Map<String, List<Lesson>>> data = cache.getLessons(vt, start, end, forceNetwork);
 		if (data.isSuccessful()) {
 			return data.getData();
 		} else {
-			errorIntent.putExtra(GUIErrorHandler.ERROR_TITLE_FIELD, getDisplayErrorMessage(data.getErrorMessage()));
-			context.sendBroadcast(errorIntent);
+			logToUser(getDisplayErrorMessage(data.getErrorMessage()));
 			return new HashMap<String, List<Lesson>>();
 		}
 	}
-	
+
 	private String getDisplayErrorMessage(ErrorMessage errorMessage) {
 		String additionalInfo = errorMessage.getAdditionalInfo();
 		int errorCode = errorMessage.getErrorCode();
 		Throwable exception = errorMessage.getException();
-		
+
 		switch (errorCode) {
-		
+
 		case ErrorCodes.WEBUNTIS_SERVICE_EXCEPTION:
 			final int webUntisErrorCode = ((WebUntisServiceException) exception).getWebUntisErrorCode();
-			if(webUntisErrorCode == WebUntisErrorCodes.WEBUNTIS_NO_RIGHT_FOR_TIMETABLE) {
+			if (webUntisErrorCode == WebUntisErrorCodes.WEBUNTIS_NO_RIGHT_FOR_TIMETABLE) {
 				return getString(R.string.error_webuntis_no_right_for_timetable);
+			} else {
+				return getString(R.string.webuntis_error_occurred) + " " + errorCode + ":" + additionalInfo;
 			}
-			else {
-				return getString(R.string.webuntis_error_occurred) + " " + errorCode+":"+additionalInfo;
-			}
-			
+
 		case ErrorCodes.SOCKET_TIMEOUT_EXCEPTION:
 			return getString(R.string.error_socket_timeout);
-			
 		default:
 			return logDefaultErrorMessage(additionalInfo, errorCode, exception);
 		}
 	}
 
 	private String logDefaultErrorMessage(String additionalInfo, int errorCode, Throwable exception) {
-		Log.e("login","========== ERROR");
-		Log.e("login","info: "+additionalInfo);
-		Log.e("login","code: "+errorCode);
-		
-		if(exception != null) Log.e("login","e: "+exception.getMessage(), exception);
-		return getString(R.string.error_occurred) + " " + (exception != null ? exception.getMessage() : errorCode)+": "+additionalInfo;
+		Log.e("login", "========== ERROR");
+		Log.e("login", "info: " + additionalInfo);
+		Log.e("login", "code: " + errorCode);
+
+		if (exception != null)
+			Log.e("login", "e: " + exception.getMessage(), exception);
+		return getString(R.string.error_occurred) + " " + (exception != null ? exception.getMessage() : errorCode) + ": " + additionalInfo;
 	}
 
+	private void logToUser(String error) {
+		for(ErrorHandler h : errorhandler)
+			h.logToUser(error);
+	}
+
+	public void addErrorHandler(ErrorHandler eh){
+		errorhandler.add(eh);
+	}
+	
+	public void removeErrorHandler(ErrorHandler eh){
+		errorhandler.remove(eh);
+	}
+	
 	private String getString(int resId) {
 		return context.getString(resId);
+	}
+	
+
+	public interface ErrorHandler{
+		public void logToUser(String msg);
 	}
 }

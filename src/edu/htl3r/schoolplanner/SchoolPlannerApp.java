@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
@@ -81,4 +82,7 @@ public class SchoolPlannerApp extends Application {
 		return loginManager;
 	}
 	
+	public void logToUser(String txt){
+		Toast.makeText(this, txt, Toast.LENGTH_LONG).show();
+	}
 }

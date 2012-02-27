@@ -44,7 +44,7 @@ public class RenderInfoWeekTable implements WebUntis {
 
 	private Map<String, List<Lesson>> weekdata;
 
-	private Timegrid timegridRaw;	
+	private Timegrid timegridRaw;
 	private List<SchoolHoliday> holidays;
 	private ViewType viewtype;
 
@@ -83,11 +83,13 @@ public class RenderInfoWeekTable implements WebUntis {
 			String string = (String) element;
 			dates.add(DateTimeUtils.iso8601StringToDateTime(string));
 		}
-		
+
+		for (int i = 0; i < 4; i++) {
+			Log.d("basti", "timegrid: " + timegridRaw.getTimegridForDateTimeDay(2+i));
+		}
 		HashMap<DateTime, List<TimegridUnit>> timegrid = initTimeGrid(timegridRaw, dates);
 		GUIWeek week = new GUIWeek();
 
-		
 		for (Object element : dates) {
 			DateTime dateTime = (DateTime) element;
 			List<Lesson> lessons = weekdata.get(DateTimeUtils.toISO8601Date(dateTime));
@@ -102,34 +104,32 @@ public class RenderInfoWeekTable implements WebUntis {
 
 	private TimegridUnit zerolesson = null;
 
-	
-	private List<TimegridUnit> getMondayTimeGrid(HashMap<DateTime, List<TimegridUnit>> timegrid){
+	private List<TimegridUnit> getMondayTimeGrid(HashMap<DateTime, List<TimegridUnit>> timegrid) {
 		Set<DateTime> keySet = timegrid.keySet();
 		List<TimegridUnit> ret = null;
-		for(DateTime d : keySet){
-			if(d.getWeekDay() == Time.MONDAY){
+		for (DateTime d : keySet) {
+			if (d.getWeekDay() == Time.MONDAY) {
 				ret = timegrid.get(d);
 				break;
-			}else{
+			} else {
 				ret = timegrid.get(d);
 			}
 		}
 		return ret;
 	}
-	
-	private HashMap<DateTime, List<TimegridUnit>> initTimeGrid(Timegrid timegrid, TreeSet<DateTime> dates){
-		
+
+	private HashMap<DateTime, List<TimegridUnit>> initTimeGrid(Timegrid timegrid, TreeSet<DateTime> dates) {
+
 		boolean dispZerolesson = settings.isDisplayZerothLesson();
 		HashMap<DateTime, List<TimegridUnit>> ergebnis = new HashMap<DateTime, List<TimegridUnit>>();
-		
-		for(DateTime tmp : dates){
+
+		for (DateTime tmp : dates) {
 			List<TimegridUnit> timegridraw = timegrid.getTimegridForDateTimeDay(tmp.getWeekDay());
 			List<TimegridUnit> tmplist = new ArrayList<TimegridUnit>();
-			
-			
-			if(timegridraw != null){
-				for(TimegridUnit tunit : timegridraw){
-					
+
+			if (timegridraw != null) {
+				for (TimegridUnit tunit : timegridraw) {
+
 					if (!dispZerolesson) {
 						if (tunit.getName().equals("0") && tunit.getEnd().getHour() <= 8 && tunit.getEnd().getMinute() == 0) {
 							zerolesson = tunit;
@@ -138,39 +138,37 @@ public class RenderInfoWeekTable implements WebUntis {
 						}
 					} else {
 						tmplist.add(tunit);
-					}	
+					}
 				}
-				
-			}else{
+
+			} else {
 				Log.e("basti", "No Timegrid for day: " + tmp.toString());
-				if(ergebnis.size() > 0){
+				if (ergebnis.size() > 0) {
 					Set<DateTime> keySet = ergebnis.keySet();
-					DateTime substi =null;
-					for(DateTime mp1: keySet){
+					DateTime substi = null;
+					for (DateTime mp1 : keySet) {
 						substi = mp1;
 						break;
 					}
 					tmplist = ergebnis.get(substi);
 					Log.e("basti", "Use Timegrid from this day: " + substi + "  " + tmp.toString());
-				}else{
+				} else {
 					Log.e("basti", "Your WebUnits is strange :S , use a empty Timegrid. No hours will be displayd for this day :(");
 					tmplist = new ArrayList<TimegridUnit>();
 				}
-				
-			}		
+
+			}
 			webuntisOnlyZeroTimegridUnitsHack(tmplist);
 			ergebnis.put(tmp, tmplist);
 		}
 		return ergebnis;
 	}
-	
-	
+
 	private GUIDay analyseDay(DateTime date, List<Lesson> lessons, List<TimegridUnit> filteredTimegrid) {
 		GUIDay day = new GUIDay();
 		day.setDate(date);
 		boolean dispZerolesson = settings.isDisplayZerothLesson();
 
-		
 		if (lessons.size() == 0) {
 			for (TimegridUnit timegridUnit : filteredTimegrid) {
 				GUILessonContainer lessoncon = new GUILessonContainer();
@@ -180,7 +178,6 @@ public class RenderInfoWeekTable implements WebUntis {
 			}
 			return day;
 		}
-	
 
 		for (int i = 0; i < filteredTimegrid.size(); i++) {
 			TimegridUnit timegridUnit = filteredTimegrid.get(i);
@@ -193,10 +190,13 @@ public class RenderInfoWeekTable implements WebUntis {
 				Lesson lesson = lessons.get(j);
 
 				// Normale Stunden
-				if (lesson.getStartTime().getMinute() == timegridUnit.getStart().getMinute() && lesson.getStartTime().getHour() == timegridUnit.getStart().getHour()
-						&& lesson.getEndTime().getMinute() == timegridUnit.getEnd().getMinute() && lesson.getEndTime().getHour() == timegridUnit.getEnd().getHour()) {
+				if (lesson.getStartTime().getMinute() == timegridUnit.getStart().getMinute()
+						&& lesson.getStartTime().getHour() == timegridUnit.getStart().getHour()
+						&& lesson.getEndTime().getMinute() == timegridUnit.getEnd().getMinute()
+						&& lesson.getEndTime().getHour() == timegridUnit.getEnd().getHour()) {
 
-					if (lesson.getLessonCode() instanceof LessonCodeIrregular || lesson.getLessonCode() instanceof LessonCodeCancelled || lesson.getLessonCode() instanceof LessonCodeSubstitute) {
+					if (lesson.getLessonCode() instanceof LessonCodeIrregular || lesson.getLessonCode() instanceof LessonCodeCancelled
+							|| lesson.getLessonCode() instanceof LessonCodeSubstitute) {
 						lessoncon.addSpecialLesson(lesson);
 					} else {
 						lessoncon.addStandardLesson(lesson);
@@ -209,8 +209,10 @@ public class RenderInfoWeekTable implements WebUntis {
 					lessons.remove(j);
 				}
 				// Hier werden Ueberlange Stunden zerhackt
-				else if (lesson.getStartTime().getMinute() == timegridUnit.getStart().getMinute() && lesson.getStartTime().getHour() == timegridUnit.getStart().getHour()
-						&& (lesson.getEndTime().getMinute() != timegridUnit.getEnd().getMinute() || lesson.getEndTime().getHour() != timegridUnit.getEnd().getHour())) {
+				else if (lesson.getStartTime().getMinute() == timegridUnit.getStart().getMinute()
+						&& lesson.getStartTime().getHour() == timegridUnit.getStart().getHour()
+						&& (lesson.getEndTime().getMinute() != timegridUnit.getEnd().getMinute() || lesson.getEndTime().getHour() != timegridUnit.getEnd()
+								.getHour())) {
 
 					lessons.remove(j);
 
@@ -266,9 +268,12 @@ public class RenderInfoWeekTable implements WebUntis {
 				}
 				// Hier werden Stunden behandelt, die nicht genau dem TimeGrid
 				// entsprechen d.h. doof sind
-				else if (lesson.getStartTime().getMinute() >= timegridUnit.getStart().getMinute() && lesson.getStartTime().getHour() >= timegridUnit.getStart().getHour()
-						&& lesson.getEndTime().getMinute() <= timegridUnit.getEnd().getMinute() && lesson.getEndTime().getHour() <= timegridUnit.getEnd().getHour()) {
-					if (lesson.getLessonCode() instanceof LessonCodeIrregular || lesson.getLessonCode() instanceof LessonCodeCancelled || lesson.getLessonCode() instanceof LessonCodeSubstitute) {
+				else if (lesson.getStartTime().getMinute() >= timegridUnit.getStart().getMinute()
+						&& lesson.getStartTime().getHour() >= timegridUnit.getStart().getHour()
+						&& lesson.getEndTime().getMinute() <= timegridUnit.getEnd().getMinute()
+						&& lesson.getEndTime().getHour() <= timegridUnit.getEnd().getHour()) {
+					if (lesson.getLessonCode() instanceof LessonCodeIrregular || lesson.getLessonCode() instanceof LessonCodeCancelled
+							|| lesson.getLessonCode() instanceof LessonCodeSubstitute) {
 						lessoncon.addSpecialLesson(lesson);
 					} else {
 						lessoncon.addStandardLesson(lesson);
