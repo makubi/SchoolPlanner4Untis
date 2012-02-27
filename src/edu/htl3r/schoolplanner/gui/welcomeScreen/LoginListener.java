@@ -17,6 +17,7 @@
 package edu.htl3r.schoolplanner.gui.welcomeScreen;
 
 import java.io.Serializable;
+import java.nio.channels.UnsupportedAddressTypeException;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -66,7 +67,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 				
 				// Beim Login die Daten im RAM leeren, damit aus der Datenbank die passenden Daten geladen werden
 				cache.clearInternalCache();
-				
+
 				cache.setLoginCredentials(selectedEntry);
 				app.getLoginSetManager().setActiveLoginSet(selectedEntry);
 				
@@ -171,11 +172,14 @@ public class LoginListener implements OnItemClickListener, Serializable {
 						break;
 						
 					default:
-						errorMessage = getString(R.string.error_occurred) + " "+errorCode+":"+additionalInfo;
+						errorMessage = getString(R.string.error_occurred) + " "+errorCode+" ::: "+additionalInfo;
 						Log.e("login","========== ERROR");
 						Log.e("login","info: "+additionalInfo);
 						Log.e("login","code: "+errorCode);
-						if(exception != null) Log.e("login","e: "+exception.getMessage(),exception);
+						if(exception != null) {
+							errorMessage += " ::: "+exception;
+							Log.e("login","e: "+exception.getMessage(),exception);
+						}
 						break;
 					}
 					
