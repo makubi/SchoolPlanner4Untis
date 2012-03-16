@@ -17,7 +17,6 @@
 package edu.htl3r.schoolplanner.gui.welcomeScreen;
 
 import java.io.Serializable;
-import java.nio.channels.UnsupportedAddressTypeException;
 
 import android.content.Intent;
 import android.os.AsyncTask;

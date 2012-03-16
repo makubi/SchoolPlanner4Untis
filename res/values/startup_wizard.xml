@@ -1,0 +1,21 @@
+
+    <resources>
+        <string name="startup_wizard_header">Startup wizard</string>
+        <string name="startup_wizard_introduction">
+        This wizard will help you configure this app for the first use.
+        \n\n
+        On the next page, you have to enter the following login information:
+        \n\t- name (arbitrary): e.g. My School Login
+		\n\t- server url: e.g. urania.webuntis.com:1234
+		\n\t- school name: e.g. my_school
+		\n\t- user name: my_login_name
+		\n\t- password (optional): my_password
+		\n\n	
+		+ You have to provide a name to differentiate between multiple login sets.
+		\n+ The server url is the same url you use to log into WebUntis via a webbrowser.
+		\n+ You have to use the same login information you use to log into the WebUntis website.
+		\n+ If your school provides SSL, you can enforce to log in securely.
+		\n\n
+		Please continue to the next page.
+        </string>
+    </resources>

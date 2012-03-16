@@ -16,7 +16,7 @@
 		<item name="android:gravity">center_vertical|left</item>
 		<item name="android:layout_height">70dip</item>
 		<item name="android:layout_width">fill_parent</item>
-		<item name="android:background">@color/header_background</item>
+		<item name="android:background">@drawable/baactionbar_background</item>
 	</style>
 
 	<style name="statusBarDelimiter">

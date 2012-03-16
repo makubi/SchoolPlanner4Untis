@@ -6,7 +6,7 @@
 
 	<TextView android:id="@+id/welcome_title"
 		android:layout_alignParentTop="true" android:text="SchoolPlanner4Untis"
-		style="@style/header_text" android:background="@drawable/baactionbar_background"/>
+		style="@style/header_text"/>
 
 	<ListView android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:id="@+id/loginList"

@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
+import edu.htl3r.schoolplanner.gui.startup_wizard.StartupWizardIntroduction;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginListener;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenContextMenu;
@@ -84,6 +86,10 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
+		
+		// TODO: if first run
+		showStartupWizard();
+		
 		Settings settings = ((SchoolPlannerApp)getApplication()).getSettings();
 		String autoLoginSetString = settings.getAutoLoginSet();
 		
@@ -96,6 +102,11 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		}
 	}
 	
+	private void showStartupWizard() {
+		Intent t = new Intent(this, StartupWizardIntroduction.class);
+		startActivity(t);
+	}
+
 	private void initEmptyListTextView() {
 		emptyListView = (ScrollView) findViewById(R.id.login_set_list_empty_view);
 	}

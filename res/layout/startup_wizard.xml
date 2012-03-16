@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/background_layout">
+    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="fill_parent">
+            <TextView
+            android:text="@string/startup_wizard_header"
+            style="@style/header_text" />
+            <TextView
+            android:text="@string/startup_wizard_introduction"
+            android:textColor="@color/text"
+            android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="14sp"
+			android:paddingLeft="5sp" />
+        </LinearLayout>
+        
+            
+        
+    </LinearLayout>
+    <Button android:text="Next" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/button1" android:layout_alignParentBottom="true" android:layout_alignParentRight="true"></Button>
+</RelativeLayout>
