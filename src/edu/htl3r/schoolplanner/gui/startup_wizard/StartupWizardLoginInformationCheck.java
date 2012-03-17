@@ -80,6 +80,8 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 			
 			@Override
 			public void onClick(View v) {
+				((SchoolPlannerApp) getApplication()).getLoginSetManager().addLoginSet(activeSet);
+				
 				Intent intent = new Intent(getApplicationContext(), WelcomeScreen.class);
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
@@ -143,8 +145,6 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		else if(status.equals(LoginTaskStatus.MASTERDATA_SUCCESS)) {
 			progressWheel.setVisibility(View.INVISIBLE);
 			finishButton.setVisibility(View.VISIBLE);
-			((SchoolPlannerApp) getApplication()).getLoginSetManager().addLoginSet(activeSet);
-
 		}
 		
 		else if(status.equals(LoginTaskStatus.LOGIN_BAD_CREDENTIALS)) {
@@ -158,7 +158,8 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		if(loginTask != null && !loginTask.isCancelled() && !(loginTask.getStatus() == Status.FINISHED)) {
 			loginTask.cancel(true);
 		}
-		else super.onBackPressed();
+		
+		super.onBackPressed();
 	}
 
 }

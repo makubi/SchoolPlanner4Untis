@@ -36,7 +36,7 @@ public class LoginSetEditor extends LoginInformationForm {
 		oldServerUrl = new String(loginSet.getServerUrl());
 		oldSchool = new String(loginSet.getSchool());
 		
-		initInputFields(loginSet.getName(), loginSet.getServerUrl(), loginSet.getSchool(), loginSet.getPassword(), loginSet.getPassword(), loginSet.isSslOnly());
+		initInputFields(loginSet.getName(), loginSet.getServerUrl(), loginSet.getSchool(), loginSet.getUsername(), loginSet.getPassword(), loginSet.isSslOnly());
 		
 		setOnButtonClickListener(new Button.OnClickListener() {
 			
