@@ -14,11 +14,10 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.gui.welcomeScreen;
+package edu.htl3r.schoolplanner.gui.loginListener;
 
 import java.io.Serializable;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,23 +34,22 @@ import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.gui.AsyncTaskProgress;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
-import edu.htl3r.schoolplanner.gui.SelectScreen;
 
-public class LoginListener implements OnItemClickListener, Serializable {
+public class LoginTask implements OnItemClickListener, Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private SchoolPlannerActivity welcomescreen;
-	private OnLoginListenerListener loginListenerFinishedListener;
+	private SchoolPlannerActivity parent;
+	private OnLoginTaskUpdateListener loginListenerFinishedListener;
 	
 	private AsyncTask<Void, AsyncTaskProgress, Boolean> loginTask;
 	
 	private SchoolPlannerApp app;
 	
-	public LoginListener(SchoolPlannerActivity ws) {
-		welcomescreen = ws;
-		loginListenerFinishedListener = (OnLoginListenerListener) ws;
-		app = (SchoolPlannerApp) ws.getApplication();
+	public LoginTask(SchoolPlannerActivity parent) {
+		this.parent = parent;
+		loginListenerFinishedListener = (OnLoginTaskUpdateListener) parent;
+		app = (SchoolPlannerApp) parent.getApplication();
 	}
 
 	@Override
@@ -81,14 +79,14 @@ public class LoginListener implements OnItemClickListener, Serializable {
 						Bundle bundle = new Bundle();
 						
 						AsyncTaskProgress loginProgress = new AsyncTaskProgress();
-						loginProgress.setStatus(LoginListenerStatus.LOGIN_SUCCESS);
+						loginProgress.setStatus(LoginTaskStatus.LOGIN_SUCCESS);
 						publishProgress(loginProgress);
 						
 						if(!isCancelled()) {
 							AsyncTaskProgress schoolClassProgress = new AsyncTaskProgress();
-							schoolClassProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_classes));
+							schoolClassProgress.setProgressMessage(parent.getString(R.string.loading_school_classes));
 							schoolClassProgress.setShowProgressWheel(true);
-							schoolClassProgress.setStatus(LoginListenerStatus.CLASSLIST_SUCCESS);
+							schoolClassProgress.setStatus(LoginTaskStatus.CLASSLIST_SUCCESS);
 							
 							publishProgress(schoolClassProgress);
 							bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, cache.getSchoolClassList());
@@ -96,9 +94,9 @@ public class LoginListener implements OnItemClickListener, Serializable {
 						
 						if(!isCancelled()) {
 							AsyncTaskProgress schoolTeacherProgress = new AsyncTaskProgress();
-							schoolTeacherProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_teacher));
+							schoolTeacherProgress.setProgressMessage(parent.getString(R.string.loading_school_teacher));
 							schoolTeacherProgress.setShowProgressWheel(true);
-							schoolTeacherProgress.setStatus(LoginListenerStatus.TEACHERLIST_SUCCESS);
+							schoolTeacherProgress.setStatus(LoginTaskStatus.TEACHERLIST_SUCCESS);
 							
 							publishProgress(schoolTeacherProgress);
 							bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, cache.getSchoolTeacherList());
@@ -106,9 +104,9 @@ public class LoginListener implements OnItemClickListener, Serializable {
 						
 						if(!isCancelled()) {
 							AsyncTaskProgress schoolRoomProgress = new AsyncTaskProgress();
-							schoolRoomProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_rooms));
+							schoolRoomProgress.setProgressMessage(parent.getString(R.string.loading_school_rooms));
 							schoolRoomProgress.setShowProgressWheel(true);
-							schoolRoomProgress.setStatus(LoginListenerStatus.ROOMLIST_SUCCESS);
+							schoolRoomProgress.setStatus(LoginTaskStatus.ROOMLIST_SUCCESS);
 							
 							publishProgress(schoolRoomProgress);
 							bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, cache.getSchoolRoomList());
@@ -116,9 +114,9 @@ public class LoginListener implements OnItemClickListener, Serializable {
 						
 						if(!isCancelled()) {
 							AsyncTaskProgress schoolSubjectProgress = new AsyncTaskProgress();
-							schoolSubjectProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_subjects));
+							schoolSubjectProgress.setProgressMessage(parent.getString(R.string.loading_school_subjects));
 							schoolSubjectProgress.setShowProgressWheel(true);
-							schoolSubjectProgress.setStatus(LoginListenerStatus.SUBJECTLIST_SUCCESS);
+							schoolSubjectProgress.setStatus(LoginTaskStatus.SUBJECTLIST_SUCCESS);
 							
 							publishProgress(schoolSubjectProgress);
 							bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, cache.getSchoolSubjectList());
@@ -126,22 +124,20 @@ public class LoginListener implements OnItemClickListener, Serializable {
 						
 						if(!isCancelled()) {
 							AsyncTaskProgress loginFinished = new AsyncTaskProgress();
-							loginFinished.setProgressMessage(welcomescreen.getString(R.string.loading_next_screen));
+							loginFinished.setProgressMessage(parent.getString(R.string.loading_next_screen));
 							loginFinished.setShowProgressWheel(true);
-							loginFinished.setStatus(LoginListenerStatus.MASTERDATA_SUCCESS);
+							loginFinished.setStatus(LoginTaskStatus.MASTERDATA_SUCCESS);
 							
 							publishProgress(loginFinished);
 							
-							
-							
-							loginListenerFinishedListener.loginListenerFinished(bundle);
+							loginListenerFinishedListener.loginTaskFinished(bundle);
 							return true;
 						}
 					}
 					else {
 						AsyncTaskProgress loginFailed = new AsyncTaskProgress();
-						loginFailed.setToastMessage(welcomescreen.getString(R.string.login_data_wrong));
-						loginFailed.setStatus(LoginListenerStatus.LOGIN_BAD_CREDENTIALS);
+						loginFailed.setToastMessage(parent.getString(R.string.login_data_wrong));
+						loginFailed.setStatus(LoginTaskStatus.LOGIN_BAD_CREDENTIALS);
 						publishProgress(loginFailed);
 					}
 				}
@@ -200,14 +196,14 @@ public class LoginListener implements OnItemClickListener, Serializable {
 				}
 				
 				}
-				loginListenerFinishedListener.loginListenerFinished(null);
+				loginListenerFinishedListener.loginTaskFinished(null);
 				return false;
 			}
 
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
-				welcomescreen.setInProgress(welcomescreen.getString(R.string.login_in_progress), true);
+				parent.setInProgress(parent.getString(R.string.login_in_progress), true);
 			}
 			
 			@Override
@@ -220,10 +216,10 @@ public class LoginListener implements OnItemClickListener, Serializable {
 				String status = progress.getStatus();
 				
 				if(progressMessage != null) {
-					welcomescreen.setInProgress(progressMessage, progress.isShowProgressWheel());
+					parent.setInProgress(progressMessage, progress.isShowProgressWheel());
 				}
 				if(toastMessage != null) {
-					welcomescreen.showToastMessage(toastMessage);
+					parent.showToastMessage(toastMessage);
 				}
 				
 				if(status != null) {
@@ -235,26 +231,25 @@ public class LoginListener implements OnItemClickListener, Serializable {
 			protected void onPostExecute(Boolean result) {
 				super.onPostExecute(result);
 				if(!result)
-					welcomescreen.setInProgress("", false);
-				loginListenerFinishedListener.onPostLoginListenerFinished(result);
+					parent.setInProgress("", false);
 			}
 			
 			@Override
 			protected void onCancelled() {
 				super.onCancelled();
-				welcomescreen.setInProgress("", false);
+				parent.setInProgress("", false);
 			}
 		};
 
 		loginTask.execute();
 	}
 
-	public AsyncTask<Void, AsyncTaskProgress, Boolean> getLoginTask() {
+	public AsyncTask<Void, AsyncTaskProgress, Boolean> getAsyncTask() {
 		return loginTask;
 	}
 	
 	private String getString(int resId) {
-		return welcomescreen.getString(resId);
+		return parent.getString(resId);
 	}
 
 }

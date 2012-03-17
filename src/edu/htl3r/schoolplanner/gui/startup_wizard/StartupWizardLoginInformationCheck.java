@@ -13,14 +13,14 @@ import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
-import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginListener;
-import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginListenerStatus;
-import edu.htl3r.schoolplanner.gui.welcomeScreen.OnLoginListenerListener;
+import edu.htl3r.schoolplanner.gui.loginListener.LoginTask;
+import edu.htl3r.schoolplanner.gui.loginListener.LoginTaskStatus;
+import edu.htl3r.schoolplanner.gui.loginListener.OnLoginTaskUpdateListener;
 
 /**
  * Startup-Assistent Seite 3, welche den Login mit den vorher eingegebenen Daten testet.
  */
-public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity implements OnLoginListenerListener{
+public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity implements OnLoginTaskUpdateListener{
 
 	private ProgressBar progressWheel;
 	
@@ -41,7 +41,7 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	
 	private Button finishButton;
 	
-	private LoginListener loginListener;
+	private LoginTask loginListener;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 			}
 		});
 		
-		loginListener = new LoginListener(this);
+		loginListener = new LoginTask(this);
 		Bundle extras = getIntent().getExtras();
 		LoginSet loginSet = new LoginSet(extras.getString(LoginSetConstants.nameKey), extras.getString(LoginSetConstants.serverUrlKey), extras.getString(LoginSetConstants.schoolKey), extras.getString(LoginSetConstants.usernameKey), extras.getString(LoginSetConstants.passwordKey), false);
 		((SchoolPlannerApp) getApplication()).getLoginSetManager().addLoginSet(loginSet);
@@ -91,13 +91,7 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	}
 
 	@Override
-	public void loginListenerFinished(Bundle data) {}
-
-	@Override
-	public void onPostLoginListenerFinished(boolean success) {
-		
-		progressWheel.setVisibility(View.INVISIBLE);
-	}
+	public void loginTaskFinished(Bundle data) {}
 	
 //	@Override
 //	public void showToastMessage(String message) {
@@ -108,30 +102,31 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 
 	@Override
 	public void statusChanged(String status) {
-		if(status.equals(LoginListenerStatus.LOGIN_SUCCESS)) {
+		if(status.equals(LoginTaskStatus.LOGIN_SUCCESS)) {
 			loginImage.setImageResource(R.drawable.btn_check_buttonless_on);
 			classListText.setTextColor(R.color.text);
 		}
-		else if(status.equals(LoginListenerStatus.CLASSLIST_SUCCESS)) {
+		else if(status.equals(LoginTaskStatus.CLASSLIST_SUCCESS)) {
 			classListImage.setImageResource(R.drawable.btn_check_buttonless_on);
 			teacherListText.setTextColor(R.color.text);
 		}
-		else if(status.equals(LoginListenerStatus.TEACHERLIST_SUCCESS)) {
+		else if(status.equals(LoginTaskStatus.TEACHERLIST_SUCCESS)) {
 			teacherListImage.setImageResource(R.drawable.btn_check_buttonless_on);
 			roomListText.setTextColor(R.color.text);
 		}
-		else if(status.equals(LoginListenerStatus.ROOMLIST_SUCCESS)) {
+		else if(status.equals(LoginTaskStatus.ROOMLIST_SUCCESS)) {
 			roomListImage.setImageResource(R.drawable.btn_check_buttonless_on);
 			subjectListText.setTextColor(R.color.text);
 		}
-		else if(status.equals(LoginListenerStatus.SUBJECTLIST_SUCCESS)) {
+		else if(status.equals(LoginTaskStatus.SUBJECTLIST_SUCCESS)) {
 			subjectListImage.setImageResource(R.drawable.btn_check_buttonless_on);
 		}
-		else if(status.equals(LoginListenerStatus.MASTERDATA_SUCCESS)) {
+		else if(status.equals(LoginTaskStatus.MASTERDATA_SUCCESS)) {
+			progressWheel.setVisibility(View.INVISIBLE);
 			finishButton.setVisibility(View.VISIBLE);
 		}
 		
-		else if(status.equals(LoginListenerStatus.LOGIN_BAD_CREDENTIALS)) {
+		else if(status.equals(LoginTaskStatus.LOGIN_BAD_CREDENTIALS)) {
 			loginImage.setImageResource(R.drawable.ic_delete);
 		}
 	}

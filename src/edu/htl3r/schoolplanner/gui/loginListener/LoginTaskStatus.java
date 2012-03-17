@@ -1,6 +1,6 @@
-package edu.htl3r.schoolplanner.gui.welcomeScreen;
+package edu.htl3r.schoolplanner.gui.loginListener;
 
-public interface LoginListenerStatus {
+public interface LoginTaskStatus {
 	// TODO: connection + ssl check
 	
 	public static final String LOGIN_SUCCESS = "loginSuccess";

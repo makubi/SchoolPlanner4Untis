@@ -41,14 +41,14 @@ import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
+import edu.htl3r.schoolplanner.gui.loginListener.LoginTask;
+import edu.htl3r.schoolplanner.gui.loginListener.LoginTaskStatus;
+import edu.htl3r.schoolplanner.gui.loginListener.OnLoginTaskUpdateListener;
 import edu.htl3r.schoolplanner.gui.startup_wizard.StartupWizardIntroduction;
-import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginListener;
-import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginListenerStatus;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginSetUpdateAsyncTask;
-import edu.htl3r.schoolplanner.gui.welcomeScreen.OnLoginListenerListener;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenContextMenu;
 
-public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginListenerListener {
+public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginTaskUpdateListener {
 	
 	private ListView mainListView;
 	
@@ -57,9 +57,11 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginListe
 	private ScrollView emptyListView;
 	
 	private LoginSetManager loginmanager;
-	private LoginListener loginListener;
+	private LoginTask loginListener;
 	
 	private final int CONTEXT_MENU_ID = 1;
+	
+	private final int STARTUP_WIZARD_INTRODUCTION_REQUEST_CODE = 1;
 	
 	private WelcomeScreenContextMenu contextMenu;
 	
@@ -78,7 +80,7 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginListe
 		
 		initList();
 		
-		loginListener = new LoginListener(this);
+		loginListener = new LoginTask(this);
 		mainListView.setOnItemClickListener(loginListener);
 		
 		initContextMenu();
@@ -111,7 +113,7 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginListe
 	
 	private void showStartupWizard() {
 		Intent t = new Intent(this, StartupWizardIntroduction.class);
-		startActivity(t);
+		startActivityForResult(t, STARTUP_WIZARD_INTRODUCTION_REQUEST_CODE);
 	}
 
 	private void initEmptyListTextView() {
@@ -120,7 +122,7 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginListe
 	
 	@Override
 	public void onBackPressed() {
-		AsyncTask<Void, AsyncTaskProgress, Boolean> loginTask = loginListener.getLoginTask();
+		AsyncTask<Void, AsyncTaskProgress, Boolean> loginTask = loginListener.getAsyncTask();
 		if(loginTask != null && !loginTask.isCancelled() && !(loginTask.getStatus() == Status.FINISHED)) {
 			loginTask.cancel(true);
 		}
@@ -323,11 +325,11 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginListe
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(loginListener.getLoginTask() != null && loginListener.getLoginTask().getStatus() != Status.RUNNING) setInProgress("", false);
+		if(loginListener.getAsyncTask() != null && loginListener.getAsyncTask().getStatus() != Status.RUNNING) setInProgress("", false);
 	}
 
 	@Override
-	public void loginListenerFinished(Bundle data) {
+	public void loginTaskFinished(Bundle data) {
 		if(data != null) {
 			Intent t = new Intent(this, SelectScreen.class);
 			t.putExtras(data);
@@ -336,14 +338,17 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginListe
 	}
 
 	@Override
-	public void onPostLoginListenerFinished(boolean success) {}
-
+	public void statusChanged(String status) {}
+	
 	@Override
-	public void statusChanged(String status) {
-		// TODO Auto-generated method stub
-		
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case STARTUP_WIZARD_INTRODUCTION_REQUEST_CODE:
+			loginSetListUpdated();
+			break;
+		default:
+			super.onActivityResult(requestCode, resultCode, data);
+		}
 	}
-	
-	
 	
 }
