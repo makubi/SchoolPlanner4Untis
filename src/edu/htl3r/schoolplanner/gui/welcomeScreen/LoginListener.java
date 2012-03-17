@@ -128,6 +128,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 							AsyncTaskProgress loginFinished = new AsyncTaskProgress();
 							loginFinished.setProgressMessage(welcomescreen.getString(R.string.loading_next_screen));
 							loginFinished.setShowProgressWheel(true);
+							loginFinished.setStatus(LoginListenerStatus.MASTERDATA_SUCCESS);
 							
 							publishProgress(loginFinished);
 							

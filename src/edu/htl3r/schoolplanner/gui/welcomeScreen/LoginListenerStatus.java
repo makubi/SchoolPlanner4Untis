@@ -11,4 +11,6 @@ public interface LoginListenerStatus {
 	public static final String SUBJECTLIST_SUCCESS = "subjectListSuccess";
 
 	public static final String LOGIN_BAD_CREDENTIALS = "loginBadCredentials";
+
+	public static final String MASTERDATA_SUCCESS = "masterdataSuccess";
 }

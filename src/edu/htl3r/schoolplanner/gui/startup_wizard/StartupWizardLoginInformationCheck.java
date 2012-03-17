@@ -103,6 +103,8 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 //	public void showToastMessage(String message) {
 //		
 //	}
+	
+	// FIXME: erste seite back --> liste reloaden
 
 	@Override
 	public void statusChanged(String status) {
@@ -124,6 +126,9 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		}
 		else if(status.equals(LoginListenerStatus.SUBJECTLIST_SUCCESS)) {
 			subjectListImage.setImageResource(R.drawable.btn_check_buttonless_on);
+		}
+		else if(status.equals(LoginListenerStatus.MASTERDATA_SUCCESS)) {
+			finishButton.setVisibility(View.VISIBLE);
 		}
 		
 		else if(status.equals(LoginListenerStatus.LOGIN_BAD_CREDENTIALS)) {

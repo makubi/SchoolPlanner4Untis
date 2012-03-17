@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/background_layout" android:gravity="center">
-    
-    <RelativeLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical">
-    	<TextView
+    <TextView
            	android:text="@string/startup_wizard_header"
             style="@style/header_text"
-            android:layout_marginBottom="10sp" />
+            android:layout_marginBottom="10sp" android:id="@+id/startup_wizard_header" />
+    	
             
             
-            <LinearLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical">
+    <LinearLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical" android:layout_below="@id/startup_wizard_header" >
     
     <ProgressBar android:id="@+id/startup_wizard_login_information_check_progress"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		style="@android:style/Widget.ProgressBar.Large.Inverse" android:layout_gravity="center" />
+		style="@android:style/Widget.ProgressBar.Large.Inverse"
+		android:layout_gravity="center_horizontal"
+		android:layout_marginBottom="10sp" />
     
     <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical">
     <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="left|center_vertical">
@@ -98,7 +99,6 @@
         </LinearLayout>
     	 </LinearLayout>
          
-    </RelativeLayout>
 
     
     <LinearLayout style="@style/startup_wizard_button_bar">
