@@ -14,6 +14,7 @@ import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
 public class StartupWizardIntroduction extends SchoolPlannerActivity {
 
 	private Button nextButton;
+	private Button backButton;
 	
 	private Activity thisActivity;
 	
@@ -30,6 +31,16 @@ public class StartupWizardIntroduction extends SchoolPlannerActivity {
 				Intent nextScreen = new Intent(thisActivity, StartupWizardLoginInformation.class);
 				startActivity(nextScreen);
 			}
+		});
+		
+		backButton = (Button) findViewById(R.id.startup_wizard_introduction_back_button);
+		backButton.setOnClickListener(new Button.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				onBackPressed();
+			}
+			
 		});
 	}
 

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="login_sets_list_empty">
-    Your list of login sets is empty!
-	\n\n
+    <string name="login_sets_info">
 	You need a login set to be able to log into the app.
 	\n\n
 	A login set contains of five information:

@@ -25,12 +25,18 @@
     	<EditText style="@style/startup_wizard_login_information_input" android:id="@+id/startup_wizard_login_information_school" android:hint="@string/startup_wizard_login_information_school_hint" />
     	<EditText style="@style/startup_wizard_login_information_input" android:id="@+id/startup_wizard_login_information_username" android:hint="@string/startup_wizard_login_information_username_hint" />
        	<EditText style="@style/startup_wizard_login_information_input" android:id="@+id/startup_wizard_login_information_password" android:hint="@string/startup_wizard_login_information_password_hint" android:inputType="text|textPassword" />
+        <CheckBox android:id="@+id/startup_wizard_login_information_ssl_only"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/startup_wizard_login_information_ssl_only"
+        android:textColor="@color/text" />
          
          
     </LinearLayout>
     </ScrollView>
     
     <LinearLayout style="@style/startup_wizard_button_bar">
-        	<Button android:text="@string/startup_wizard_login_information_next_button" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/startup_wizard_login_information_next_button" android:layout_gravity="right" />
+    	<Button android:text="@string/startup_wizard_login_information_back_button" android:layout_height="wrap_content" android:id="@+id/startup_wizard_login_information_back_button" android:layout_weight="1" android:layout_width="wrap_content"/>
+        <Button android:text="@string/startup_wizard_login_information_next_button" android:layout_height="wrap_content" android:id="@+id/startup_wizard_login_information_next_button" android:layout_weight="1" android:layout_width="wrap_content"/>
     </LinearLayout>
 </RelativeLayout>

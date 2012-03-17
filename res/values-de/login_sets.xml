@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="login_sets_list_empty">
-    Sie haben noch keine Login Sets!
-	\n\n
 	Um sich in die App einloggen zu können, benötigen Sie ein Login Set.
 	\n\n
 	Ein Login Set besteht aus fünf Informationen:

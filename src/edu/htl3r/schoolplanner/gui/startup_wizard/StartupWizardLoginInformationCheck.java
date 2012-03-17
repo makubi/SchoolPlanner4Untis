@@ -1,7 +1,9 @@
 package edu.htl3r.schoolplanner.gui.startup_wizard;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.AsyncTask.Status;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,6 +13,7 @@ import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
+import edu.htl3r.schoolplanner.gui.AsyncTaskProgress;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
 import edu.htl3r.schoolplanner.gui.loginListener.LoginTask;
@@ -39,9 +42,14 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	private TextView subjectListText;
 	private ImageView subjectListImage;
 	
+	private TextView infoText;
+	
 	private Button finishButton;
+	private Button backButton;
 	
 	private LoginTask loginListener;
+	
+	private LoginSet activeSet;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +73,8 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		
 		progressWheel = (ProgressBar) findViewById(R.id.startup_wizard_login_information_check_progress);
 		
+		infoText = (TextView) findViewById(R.id.startup_wizard_login_information_check_info_text);
+		
 		finishButton = (Button) findViewById(R.id.startup_wizard_login_information_check_finish_button);
 		finishButton.setOnClickListener(new Button.OnClickListener() {
 			
@@ -76,29 +86,38 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 			}
 		});
 		
+		backButton = (Button) findViewById(R.id.startup_wizard_login_information_check_back_button);
+		backButton.setOnClickListener(new Button.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				onBackPressed();
+			}
+			
+		});
+		
 		loginListener = new LoginTask(this);
 		Bundle extras = getIntent().getExtras();
-		LoginSet loginSet = new LoginSet(extras.getString(LoginSetConstants.nameKey), extras.getString(LoginSetConstants.serverUrlKey), extras.getString(LoginSetConstants.schoolKey), extras.getString(LoginSetConstants.usernameKey), extras.getString(LoginSetConstants.passwordKey), false);
-		((SchoolPlannerApp) getApplication()).getLoginSetManager().addLoginSet(loginSet);
-		loginListener.performLogin(loginSet);
+		activeSet = new LoginSet(extras.getString(LoginSetConstants.nameKey), extras.getString(LoginSetConstants.serverUrlKey), extras.getString(LoginSetConstants.schoolKey), extras.getString(LoginSetConstants.usernameKey), extras.getString(LoginSetConstants.passwordKey), extras.getBoolean(LoginSetConstants.sslOnlyKey));
+		loginListener.performLogin(activeSet);
 		
 		loginText.setTextColor(R.color.text);
 	}
 	
 	@Override
 	public void setInProgress(String message, boolean active) {
-		progressWheel.setVisibility(active ? View.VISIBLE : View.GONE);
+		progressWheel.setVisibility(active ? View.VISIBLE : View.INVISIBLE);
 	}
 
 	@Override
 	public void loginTaskFinished(Bundle data) {}
 	
-//	@Override
-//	public void showToastMessage(String message) {
-//		
-//	}
-	
-	// FIXME: erste seite back --> liste reloaden
+	@Override
+	public void showToastMessage(String message) {
+		infoText.setText(message);
+		// TODO: auch mit status changed
+		backButton.setVisibility(View.VISIBLE);
+	}
 
 	@Override
 	public void statusChanged(String status) {
@@ -124,11 +143,22 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		else if(status.equals(LoginTaskStatus.MASTERDATA_SUCCESS)) {
 			progressWheel.setVisibility(View.INVISIBLE);
 			finishButton.setVisibility(View.VISIBLE);
+			((SchoolPlannerApp) getApplication()).getLoginSetManager().addLoginSet(activeSet);
+
 		}
 		
 		else if(status.equals(LoginTaskStatus.LOGIN_BAD_CREDENTIALS)) {
 			loginImage.setImageResource(R.drawable.ic_delete);
 		}
+	}
+	
+	@Override
+	public void onBackPressed() {
+		AsyncTask<Void, AsyncTaskProgress, Boolean> loginTask = loginListener.getAsyncTask();
+		if(loginTask != null && !loginTask.isCancelled() && !(loginTask.getStatus() == Status.FINISHED)) {
+			loginTask.cancel(true);
+		}
+		else super.onBackPressed();
 	}
 
 }

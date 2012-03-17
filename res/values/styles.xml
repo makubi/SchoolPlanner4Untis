@@ -152,11 +152,11 @@
 	</style>
 	
 	<style name="startup_wizard_button_bar">
-	<item name="android:layout_height">wrap_content</item>
-	<item name="android:layout_width">fill_parent</item>
-	<item name="android:orientation">vertical</item>
-	<item name="android:layout_alignParentBottom">true</item>
-	<item name="android:background">@color/element_background</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:orientation">horizontal</item>
+		<item name="android:layout_alignParentBottom">true</item>
+		<item name="android:background">@color/element_background</item>
 	</style>
 	
 	<style name="startup_wizard_scroll_view" parent="@style/background_layout">

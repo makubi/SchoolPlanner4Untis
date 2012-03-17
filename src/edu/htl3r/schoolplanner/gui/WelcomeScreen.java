@@ -42,7 +42,6 @@ import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.gui.loginListener.LoginTask;
-import edu.htl3r.schoolplanner.gui.loginListener.LoginTaskStatus;
 import edu.htl3r.schoolplanner.gui.loginListener.OnLoginTaskUpdateListener;
 import edu.htl3r.schoolplanner.gui.startup_wizard.StartupWizardIntroduction;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginSetUpdateAsyncTask;
@@ -52,8 +51,6 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginTaskU
 	
 	private ListView mainListView;
 	
-	private LoginSetDialog dialog;
-	
 	private ScrollView emptyListView;
 	
 	private LoginSetManager loginmanager;
@@ -62,6 +59,7 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginTaskU
 	private final int CONTEXT_MENU_ID = 1;
 	
 	private final int STARTUP_WIZARD_INTRODUCTION_REQUEST_CODE = 1;
+	private final int LOGIN_SET_EDITOR_REQUEST_CODE = 2;
 	
 	private WelcomeScreenContextMenu contextMenu;
 	
@@ -86,17 +84,12 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginTaskU
 		initContextMenu();
 	}
 	
-	boolean testRun = true;
-	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		
-		// TODO: if first run // if login set list < 1
-		
-		if (testRun) {
+		if (loginmanager.getAllLoginSets().size() < 1) {
 			showStartupWizard();
-			testRun = false;
 		}
 		
 		Settings settings = ((SchoolPlannerApp)getApplication()).getSettings();
@@ -142,9 +135,7 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginTaskU
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case R.id.add_login_set:
-	    	dialog = new LoginSetDialog(this);
-	    	dialog.setParent(this);
-	    	dialog.show();
+	    	showStartupWizard();
 	        return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
@@ -154,10 +145,17 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginTaskU
 	
 
 	public void editLoginSet(int id) {
-		dialog = new LoginSetDialog(this,loginmanager.getLoginSetOnPosition(id));
-    	dialog.setParent(this);
-    	dialog.setTitle(getString(R.string.login_set_edit_title));
-    	dialog.show();
+    	LoginSet selectedLoginSet = loginmanager.getLoginSetOnPosition(id);
+    	
+    	Intent loginSetEditor = new Intent(this, LoginSetEditor.class);
+    	loginSetEditor.putExtra(LoginSetConstants.nameKey, selectedLoginSet.getName());
+    	loginSetEditor.putExtra(LoginSetConstants.serverUrlKey, selectedLoginSet.getServerUrl());
+    	loginSetEditor.putExtra(LoginSetConstants.schoolKey, selectedLoginSet.getSchool());
+    	loginSetEditor.putExtra(LoginSetConstants.usernameKey, selectedLoginSet.getUsername());
+    	loginSetEditor.putExtra(LoginSetConstants.passwordKey, selectedLoginSet.getPassword());
+    	loginSetEditor.putExtra(LoginSetConstants.sslOnlyKey, selectedLoginSet.isSslOnly());
+    	
+    	startActivityForResult(loginSetEditor, LOGIN_SET_EDITOR_REQUEST_CODE);
 	}
 
 	private void initList(){
@@ -345,6 +343,11 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginTaskU
 		switch (requestCode) {
 		case STARTUP_WIZARD_INTRODUCTION_REQUEST_CODE:
 			loginSetListUpdated();
+			break;
+		case LOGIN_SET_EDITOR_REQUEST_CODE:
+			if(data != null) {
+				editLoginSet(data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_NAME_KEY), data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_SERVER_URL_KEY), data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_SCHOOL_KEY), data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_USERNAME_KEY), data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_PASSWORD_KEY), data.getBooleanExtra(LoginSetEditor.LOGIN_SET_EDIT_SSL_ONLY_KEY, false), data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_OLD_NAME_KEY), data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_OLD_SERVER_URL_KEY), data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_OLD_SCHOOL_KEY));
+			}
 			break;
 		default:
 			super.onActivityResult(requestCode, resultCode, data);
