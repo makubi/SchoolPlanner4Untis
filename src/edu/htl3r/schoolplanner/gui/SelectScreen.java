@@ -429,10 +429,6 @@ public class SelectScreen extends SchoolPlannerActivity {
 		loadingTimetable = false;
 	}
 	
-	private void showToastMessage(String message) {
-		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-	}
-	
 	@Override
 	public void setInProgress(String message, boolean active) {
 		super.setInProgress(message, active);

@@ -24,7 +24,7 @@
    		<EditText style="@style/startup_wizard_login_information_input" android:id="@+id/startup_wizard_login_information_server_url" android:hint="@string/startup_wizard_login_information_server_url_hint" />
     	<EditText style="@style/startup_wizard_login_information_input" android:id="@+id/startup_wizard_login_information_school" android:hint="@string/startup_wizard_login_information_school_hint" />
     	<EditText style="@style/startup_wizard_login_information_input" android:id="@+id/startup_wizard_login_information_username" android:hint="@string/startup_wizard_login_information_username_hint" />
-       	<EditText style="@style/startup_wizard_login_information_input" android:id="@+id/startup_wizard_login_information_password" android:hint="@string/startup_wizard_login_information_password_hint" />
+       	<EditText style="@style/startup_wizard_login_information_input" android:id="@+id/startup_wizard_login_information_password" android:hint="@string/startup_wizard_login_information_password_hint" android:inputType="text|textPassword" />
          
          
     </LinearLayout>

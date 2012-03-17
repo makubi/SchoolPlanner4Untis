@@ -34,20 +34,23 @@ import edu.htl3r.schoolplanner.backend.network.ErrorCodes;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.gui.AsyncTaskProgress;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
+import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
 import edu.htl3r.schoolplanner.gui.SelectScreen;
-import edu.htl3r.schoolplanner.gui.WelcomeScreen;
 
 public class LoginListener implements OnItemClickListener, Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	private WelcomeScreen welcomescreen;
+	
+	private SchoolPlannerActivity welcomescreen;
+	private OnLoginListenerFinishedListener loginListenerFinishedListener;
 	
 	private AsyncTask<Void, AsyncTaskProgress, Boolean> loginTask;
 	
 	private SchoolPlannerApp app;
 	
-	public LoginListener(WelcomeScreen ws) {
+	public LoginListener(SchoolPlannerActivity ws) {
 		welcomescreen = ws;
+		loginListenerFinishedListener = (OnLoginListenerFinishedListener) ws;
 		app = (SchoolPlannerApp) ws.getApplication();
 	}
 
@@ -75,7 +78,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 				if(authenticate.isSuccessful()) {
 					boolean auth = authenticate.getData();
 					if(auth) {
-						Intent t = new Intent(welcomescreen, SelectScreen.class);
+						
 						Bundle bundle = new Bundle();
 						
 						if(!isCancelled()) {
@@ -121,8 +124,9 @@ public class LoginListener implements OnItemClickListener, Serializable {
 							
 							publishProgress(loginFinished);
 							
-							t.putExtras(bundle);
-							welcomescreen.startActivity(t);
+							
+							
+							loginListenerFinishedListener.loginListenerFinished(bundle);
 							return true;
 						}
 					}
@@ -187,6 +191,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 				}
 				
 				}
+				loginListenerFinishedListener.loginListenerFinished(null);
 				return false;
 			}
 
@@ -218,6 +223,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 				super.onPostExecute(result);
 				if(!result)
 					welcomescreen.setInProgress("", false);
+				loginListenerFinishedListener.onPostLoginListenerFinished(result);
 			}
 			
 			@Override

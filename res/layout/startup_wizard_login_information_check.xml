@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/background_layout" android:gravity="center">
+    
+    <RelativeLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical">
+    	<TextView
+           	android:text="@string/startup_wizard_header"
+            style="@style/header_text"
+            android:layout_marginBottom="10sp" />
+            
+            
+            <LinearLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical" android:gravity="center">
+    
+    <ProgressBar android:id="@+id/startup_wizard_login_information_check_progress"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		style="@android:style/Widget.ProgressBar.Large.Inverse" />
+    
+        <TextView
+        	android:id="@+id/startup_wizard_login_information_check_text"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:paddingLeft="5sp"
+			android:textColor="@color/text"
+			android:layout_marginBottom="5sp" />
+        </LinearLayout>
+        
+    	 
+         
+    </RelativeLayout>
+
+    
+    <LinearLayout style="@style/startup_wizard_button_bar">
+        	<Button android:text="@string/startup_wizard_login_information_check_finish_button" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/startup_wizard_login_information_check_finish_button" android:layout_gravity="right" android:visibility="invisible" />
+    </LinearLayout>
+</RelativeLayout>

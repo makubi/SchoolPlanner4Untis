@@ -33,7 +33,6 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.Cache;
@@ -45,9 +44,10 @@ import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.gui.startup_wizard.StartupWizardIntroduction;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginListener;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginSetUpdateAsyncTask;
+import edu.htl3r.schoolplanner.gui.welcomeScreen.OnLoginListenerFinishedListener;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenContextMenu;
 
-public class WelcomeScreen extends SchoolPlannerActivity{
+public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginListenerFinishedListener {
 	
 	private ListView mainListView;
 	
@@ -83,12 +83,18 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		initContextMenu();
 	}
 	
+	boolean testRun = true;
+	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		
 		// TODO: if first run // if login set list < 1
-		showStartupWizard();
+		
+		if (testRun) {
+			showStartupWizard();
+			testRun = false;
+		}
 		
 		Settings settings = ((SchoolPlannerApp)getApplication()).getSettings();
 		String autoLoginSetString = settings.getAutoLoginSet();
@@ -313,14 +319,24 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		task.execute();
 	}
 	
-	public void showToastMessage(String message) {
-		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-	}
-	
 	@Override
 	protected void onResume() {
 		super.onResume();
 		if(loginListener.getLoginTask() != null && loginListener.getLoginTask().getStatus() != Status.RUNNING) setInProgress("", false);
 	}
+
+	@Override
+	public void loginListenerFinished(Bundle data) {
+		if(data != null) {
+			Intent t = new Intent(this, SelectScreen.class);
+			t.putExtras(data);
+			startActivity(t);
+		}
+	}
+
+	@Override
+	public void onPostLoginListenerFinished(boolean success) {}
+	
+	
 	
 }

@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
@@ -66,6 +67,11 @@ public abstract class SchoolPlannerActivity extends Activity {
 		} else {
 			progressWheel.setVisibility(View.INVISIBLE);
 		}
+	}
+	
+	
+	public void showToastMessage(String message) {
+		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 	}
 
 	@Override
