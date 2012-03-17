@@ -1,6 +1,8 @@
-
+<?xml version="1.0" encoding="utf-8"?>
     <resources>
         <string name="startup_wizard_header">Startup wizard</string>
+        
+        
         <string name="startup_wizard_introduction">
         This wizard will help you configure this app for the first use.
         \n\n
@@ -18,4 +20,6 @@
 		\n\n
 		Please continue to the next page.
         </string>
+        
+        <string name="startup_wizard_introduction_next_button">Next</string>
     </resources>

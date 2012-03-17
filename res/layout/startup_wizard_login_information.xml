@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/background_layout">
+	<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	style="@style/startup_wizard_scroll_view">
+    <LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:orientation="vertical">
+    
+    	<TextView
+           	android:text="@string/startup_wizard_header"
+            style="@style/header_text"
+            android:layout_marginBottom="10sp" />
+    
+    
+        <TextView
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:paddingLeft="5sp"
+			android:textColor="@color/text"
+			android:text="@string/startup_wizard_login_information_text"
+			android:layout_marginBottom="5sp" />
+        
+        
+    	<EditText style="@style/startup_wizard_login_information_input" android:id="@+id/startup_wizard_login_information_name" android:hint="@string/startup_wizard_login_information_name_hint" />
+   		<EditText style="@style/startup_wizard_login_information_input" android:id="@+id/startup_wizard_login_information_server_url" android:hint="@string/startup_wizard_login_information_server_url_hint" />
+    	<EditText style="@style/startup_wizard_login_information_input" android:id="@+id/startup_wizard_login_information_school" android:hint="@string/startup_wizard_login_information_school_hint" />
+    	<EditText style="@style/startup_wizard_login_information_input" android:id="@+id/startup_wizard_login_information_username" android:hint="@string/startup_wizard_login_information_username_hint" />
+       	<EditText style="@style/startup_wizard_login_information_input" android:id="@+id/startup_wizard_login_information_password" android:hint="@string/startup_wizard_login_information_password_hint" />
+         
+         
+    </LinearLayout>
+    </ScrollView>
+    
+    <LinearLayout style="@style/startup_wizard_button_bar">
+        	<Button android:text="@string/startup_wizard_login_information_next_button" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/startup_wizard_login_information_next_button" android:layout_gravity="right" />
+    </LinearLayout>
+</RelativeLayout>

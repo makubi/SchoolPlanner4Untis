@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources>
+    
+    	<string name="startup_wizard_login_information_text">Login information</string>
+    	
+        <string name="startup_wizard_login_information_name_hint">Name (arbitrary)</string>
+        <string name="startup_wizard_login_information_server_url_hint">Server-URL</string>
+        <string name="startup_wizard_login_information_school_hint">School</string>
+        <string name="startup_wizard_login_information_username_hint">Username</string>
+        <string name="startup_wizard_login_information_password_hint">Password (optional)</string>
+        
+        <string name="startup_wizard_login_information_next_button">Next</string>
+    </resources>

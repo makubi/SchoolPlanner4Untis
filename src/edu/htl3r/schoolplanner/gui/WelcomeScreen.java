@@ -87,7 +87,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		
-		// TODO: if first run
+		// TODO: if first run // if login set list < 1
 		showStartupWizard();
 		
 		Settings settings = ((SchoolPlannerApp)getApplication()).getSettings();

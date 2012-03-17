@@ -32,17 +32,15 @@
             
            
         
-        <activity
-            android:name=".gui.settings.SettingsScreen"
-            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:name=".gui.settings.SettingsScreen" android:theme="@android:style/Theme.NoTitleBar" />
         
-        <activity
-            android:name=".gui.timetable.WeekView"
-            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:name=".gui.timetable.WeekView" android:theme="@android:style/Theme.NoTitleBar" />
             
-            <activity
-            android:name=".gui.startup_wizard.StartupWizardIntroduction"
-            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:name=".gui.startup_wizard.StartupWizardIntroduction" android:theme="@android:style/Theme.NoTitleBar" />
+            
+        <activity android:name=".gui.startup_wizard.StartupWizardLoginInformation" android:theme="@android:style/Theme.NoTitleBar" android:windowSoftInputMode="stateHidden" />
+            
+        <activity android:name=".gui.startup_wizard.StartupWizardLoginInformationCheck" android:theme="@android:style/Theme.NoTitleBar" />
                 
     </application>
 
