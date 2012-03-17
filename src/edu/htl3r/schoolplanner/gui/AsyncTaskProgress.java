@@ -24,6 +24,8 @@ public class AsyncTaskProgress {
 	
 	private boolean showProgressWheel = false;
 	
+	private String status;
+	
 	public String getToastMessage() {
 		return toastMessage;
 	}
@@ -41,6 +43,12 @@ public class AsyncTaskProgress {
 	}
 	public void setShowProgressWheel(boolean showProgressWheel) {
 		this.showProgressWheel = showProgressWheel;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 }

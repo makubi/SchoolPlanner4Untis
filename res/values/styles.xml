@@ -164,5 +164,10 @@
 		<item name="android:layout_height">wrap_content</item>
 		<item name="android:layout_marginBottom">50dip</item>
 	</style>
+	
+	<style name="startup_wizard_login_information_check_image">
+		<item name="android:layout_width">30dip</item>
+		<item name="android:layout_height">30dip</item>
+	</style>
 
 </resources>

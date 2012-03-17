@@ -43,11 +43,12 @@ import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.gui.startup_wizard.StartupWizardIntroduction;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginListener;
+import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginListenerStatus;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginSetUpdateAsyncTask;
-import edu.htl3r.schoolplanner.gui.welcomeScreen.OnLoginListenerFinishedListener;
+import edu.htl3r.schoolplanner.gui.welcomeScreen.OnLoginListenerListener;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenContextMenu;
 
-public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginListenerFinishedListener {
+public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginListenerListener {
 	
 	private ListView mainListView;
 	
@@ -336,6 +337,12 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginListe
 
 	@Override
 	public void onPostLoginListenerFinished(boolean success) {}
+
+	@Override
+	public void statusChanged(String status) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

@@ -42,7 +42,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private SchoolPlannerActivity welcomescreen;
-	private OnLoginListenerFinishedListener loginListenerFinishedListener;
+	private OnLoginListenerListener loginListenerFinishedListener;
 	
 	private AsyncTask<Void, AsyncTaskProgress, Boolean> loginTask;
 	
@@ -50,7 +50,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 	
 	public LoginListener(SchoolPlannerActivity ws) {
 		welcomescreen = ws;
-		loginListenerFinishedListener = (OnLoginListenerFinishedListener) ws;
+		loginListenerFinishedListener = (OnLoginListenerListener) ws;
 		app = (SchoolPlannerApp) ws.getApplication();
 	}
 
@@ -78,13 +78,17 @@ public class LoginListener implements OnItemClickListener, Serializable {
 				if(authenticate.isSuccessful()) {
 					boolean auth = authenticate.getData();
 					if(auth) {
-						
 						Bundle bundle = new Bundle();
+						
+						AsyncTaskProgress loginProgress = new AsyncTaskProgress();
+						loginProgress.setStatus(LoginListenerStatus.LOGIN_SUCCESS);
+						publishProgress(loginProgress);
 						
 						if(!isCancelled()) {
 							AsyncTaskProgress schoolClassProgress = new AsyncTaskProgress();
 							schoolClassProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_classes));
 							schoolClassProgress.setShowProgressWheel(true);
+							schoolClassProgress.setStatus(LoginListenerStatus.CLASSLIST_SUCCESS);
 							
 							publishProgress(schoolClassProgress);
 							bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, cache.getSchoolClassList());
@@ -94,6 +98,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 							AsyncTaskProgress schoolTeacherProgress = new AsyncTaskProgress();
 							schoolTeacherProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_teacher));
 							schoolTeacherProgress.setShowProgressWheel(true);
+							schoolTeacherProgress.setStatus(LoginListenerStatus.TEACHERLIST_SUCCESS);
 							
 							publishProgress(schoolTeacherProgress);
 							bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, cache.getSchoolTeacherList());
@@ -103,6 +108,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 							AsyncTaskProgress schoolRoomProgress = new AsyncTaskProgress();
 							schoolRoomProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_rooms));
 							schoolRoomProgress.setShowProgressWheel(true);
+							schoolRoomProgress.setStatus(LoginListenerStatus.ROOMLIST_SUCCESS);
 							
 							publishProgress(schoolRoomProgress);
 							bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, cache.getSchoolRoomList());
@@ -112,6 +118,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 							AsyncTaskProgress schoolSubjectProgress = new AsyncTaskProgress();
 							schoolSubjectProgress.setProgressMessage(welcomescreen.getString(R.string.loading_school_subjects));
 							schoolSubjectProgress.setShowProgressWheel(true);
+							schoolSubjectProgress.setStatus(LoginListenerStatus.SUBJECTLIST_SUCCESS);
 							
 							publishProgress(schoolSubjectProgress);
 							bundle.putSerializable(BundleConstants.SCHOOL_SUBJECT_LIST, cache.getSchoolSubjectList());
@@ -133,6 +140,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 					else {
 						AsyncTaskProgress loginFailed = new AsyncTaskProgress();
 						loginFailed.setToastMessage(welcomescreen.getString(R.string.login_data_wrong));
+						loginFailed.setStatus(LoginListenerStatus.LOGIN_BAD_CREDENTIALS);
 						publishProgress(loginFailed);
 					}
 				}
@@ -208,6 +216,7 @@ public class LoginListener implements OnItemClickListener, Serializable {
 				AsyncTaskProgress progress = values[0];
 				String progressMessage = progress.getProgressMessage();
 				String toastMessage = progress.getToastMessage();
+				String status = progress.getStatus();
 				
 				if(progressMessage != null) {
 					welcomescreen.setInProgress(progressMessage, progress.isShowProgressWheel());
@@ -216,6 +225,9 @@ public class LoginListener implements OnItemClickListener, Serializable {
 					welcomescreen.showToastMessage(toastMessage);
 				}
 				
+				if(status != null) {
+					loginListenerFinishedListener.statusChanged(status);
+				}
 			}
 			
 			@Override
