@@ -38,6 +38,12 @@ public class StartupWizardLoginInformation extends LoginInformationForm {
 		});
 	}
 	
+	/**
+	 * Speichert die eingegebenen Login-Daten im uebergebenen Intent.<br />
+	 * Verwendet die Keys aus der Klasse {@link LoginSetConstants}.
+	 * @param intent {@link Intent}, in das die Daten gespeichert werden sollen
+	 * @see LoginSetConstants
+	 */
 	private void putEnteredLoginInformation(Intent intent) {
 		intent.putExtra(LoginSetConstants.nameKey, getNameInput());
 		intent.putExtra(LoginSetConstants.serverUrlKey, getServerUrlInput());

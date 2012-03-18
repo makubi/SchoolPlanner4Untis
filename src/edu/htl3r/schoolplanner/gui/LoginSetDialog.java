@@ -26,6 +26,14 @@ import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 
+/**
+ * Dieser Dialog dient zum Hinzufuegen und Editieren von LoginSets.<br />
+ * Abhaengig davon, welcher Konstruktor verwendet wird, kann ein neues erstellt oder ein schon vorhandenes editert werden.<br />
+ * Die Parent-Klasse (zur Zeit {@link WelcomeScreen}) ist zwingend erforderlich, da diese aktuell das Hinzufuegen und Editieren der LoginSets in einem eigenen Thread verwaltet.
+ * @deprecated Verwende {@link LoginSetEditor} stattdessen
+ * @see LoginSetEditor
+ */
+@Deprecated 
 public class LoginSetDialog extends Dialog{
 	
 	private EditText nameInput;

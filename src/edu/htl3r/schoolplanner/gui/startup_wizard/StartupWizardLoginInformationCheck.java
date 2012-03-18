@@ -16,9 +16,9 @@ import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 import edu.htl3r.schoolplanner.gui.AsyncTaskProgress;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
-import edu.htl3r.schoolplanner.gui.loginListener.LoginTask;
-import edu.htl3r.schoolplanner.gui.loginListener.LoginTaskStatus;
-import edu.htl3r.schoolplanner.gui.loginListener.OnLoginTaskUpdateListener;
+import edu.htl3r.schoolplanner.gui.loginTask.LoginTask;
+import edu.htl3r.schoolplanner.gui.loginTask.LoginTaskStatus;
+import edu.htl3r.schoolplanner.gui.loginTask.OnLoginTaskUpdateListener;
 
 /**
  * Startup-Assistent Seite 3, welche den Login mit den vorher eingegebenen Daten testet.

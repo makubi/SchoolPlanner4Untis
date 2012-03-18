@@ -28,7 +28,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         
-        <provider android:name="edu.htl3r.schoolplanner.gui.SelectScreenSavedSearches" android:authorities="edu.htl3r.schoolplanner.gui.SelectScreenSavedSearches" />
+        <provider android:name=".gui.SelectScreenSavedSearches" android:authorities="edu.htl3r.schoolplanner.gui.SelectScreenSavedSearches" />
             
            
         

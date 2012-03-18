@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 
 /**
  * Startup-Assistent Seite 2, welche den Benutzer auffordert, Login-Informationen anzugeben.
@@ -73,6 +74,16 @@ public abstract class LoginInformationForm extends SchoolPlannerActivity {
 		return sslOnlyInput.isChecked();
 	}
 
+	/**
+	 * Initialisiert die Felder der GUI mit Werten.<br />
+	 * Wird z.B. beim Editieren eines {@link LoginSet} verwendet.
+	 * @param name Name, der gesetzt werden soll
+	 * @param serverUrl Server-URL, die gesetzt werden soll
+	 * @param school Schulname, der gesetzt werden soll
+	 * @param username Benutzername, der gesetzt werden soll
+	 * @param password Passwort, das gesetzt werden soll
+	 * @param sslOnly Status des SSL-Only-Flags, der gesetzt werden soll
+	 */
 	protected void initInputFields(String name, String serverUrl, String school, String username, String password, boolean sslOnly) {
 		nameInput.setText(name);
 		serverUrlInput.setText(serverUrl);
@@ -82,18 +93,34 @@ public abstract class LoginInformationForm extends SchoolPlannerActivity {
 		sslOnlyInput.setChecked(sslOnly);
 	}
 	
+	/**
+	 * Setzt den {@link Button.OnClickListener}, der fuer den "Next"-Button verwendet werden soll.
+	 * @param buttonOnClickListener {@link Button.OnClickListener} fuer den "Next"-Button
+	 */
 	public void setOnButtonClickListener(Button.OnClickListener buttonOnClickListener) {
 		nextButton.setOnClickListener(buttonOnClickListener);
 	}
 	
+	/**
+	 * Ueberprueft, ob die benoetigten Daten fuer ein {@link LoginSet} eingegeben wurden.
+	 * @return {@code true}, wenn Name, Server-URL, Schule und Benutzername eingegeben wurden, sonst {@code false}
+	 */
 	public boolean requiredDataEntered() {
 		return nameInput.getText().toString().length() > 0 && serverUrlInput.getText().toString().length() > 0 && schoolInput.getText().toString().length() > 0 && usernameInput.getText().toString().length() > 0;
 	}
 	
+	/**
+	 * Setzt den Text des "Back"-Buttons.
+	 * @param text Text, der auf dem "Back"-Button angezeigt werden soll
+	 */
 	public void setBackButtonText(String text) {
 		backButton.setText(text);
 	}
 	
+	/**
+	 * Setzt den Text des "Next"-Buttons.
+	 * @param text Text, der auf dem "Next"-Button angezeigt werden soll
+	 */
 	public void setNextButtonText(String text) {
 		nextButton.setText(text);
 	}

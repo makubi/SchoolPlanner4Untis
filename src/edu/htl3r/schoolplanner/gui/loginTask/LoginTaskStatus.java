@@ -1,4 +1,4 @@
-package edu.htl3r.schoolplanner.gui.loginListener;
+package edu.htl3r.schoolplanner.gui.loginTask;
 
 public interface LoginTaskStatus {
 	// TODO: connection + ssl check
