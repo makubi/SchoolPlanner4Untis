@@ -9,14 +9,9 @@
 
     <repositories>
 	    <repository>
-		    <id>scubywars</id>
-		    <name>Scubywars</name>
-		    <url>http://scubywars.de:8080/content/groups/public/</url>
-	    </repository>
-	    <repository>
-		    <id>android</id>
-		    <name>Android</name>
-		    <url>http://scubywars.de:8080/content/repositories/android/</url>
+		    <id>coding4coffee</id>
+		    <name>coding4coffee</name>
+		    <url>http://nexus.coding4coffee.org/content/groups/public/</url>
 	    </repository>
     </repositories>
 
