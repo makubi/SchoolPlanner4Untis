@@ -2,6 +2,10 @@ package edu.htl3r.schoolplanner.gui;
 
 import android.widget.MultiAutoCompleteTextView;
 
+/**
+ * Tokenizer, um die WebUntis-Server-URLs zur Auto-Vervollstaendigung anzuzeigen.<br />
+ * <b>http://</b> am Anfang wird ignoriert.
+ */
 public class WebUntisUrlTokenizer implements MultiAutoCompleteTextView.Tokenizer {
 
 	private final String delimiter = "http://";
