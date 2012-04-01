@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/background_layout" android:gravity="center">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android" style="@style/startup_wizard_scroll_view" android:gravity="center">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/background_layout" android:gravity="center">
     <TextView
            	android:text="@string/startup_wizard_header"
             style="@style/header_text"
@@ -14,7 +16,8 @@
 		android:layout_height="wrap_content"
 		style="@android:style/Widget.ProgressBar.Large.Inverse"
 		android:layout_gravity="center_horizontal"
-		android:layout_marginBottom="10sp" />
+		android:layout_marginBottom="10sp"
+		android:visibility="invisible" />
     
     <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical">
     <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="left|center_vertical">
@@ -106,8 +109,8 @@
 			android:textColor="@color/text" />
     	</LinearLayout>
          
-
-    
+	</RelativeLayout>
+	</ScrollView>    
     <LinearLayout style="@style/startup_wizard_button_bar">
    		<Button android:text="@string/startup_wizard_login_information_check_back_button" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1"  android:id="@+id/startup_wizard_login_information_check_back_button" android:visibility="visible" />
        	<Button android:text="@string/startup_wizard_login_information_check_finish_button" android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1" android:id="@+id/startup_wizard_login_information_check_finish_button" android:visibility="invisible" />
