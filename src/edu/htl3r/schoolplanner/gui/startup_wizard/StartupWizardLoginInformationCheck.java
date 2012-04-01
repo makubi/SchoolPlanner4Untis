@@ -1,6 +1,7 @@
 package edu.htl3r.schoolplanner.gui.startup_wizard;
 
 import android.content.Intent;
+import android.graphics.drawable.StateListDrawable;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
@@ -28,19 +29,19 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	private ProgressBar progressWheel;
 	
 	private TextView loginText;
-	private ImageView loginImage;
+	private DrawableCheckBox loginImage;
 	
 	private TextView classListText;
-	private ImageView classListImage;
+	private DrawableCheckBox classListImage;
 	
 	private TextView teacherListText;
-	private ImageView teacherListImage;
+	private DrawableCheckBox teacherListImage;
 	
 	private TextView roomListText;
-	private ImageView roomListImage;
+	private DrawableCheckBox roomListImage;
 	
 	private TextView subjectListText;
-	private ImageView subjectListImage;
+	private DrawableCheckBox subjectListImage;
 	
 	private TextView infoText;
 	
@@ -51,25 +52,33 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	
 	private LoginSet activeSet;
 	
+	private static final String SAVED_INSTANCE_KEY_INFO_TEXT = "infoText";
+	private static final String SAVED_INSTANCE_KEY_PROGRESS_VISIBILITY = "progressVisible";
+	private static final String SAVED_INSTANCE_KEY_LOGIN_CHECKED = "loginChecked";
+	private static final String SAVED_INSTANCE_KEY_CLASS_CHECKED = "classChecked";
+	private static final String SAVED_INSTANCE_KEY_TEACHER_CHECKED = "teacherChecked";
+	private static final String SAVED_INSTANCE_KEY_ROOMS_CHECKED = "roomsChecked";
+	private static final String SAVED_INSTANCE_KEY_SUBJECTS_CHECKED = "subjectsChecked";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.startup_wizard_login_information_check);
 		
 		loginText = (TextView) findViewById(R.id.startup_wizard_login_information_check_login_text);
-		loginImage = (ImageView) findViewById(R.id.startup_wizard_login_information_check_login_image);
+		loginImage = (DrawableCheckBox) findViewById(R.id.startup_wizard_login_information_check_login_image);
 		
 		classListText = (TextView) findViewById(R.id.startup_wizard_login_information_check_classlist_text);
-		classListImage = (ImageView) findViewById(R.id.startup_wizard_login_information_check_classlist_image);
+		classListImage = (DrawableCheckBox) findViewById(R.id.startup_wizard_login_information_check_classlist_image);
 		
 		teacherListText = (TextView) findViewById(R.id.startup_wizard_login_information_check_teacherlist_text);
-		teacherListImage = (ImageView) findViewById(R.id.startup_wizard_login_information_check_teacherlist_image);
+		teacherListImage = (DrawableCheckBox) findViewById(R.id.startup_wizard_login_information_check_teacherlist_image);
 		
 		roomListText = (TextView) findViewById(R.id.startup_wizard_login_information_check_roomlist_text);
-		roomListImage = (ImageView) findViewById(R.id.startup_wizard_login_information_check_roomlist_image);
+		roomListImage = (DrawableCheckBox) findViewById(R.id.startup_wizard_login_information_check_roomlist_image);
 		
 		subjectListText = (TextView) findViewById(R.id.startup_wizard_login_information_check_subjectlist_text);
-		subjectListImage = (ImageView) findViewById(R.id.startup_wizard_login_information_check_subjectlist_image);
+		subjectListImage = (DrawableCheckBox) findViewById(R.id.startup_wizard_login_information_check_subjectlist_image);
 		
 		progressWheel = (ProgressBar) findViewById(R.id.startup_wizard_login_information_check_progress);
 		
@@ -124,23 +133,19 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	@Override
 	public void statusChanged(String status) {
 		if(status.equals(LoginTaskStatus.LOGIN_SUCCESS)) {
-			loginImage.setImageResource(R.drawable.btn_check_buttonless_on);
-			classListText.setTextColor(R.color.text);
+			setLoginSuccess();
 		}
 		else if(status.equals(LoginTaskStatus.CLASSLIST_SUCCESS)) {
-			classListImage.setImageResource(R.drawable.btn_check_buttonless_on);
-			teacherListText.setTextColor(R.color.text);
+			setClassListSuccess();
 		}
 		else if(status.equals(LoginTaskStatus.TEACHERLIST_SUCCESS)) {
-			teacherListImage.setImageResource(R.drawable.btn_check_buttonless_on);
-			roomListText.setTextColor(R.color.text);
+			setTeacherListSuccess();
 		}
 		else if(status.equals(LoginTaskStatus.ROOMLIST_SUCCESS)) {
-			roomListImage.setImageResource(R.drawable.btn_check_buttonless_on);
-			subjectListText.setTextColor(R.color.text);
+			setRoomListSuccess();
 		}
 		else if(status.equals(LoginTaskStatus.SUBJECTLIST_SUCCESS)) {
-			subjectListImage.setImageResource(R.drawable.btn_check_buttonless_on);
+			setSubjectListSuccess();
 		}
 		else if(status.equals(LoginTaskStatus.MASTERDATA_SUCCESS)) {
 			progressWheel.setVisibility(View.INVISIBLE);
@@ -152,6 +157,30 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		}
 	}
 	
+	private void setLoginSuccess() {
+		loginImage.setChecked(true);
+		classListText.setTextColor(R.color.text);
+	}
+	
+	private void setClassListSuccess() {
+		classListImage.setChecked(true);
+		teacherListText.setTextColor(R.color.text);
+	}
+	
+	private void setTeacherListSuccess() {
+		teacherListImage.setChecked(true);
+		roomListText.setTextColor(R.color.text);
+	}
+	
+	private void setRoomListSuccess() {
+		roomListImage.setChecked(true);
+		subjectListText.setTextColor(R.color.text);
+	}
+	
+	private void setSubjectListSuccess() {
+		subjectListImage.setChecked(true);
+	}
+	
 	@Override
 	public void onBackPressed() {
 		AsyncTask<Void, AsyncTaskProgress, Boolean> loginTask = loginListener.getAsyncTask();
@@ -160,6 +189,34 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		}
 		
 		super.onBackPressed();
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		
+		outState.putInt(SAVED_INSTANCE_KEY_PROGRESS_VISIBILITY, progressWheel.getVisibility());
+		outState.putBoolean(SAVED_INSTANCE_KEY_LOGIN_CHECKED, loginImage.getChecked());
+		outState.putBoolean(SAVED_INSTANCE_KEY_CLASS_CHECKED, classListImage.getChecked());
+		outState.putBoolean(SAVED_INSTANCE_KEY_TEACHER_CHECKED, teacherListImage.getChecked());
+		outState.putBoolean(SAVED_INSTANCE_KEY_ROOMS_CHECKED, roomListImage.getChecked());
+		outState.putBoolean(SAVED_INSTANCE_KEY_SUBJECTS_CHECKED, subjectListImage.getChecked());
+		
+		outState.putString(SAVED_INSTANCE_KEY_INFO_TEXT, infoText.getText().toString());
+		
+		super.onSaveInstanceState(outState);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		progressWheel.setVisibility(savedInstanceState.getInt(SAVED_INSTANCE_KEY_PROGRESS_VISIBILITY));
+		if(savedInstanceState.getBoolean(SAVED_INSTANCE_KEY_LOGIN_CHECKED)) setLoginSuccess();
+		if(savedInstanceState.getBoolean(SAVED_INSTANCE_KEY_CLASS_CHECKED)) setClassListSuccess();
+		if(savedInstanceState.getBoolean(SAVED_INSTANCE_KEY_TEACHER_CHECKED)) setTeacherListSuccess();
+		if(savedInstanceState.getBoolean(SAVED_INSTANCE_KEY_ROOMS_CHECKED)) setRoomListSuccess();
+		if(savedInstanceState.getBoolean(SAVED_INSTANCE_KEY_SUBJECTS_CHECKED)) setSubjectListSuccess();
+		infoText.setText(savedInstanceState.getString(SAVED_INSTANCE_KEY_INFO_TEXT));
+		
+		super.onRestoreInstanceState(savedInstanceState);
 	}
 
 }
