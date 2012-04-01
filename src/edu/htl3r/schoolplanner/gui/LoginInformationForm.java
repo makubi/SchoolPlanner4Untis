@@ -2,9 +2,11 @@ package edu.htl3r.schoolplanner.gui;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 
@@ -14,7 +16,7 @@ import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 public abstract class LoginInformationForm extends SchoolPlannerActivity {
 
 	private EditText nameInput;
-	private EditText serverUrlInput;
+	private MultiAutoCompleteTextView serverUrlInput;
 	private EditText schoolInput;
 	private EditText usernameInput;
 	private EditText passwordInput;
@@ -30,7 +32,7 @@ public abstract class LoginInformationForm extends SchoolPlannerActivity {
 		setContentView(R.layout.startup_wizard_login_information);
 		
 		nameInput = (EditText) findViewById(R.id.startup_wizard_login_information_name);
-		serverUrlInput= (EditText) findViewById(R.id.startup_wizard_login_information_server_url);
+		serverUrlInput = (MultiAutoCompleteTextView) findViewById(R.id.startup_wizard_login_information_server_url);
 		schoolInput = (EditText) findViewById(R.id.startup_wizard_login_information_school);
 		usernameInput = (EditText) findViewById(R.id.startup_wizard_login_information_username);
 		passwordInput = (EditText) findViewById(R.id.startup_wizard_login_information_password);
@@ -48,6 +50,11 @@ public abstract class LoginInformationForm extends SchoolPlannerActivity {
 			}
 			
 		});
+		
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, getResources().getStringArray(R.array.webuntis_server_urls));
+		 
+        serverUrlInput.setAdapter(adapter);
+        serverUrlInput.setTokenizer(new WebUntisUrlTokenizer());   
 	}
 	
 	protected String getNameInput() {
