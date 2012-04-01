@@ -38,7 +38,7 @@
             
         <activity android:name=".gui.startup_wizard.StartupWizardIntroduction" android:theme="@android:style/Theme.NoTitleBar" />
             
-        <activity android:name=".gui.startup_wizard.StartupWizardLoginInformation" android:theme="@android:style/Theme.NoTitleBar" android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".gui.startup_wizard.expert.StartupWizardLoginInformationExpert" android:theme="@android:style/Theme.NoTitleBar" android:windowSoftInputMode="stateHidden" />
             
         <activity android:name=".gui.startup_wizard.StartupWizardLoginInformationCheck" android:configChanges="orientation" android:theme="@android:style/Theme.NoTitleBar" />
         

@@ -1,4 +1,4 @@
-package edu.htl3r.schoolplanner.gui.startup_wizard;
+package edu.htl3r.schoolplanner.gui.startup_wizard.expert;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,11 +8,12 @@ import android.widget.Button;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 import edu.htl3r.schoolplanner.gui.LoginInformationForm;
+import edu.htl3r.schoolplanner.gui.startup_wizard.StartupWizardLoginInformationCheck;
 
 /**
  * Startup-Assistent Seite 2, welche den Benutzer auffordert, Login-Informationen anzugeben.
  */
-public class StartupWizardLoginInformation extends LoginInformationForm {
+public class StartupWizardLoginInformationExpert extends LoginInformationForm {
 	
 	private Activity thisActivity;
 		

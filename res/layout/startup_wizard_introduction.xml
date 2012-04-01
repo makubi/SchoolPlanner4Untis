@@ -1,33 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" style="@style/background_layout">
-    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
-    
-    <ScrollView
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	style="@style/startup_wizard_scroll_view">
-        <LinearLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/background_layout" >
+
+    <RelativeLayout
+        android:id="@+id/swi_header"
         android:layout_width="fill_parent"
-        android:orientation="vertical"
-        android:layout_height="fill_parent">
-            <TextView
-            android:text="@string/startup_wizard_header"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true" >
+
+        <TextView
             style="@style/header_text"
-            android:layout_marginBottom="10sp" />
-            <TextView
+            android:layout_width="fill_parent"
+            android:layout_marginBottom="10sp"
+            android:text="@string/startup_wizard_header" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/swi_text"
+        style="@style/startup_wizard_scroll_view"
+        android:layout_above="@+id/swi_radios"
+        android:layout_below="@id/swi_header" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5sp"
             android:text="@string/login_sets_list_empty"
             android:textColor="@color/text"
-            android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:textSize="14sp"
-			android:paddingLeft="5sp" />
-			
-        </LinearLayout>
+            android:textSize="14sp" />
     </ScrollView>
-    
+
+    <RadioGroup
+        android:id="@id/swi_radios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/swi_buttonbar" >
+
+        <RadioButton
+            android:id="@+id/swi_radio_easy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/startup_wizard_introduction_easy"
+            android:textColor="@color/text" />
+
+        <RadioButton
+            android:id="@+id/swi_radio_expert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/startup_wizard_introduction_expert"
+            android:textColor="@color/text" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@id/swi_buttonbar"
+        style="@style/startup_wizard_button_bar" >
+
+        <Button
+            android:id="@+id/startup_wizard_introduction_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/startup_wizard_introduction_back_button" />
+
+        <Button
+            android:id="@+id/startup_wizard_introduction_next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/startup_wizard_introduction_next_button" />
     </LinearLayout>
-    
-    <LinearLayout style="@style/startup_wizard_button_bar">
-    	<Button android:text="@string/startup_wizard_introduction_back_button" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/startup_wizard_introduction_back_button" android:layout_weight="1" />
-    	<Button android:text="@string/startup_wizard_introduction_next_button" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/startup_wizard_introduction_next_button" android:layout_weight="1" />
-    </LinearLayout>
+
 </RelativeLayout>

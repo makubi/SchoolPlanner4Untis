@@ -103,7 +103,7 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		activeSet = new LoginSet(extras.getString(LoginSetConstants.nameKey), extras.getString(LoginSetConstants.serverUrlKey), extras.getString(LoginSetConstants.schoolKey), extras.getString(LoginSetConstants.usernameKey), extras.getString(LoginSetConstants.passwordKey), extras.getBoolean(LoginSetConstants.sslOnlyKey));
 		loginListener.performLogin(activeSet);
 		
-		loginText.setTextColor(R.color.text);
+		loginText.setTextColor(getResources().getColor(R.color.text));
 	}
 	
 	@Override
@@ -125,19 +125,19 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	public void statusChanged(String status) {
 		if(status.equals(LoginTaskStatus.LOGIN_SUCCESS)) {
 			loginImage.setImageResource(R.drawable.btn_check_buttonless_on);
-			classListText.setTextColor(R.color.text);
+			classListText.setTextColor(getResources().getColor(R.color.text));
 		}
 		else if(status.equals(LoginTaskStatus.CLASSLIST_SUCCESS)) {
 			classListImage.setImageResource(R.drawable.btn_check_buttonless_on);
-			teacherListText.setTextColor(R.color.text);
+			teacherListText.setTextColor(getResources().getColor(R.color.text));
 		}
 		else if(status.equals(LoginTaskStatus.TEACHERLIST_SUCCESS)) {
 			teacherListImage.setImageResource(R.drawable.btn_check_buttonless_on);
-			roomListText.setTextColor(R.color.text);
+			roomListText.setTextColor(getResources().getColor(R.color.text));
 		}
 		else if(status.equals(LoginTaskStatus.ROOMLIST_SUCCESS)) {
 			roomListImage.setImageResource(R.drawable.btn_check_buttonless_on);
-			subjectListText.setTextColor(R.color.text);
+			subjectListText.setTextColor(getResources().getColor(R.color.text));
 		}
 		else if(status.equals(LoginTaskStatus.SUBJECTLIST_SUCCESS)) {
 			subjectListImage.setImageResource(R.drawable.btn_check_buttonless_on);
