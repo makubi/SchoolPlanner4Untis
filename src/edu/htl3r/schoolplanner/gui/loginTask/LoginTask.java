@@ -46,6 +46,12 @@ public class LoginTask implements OnItemClickListener, Serializable {
 	
 	private SchoolPlannerApp app;
 	
+	private boolean skipLogin = false;
+	private boolean skipClassListLoading = false;
+	private boolean skipTeacherListLoading = false;
+	private boolean skipRoomListLoading = false;
+	private boolean skipSubjectListLoading = false;
+	
 	public LoginTask(SchoolPlannerActivity parent) {
 		this.parent = parent;
 		loginListenerFinishedListener = (OnLoginTaskUpdateListener) parent;
@@ -71,9 +77,13 @@ public class LoginTask implements OnItemClickListener, Serializable {
 				cache.setLoginCredentials(selectedEntry);
 				app.getLoginSetManager().setActiveLoginSet(selectedEntry);
 				
-				if(!isCancelled()) {
-					DataFacade<Boolean> authenticate = cache.authenticate();
-				if(authenticate.isSuccessful()) {
+				DataFacade<Boolean> authenticate = new DataFacade<Boolean>();
+				
+				if(!isCancelled() && !skipLogin) {
+					authenticate = cache.authenticate();
+				}
+				
+				if(!isCancelled() && authenticate.isSuccessful()) {
 					boolean auth = authenticate.getData();
 					if(auth) {
 						Bundle bundle = new Bundle();
@@ -82,7 +92,7 @@ public class LoginTask implements OnItemClickListener, Serializable {
 						loginProgress.setStatus(LoginTaskStatus.LOGIN_SUCCESS);
 						publishProgress(loginProgress);
 						
-						if(!isCancelled()) {
+						if(!isCancelled() && !skipClassListLoading) {
 							AsyncTaskProgress schoolClassProgress = new AsyncTaskProgress();
 							schoolClassProgress.setProgressMessage(parent.getString(R.string.loading_school_classes));
 							schoolClassProgress.setShowProgressWheel(true);
@@ -92,7 +102,7 @@ public class LoginTask implements OnItemClickListener, Serializable {
 							bundle.putSerializable(BundleConstants.SCHOOL_CLASS_LIST, cache.getSchoolClassList());
 						}
 						
-						if(!isCancelled()) {
+						if(!isCancelled() && !skipTeacherListLoading) {
 							AsyncTaskProgress schoolTeacherProgress = new AsyncTaskProgress();
 							schoolTeacherProgress.setProgressMessage(parent.getString(R.string.loading_school_teacher));
 							schoolTeacherProgress.setShowProgressWheel(true);
@@ -102,7 +112,7 @@ public class LoginTask implements OnItemClickListener, Serializable {
 							bundle.putSerializable(BundleConstants.SCHOOL_TEACHER_LIST, cache.getSchoolTeacherList());
 						}
 						
-						if(!isCancelled()) {
+						if(!isCancelled() && !skipRoomListLoading) {
 							AsyncTaskProgress schoolRoomProgress = new AsyncTaskProgress();
 							schoolRoomProgress.setProgressMessage(parent.getString(R.string.loading_school_rooms));
 							schoolRoomProgress.setShowProgressWheel(true);
@@ -112,7 +122,7 @@ public class LoginTask implements OnItemClickListener, Serializable {
 							bundle.putSerializable(BundleConstants.SCHOOL_ROOM_LIST, cache.getSchoolRoomList());
 						}
 						
-						if(!isCancelled()) {
+						if(!isCancelled() && !skipSubjectListLoading) {
 							AsyncTaskProgress schoolSubjectProgress = new AsyncTaskProgress();
 							schoolSubjectProgress.setProgressMessage(parent.getString(R.string.loading_school_subjects));
 							schoolSubjectProgress.setShowProgressWheel(true);
@@ -134,14 +144,14 @@ public class LoginTask implements OnItemClickListener, Serializable {
 							return true;
 						}
 					}
-					else {
+					else if(!isCancelled()) {
 						AsyncTaskProgress loginFailed = new AsyncTaskProgress();
 						loginFailed.setToastMessage(parent.getString(R.string.login_data_wrong));
 						loginFailed.setStatus(LoginTaskStatus.LOGIN_BAD_CREDENTIALS);
 						publishProgress(loginFailed);
 					}
 				}
-				else {
+				else if(!isCancelled()) {
 					AsyncTaskProgress loginError = new AsyncTaskProgress();
 					String errorMessage;
 					
@@ -193,7 +203,6 @@ public class LoginTask implements OnItemClickListener, Serializable {
 					
 					loginError.setToastMessage(errorMessage);
 					publishProgress(loginError);
-				}
 				
 				}
 				loginListenerFinishedListener.loginTaskFinished(null);
@@ -250,6 +259,26 @@ public class LoginTask implements OnItemClickListener, Serializable {
 	
 	private String getString(int resId) {
 		return parent.getString(resId);
+	}
+	
+	public void skipLogin() {
+		skipLogin = true;
+	}
+	
+	public void skipClassListLoading() {
+		skipClassListLoading = true;
+	}
+	
+	public void skipTeacherListLoading() {
+		skipTeacherListLoading = true;
+	}
+	
+	public void skipRoomListLoading() {
+		skipRoomListLoading = true;
+	}
+	
+	public void skipSubjectListLoading() {
+		skipSubjectListLoading = true;
 	}
 
 }

@@ -6,9 +6,7 @@
            	android:text="@string/startup_wizard_header"
             style="@style/header_text"
             android:layout_marginBottom="10sp" android:id="@+id/startup_wizard_header" />
-    	
-            
-            
+    
     <LinearLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:orientation="vertical" android:layout_below="@id/startup_wizard_header" >
     
     <ProgressBar android:id="@+id/startup_wizard_login_information_check_progress"
@@ -21,10 +19,10 @@
     
     <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="vertical">
     <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="left|center_vertical">
-    	<ImageView
+    	<edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox
     		android:id="@+id/startup_wizard_login_information_check_login_image"
     		style="@style/startup_wizard_login_information_check_image"
-			android:src="@drawable/btn_check_buttonless_off" />
+			 />
         <TextView
         	android:id="@+id/startup_wizard_login_information_check_login_text"
         	android:layout_width="wrap_content"
@@ -37,10 +35,10 @@
         </LinearLayout>
         
         <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="left|center_vertical">
-    	<ImageView
+    	<edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox
     		android:id="@+id/startup_wizard_login_information_check_classlist_image"
     		style="@style/startup_wizard_login_information_check_image"
-			android:src="@drawable/btn_check_buttonless_off" />
+			/>
         <TextView
         	android:id="@+id/startup_wizard_login_information_check_classlist_text"
         	android:layout_width="wrap_content"
@@ -53,10 +51,10 @@
         </LinearLayout>
         
         <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="left|center_vertical">
-    	<ImageView
+    	<edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox
     		android:id="@+id/startup_wizard_login_information_check_teacherlist_image"
     		style="@style/startup_wizard_login_information_check_image"
-			android:src="@drawable/btn_check_buttonless_off" />
+			/>
         <TextView
         	android:id="@+id/startup_wizard_login_information_check_teacherlist_text"
         	android:layout_width="wrap_content"
@@ -69,10 +67,10 @@
         </LinearLayout>
         
         <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="left|center_vertical">
-    	<ImageView
+    	<edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox
     		android:id="@+id/startup_wizard_login_information_check_roomlist_image"
     		style="@style/startup_wizard_login_information_check_image"
-			android:src="@drawable/btn_check_buttonless_off" />
+			/>
         <TextView
         	android:id="@+id/startup_wizard_login_information_check_roomlist_text"
         	android:layout_width="wrap_content"
@@ -85,10 +83,10 @@
         </LinearLayout>
         
         <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="left|center_vertical">
-    	<ImageView
+    	<edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox
     		android:id="@+id/startup_wizard_login_information_check_subjectlist_image"
     		style="@style/startup_wizard_login_information_check_image"
-			android:src="@drawable/btn_check_buttonless_off" />
+			/>
         <TextView
         	android:id="@+id/startup_wizard_login_information_check_subjectlist_text"
         	android:layout_width="wrap_content"
