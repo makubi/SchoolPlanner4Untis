@@ -116,7 +116,7 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		
 		
 		
-		loginText.setTextColor(getResources().getColor(R.color.text));
+		loginText.setTextColor(getColor(R.color.text));
 	}
 	
 	@Override
@@ -177,25 +177,25 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	private void setLoginSuccess() {
 		loginImage.setChecked(true);
 		loginListener.skipLogin();
-		classListText.setTextColor(R.color.text);
+		classListText.setTextColor(getColor(R.color.text));
 	}
 	
 	private void setClassListSuccess() {
 		classListImage.setChecked(true);
 		loginListener.skipClassListLoading();
-		teacherListText.setTextColor(R.color.text);
+		teacherListText.setTextColor(getColor(R.color.text));
 	}
 	
 	private void setTeacherListSuccess() {
 		teacherListImage.setChecked(true);
 		loginListener.skipTeacherListLoading();
-		roomListText.setTextColor(R.color.text);
+		roomListText.setTextColor(getColor(R.color.text));
 	}
 	
 	private void setRoomListSuccess() {
 		roomListImage.setChecked(true);
 		loginListener.skipRoomListLoading();
-		subjectListText.setTextColor(R.color.text);
+		subjectListText.setTextColor(getColor(R.color.text));
 	}
 	
 	private void setSubjectListSuccess() {
@@ -252,6 +252,10 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 			loginTask.cancel(true);
 		}
 		super.onDestroy();
+	}
+	
+	private int getColor(int resId) {
+		return getResources().getColor(resId);
 	}
 
 }
