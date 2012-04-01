@@ -1,13 +1,12 @@
 package edu.htl3r.schoolplanner.gui.startup_wizard;
 
 import android.content.Intent;
-import android.graphics.drawable.StateListDrawable;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
@@ -51,6 +50,8 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	private LoginTask loginListener;
 	
 	private LoginSet activeSet;
+
+	private boolean loginTaskFinished = false;
 	
 	private static final String SAVED_INSTANCE_KEY_INFO_TEXT = "infoText";
 	private static final String SAVED_INSTANCE_KEY_PROGRESS_VISIBILITY = "progressVisible";
@@ -59,6 +60,8 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	private static final String SAVED_INSTANCE_KEY_TEACHER_CHECKED = "teacherChecked";
 	private static final String SAVED_INSTANCE_KEY_ROOMS_CHECKED = "roomsChecked";
 	private static final String SAVED_INSTANCE_KEY_SUBJECTS_CHECKED = "subjectsChecked";
+
+	private static final String SAVED_INSTANCE_KEY_LOGIN_TASK_FINISHED = "loginTaskFinished";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,12 +110,23 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 			
 		});
 		
-		loginListener = new LoginTask(this);
 		Bundle extras = getIntent().getExtras();
 		activeSet = new LoginSet(extras.getString(LoginSetConstants.nameKey), extras.getString(LoginSetConstants.serverUrlKey), extras.getString(LoginSetConstants.schoolKey), extras.getString(LoginSetConstants.usernameKey), extras.getString(LoginSetConstants.passwordKey), extras.getBoolean(LoginSetConstants.sslOnlyKey));
-		loginListener.performLogin(activeSet);
+		loginListener = new LoginTask(this);
+		
+		
 		
 		loginText.setTextColor(R.color.text);
+	}
+	
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		
+		if(!loginTaskFinished) {
+			loginListener.performLogin(activeSet);
+		}
+		
+		super.onPostCreate(savedInstanceState);
 	}
 	
 	@Override
@@ -121,7 +135,9 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	}
 
 	@Override
-	public void loginTaskFinished(Bundle data) {}
+	public void loginTaskFinished(Bundle data) {
+		loginTaskFinished = true;
+	}
 	
 	@Override
 	public void showToastMessage(String message) {
@@ -159,25 +175,30 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	
 	private void setLoginSuccess() {
 		loginImage.setChecked(true);
+		loginListener.skipLogin();
 		classListText.setTextColor(R.color.text);
 	}
 	
 	private void setClassListSuccess() {
 		classListImage.setChecked(true);
+		loginListener.skipClassListLoading();
 		teacherListText.setTextColor(R.color.text);
 	}
 	
 	private void setTeacherListSuccess() {
 		teacherListImage.setChecked(true);
+		loginListener.skipTeacherListLoading();
 		roomListText.setTextColor(R.color.text);
 	}
 	
 	private void setRoomListSuccess() {
 		roomListImage.setChecked(true);
+		loginListener.skipRoomListLoading();
 		subjectListText.setTextColor(R.color.text);
 	}
 	
 	private void setSubjectListSuccess() {
+		loginListener.skipSubjectListLoading();
 		subjectListImage.setChecked(true);
 	}
 	
@@ -203,6 +224,8 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		
 		outState.putString(SAVED_INSTANCE_KEY_INFO_TEXT, infoText.getText().toString());
 		
+		outState.putBoolean(SAVED_INSTANCE_KEY_LOGIN_TASK_FINISHED, loginTaskFinished);
+		
 		super.onSaveInstanceState(outState);
 	}
 	
@@ -216,7 +239,18 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		if(savedInstanceState.getBoolean(SAVED_INSTANCE_KEY_SUBJECTS_CHECKED)) setSubjectListSuccess();
 		infoText.setText(savedInstanceState.getString(SAVED_INSTANCE_KEY_INFO_TEXT));
 		
+		loginTaskFinished = savedInstanceState.getBoolean(SAVED_INSTANCE_KEY_LOGIN_TASK_FINISHED);
+		
 		super.onRestoreInstanceState(savedInstanceState);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		AsyncTask<Void, AsyncTaskProgress, Boolean> loginTask = loginListener.getAsyncTask();
+		if(loginTask != null && !loginTask.isCancelled() && !(loginTask.getStatus() == Status.FINISHED)) {
+			loginTask.cancel(true);
+		}
+		super.onDestroy();
 	}
 
 }
