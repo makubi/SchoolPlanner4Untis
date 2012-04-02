@@ -69,7 +69,7 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	private boolean loginTaskFinished = false;
 	
 	private static final String SAVED_INSTANCE_KEY_INFO_TEXT = "infoText";
-	private static final String SAVED_INSTANCE_KEY_PROGRESS_VISIBILITY = "progressVisible";
+	private static final String SAVED_INSTANCE_KEY_PROGRESS_VISIBILITY = "progressVisibility";
 	private static final String SAVED_INSTANCE_KEY_LOGIN_CHECKED = "loginChecked";
 	private static final String SAVED_INSTANCE_KEY_CLASS_CHECKED = "classChecked";
 	private static final String SAVED_INSTANCE_KEY_TEACHER_CHECKED = "teacherChecked";
@@ -77,6 +77,8 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	private static final String SAVED_INSTANCE_KEY_SUBJECTS_CHECKED = "subjectsChecked";
 
 	private static final String SAVED_INSTANCE_KEY_LOGIN_TASK_FINISHED = "loginTaskFinished";
+
+	private static final String SAVED_INSTANCE_KEY_FINISH_BUTTON_VISIBILITY = "finishButtonVisibility";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -242,6 +244,8 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		
 		outState.putBoolean(SAVED_INSTANCE_KEY_LOGIN_TASK_FINISHED, loginTaskFinished);
 		
+		outState.putInt(SAVED_INSTANCE_KEY_FINISH_BUTTON_VISIBILITY, finishButton.getVisibility());
+		
 		super.onSaveInstanceState(outState);
 	}
 	
@@ -256,6 +260,8 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		infoText.setText(savedInstanceState.getString(SAVED_INSTANCE_KEY_INFO_TEXT));
 		
 		loginTaskFinished = savedInstanceState.getBoolean(SAVED_INSTANCE_KEY_LOGIN_TASK_FINISHED);
+		
+		finishButton.setVisibility(savedInstanceState.getInt(SAVED_INSTANCE_KEY_FINISH_BUTTON_VISIBILITY));
 		
 		super.onRestoreInstanceState(savedInstanceState);
 	}
