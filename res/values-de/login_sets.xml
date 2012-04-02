@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="login_sets_list_empty">
+    <string name="login_sets_info">
 	Um sich in die App einloggen zu können, benötigen Sie ein Login Set.
 	\n\n
 	Ein Login Set besteht aus fünf Informationen:
@@ -17,5 +17,8 @@
     </string>
     
     <string name="login_set_edit_title">Login Set bearbeiten</string>
+    
+    <string name="error_login_set_exists">Ein LoginSet mit diesem Namen existiert bereits</string>
+    <string name="error_login_set_information_missing">Bitte geben Sie zumindest Name, Server URL, Schule und Benutzername ein</string>
     
 </resources>

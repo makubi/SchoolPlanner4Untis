@@ -18,4 +18,8 @@
     
     <string name="login_set_edit_title">Edit login set</string>
     
+    <string name="error_login_set_exists">A LoginSet with that name already exists</string>
+    <string name="error_login_set_information_missing">Please enter at least name, server url, school and username</string>
+    
+    
 </resources>

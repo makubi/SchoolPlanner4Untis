@@ -5,7 +5,7 @@
 	style="@style/background_layout">
 
 	<TextView android:id="@+id/welcome_title"
-		android:layout_alignParentTop="true" android:text="SchoolPlanner4Untis"
+		android:layout_alignParentTop="true" android:text="@string/app_name"
 		style="@style/header_text"/>
 
 	<ListView android:layout_width="fill_parent"
@@ -25,7 +25,7 @@
 			android:textSize="14sp"
 			android:paddingLeft="5sp"
 			android:textColor="@color/text"
-			android:text="@string/login_sets_list_empty" />
+			android:text="@string/login_sets_info" />
 		</ScrollView>
 		
 	<include layout="@layout/progress_bar"/>

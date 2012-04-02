@@ -4,6 +4,6 @@
         
         <string name="startup_wizard_introduction_back_button">Exit</string>
         <string name="startup_wizard_introduction_next_button">Next</string>
-        <string name="startup_wizard_introduction_easy">Easy (Recommended)</string>
+        <string name="startup_wizard_introduction_easy">Easy (recommended)</string>
         <string name="startup_wizard_introduction_expert">Expert</string>
     </resources>

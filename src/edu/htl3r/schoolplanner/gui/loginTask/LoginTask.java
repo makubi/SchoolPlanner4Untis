@@ -82,6 +82,10 @@ public class LoginTask implements OnItemClickListener, Serializable {
 				if(!isCancelled() && !skipLogin) {
 					authenticate = cache.authenticate();
 				}
+				else {
+					authenticate.setSuccessful(true);
+					authenticate.setData(true);
+				}
 				
 				if(!isCancelled() && authenticate.isSuccessful()) {
 					boolean auth = authenticate.getData();

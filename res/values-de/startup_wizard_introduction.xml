@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources>
+        <string name="startup_wizard_header">Startup wizard</string>
+        
+        <string name="startup_wizard_introduction_back_button">Beenden</string>
+        <string name="startup_wizard_introduction_next_button">Weiter</string>
+        <string name="startup_wizard_introduction_easy">Einfach (empfohlen)</string>
+        <string name="startup_wizard_introduction_expert">Experte</string>
+    </resources>
