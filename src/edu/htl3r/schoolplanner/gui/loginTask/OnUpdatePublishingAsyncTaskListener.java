@@ -18,7 +18,8 @@ package edu.htl3r.schoolplanner.gui.loginTask;
 
 
 /**
- * Klassen, die sich mit diesem Listener am {@link LoginTask} angemeldet haben, erhalten Benachrichtigungen ueber den Login-Vorgang.
+ * Klassen, die sich mit diesem Listener an einem {@link UpdatePublishingAsyncTask} angemeldet haben, erhalten Benachrichtigungen ueber den Login-Vorgang.
+ * @see LoginTask
  */
 public interface OnUpdatePublishingAsyncTaskListener<Result> {
 	/**
