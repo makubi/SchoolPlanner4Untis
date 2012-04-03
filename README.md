@@ -1,4 +1,4 @@
-![Logo](http://www.schoolplanner.at/modx/assets/images/logo_square_github.png) [SchoolPlanner4Untis](http://www.schoolplanner.at/)
+![Logo](http://www.schoolplanner.at/images/header_logo.png) [SchoolPlanner4Untis](http://www.schoolplanner.at/)
 ==================================================
 
 ANDROID PROJEKT IN ECLIPSE EINBINDEN
@@ -17,21 +17,15 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 			* M3_HOME=/path/to/maven
 			* M3=$M3_HOME/bin
 			* PATH=$M3:$PATH
-	* Installation von M2Eclipse
-		* Install new software
-			* Update Site: http://m2eclipse.sonatype.org/sites/m2e
-		* Restart (bei Nachfrage)
-	* Hinzufügen des entpackten Mavens in Eclipse
+	* Installation von m2e - Maven integration for Eclipse ueber die Eclipse-Update-Site
+	* Hinzufuegen des entpackten Mavens in Eclipse
 		* In Eclipse
 			* Window -> Preferences -> Maven -> Installations -> Add... -> Vorher entpacktes Maven auswählen
-		* Restart (bei Nachfrage)
 * Hinzufügen des Projekts
 	* Setzen der Variable
 		* ANDROID_HOME=$SDK_ROOT
-	* In Eclipse
-		* File -> Import... -> Maven --> Existing Maven Projects
-	* Wenn es nicht als Android Projekt erkannt wird
-		* Rechtsklick auf das Projekt -> Android -> Convert to Android Project
+	* Projekt als Android Project importieren
+	* Maven-Nature zum Projekt hinzufuegen
 	* Refresh des Projekts
 
 ERROR IM PROJEKT (in Eclipse)
