@@ -19,4 +19,8 @@ package edu.htl3r.schoolplanner.backend.network;
 public interface JSONResponseObjectKeys {
 
 	public static final String RESULT = "result";
+	public static final String ERROR = "error";
+	
+	public static final String ERROR_CODE = "code";
+	public static final String ERROR_MESSAGE = "message";
 }

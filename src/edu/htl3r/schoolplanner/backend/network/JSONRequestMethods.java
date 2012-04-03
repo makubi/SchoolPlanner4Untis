@@ -18,7 +18,7 @@
 
 package edu.htl3r.schoolplanner.backend.network;
 
-public interface JSONGetMethods {
+public interface JSONRequestMethods {
 	public static final String getTeachers = "getTeachers";
 	public static final String getClasses = "getKlassen";
 	public static final String getSubjects = "getSubjects";
@@ -30,4 +30,6 @@ public interface JSONGetMethods {
 	public static final String getTimetable = "getTimetable";
 	public static final String getStatusData = "getStatusData";
 	public static final String getLatestImportTime = "getLatestImportTime";
+	
+	public static final String authenticate = "authenticate";
 }

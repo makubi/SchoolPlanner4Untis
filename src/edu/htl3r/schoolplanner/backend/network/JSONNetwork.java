@@ -108,9 +108,9 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	private JSONObject getJSONData(final JSONObject request)
 			throws IOException, JSONException {
 		JSONObject response = parseData(network.getResponse(request.toString()));
-		if(response.has("error")) {
-			JSONObject errorObject = response.getJSONObject("error");
-			if(errorObject.getInt("code") == WebUntisErrorCodes.WEBUNTIS_NOT_AUTHENTICATED) {
+		if(response.has(JSONResponseObjectKeys.ERROR)) {
+			JSONObject errorObject = response.getJSONObject(JSONResponseObjectKeys.ERROR);
+			if(errorObject.getInt(JSONResponseObjectKeys.ERROR_CODE) == WebUntisErrorCodes.WEBUNTIS_NOT_AUTHENTICATED) {
 				Log.i("Network", "Reauthenticating");
 				authenticate();
 				response = parseData(network.getResponse(request.toString()));
@@ -163,20 +163,20 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		try {
 			JSONObject responseObject = requestList(id, method);
 
-			if (responseObject.has("error")) {
+			if (responseObject.has(JSONResponseObjectKeys.ERROR)) {
 				data.setErrorMessage(getWebUntisErrorMessage(responseObject));
 			}
 
 			else {
-				JSONArray result = responseObject.getJSONArray("result");
+				JSONArray result = responseObject.getJSONArray(JSONResponseObjectKeys.RESULT);
 
-				if (method.equals(JSONGetMethods.getTeachers)) {
+				if (method.equals(JSONRequestMethods.getTeachers)) {
 					data.setData(jsonParser.jsonToTeacherList(result));
-				} else if (method.equals(JSONGetMethods.getClasses)) {
+				} else if (method.equals(JSONRequestMethods.getClasses)) {
 					data.setData(jsonParser.jsonToClassList(result));
-				} else if (method.equals(JSONGetMethods.getSubjects)) {
+				} else if (method.equals(JSONRequestMethods.getSubjects)) {
 					data.setData(jsonParser.jsonToSubjectList(result));
-				} else if (method.equals(JSONGetMethods.getRooms)) {
+				} else if (method.equals(JSONRequestMethods.getRooms)) {
 					data.setData(jsonParser.jsonToRoomList(result));
 				} else {
 					Log.w("JSON", "Unknown request method: " + method);
@@ -200,7 +200,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	 *            ID, die fuer die Anfrage verwendet werden soll
 	 * @param method
 	 *            Methode, die fuer die Anfrage verwendet werden soll (siehe
-	 *            dazu {@link JSONGetMethods}).
+	 *            dazu {@link JSONRequestMethods}).
 	 * @return Eine Liste mit den Objekten fuer die uebergeben Methode
 	 * @throws IOException
 	 *             Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein
@@ -212,14 +212,14 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		try {
 			JSONObject responseObject = requestList(id, method);
 
-			if (responseObject.has("error")) {
+			if (responseObject.has(JSONResponseObjectKeys.ERROR)) {
 				ErrorMessage errorMessage = getWebUntisErrorMessage(responseObject);
 				data.setErrorMessage(errorMessage);
 			}
 
 			JSONArray result = responseObject.getJSONArray(JSONResponseObjectKeys.RESULT);
 
-			if (method.equals(JSONGetMethods.getHolidays)) {
+			if (method.equals(JSONRequestMethods.getHolidays)) {
 				data.setData(jsonParser.jsonToHolidayList(result));
 			} else {
 				Log.w("JSON", "Unknown request method: " + method);
@@ -241,7 +241,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	 *            ID, die fuer die Anfrage verwendet werden soll
 	 * @param method
 	 *            Methode, die fuer die Anfrage verwendet werden soll (siehe
-	 *            dazu {@link JSONGetMethods}).
+	 *            dazu {@link JSONRequestMethods}).
 	 * @return Das passende Objekt zur Anfrage
 	 * @throws IOException
 	 *             Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein
@@ -254,7 +254,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			JSONObject responseObject = requestList(id, method);
 			JSONArray result = responseObject.getJSONArray(JSONResponseObjectKeys.RESULT);
 
-			if (method.equals(JSONGetMethods.getTimegridUnits)) {
+			if (method.equals(JSONRequestMethods.getTimegridUnits)) {
 				data.setData(jsonParser.jsonToTimegrid(result));
 			} else {
 				Log.w("JSON", "Unknown request method: " + method);
@@ -271,7 +271,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	@Override
 	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() {
 		final String id = getNextID();
-		final String method = JSONGetMethods.getTeachers;
+		final String method = JSONRequestMethods.getTeachers;
 
 		DataFacade<List<? extends ViewType>> viewTypeList = getViewTypeList(id,
 				method);
@@ -296,7 +296,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	@Override
 	public DataFacade<List<SchoolClass>> getSchoolClassList() {
 		final String id = getNextID();
-		final String method = JSONGetMethods.getClasses;
+		final String method = JSONRequestMethods.getClasses;
 
 		DataFacade<List<? extends ViewType>> viewTypeList = getViewTypeList(id,
 				method);
@@ -321,7 +321,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	@Override
 	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() {
 		final String id = getNextID();
-		final String method = JSONGetMethods.getSubjects;
+		final String method = JSONRequestMethods.getSubjects;
 
 		DataFacade<List<? extends ViewType>> viewTypeList = getViewTypeList(id,
 				method);
@@ -345,7 +345,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	@Override
 	public DataFacade<List<SchoolRoom>> getSchoolRoomList() {
 		final String id = getNextID();
-		final String method = JSONGetMethods.getRooms;
+		final String method = JSONRequestMethods.getRooms;
 
 		DataFacade<List<? extends ViewType>> viewTypeList = getViewTypeList(id,
 				method);
@@ -370,7 +370,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	@Override
 	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList() {
 		final String id = getNextID();
-		final String method = JSONGetMethods.getHolidays;
+		final String method = JSONRequestMethods.getHolidays;
 
 		DataFacade<List<SchoolObject>> schoolObjectList = getList(id, method);
 		DataFacade<List<SchoolHoliday>> data = new DataFacade<List<SchoolHoliday>>();
@@ -394,7 +394,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	@Override
 	public DataFacade<Timegrid> getTimegrid() {
 		final String id = getNextID();
-		final String method = JSONGetMethods.getTimegridUnits;
+		final String method = JSONRequestMethods.getTimegridUnits;
 
 		DataFacade<SchoolObject> schoolObjectList = getSchoolObject(id, method);
 		DataFacade<Timegrid> data = new DataFacade<Timegrid>();
@@ -419,7 +419,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		DataFacade<List<StatusData>> data = new DataFacade<List<StatusData>>();
 	
 		final String id = getNextID();
-		final String method = JSONGetMethods.getStatusData;
+		final String method = JSONRequestMethods.getStatusData;
 	
 		JSONObject response;
 		try {
@@ -456,7 +456,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType view,
 			DateTime startDate, DateTime endDate) {
 		final String id = getNextID();
-		final String method = JSONGetMethods.getTimetable;
+		final String method = JSONRequestMethods.getTimetable;
 	
 		final JSONObject request = new JSONObject();
 		final JSONObject params = new JSONObject();
@@ -553,7 +553,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	 */
 	public DataFacade<Boolean> authenticate() {
 		final String id = getNextID();
-		final String method = "authenticate";
+		final String method = JSONRequestMethods.authenticate;
 		final JSONObject params = new JSONObject();
 		final JSONObject request = new JSONObject();
 
@@ -573,9 +573,9 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 
 			response = getJSONData(request);
 
-			if (response.has("error")) {
-				JSONObject errorObject = response.getJSONObject("error");
-				int errorCode = errorObject.getInt("code");
+			if (response.has(JSONResponseObjectKeys.ERROR)) {
+				JSONObject errorObject = response.getJSONObject(JSONResponseObjectKeys.ERROR);
+				int errorCode = errorObject.getInt(JSONResponseObjectKeys.ERROR_CODE);
 				
 				if(!(errorCode == WebUntisErrorCodes.WEBUNTIS_BAD_CREDENTIALS)) {
 					data.setErrorMessage(getWebUntisErrorMessage(response));
@@ -614,13 +614,13 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	 */
 	private long getLatestTimetableImportTime() throws IOException {
 		final String id = getNextID();
-		final String method = JSONGetMethods.getLatestImportTime;
+		final String method = JSONRequestMethods.getLatestImportTime;
 
 		long latestImport = -1;
 
 		try {
 			JSONObject response = requestList(id, method);
-			latestImport = response.getLong("result");
+			latestImport = response.getLong(JSONResponseObjectKeys.RESULT);
 			Log.v("Misc", "Last import time: " + response.get(JSONResponseObjectKeys.RESULT));
 		} catch (JSONException e) {
 			Log.e("JSON", "Unable to parse JSON-String", e);
@@ -686,12 +686,12 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	}
 	
 	private ErrorMessage getWebUntisErrorMessage(JSONObject jsonObject) throws JSONException {
-		if(jsonObject.has("error")) {
+		if(jsonObject.has(JSONResponseObjectKeys.ERROR)) {
 			try {
 				ErrorMessage errorMessage = new ErrorMessage();
-				JSONObject errorObject = jsonObject.getJSONObject("error");
-				int errorCode = errorObject.getInt("code");
-				String errorString = errorObject.optString("message");
+				JSONObject errorObject = jsonObject.getJSONObject(JSONResponseObjectKeys.ERROR);
+				int errorCode = errorObject.getInt(JSONResponseObjectKeys.ERROR_CODE);
+				String errorString = errorObject.optString(JSONResponseObjectKeys.ERROR_MESSAGE);
 				
 				errorMessage.setErrorCode(ErrorCodes.WEBUNTIS_SERVICE_EXCEPTION);
 				errorMessage.setException(new WebUntisServiceException(errorCode));
