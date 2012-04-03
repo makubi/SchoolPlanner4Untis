@@ -28,17 +28,17 @@ import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
-import edu.htl3r.schoolplanner.gui.AsyncTaskProgress;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
 import edu.htl3r.schoolplanner.gui.WelcomeScreen;
+import edu.htl3r.schoolplanner.gui.loginTask.AsyncTaskProgress;
 import edu.htl3r.schoolplanner.gui.loginTask.LoginTask;
 import edu.htl3r.schoolplanner.gui.loginTask.LoginTaskStatus;
-import edu.htl3r.schoolplanner.gui.loginTask.OnLoginTaskUpdateListener;
+import edu.htl3r.schoolplanner.gui.loginTask.OnUpdatePublishingAsyncTaskListener;
 
 /**
  * Startup-Assistent Seite 3, welche den Login mit den vorher eingegebenen Daten testet.
  */
-public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity implements OnLoginTaskUpdateListener{
+public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity implements OnUpdatePublishingAsyncTaskListener<Bundle>{
 
 	private ProgressBar progressWheel;
 	
@@ -130,7 +130,7 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		Bundle extras = getIntent().getExtras();
 		activeSet = new LoginSet(extras.getString(LoginSetConstants.nameKey), extras.getString(LoginSetConstants.serverUrlKey), extras.getString(LoginSetConstants.schoolKey), extras.getString(LoginSetConstants.usernameKey), extras.getString(LoginSetConstants.passwordKey), extras.getBoolean(LoginSetConstants.sslOnlyKey));
 		loginListener = new LoginTask(this);
-		
+		loginListener.addListener(this);
 		
 		
 		loginText.setTextColor(getColor(R.color.text));
@@ -150,11 +150,6 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	public void setInProgress(String message, boolean active) {
 		progressWheel.setVisibility(active ? View.VISIBLE : View.INVISIBLE);
 	}
-
-	@Override
-	public void loginTaskFinished(Bundle data) {
-		loginTaskFinished = true;
-	}
 	
 	@Override
 	public void showToastMessage(String message) {
@@ -163,34 +158,6 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		backButton.setVisibility(View.VISIBLE);
 	}
 
-	@Override
-	public void statusChanged(String status) {
-		if(status.equals(LoginTaskStatus.LOGIN_SUCCESS)) {
-			setLoginSuccess();
-		}
-		else if(status.equals(LoginTaskStatus.CLASSLIST_SUCCESS)) {
-			setClassListSuccess();
-		}
-		else if(status.equals(LoginTaskStatus.TEACHERLIST_SUCCESS)) {
-			setTeacherListSuccess();
-		}
-		else if(status.equals(LoginTaskStatus.ROOMLIST_SUCCESS)) {
-			setRoomListSuccess();
-		}
-		else if(status.equals(LoginTaskStatus.SUBJECTLIST_SUCCESS)) {
-			setSubjectListSuccess();
-		}
-		else if(status.equals(LoginTaskStatus.MASTERDATA_SUCCESS)) {
-			progressWheel.setVisibility(View.INVISIBLE);
-			finishButton.setVisibility(View.VISIBLE);
-		}
-
-		else if(status.equals(LoginTaskStatus.LOGIN_BAD_CREDENTIALS)) {
-			loginImage.setImageResource(R.drawable.ic_delete);
-		}
-	}
-
-	
 	private void setLoginSuccess() {
 		loginImage.setChecked(true);
 		loginListener.skipLogin();
@@ -222,7 +189,7 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	
 	@Override
 	public void onBackPressed() {
-		AsyncTask<Void, AsyncTaskProgress, Boolean> loginTask = loginListener.getAsyncTask();
+		AsyncTask<?, ?, ?> loginTask = loginListener.getAsyncTask();
 		if(loginTask != null && !loginTask.isCancelled() && !(loginTask.getStatus() == Status.FINISHED)) {
 			loginTask.cancel(true);
 		}
@@ -268,7 +235,7 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	
 	@Override
 	protected void onDestroy() {
-		AsyncTask<Void, AsyncTaskProgress, Boolean> loginTask = loginListener.getAsyncTask();
+		AsyncTask<?, ?, ?> loginTask = loginListener.getAsyncTask();
 		if(loginTask != null && !loginTask.isCancelled() && !(loginTask.getStatus() == Status.FINISHED)) {
 			loginTask.cancel(true);
 		}
@@ -277,6 +244,68 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	
 	private int getColor(int resId) {
 		return getResources().getColor(resId);
+	}
+
+	@Override
+	public void onStatusUpdated(String status) {
+		if(status.equals(LoginTaskStatus.LOGIN_SUCCESS)) {
+			setLoginSuccess();
+		}
+		else if(status.equals(LoginTaskStatus.CLASSLIST_SUCCESS)) {
+			setClassListSuccess();
+		}
+		else if(status.equals(LoginTaskStatus.TEACHERLIST_SUCCESS)) {
+			setTeacherListSuccess();
+		}
+		else if(status.equals(LoginTaskStatus.ROOMLIST_SUCCESS)) {
+			setRoomListSuccess();
+		}
+		else if(status.equals(LoginTaskStatus.SUBJECTLIST_SUCCESS)) {
+			setSubjectListSuccess();
+		}
+		else if(status.equals(LoginTaskStatus.MASTERDATA_SUCCESS)) {
+			progressWheel.setVisibility(View.INVISIBLE);
+			finishButton.setVisibility(View.VISIBLE);
+		}
+	
+		else if(status.equals(LoginTaskStatus.LOGIN_BAD_CREDENTIALS)) {
+			loginImage.setImageResource(R.drawable.ic_delete);
+		}
+	}
+
+	@Override
+	public void onCancelled() {
+		setInProgress("", false);
+	}
+
+	@Override
+	public void onPostExecute(Bundle result) {
+		setInProgress("", false);
+		loginTaskFinished = true;
+	}
+
+	@Override
+	public void onProgressUpdate(AsyncTaskProgress progress) {
+		
+		String progressMessage = progress.getProgressMessage();
+		String toastMessage = progress.getToastMessage();
+		String status = progress.getStatus();
+		
+		if(progressMessage != null) {
+			setInProgress(progressMessage, progress.isShowProgressWheel());
+		}
+		if(toastMessage != null) {
+			showToastMessage(toastMessage);
+		}
+		
+		if(status != null) {
+			onStatusUpdated(status);
+		}
+	}
+
+	@Override
+	public void onPreExecute() {
+		setInProgress(getString(R.string.login_in_progress), true);
 	}
 
 }

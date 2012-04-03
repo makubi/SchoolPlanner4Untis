@@ -42,12 +42,12 @@ import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.gui.loginTask.LoginTask;
-import edu.htl3r.schoolplanner.gui.loginTask.OnLoginTaskUpdateListener;
 import edu.htl3r.schoolplanner.gui.startup_wizard.StartupWizardIntroduction;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenContextMenu;
+import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenLoginTaskListener;
 
-public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginTaskUpdateListener {
+public class WelcomeScreen extends SchoolPlannerActivity {
 	
 	private ListView mainListView;
 	
@@ -79,6 +79,7 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginTaskU
 		initList();
 		
 		loginListener = new LoginTask(this);
+		loginListener.addListener(new WelcomeScreenLoginTaskListener(this));
 		mainListView.setOnItemClickListener(loginListener);
 		
 		initContextMenu();
@@ -115,7 +116,7 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginTaskU
 	
 	@Override
 	public void onBackPressed() {
-		AsyncTask<Void, AsyncTaskProgress, Boolean> loginTask = loginListener.getAsyncTask();
+		AsyncTask<?, ?, ?> loginTask = loginListener.getAsyncTask();
 		if(loginTask != null && !loginTask.isCancelled() && !(loginTask.getStatus() == Status.FINISHED)) {
 			loginTask.cancel(true);
 		}
@@ -325,18 +326,6 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginTaskU
 		super.onResume();
 		if(loginListener.getAsyncTask() != null && loginListener.getAsyncTask().getStatus() != Status.RUNNING) setInProgress("", false);
 	}
-
-	@Override
-	public void loginTaskFinished(Bundle data) {
-		if(data != null) {
-			Intent t = new Intent(this, SelectScreen.class);
-			t.putExtras(data);
-			startActivity(t);
-		}
-	}
-
-	@Override
-	public void statusChanged(String status) {}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -353,5 +342,4 @@ public class WelcomeScreen extends SchoolPlannerActivity implements OnLoginTaskU
 			super.onActivityResult(requestCode, resultCode, data);
 		}
 	}
-	
 }
