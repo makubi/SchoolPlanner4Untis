@@ -4,9 +4,7 @@
 	android:id="@+id/welcome_main_layout"
 	style="@style/background_layout">
 
-	<TextView android:id="@+id/welcome_title"
-		android:layout_alignParentTop="true" android:text="@string/app_name"
-		style="@style/header_text"/>
+    <include layout="@layout/startup_wizard_header" android:id="@+id/welcome_title"/>
 
 	<ListView android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:id="@+id/loginList"

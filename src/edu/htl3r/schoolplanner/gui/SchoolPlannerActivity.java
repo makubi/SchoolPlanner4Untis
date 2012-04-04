@@ -155,4 +155,8 @@ public abstract class SchoolPlannerActivity extends Activity {
 		
 		}
 	}
+	
+	protected void initTitle(String title){
+		((TextView)findViewById(R.id.header_text)).setText(title);
+	}
 }

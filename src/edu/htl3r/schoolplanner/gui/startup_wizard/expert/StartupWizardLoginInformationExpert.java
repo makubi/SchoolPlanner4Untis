@@ -36,7 +36,8 @@ public class StartupWizardLoginInformationExpert extends LoginInformationForm {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		initTitle(getResources().getString(R.string.startup_wizard_header));
+
 		setOnButtonClickListener(new Button.OnClickListener() {
 			
 			@Override

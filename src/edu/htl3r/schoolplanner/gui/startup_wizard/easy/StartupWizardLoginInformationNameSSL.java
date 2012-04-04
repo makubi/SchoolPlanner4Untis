@@ -3,7 +3,6 @@ package edu.htl3r.schoolplanner.gui.startup_wizard.easy;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -25,6 +24,8 @@ public class StartupWizardLoginInformationNameSSL extends SchoolPlannerActivity 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.startup_wizard_login_information_easy_ssl_name);
+		initTitle(getResources().getString(R.string.startup_wizard_header));
+
 		name = (EditText)findViewById(R.id.swi_name);
 		ssl = (CheckBox)findViewById(R.id.swi_force_ssl);
 		thisActivity = this;

@@ -20,8 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.TimetableDataProvider;
 import edu.htl3r.schoolplanner.backend.TimetableDataStore;

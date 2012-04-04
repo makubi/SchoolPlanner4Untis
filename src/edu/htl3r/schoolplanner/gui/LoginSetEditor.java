@@ -16,13 +16,13 @@
 */
 package edu.htl3r.schoolplanner.gui;
 
-import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
-import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
+import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 
 public class LoginSetEditor extends LoginInformationForm {
 		

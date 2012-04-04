@@ -84,6 +84,8 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.startup_wizard_login_information_check);
+		initTitle(getResources().getString(R.string.startup_wizard_header));
+
 		
 		loginText = (TextView) findViewById(R.id.startup_wizard_login_information_check_login_text);
 		loginImage = (DrawableCheckBox) findViewById(R.id.startup_wizard_login_information_check_login_image);

@@ -46,6 +46,8 @@ public abstract class LoginInformationForm extends SchoolPlannerActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.startup_wizard_login_information);
+		initTitle(getResources().getString(R.string.startup_wizard_header));
+
 		
 		nameInput = (EditText) findViewById(R.id.startup_wizard_login_information_name);
 		serverUrlInput = (MultiAutoCompleteTextView) findViewById(R.id.startup_wizard_login_information_server_url);

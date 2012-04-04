@@ -19,7 +19,6 @@ package edu.htl3r.schoolplanner.gui.startup_wizard;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -45,6 +44,8 @@ public class StartupWizardIntroduction extends SchoolPlannerActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.startup_wizard_introduction);
+		initTitle(getResources().getString(R.string.startup_wizard_header));
+
 		
 		expert = (RadioButton)findViewById(R.id.swi_radio_expert);
 		easy = (RadioButton)findViewById(R.id.swi_radio_easy);

@@ -2,18 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/background_layout" >
 
-    <RelativeLayout
-        android:id="@+id/swi_header"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" >
+        <include layout="@layout/startup_wizard_header" android:id="@+id/swi_header"/>
 
-        <TextView
-            style="@style/header_text"
-            android:layout_width="fill_parent"
-            android:layout_marginBottom="10sp"
-            android:text="@string/startup_wizard_header" />
-    </RelativeLayout>
 
     <ScrollView
         android:id="@+id/swi_content"
@@ -76,7 +66,7 @@
         </RelativeLayout>
     </ScrollView>
 
-    <LinearLayout
+       <LinearLayout
         android:id="@id/swi_buttonbar"
         style="@style/startup_wizard_button_bar" >
 
@@ -85,14 +75,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/startup_wizard_introduction_back_button" />
+            android:text="@string/startup_wizard_login_information_back_button" />
 
         <Button
             android:id="@+id/startup_wizard_introduction_next_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/startup_wizard_introduction_next_button" />
+            android:text="@string/startup_wizard_login_information_next_button" />
     </LinearLayout>
 
 </RelativeLayout>

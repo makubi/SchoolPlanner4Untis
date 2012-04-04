@@ -33,6 +33,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.Cache;
@@ -67,7 +68,8 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.welcome_screen);
-		
+		initTitle(getResources().getString(R.string.app_name));
+
 		mainListView = (ListView) findViewById(R.id.loginList);
 		
 		initEmptyListTextView();
@@ -81,7 +83,6 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		loginListener = new LoginTask(this);
 		loginListener.addListener(new WelcomeScreenLoginTaskListener(this));
 		mainListView.setOnItemClickListener(loginListener);
-		
 		initContextMenu();
 	}
 	

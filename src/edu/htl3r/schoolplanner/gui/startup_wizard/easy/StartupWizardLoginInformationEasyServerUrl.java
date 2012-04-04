@@ -43,6 +43,8 @@ public class StartupWizardLoginInformationEasyServerUrl extends
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.startup_wizard_login_information_easy_url);
+		initTitle(getResources().getString(R.string.startup_wizard_header));
+
 		url_spinner = (Spinner) findViewById(R.id.swi_url_spinner);
 		info2 = (TextView) findViewById(R.id.swi_url_info2);
 		server_url = (EditText) findViewById(R.id.swi_url_alternative);

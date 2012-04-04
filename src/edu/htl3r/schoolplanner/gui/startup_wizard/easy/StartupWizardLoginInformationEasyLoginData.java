@@ -22,6 +22,7 @@ public class StartupWizardLoginInformationEasyLoginData extends
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.startup_wizard_login_information_easy_login_data);
+		initTitle(getResources().getString(R.string.startup_wizard_header));
 
 		school = (EditText) findViewById(R.id.startup_wizard_login_information_school);
 		user = (EditText) findViewById(R.id.startup_wizard_login_information_username);

@@ -2,18 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/background_layout" >
 
-    <RelativeLayout
-        android:id="@+id/swi_header"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" >
-
-        <TextView
-            style="@style/header_text"
-            android:layout_width="fill_parent"
-            android:layout_marginBottom="10sp"
-            android:text="@string/startup_wizard_header" />
-    </RelativeLayout>
+ 
+    <include layout="@layout/startup_wizard_header" android:id="@+id/swi_header"/>
 
     <ScrollView
         android:id="@+id/swi_text"
