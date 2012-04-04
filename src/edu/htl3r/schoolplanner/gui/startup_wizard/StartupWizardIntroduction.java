@@ -25,6 +25,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
+import edu.htl3r.schoolplanner.gui.startup_wizard.easy.StartupWizardLoginInformationEasyServerUrl;
 import edu.htl3r.schoolplanner.gui.startup_wizard.expert.StartupWizardLoginInformationExpert;
 
 /**
@@ -56,8 +57,7 @@ public class StartupWizardIntroduction extends SchoolPlannerActivity {
 				if(expert.isChecked())
 					startActivity(new Intent(thisActivity, StartupWizardLoginInformationExpert.class));
 				if(easy.isChecked())
-					//TODO Easy Stuff
-					Log.d("basti","easy");
+					startActivity(new Intent(thisActivity, StartupWizardLoginInformationEasyServerUrl.class));
 			}
 		});
 		

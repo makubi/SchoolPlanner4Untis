@@ -16,6 +16,7 @@
 	\n+ Wenn Ihre Schule SSL zur Verfügung stellt, können Sie ein sicheres Einloggen erzwingen.
     </string>
     
+    
     <string name="login_set_edit_title">Login Set bearbeiten</string>
     
     <string name="error_login_set_exists">Ein LoginSet mit diesem Namen existiert bereits</string>

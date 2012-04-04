@@ -10,6 +10,26 @@
         <string name="startup_wizard_login_information_password_hint">Passwort (optional)</string>
         <string name="startup_wizard_login_information_ssl_only">Nur SSL</string>
         
+        
+        <string name="startup_wizard_login_information_easy_url_info">
+            \n<b>Server URL</b> 
+            \n\nBitte geben Sie die Adresse Ihres Webuntis Servers ein. 
+            \nWenn Ihr Stundenplan bei G&amp;P gehostet wird, wählen Sie den Server aus der Liste und klicken Weiter</string>
+        <string name="startup_wizard_login_information_easy_url_not_in_list">Die Adresse befindet sich nicht in der Liste.</string>
+        <string name="startup_wizard_login_information_easy_url_info2">
+            \nBitte geben Sie die Adresse Ihres Webuntis Server manuell ein: 
+        </string>
+        
+        <string name="startup_wizard_login_information_easy_login_data" >
+            \nBitte gebe Sie nun die <b>Login Daten</b> ein. Diese sind identisch mit denen Sie sich im Browser einloggen.
+            \n
+            <ol>
+            	\n<li><b>Schule:</b> z.B. meine_schule</li>
+               \n<li><b>Benutzernname:</b> z.B. mein_login</li>
+               \n<li><b>Passwort (optional):</b> z.B. geheim</li>
+            </ol>
+        </string>
+        
         <string name="startup_wizard_login_information_back_button">Zurück</string>
         <string name="startup_wizard_login_information_next_button">Weiter</string>
     </resources>

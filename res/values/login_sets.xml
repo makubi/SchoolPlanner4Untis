@@ -16,6 +16,7 @@
 	\n+ If your school provides SSL, you can enforce to log in securely.
     </string>
     
+    
     <string name="login_set_edit_title">Edit login set</string>
     
     <string name="error_login_set_exists">A LoginSet with that name already exists</string>
