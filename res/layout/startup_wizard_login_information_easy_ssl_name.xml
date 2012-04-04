@@ -17,9 +17,9 @@
 
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swi_content"
         style="@style/startup_wizard_scroll_view"
-        android:layout_below="@id/swi_header" 
-        android:id="@+id/swi_content">
+        android:layout_below="@id/swi_header" >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -31,33 +31,42 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5sp"
                 android:paddingLeft="5sp"
-                android:text="@string/startup_wizard_login_information_easy_login_data"
+                android:text="@string/startup_wizard_login_information_easy_name"
                 android:textColor="@color/text"
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/startup_wizard_login_information_school"
+                android:id="@+id/swi_name"
                 style="@style/startup_wizard_login_information_input"
-                android:hint="@string/startup_wizard_login_information_school_hint" />
+                android:hint="@string/startup_wizard_login_information_name_hint" />
 
-            <EditText
-                android:id="@+id/startup_wizard_login_information_username"
-                style="@style/startup_wizard_login_information_input"
-                android:hint="@string/startup_wizard_login_information_username_hint" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#000000" />
 
-            <EditText
-                android:id="@+id/startup_wizard_login_information_password"
-                style="@style/startup_wizard_login_information_input"
-                android:hint="@string/startup_wizard_login_information_password_hint"
-                android:inputType="text|textPassword" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5sp"
+                android:paddingLeft="5sp"
+                android:text="@string/startup_wizard_login_information_easy_ssl_text"
+                android:textColor="@color/text"
+                android:textSize="18sp" />
+
+            <CheckBox
+                android:id="@+id/swi_force_ssl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/startup_wizard_login_information_easy_ssl_title"
+                android:textColor="@color/text"
+                android:textSize="14sp" />
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
         android:id="@id/swi_buttonbar"
-        style="@style/startup_wizard_button_bar"
-        android:gravity="bottom"
-        android:layout_below="@id/swi_content">
+        style="@style/startup_wizard_button_bar" >
 
         <Button
             android:id="@+id/startup_wizard_introduction_back_button"

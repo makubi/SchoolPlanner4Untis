@@ -7,38 +7,38 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
+import edu.htl3r.schoolplanner.gui.startup_wizard.StartupWizardLoginInformationCheck;
 
-public class StartupWizardLoginInformationEasyLoginData extends
-		SchoolPlannerActivity {
-
+public class StartupWizardLoginInformationNameSSL extends SchoolPlannerActivity {
+	
 	private Button back, next;
 	private Activity thisActivity;
-	private EditText school, user, pass;
-
+	private EditText name;
+	private CheckBox ssl;
+	private Bundle information;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setContentView(R.layout.startup_wizard_login_information_easy_login_data);
-
-		school = (EditText) findViewById(R.id.startup_wizard_login_information_school);
-		user = (EditText) findViewById(R.id.startup_wizard_login_information_username);
-		pass = (EditText) findViewById(R.id.startup_wizard_login_information_password);
-
+		setContentView(R.layout.startup_wizard_login_information_easy_ssl_name);
+		name = (EditText)findViewById(R.id.swi_name);
+		ssl = (CheckBox)findViewById(R.id.swi_force_ssl);
 		thisActivity = this;
+		information = getIntent().getExtras();
 		initButtons();
-
 		super.onCreate(savedInstanceState);
 	}
-
+	
 	private boolean everythigHere() {
-		if (school.getText().length() > 1 && user.getText().length() > 1 && pass.getText().length() > 1)
+		if (name.getText().length() > 1)
 			return true;
 		return false;
 	}
-
+	
 	private void initButtons() {
 		back = (Button) findViewById(R.id.startup_wizard_introduction_back_button);
 		next = (Button) findViewById(R.id.startup_wizard_introduction_next_button);
@@ -51,17 +51,21 @@ public class StartupWizardLoginInformationEasyLoginData extends
 		});
 
 		next.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				if (everythigHere()) {
-					Intent intent = new Intent(thisActivity,StartupWizardLoginInformationNameSSL.class);
-					intent.putExtra(LoginSetConstants.serverUrlKey,thisActivity.getIntent().getExtras().getString(LoginSetConstants.serverUrlKey));
-					intent.putExtra(LoginSetConstants.schoolKey,school.getText().toString());
-					intent.putExtra(LoginSetConstants.usernameKey,user.getText().toString());
-					intent.putExtra(LoginSetConstants.passwordKey,pass.getText().toString());
-					Log.d("basti", intent.getExtras()+"");
+					Intent intent = new Intent(thisActivity,StartupWizardLoginInformationCheck.class);
+					
+					Bundle intentStuff = thisActivity.getIntent().getExtras();
+					intent.putExtra(LoginSetConstants.serverUrlKey,intentStuff.getString(LoginSetConstants.serverUrlKey));
+					
+					intent.putExtra(LoginSetConstants.schoolKey,intentStuff.getString(LoginSetConstants.schoolKey));
+					intent.putExtra(LoginSetConstants.usernameKey,intentStuff.getString(LoginSetConstants.usernameKey));
+					intent.putExtra(LoginSetConstants.passwordKey,intentStuff.getString(LoginSetConstants.passwordKey));
+	
+					intent.putExtra(LoginSetConstants.nameKey,name.getText().toString());
+					intent.putExtra(LoginSetConstants.sslOnlyKey,ssl.isChecked());
 					startActivity(intent);
 				}
 			}

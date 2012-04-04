@@ -99,7 +99,7 @@ public class StartupWizardLoginInformationEasyServerUrl extends
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(thisActivity, StartupWizardLoginInformationEasyLoginData.class);
 				if(not_in_list.isChecked() && server_url.getText().length() > 1){
-					intent.putExtra(LoginSetConstants.serverUrlKey, server_url.getText());
+					intent.putExtra(LoginSetConstants.serverUrlKey, server_url.getText().toString());
 					startActivity(intent);
 				}	
 				

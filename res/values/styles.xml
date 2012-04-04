@@ -156,7 +156,7 @@
 		<item name="android:layout_width">fill_parent</item>
 		<item name="android:orientation">horizontal</item>
 		<item name="android:layout_alignParentBottom">true</item>
-		<item name="android:background">@color/element_background</item>
+		<item name="android:background">@color/background</item>
 	</style>
 	
 	<style name="startup_wizard_scroll_view" parent="@style/background_layout">

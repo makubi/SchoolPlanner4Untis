@@ -30,6 +30,18 @@
             </ol>
         </string>
         
+        <string name="startup_wizard_login_information_easy_name">
+            \n<b>Loginset Name</b>
+            \nBitte geben Sie nun einen beliebigen Namen für das Loginset ein.
+        </string>
+        
+        <string name="startup_wizard_login_information_easy_ssl_text">
+            \n<b>Sicherheit</b>
+            \nWenn Sie die nachfolgende Checkbox aktivieren werden alle Stundenplandaten ausschliesslich über eine verschlüsselte Verbindung abgerufen.
+        </string>
+        
+        <string name="startup_wizard_login_information_easy_ssl_title">Force SSL</string>
+        
         <string name="startup_wizard_login_information_back_button">Zurück</string>
         <string name="startup_wizard_login_information_next_button">Weiter</string>
     </resources>
