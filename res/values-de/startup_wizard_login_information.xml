@@ -21,7 +21,7 @@
         </string>
         
         <string name="startup_wizard_login_information_easy_login_data" >
-            \nBitte gebe Sie nun die <b>Login Daten</b> ein. Diese sind identisch mit denen Sie sich im Browser einloggen.
+            \nBitte gebe Sie nun Ihre <b>Login Daten</b> ein. Diese sind identisch mit denen Sie sich im Browser einloggen.
             \n
             <ol>
             	\n<li><b>Schule:</b> z.B. meine_schule</li>
@@ -37,7 +37,7 @@
         
         <string name="startup_wizard_login_information_easy_ssl_text">
             \n<b>Sicherheit</b>
-            \nWenn Sie die nachfolgende Checkbox aktivieren werden alle Stundenplandaten ausschliesslich über eine verschlüsselte Verbindung abgerufen.
+            \nWenn Sie die nachfolgende Checkbox aktivieren werden alle Stundenplandaten ausschliesslich über eine verschlüsselte Verbindung abgerufen.(Nicht überall verfügbar)
         </string>
         
         <string name="startup_wizard_login_information_easy_ssl_title">Force SSL</string>

@@ -12,7 +12,7 @@
 		android:id="@+id/week_indicator_container"
 		android:layout_alignParentBottom="true">
 
-		<View android:layout_width="fill_parent" android:layout_height="1px"
+		<View android:layout_width="fill_parent" android:layout_height="1dip"
 			android:layout_alignTop="@+id/week_indicator" android:background="#ffbdbdbd" />
 
 		<edu.htl3r.schoolplanner.gui.timetable.ViewPagerIndicator

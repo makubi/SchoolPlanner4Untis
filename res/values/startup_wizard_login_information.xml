@@ -10,8 +10,41 @@
         <string name="startup_wizard_login_information_password_hint">Password (optional)</string>
         <string name="startup_wizard_login_information_ssl_only">SSL only</string>
         
-
         
+        
+        <string name="startup_wizard_login_information_easy_url_info">
+            \n<b>Server URL</b> 
+            \n\nPlease enter the address of your server WebUntis Server.
+            \nIf your Webuntis Server is hosted by G&amp;P, choose an URL out from the list and click Next.</string>
+
+        <string name="startup_wizard_login_information_easy_url_not_in_list">My address is not listed.</string>
+        
+                <string name="startup_wizard_login_information_easy_url_info2">
+            \nPlease insert your server url below: 
+        </string>
+       
+        <string name="startup_wizard_login_information_easy_login_data" >
+            \nPlease insert your <b>login data</b> below. These information are identical with the login data of the web version from Webuntis.
+            \n
+            <ol>
+            	\n<li><b>School:</b> e.g. my_school</li>
+               \n<li><b>Username:</b> z.B. my_user</li>
+               \n<li><b>Password (optional):</b> e.g. secret</li>
+            </ol>
+        </string>
+        
+        <string name="startup_wizard_login_information_easy_name">
+            \n<b>Loginset Name</b>
+            \nPlease insert a arbitrarily <b>name</b> for your new Loginset
+        </string>
+        
+        <string name="startup_wizard_login_information_easy_ssl_text">
+            \n<b>Security</b>
+            \nIf you activate the checkbox below, all information will be transferred through an encrypted connection. (Not available everywhere)
+        </string>
+        
+        <string name="startup_wizard_login_information_easy_ssl_title">Force SSL</string>
+                
         <string name="startup_wizard_login_information_back_button">Back</string>
         <string name="startup_wizard_login_information_next_button">Next</string>
     </resources>

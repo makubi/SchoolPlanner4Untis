@@ -35,7 +35,7 @@ public class StartupWizardLoginInformationEasyLoginData extends
 	}
 
 	private boolean everythigHere() {
-		if (school.getText().length() > 1 && user.getText().length() > 1 && pass.getText().length() > 1)
+		if (school.getText().length() > 1 && user.getText().length() > 1 )
 			return true;
 		return false;
 	}

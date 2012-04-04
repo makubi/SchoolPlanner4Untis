@@ -2,15 +2,15 @@
 <resources>
 
     <string name="startup_wizard_header">Startup wizard</string>
-    <string name="startup_wizard_introdcution_text">
-		\nDamit die Erstkonfiguration von <b>Schoolplanner4Untis</b> so einfach wie möglich ist, 
-		begleitet Sie unsere <b>Konfigurations Assistent</b> durch diese ersten Schritte.
-		\n\nWenn Sie SP4U zum ersten Mal benutzen, wählen Sie bitte den <b>Einfachen</b> Konfigurationsmodus aus. Dieser hilft Ihnen in [n] einfachen Schritten ein LoginSet zu erstellen. 
-		\n\nWenn Sie keine Hilfestellung benötigen können Sie alle Daten in einem Schritte eingeben, wenn Sie den <b>Experten</b> Modus benutzen.</string>
-    <string name="startup_wizard_introdcution_header_radios">Konfigurationsmodi:</string>
+    
+    <string name="startup_wizard_introdcution_header_radios">Modus auswählen:</string>
     <string name="startup_wizard_introduction_back_button">Beenden</string>
     <string name="startup_wizard_introduction_next_button">Weiter</string>
     <string name="startup_wizard_introduction_easy">Einfach (empfohlen)</string>
     <string name="startup_wizard_introduction_expert">Experte</string>
-
+	<string name="startup_wizard_introdcution_text">
+		\nDamit die Erstkonfiguration von <b>Schoolplanner4Untis</b> so einfach wie möglich ist, 
+		begleitet Sie unsere <b>Konfigurations Assistent</b> durch diese ersten Schritte.
+		\n\nWenn Sie SP4U zum ersten Mal benutzen, wählen Sie bitte den <b>Einfachen</b> Konfigurationsmodus aus. Dieser hilft Ihnen in [n] einfachen Schritten ein LoginSet zu erstellen. 
+		\n\nWenn Sie keine Hilfestellung benötigen können Sie alle Daten in einem Schritte eingeben, wenn Sie den <b>Experten</b> Modus benutzen.</string>
 </resources>
