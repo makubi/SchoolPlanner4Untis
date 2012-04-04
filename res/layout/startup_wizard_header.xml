@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swi_header"
     android:layout_width="fill_parent"
-    android:layout_height="70dip"
+    android:layout_height="60dip"
     android:layout_alignParentTop="true" 
     android:background="@drawable/baactionbar_background">
 
