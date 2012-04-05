@@ -32,8 +32,6 @@ import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
 
 public class StartupWizardLoginInformationEasyServerUrl extends
 		SchoolPlannerActivity {
-
-	private final String SAVED_INSTANCE_KEY_NOT_IN_LIST_CHECKED = "notInListChecked";
 	
 	private Spinner url_spinner;
 	private CheckBox not_in_list;
@@ -125,16 +123,8 @@ public class StartupWizardLoginInformationEasyServerUrl extends
 	}
 	
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		outState.putBoolean(SAVED_INSTANCE_KEY_NOT_IN_LIST_CHECKED, not_in_list.isChecked());
-		
-		super.onSaveInstanceState(outState);
-	}
-	
-	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		
-		server_url.setVisibility(savedInstanceState.getBoolean(SAVED_INSTANCE_KEY_NOT_IN_LIST_CHECKED) ? View.VISIBLE : View.GONE);
+		server_url.setVisibility(not_in_list.isChecked() ? View.VISIBLE : View.GONE);
 	}
 }
