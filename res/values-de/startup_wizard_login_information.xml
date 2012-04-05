@@ -45,4 +45,8 @@
         
         <string name="startup_wizard_login_information_back_button">Zurück</string>
         <string name="startup_wizard_login_information_next_button">Weiter</string>
+        
+        <string name="startup_wizard_login_information_easy_error_name_missing">Bitte geben Sie einen Namen ein</string>
+        <string name="startup_wizard_login_information_easy_error_server_url_missing">Bitte geben Sie eine Server-URL ein oder wählen eine aus</string>
+        <string name="startup_wizard_login_information_easy_error_school_user_missing">Bitte geben Sie zumindest Schule und Benutzer an</string>
     </resources>

@@ -48,4 +48,8 @@
                 
         <string name="startup_wizard_login_information_back_button">Back</string>
         <string name="startup_wizard_login_information_next_button">Next</string>
+        
+        <string name="startup_wizard_login_information_easy_error_name_missing">Please enter a name</string>
+        <string name="startup_wizard_login_information_easy_error_server_url_missing">Please enter or choose a server URL</string>
+        <string name="startup_wizard_login_information_easy_error_school_user_missing">Please enter at least school and user</string>
     </resources>

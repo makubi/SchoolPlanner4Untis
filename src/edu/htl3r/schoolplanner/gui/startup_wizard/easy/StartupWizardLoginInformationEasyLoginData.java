@@ -68,7 +68,7 @@ public class StartupWizardLoginInformationEasyLoginData extends
 					startActivity(intent);
 				}
 				else {
-					showToastMessage("Error message missing!");
+					showToastMessage(getString(R.string.startup_wizard_login_information_easy_error_school_user_missing));
 				}
 			}
 		});
