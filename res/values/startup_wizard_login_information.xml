@@ -14,17 +14,17 @@
         
         <string name="startup_wizard_login_information_easy_url_info">
             \n<b>Server URL</b> 
-            \n\nPlease enter the address of your server WebUntis Server.
-            \nIf your Webuntis Server is hosted by G&amp;P, choose an URL out from the list and click Next.</string>
+            \n\nPlease provide the address of your WebUntis Server.
+            \nIf your Webuntis Server is hosted at G&amp;P, choose an URL from the list and press <b>Next</b>.</string>
 
         <string name="startup_wizard_login_information_easy_url_not_in_list">My address is not listed.</string>
         
                 <string name="startup_wizard_login_information_easy_url_info2">
-            \nPlease insert your server url below: 
+            \nPlease insert your server URL below: 
         </string>
        
         <string name="startup_wizard_login_information_easy_login_data" >
-            \nPlease insert your <b>login data</b> below. These information are identical with the login data of the web version from Webuntis.
+            \nPlease insert your <b>login data</b> below. These information are identical to the login data you use to log into Webuntis via a web browser.
             \n
             <ol>
             	\n<li><b>School:</b> e.g. my_school</li>
@@ -35,12 +35,13 @@
         
         <string name="startup_wizard_login_information_easy_name">
             \n<b>Loginset Name</b>
-            \nPlease insert a arbitrarily <b>name</b> for your new Loginset
+            \nPlease insert an arbitrary <b>name</b> for your new Loginset
         </string>
         
         <string name="startup_wizard_login_information_easy_ssl_text">
             \n<b>Security</b>
-            \nIf you activate the checkbox below, all information will be transferred through an encrypted connection. (Not available everywhere)
+            \nIf you check the box below, all information will be transferred through an encrypted connection (not available everywhere).
+            \nIf you don't, SchoolPlanner4Untis will try to use it anyways, but may fall back to a plaintext connection.
         </string>
         
         <string name="startup_wizard_login_information_easy_ssl_title">Force SSL</string>

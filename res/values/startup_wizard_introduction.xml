@@ -11,7 +11,7 @@
         
         <string name="startup_wizard_introdcution_text">
 		\nWe have tried to make the initial configuration of <b>Schoolplanner4Untis</b> as simple as possible. Therefore, our <b>configuration assistant</b> helps you through the first steps.
-		\n\nIf you use SP4U the first time, please use the <b>easy mode</b>. The assistant will help you to create a Loginset in three easy steps. 
-		\n\nIf you do not need any help, choose the <b>expert mode</b>. You will be able to insert all needed information in a single step.</string>
+		\n\nIf you use this app the first time, please use the <b>easy mode</b>. The assistant will guide you through the creation process of a Loginset in three easy steps. 
+		\n\nIf you do not need any help, choose the <b>expert mode</b>. There, you are able to insert all needed information in a single step.</string>
         
     </resources>
