@@ -41,7 +41,7 @@
         <string name="startup_wizard_login_information_easy_ssl_text">
             \n<b>Security</b>
             \nIf you check the box below, all information will be transferred through an encrypted connection (not available everywhere).
-            \nIf you don't, SchoolPlanner4Untis will try to use it anyways, but may fall back to a plaintext connection.
+            \nIf you don\'t, SchoolPlanner4Untis will try to use it anyways, but may fall back to a plaintext connection.
         </string>
         
         <string name="startup_wizard_login_information_easy_ssl_title">Force SSL</string>
