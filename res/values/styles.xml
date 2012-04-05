@@ -157,6 +157,8 @@
 	<style name="startup_wizard_scroll_view" parent="@style/background_layout">
 		<item name="android:layout_width">fill_parent</item>
 		<item name="android:layout_height">wrap_content</item>
+		<!-- Im Landscape-Mode liegt die 'startup_wizard_button_bar' ueber der ScrollView -->
+		<item name="android:layout_marginBottom">50dip</item>
 	</style>
 	
 	<style name="startup_wizard_login_information_check_image">

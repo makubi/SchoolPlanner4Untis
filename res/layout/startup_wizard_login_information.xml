@@ -60,7 +60,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout style="@style/startup_wizard_button_bar" >
+    <LinearLayout style="@style/startup_wizard_button_bar">
 
         <Button
             android:id="@+id/startup_wizard_login_information_back_button"
