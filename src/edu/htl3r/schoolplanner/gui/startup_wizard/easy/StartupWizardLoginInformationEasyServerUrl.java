@@ -42,6 +42,7 @@ public class StartupWizardLoginInformationEasyServerUrl extends
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		setContentView(R.layout.startup_wizard_login_information_easy_url);
 		initTitle(getResources().getString(R.string.startup_wizard_header));
 
@@ -56,7 +57,7 @@ public class StartupWizardLoginInformationEasyServerUrl extends
 		
 		initCheckbox();
 		initButtons();
-		super.onCreate(savedInstanceState);
+		
 	}
 
 	private void initCheckbox() {
@@ -100,16 +101,24 @@ public class StartupWizardLoginInformationEasyServerUrl extends
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(thisActivity, StartupWizardLoginInformationEasyLoginData.class);
-				if(not_in_list.isChecked() && server_url.getText().length() > 1){
+				if(not_in_list.isChecked() && requiredDataEntered()){
 					intent.putExtra(LoginSetConstants.serverUrlKey, server_url.getText().toString());
 					startActivity(intent);
 				}	
 				
-				if(!not_in_list.isChecked()){
+				else if(!not_in_list.isChecked()){
 					intent.putExtra(LoginSetConstants.serverUrlKey, (String)url_spinner.getSelectedItem());
 					startActivity(intent);
 				}
+				
+				else {
+					showToastMessage("Error message missing!");
+				}
 			}
 		});
+	}
+	
+	private boolean requiredDataEntered() {
+		return server_url.getText().length() > 0;
 	}
 }

@@ -23,6 +23,8 @@ public class StartupWizardLoginInformationNameSSL extends SchoolPlannerActivity 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.startup_wizard_login_information_easy_ssl_name);
 		initTitle(getResources().getString(R.string.startup_wizard_header));
 
@@ -31,11 +33,11 @@ public class StartupWizardLoginInformationNameSSL extends SchoolPlannerActivity 
 		thisActivity = this;
 		information = getIntent().getExtras();
 		initButtons();
-		super.onCreate(savedInstanceState);
+		
 	}
 	
-	private boolean everythigHere() {
-		if (name.getText().length() > 1)
+	private boolean requiredDataEntered() {
+		if (name.getText().length() > 0)
 			return true;
 		return false;
 	}
@@ -55,7 +57,7 @@ public class StartupWizardLoginInformationNameSSL extends SchoolPlannerActivity 
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				if (everythigHere()) {
+				if (requiredDataEntered()) {
 					Intent intent = new Intent(thisActivity,StartupWizardLoginInformationCheck.class);
 					
 					Bundle intentStuff = thisActivity.getIntent().getExtras();
@@ -68,6 +70,9 @@ public class StartupWizardLoginInformationNameSSL extends SchoolPlannerActivity 
 					intent.putExtra(LoginSetConstants.nameKey,name.getText().toString());
 					intent.putExtra(LoginSetConstants.sslOnlyKey,ssl.isChecked());
 					startActivity(intent);
+				}
+				else {
+					showToastMessage("Error message missing!");
 				}
 			}
 		});

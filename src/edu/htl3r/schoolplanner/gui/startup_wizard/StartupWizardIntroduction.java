@@ -69,6 +69,7 @@ public class StartupWizardIntroduction extends SchoolPlannerActivity {
 			public void onClick(View v) {
 				//onBackPressed();
 				finish();
+				// TODO: Wieso finish() und nicht onBackPressed()
 			}
 			
 		});

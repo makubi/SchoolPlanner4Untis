@@ -65,13 +65,15 @@
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".gui.startup_wizard.easy.StartupWizardLoginInformationEasyLoginData"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".gui.LoginSetEditor"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
             android:name=".gui.startup_wizard.easy.StartupWizardLoginInformationNameSSL"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 

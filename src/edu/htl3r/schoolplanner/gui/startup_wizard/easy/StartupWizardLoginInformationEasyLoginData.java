@@ -21,6 +21,8 @@ public class StartupWizardLoginInformationEasyLoginData extends
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.startup_wizard_login_information_easy_login_data);
 		initTitle(getResources().getString(R.string.startup_wizard_header));
 
@@ -31,11 +33,11 @@ public class StartupWizardLoginInformationEasyLoginData extends
 		thisActivity = this;
 		initButtons();
 
-		super.onCreate(savedInstanceState);
+		
 	}
 
-	private boolean everythigHere() {
-		if (school.getText().length() > 1 && user.getText().length() > 1 )
+	private boolean requiredDataEntered() {
+		if (school.getText().length() > 0 && user.getText().length() > 0 )
 			return true;
 		return false;
 	}
@@ -56,7 +58,7 @@ public class StartupWizardLoginInformationEasyLoginData extends
 			@Override
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
-				if (everythigHere()) {
+				if (requiredDataEntered()) {
 					Intent intent = new Intent(thisActivity,StartupWizardLoginInformationNameSSL.class);
 					intent.putExtra(LoginSetConstants.serverUrlKey,thisActivity.getIntent().getExtras().getString(LoginSetConstants.serverUrlKey));
 					intent.putExtra(LoginSetConstants.schoolKey,school.getText().toString());
@@ -64,6 +66,9 @@ public class StartupWizardLoginInformationEasyLoginData extends
 					intent.putExtra(LoginSetConstants.passwordKey,pass.getText().toString());
 					Log.d("basti", intent.getExtras()+"");
 					startActivity(intent);
+				}
+				else {
+					showToastMessage("Error message missing!");
 				}
 			}
 		});
