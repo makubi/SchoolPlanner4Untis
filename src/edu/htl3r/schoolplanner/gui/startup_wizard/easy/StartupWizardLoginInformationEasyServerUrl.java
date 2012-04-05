@@ -66,22 +66,20 @@ public class StartupWizardLoginInformationEasyServerUrl extends
 
 			@Override
 			public void onClick(View arg0) {
-				if (not_in_list.isChecked()) {
-					url_spinner.setEnabled(false);
-					url_spinner.setClickable(false);
-					info2.setVisibility(View.VISIBLE);
-					server_url.setVisibility(View.VISIBLE);
-
-				} else {
-					url_spinner.setEnabled(true);
-					url_spinner.setClickable(true);
-					info2.setVisibility(View.GONE);
-					server_url.setVisibility(View.GONE);
-
-				}
+				refreshManuelServerURLDependingViews();
 			}
 		});
 
+	}
+	
+	private void refreshManuelServerURLDependingViews() {
+		boolean manuelServerURLEnabled = not_in_list.isChecked();
+		
+		url_spinner.setEnabled(!manuelServerURLEnabled);
+		url_spinner.setClickable(!manuelServerURLEnabled);
+		
+		info2.setVisibility(manuelServerURLEnabled ? View.VISIBLE : View.GONE);
+		server_url.setVisibility(manuelServerURLEnabled ? View.VISIBLE : View.GONE);
 	}
 	
 	private void initButtons(){
@@ -125,6 +123,6 @@ public class StartupWizardLoginInformationEasyServerUrl extends
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		server_url.setVisibility(not_in_list.isChecked() ? View.VISIBLE : View.GONE);
+		refreshManuelServerURLDependingViews();
 	}
 }
