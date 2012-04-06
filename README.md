@@ -16,7 +16,7 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 		* Setzen der Variablen
 			* M3_HOME=/path/to/maven
 			* M3=$M3_HOME/bin
-			* PATH=$M3:$PATH
+			* PATH=$M3;$PATH
 	* Installation von m2e - Maven integration for Eclipse ueber die Eclipse-Update-Site
 	* Hinzufuegen des entpackten Mavens in Eclipse
 		* In Eclipse
@@ -24,9 +24,14 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 * Hinzufügen des Projekts
 	* Setzen der Variable
 		* ANDROID_HOME=$SDK_ROOT
-	* Projekt als Android Project importieren
-	* Maven-Nature zum Projekt hinzufuegen
-	* Refresh des Projekts
+	* In der Commandline: `mvn eclipse:eclipse`
+	* Porjekt in Eclipse normal importieren
+ 
+Erstellen der .apk Datei
+------------------------
+
+In der Commandline: `mvn install`
+Die .apk Datei befindet sich dann unter ./target/sp4u.apk
 
 ERROR IM PROJEKT (in Eclipse)
 -----------------------------
