@@ -25,13 +25,7 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 	* Setzen der Variable
 		* ANDROID_HOME=$SDK_ROOT
 	* In der Commandline: `mvn eclipse:eclipse`
-	* Porjekt in Eclipse normal importieren
- 
-Erstellen der .apk Datei
-------------------------
-
-In der Commandline: `mvn install`
-Die .apk Datei befindet sich dann unter ./target/sp4u.apk
+	* Projekt in Eclipse als Android Projekt importieren. (Neues Projekt > Android Projekt > Open from existing Source)
 
 ERROR IM PROJEKT (in Eclipse)
 -----------------------------
