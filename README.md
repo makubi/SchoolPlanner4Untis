@@ -16,7 +16,7 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 		* Setzen der Variablen
 			* M3_HOME=/path/to/maven
 			* M3=$M3_HOME/bin
-			* PATH=$M3:$PATH
+			* PATH=$M3;$PATH
 	* Installation von m2e - Maven integration for Eclipse ueber die Eclipse-Update-Site
 	* Hinzufuegen des entpackten Mavens in Eclipse
 		* In Eclipse
@@ -24,9 +24,8 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 * Hinzufügen des Projekts
 	* Setzen der Variable
 		* ANDROID_HOME=$SDK_ROOT
-	* Projekt als Android Project importieren
-	* Maven-Nature zum Projekt hinzufuegen
-	* Refresh des Projekts
+	* In der Commandline: `mvn eclipse:eclipse`
+	* Projekt in Eclipse als Android Projekt importieren. (Neues Projekt > Android Projekt > Open from existing Source)
 
 ERROR IM PROJEKT (in Eclipse)
 -----------------------------
