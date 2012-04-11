@@ -20,9 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.widget.Toast;
 import edu.htl3r.schoolplanner.DateTime;
-import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;

@@ -4,9 +4,7 @@
 	android:id="@+id/welcome_main_layout"
 	style="@style/background_layout">
 
-	<TextView android:id="@+id/welcome_title"
-		android:layout_alignParentTop="true" android:text="SchoolPlanner4Untis"
-		style="@style/header_text" android:background="@drawable/baactionbar_background"/>
+    <include layout="@layout/startup_wizard_header" android:id="@+id/welcome_title"/>
 
 	<ListView android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:id="@+id/loginList"
@@ -25,7 +23,7 @@
 			android:textSize="14sp"
 			android:paddingLeft="5sp"
 			android:textColor="@color/text"
-			android:text="@string/login_sets_list_empty" />
+			android:text="@string/login_sets_info" />
 		</ScrollView>
 		
 	<include layout="@layout/progress_bar"/>

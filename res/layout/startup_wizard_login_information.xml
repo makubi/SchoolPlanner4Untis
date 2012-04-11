@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/background_layout" >
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/startup_wizard_scroll_view" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <include
+                android:id="@+id/swi_header"
+                layout="@layout/startup_wizard_header" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5sp"
+                android:paddingLeft="5sp"
+                android:text="@string/startup_wizard_login_information_text"
+                android:textColor="@color/text"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/startup_wizard_login_information_name"
+                style="@style/startup_wizard_login_information_input"
+                android:hint="@string/startup_wizard_login_information_name_hint" />
+
+            <MultiAutoCompleteTextView
+                android:id="@+id/startup_wizard_login_information_server_url"
+                style="@style/startup_wizard_login_information_input"
+                android:completionThreshold="1"
+                android:hint="@string/startup_wizard_login_information_server_url_hint" />
+
+            <EditText
+                android:id="@+id/startup_wizard_login_information_school"
+                style="@style/startup_wizard_login_information_input"
+                android:hint="@string/startup_wizard_login_information_school_hint" />
+
+            <EditText
+                android:id="@+id/startup_wizard_login_information_username"
+                style="@style/startup_wizard_login_information_input"
+                android:hint="@string/startup_wizard_login_information_username_hint" />
+
+            <EditText
+                android:id="@+id/startup_wizard_login_information_password"
+                style="@style/startup_wizard_login_information_input"
+                android:hint="@string/startup_wizard_login_information_password_hint"
+                android:inputType="text|textPassword" />
+
+            <CheckBox
+                android:id="@+id/startup_wizard_login_information_ssl_only"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/startup_wizard_login_information_ssl_only"
+                android:textColor="@color/text" />
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout style="@style/startup_wizard_button_bar">
+
+        <Button
+            android:id="@+id/startup_wizard_login_information_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/startup_wizard_login_information_back_button" />
+
+        <Button
+            android:id="@+id/startup_wizard_login_information_next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/startup_wizard_login_information_next_button" />
+    </LinearLayout>
+
+</RelativeLayout>

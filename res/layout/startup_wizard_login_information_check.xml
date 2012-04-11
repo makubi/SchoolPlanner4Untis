@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/background_layout"
+    android:gravity="center" >
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/startup_wizard_scroll_view"
+        android:gravity="center" >
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            style="@style/background_layout"
+            android:gravity="center" >
+
+            <include
+                android:id="@+id/swi_header"
+                layout="@layout/startup_wizard_header" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@id/swi_header"
+                android:orientation="vertical" >
+
+                <ProgressBar
+                    android:id="@+id/startup_wizard_login_information_check_progress"
+                    style="@android:style/Widget.ProgressBar.Large.Inverse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="10sp"
+                    android:visibility="invisible" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                        android:orientation="horizontal" >
+
+                        <edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox
+                            android:id="@+id/startup_wizard_login_information_check_login_image"
+                            style="@style/startup_wizard_login_information_check_image" />
+
+                        <TextView
+                            android:id="@+id/startup_wizard_login_information_check_login_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5sp"
+                            android:layout_marginTop="5sp"
+                            android:paddingLeft="5sp"
+                            android:text="@string/startup_wizard_login_information_check_login_text"
+                            android:textColor="@color/disabled_element_background" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                        android:orientation="horizontal" >
+
+                        <edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox
+                            android:id="@+id/startup_wizard_login_information_check_classlist_image"
+                            style="@style/startup_wizard_login_information_check_image" />
+
+                        <TextView
+                            android:id="@+id/startup_wizard_login_information_check_classlist_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5sp"
+                            android:layout_marginTop="5sp"
+                            android:paddingLeft="5sp"
+                            android:text="@string/startup_wizard_login_information_check_classlist_text"
+                            android:textColor="@color/disabled_element_background" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                        android:orientation="horizontal" >
+
+                        <edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox
+                            android:id="@+id/startup_wizard_login_information_check_teacherlist_image"
+                            style="@style/startup_wizard_login_information_check_image" />
+
+                        <TextView
+                            android:id="@+id/startup_wizard_login_information_check_teacherlist_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5sp"
+                            android:layout_marginTop="5sp"
+                            android:paddingLeft="5sp"
+                            android:text="@string/startup_wizard_login_information_check_teacherlist_text"
+                            android:textColor="@color/disabled_element_background" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                        android:orientation="horizontal" >
+
+                        <edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox
+                            android:id="@+id/startup_wizard_login_information_check_roomlist_image"
+                            style="@style/startup_wizard_login_information_check_image" />
+
+                        <TextView
+                            android:id="@+id/startup_wizard_login_information_check_roomlist_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5sp"
+                            android:layout_marginTop="5sp"
+                            android:paddingLeft="5sp"
+                            android:text="@string/startup_wizard_login_information_check_roomlist_text"
+                            android:textColor="@color/disabled_element_background" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center_vertical"
+                        android:orientation="horizontal" >
+
+                        <edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox
+                            android:id="@+id/startup_wizard_login_information_check_subjectlist_image"
+                            style="@style/startup_wizard_login_information_check_image" />
+
+                        <TextView
+                            android:id="@+id/startup_wizard_login_information_check_subjectlist_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5sp"
+                            android:layout_marginTop="5sp"
+                            android:paddingLeft="5sp"
+                            android:text="@string/startup_wizard_login_information_check_subjectlist_text"
+                            android:textColor="@color/disabled_element_background" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/startup_wizard_login_information_check_info_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:paddingLeft="5sp"
+                    android:textColor="@color/text" />
+            </LinearLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <LinearLayout style="@style/startup_wizard_button_bar">
+
+        <Button
+            android:id="@+id/startup_wizard_login_information_check_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/startup_wizard_login_information_check_back_button"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/startup_wizard_login_information_check_finish_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/startup_wizard_login_information_check_finish_button"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+</RelativeLayout>

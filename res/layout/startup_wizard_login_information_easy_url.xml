@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/background_layout" >
+
+        <include layout="@layout/startup_wizard_header" android:id="@+id/swi_header"/>
+
+
+    <ScrollView
+        android:id="@+id/swi_content"
+        style="@style/startup_wizard_scroll_view"
+        android:layout_above="@+id/swi_buttonbar"
+        android:layout_below="@id/swi_header" >
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/swi_url_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5sp"
+                android:text="@string/startup_wizard_login_information_easy_url_info"
+                android:textColor="@color/text"
+                android:textSize="14sp" />
+
+            <Spinner
+                android:id="@+id/swi_url_spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/swi_url_info"
+                android:layout_marginTop="5dip"
+                android:entries="@array/webuntis_server_urls" />
+
+            <CheckBox
+                android:id="@+id/swi_url_not_in_list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/swi_url_spinner"
+                android:layout_marginTop="5dip"
+                android:text="@string/startup_wizard_login_information_easy_url_not_in_list"
+                android:textColor="@color/text"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/swi_url_info2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/swi_url_not_in_list"
+                android:layout_marginTop="5dip"
+                android:hint="@string/startup_wizard_login_information_server_url_hint"
+                android:paddingLeft="5sp"
+                android:text="@string/startup_wizard_login_information_easy_url_info2"
+                android:textColor="@color/text"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/swi_url_alternative"
+                style="@style/startup_wizard_login_information_input"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/swi_url_info2"
+                android:layout_marginTop="5dip"
+                android:ems="10"
+                android:hint="@string/startup_wizard_login_information_server_url_hint" />
+        </RelativeLayout>
+    </ScrollView>
+
+       <LinearLayout
+        android:id="@id/swi_buttonbar"
+        style="@style/startup_wizard_button_bar" >
+
+        <Button
+            android:id="@+id/startup_wizard_introduction_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/startup_wizard_login_information_back_button" />
+
+        <Button
+            android:id="@+id/startup_wizard_introduction_next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/startup_wizard_login_information_next_button" />
+    </LinearLayout>
+
+</RelativeLayout>

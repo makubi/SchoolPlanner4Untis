@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="login_sets_list_empty">
-    Your list of login sets is empty!
-	\n\n
+    <string name="login_sets_info">
 	You need a login set to be able to log into the app.
 	\n\n
 	A login set contains of five information:
@@ -18,6 +16,11 @@
 	\n+ If your school provides SSL, you can enforce to log in securely.
     </string>
     
+    
     <string name="login_set_edit_title">Edit login set</string>
+    
+    <string name="error_login_set_exists">A LoginSet with that name already exists</string>
+    <string name="error_login_set_information_missing">Please enter at least name, server url, school and username</string>
+    
     
 </resources>

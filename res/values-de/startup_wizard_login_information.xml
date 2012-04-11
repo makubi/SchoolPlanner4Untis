@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources>
+    
+    	<string name="startup_wizard_login_information_text">Login Informationen</string>
+    	
+        <string name="startup_wizard_login_information_name_hint">Name (beliebig)</string>
+        <string name="startup_wizard_login_information_server_url_hint">Server-URL</string>
+        <string name="startup_wizard_login_information_school_hint">Schule</string>
+        <string name="startup_wizard_login_information_username_hint">Benutzername</string>
+        <string name="startup_wizard_login_information_password_hint">Passwort (optional)</string>
+        <string name="startup_wizard_login_information_ssl_only">Nur SSL</string>
+        
+        
+        <string name="startup_wizard_login_information_easy_url_info">
+            \n<b>Server URL</b> 
+            \n\nBitte geben Sie die Adresse Ihres Webuntis Servers ein. 
+            \nWenn Ihr Stundenplan bei G&amp;P gehostet wird, wählen Sie den Server aus der Liste und drücken auf <b>Weiter</b>.</string>
+        <string name="startup_wizard_login_information_easy_url_not_in_list">Die Adresse befindet sich nicht in der Liste.</string>
+        <string name="startup_wizard_login_information_easy_url_info2">
+            \nBitte geben Sie die Adresse Ihres Webuntis Servers manuell ein: 
+        </string>
+        
+        <string name="startup_wizard_login_information_easy_login_data" >
+            \nBitte gebe Sie nun Ihre <b>Login Daten</b> ein. Diese sind identisch mit den Daten, die Sie im Web-Browser verweden.
+            \n
+            <ol>
+            	\n<li><b>Schule:</b> z.B. meine_schule</li>
+               \n<li><b>Benutzernname:</b> z.B. mein_login</li>
+               \n<li><b>Passwort (optional):</b> z.B. geheim</li>
+            </ol>
+        </string>
+        
+        <string name="startup_wizard_login_information_easy_name">
+            \n<b>Loginset Name</b>
+            \nBitte geben Sie nun einen beliebigen Namen für das Loginset ein.
+        </string>
+        
+        <string name="startup_wizard_login_information_easy_ssl_text">
+            \n<b>Sicherheit</b>
+            \nWenn Sie die nachfolgende Checkbox aktivieren, werden alle Stundenplandaten ausschliesslich über eine verschlüsselte Verbindung abgerufen ()nicht überall verfügbar).
+            \nWenn nicht, wird SchoolPlanner4Untis trotzdem versuchen, eine verschlüsselte Verbindung aufzubauen, sofern möglich.
+        </string>
+        
+        <string name="startup_wizard_login_information_easy_ssl_title">SSL erzwingen</string>
+        
+        <string name="startup_wizard_login_information_back_button">Zurück</string>
+        <string name="startup_wizard_login_information_next_button">Weiter</string>
+        
+        <string name="startup_wizard_login_information_easy_error_name_missing">Bitte geben Sie einen Namen ein</string>
+        <string name="startup_wizard_login_information_easy_error_server_url_missing">Bitte geben Sie eine Server-URL ein oder wählen eine aus</string>
+        <string name="startup_wizard_login_information_easy_error_school_user_missing">Bitte geben Sie zumindest Schule und Benutzer an</string>
+    </resources>

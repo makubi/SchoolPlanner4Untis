@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="login_set_edit_exit">Exit</string>
+	<string name="login_set_edit_save">Save</string>
+</resources>

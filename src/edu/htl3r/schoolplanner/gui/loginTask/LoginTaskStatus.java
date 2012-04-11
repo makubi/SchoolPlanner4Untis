@@ -14,33 +14,19 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.gui;
+package edu.htl3r.schoolplanner.gui.loginTask;
 
-public class AsyncTaskProgress {
+public interface LoginTaskStatus {
+	// TODO: connection + ssl check
 	
-	private String toastMessage;
+	public static final String LOGIN_SUCCESS = "loginSuccess";
 	
-	private String progressMessage;
-	
-	private boolean showProgressWheel = false;
-	
-	public String getToastMessage() {
-		return toastMessage;
-	}
-	public void setToastMessage(String toastMessage) {
-		this.toastMessage = toastMessage;
-	}
-	public String getProgressMessage() {
-		return progressMessage;
-	}
-	public void setProgressMessage(String progressMessage) {
-		this.progressMessage = progressMessage;
-	}
-	public boolean isShowProgressWheel() {
-		return showProgressWheel;
-	}
-	public void setShowProgressWheel(boolean showProgressWheel) {
-		this.showProgressWheel = showProgressWheel;
-	}
-	
+	public static final String CLASSLIST_SUCCESS = "classListSuccess";
+	public static final String TEACHERLIST_SUCCESS = "teacherListSuccess";
+	public static final String ROOMLIST_SUCCESS = "roomListSuccess";
+	public static final String SUBJECTLIST_SUCCESS = "subjectListSuccess";
+
+	public static final String LOGIN_BAD_CREDENTIALS = "loginBadCredentials";
+
+	public static final String MASTERDATA_SUCCESS = "masterdataSuccess";
 }

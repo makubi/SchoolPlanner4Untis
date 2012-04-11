@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swi_header"
+    android:layout_width="fill_parent"
+    android:layout_height="60dip"
+    android:layout_alignParentTop="true" 
+    android:background="@drawable/baactionbar_background">
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dip"
+        android:src="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/header_text"
+        style="@style/header_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10sp"
+        android:layout_centerVertical="true"
+        android:text="blub" 
+        android:layout_toRightOf="@id/imageView1"
+        />
+
+</RelativeLayout>

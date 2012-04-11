@@ -20,14 +20,11 @@ package edu.htl3r.schoolplanner.gui.timetable.Overlay.Info;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint.Style;
 import android.graphics.drawable.GradientDrawable;
 import android.text.Layout.Alignment;
 import android.text.StaticLayout;
 import android.text.TextPaint;
-import android.util.Log;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 

@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
@@ -66,6 +67,11 @@ public abstract class SchoolPlannerActivity extends Activity {
 		} else {
 			progressWheel.setVisibility(View.INVISIBLE);
 		}
+	}
+	
+	
+	public void showToastMessage(String message) {
+		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 	}
 
 	@Override
@@ -116,6 +122,7 @@ public abstract class SchoolPlannerActivity extends Activity {
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
+		// Speichere aktuelles LoginSet, damit es - sollte die Activity fuer die Stundenplananzeige pausiert werden - spaeter wieder ohne Relogin zur Verfuegung steht.
 		LoginSetManager loginSetManager = ((SchoolPlannerApp) getApplication()).getLoginSetManager();
 		LoginSet activeLoginSet;
 		if((activeLoginSet = loginSetManager.getActiveLoginSet()) != null) {
@@ -132,13 +139,24 @@ public abstract class SchoolPlannerActivity extends Activity {
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
+		
+		// Stelle LoginSet wieder her.
+		
 		SchoolPlannerApp app = ((SchoolPlannerApp)getApplication());
 		LoginSetManager loginSetManager = app.getLoginSetManager();
 		
 		if(loginSetManager.getActiveLoginSet() == null) {
-			LoginSet loginSet = new LoginSet(savedInstanceState.getString(LoginSetConstants.nameKey),savedInstanceState.getString(LoginSetConstants.serverUrlKey),savedInstanceState.getString(LoginSetConstants.schoolKey),savedInstanceState.getString(LoginSetConstants.usernameKey),savedInstanceState.getString(LoginSetConstants.passwordKey),savedInstanceState.getBoolean(LoginSetConstants.sslOnlyKey));
-			app.getData().setLoginCredentials(loginSet);
-			loginSetManager.setActiveLoginSet(loginSet);
+			// LoginSet wird nur wiederhergestellt, wenn vorher schon eines gesetzt wurde.
+			if(savedInstanceState.containsKey(LoginSetConstants.nameKey) && savedInstanceState.containsKey(LoginSetConstants.serverUrlKey) && savedInstanceState.containsKey(LoginSetConstants.schoolKey) && savedInstanceState.containsKey(LoginSetConstants.usernameKey)) {
+				LoginSet loginSet = new LoginSet(savedInstanceState.getString(LoginSetConstants.nameKey),savedInstanceState.getString(LoginSetConstants.serverUrlKey),savedInstanceState.getString(LoginSetConstants.schoolKey),savedInstanceState.getString(LoginSetConstants.usernameKey),savedInstanceState.getString(LoginSetConstants.passwordKey),savedInstanceState.getBoolean(LoginSetConstants.sslOnlyKey));
+				app.getData().setLoginCredentials(loginSet);
+				loginSetManager.setActiveLoginSet(loginSet);
+			}
+		
 		}
+	}
+	
+	protected void initTitle(String title){
+		((TextView)findViewById(R.id.header_text)).setText(title);
 	}
 }

@@ -4,22 +4,34 @@
     android:versionCode="29"
     android:versionName="2.2.1" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-sdk
+        android:minSdkVersion="7"
+        android:targetSdkVersion="7" >
+    </uses-sdk>
+    
     <application
+        android:name=".SchoolPlannerApp"
         style="@style/background_layout"
         android:icon="@drawable/logo"
-        android:label="@string/app_name"
-        android:name=".SchoolPlannerApp" >
-        <activity android:configChanges="orientation|keyboardHidden" android:name=".gui.WelcomeScreen" android:theme="@android:style/Theme.NoTitleBar" >
-            <intent-filter >
+        android:label="@string/app_name" >
+        <activity
+            android:name=".gui.WelcomeScreen"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity
-            android:name=".gui.SelectScreen" android:theme="@android:style/Theme.NoTitleBar" android:launchMode="singleTop">
-            
-            <intent-filter >
+            android:name=".gui.SelectScreen"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
 
@@ -27,29 +39,43 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        
-        <provider android:name="edu.htl3r.schoolplanner.gui.SelectScreenSavedSearches" android:authorities="edu.htl3r.schoolplanner.gui.SelectScreenSavedSearches" />
-            
-           
-        
+
+        <provider
+            android:name=".gui.SelectScreenSavedSearches"
+            android:authorities="edu.htl3r.schoolplanner.gui.SelectScreenSavedSearches" />
+
         <activity
             android:name=".gui.settings.SettingsScreen"
             android:theme="@android:style/Theme.NoTitleBar" />
-        
         <activity
             android:name=".gui.timetable.WeekView"
             android:theme="@android:style/Theme.NoTitleBar" />
-                
+        <activity
+            android:name=".gui.startup_wizard.StartupWizardIntroduction"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".gui.startup_wizard.expert.StartupWizardLoginInformationExpert"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".gui.startup_wizard.StartupWizardLoginInformationCheck"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".gui.startup_wizard.easy.StartupWizardLoginInformationEasyServerUrl"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".gui.startup_wizard.easy.StartupWizardLoginInformationEasyLoginData"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".gui.LoginSetEditor"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".gui.startup_wizard.easy.StartupWizardLoginInformationNameSSL"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
-    <uses-permission android:name="android.permission.INTERNET" >
-    </uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
-    </uses-permission>
-
-    <uses-sdk
-        android:minSdkVersion="7"
-        android:targetSdkVersion="7" >
-    </uses-sdk>
 
 </manifest>

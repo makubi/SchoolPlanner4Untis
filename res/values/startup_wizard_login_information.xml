@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources>
+    
+    	<string name="startup_wizard_login_information_text">Login information</string>
+    	
+        <string name="startup_wizard_login_information_name_hint">Name (arbitrary)</string>
+        <string name="startup_wizard_login_information_server_url_hint">Server-URL</string>
+        <string name="startup_wizard_login_information_school_hint">School</string>
+        <string name="startup_wizard_login_information_username_hint">Username</string>
+        <string name="startup_wizard_login_information_password_hint">Password (optional)</string>
+        <string name="startup_wizard_login_information_ssl_only">SSL only</string>
+        
+        
+        
+        <string name="startup_wizard_login_information_easy_url_info">
+            \n<b>Server URL</b> 
+            \n\nPlease provide the address of your WebUntis Server.
+            \nIf your Webuntis Server is hosted at G&amp;P, choose an URL from the list and press <b>Next</b>.</string>
+
+        <string name="startup_wizard_login_information_easy_url_not_in_list">My address is not listed.</string>
+        
+                <string name="startup_wizard_login_information_easy_url_info2">
+            \nPlease insert your server URL below: 
+        </string>
+       
+        <string name="startup_wizard_login_information_easy_login_data" >
+            \nPlease insert your <b>login data</b> below. These information are identical to the login data you use to log into Webuntis via a web browser.
+            \n
+            <ol>
+            	\n<li><b>School:</b> e.g. my_school</li>
+               \n<li><b>Username:</b> z.B. my_user</li>
+               \n<li><b>Password (optional):</b> e.g. secret</li>
+            </ol>
+        </string>
+        
+        <string name="startup_wizard_login_information_easy_name">
+            \n<b>Loginset Name</b>
+            \nPlease insert an arbitrary <b>name</b> for your new Loginset
+        </string>
+        
+        <string name="startup_wizard_login_information_easy_ssl_text">
+            \n<b>Security</b>
+            \nIf you check the box below, all information will be transferred through an encrypted connection (not available everywhere).
+            \nIf you don\'t, SchoolPlanner4Untis will try to use it anyways, but may fall back to a plaintext connection.
+        </string>
+        
+        <string name="startup_wizard_login_information_easy_ssl_title">Force SSL</string>
+                
+        <string name="startup_wizard_login_information_back_button">Back</string>
+        <string name="startup_wizard_login_information_next_button">Next</string>
+        
+        <string name="startup_wizard_login_information_easy_error_name_missing">Please enter a name</string>
+        <string name="startup_wizard_login_information_easy_error_server_url_missing">Please enter or choose a server URL</string>
+        <string name="startup_wizard_login_information_easy_error_school_user_missing">Please enter at least school and user</string>
+    </resources>

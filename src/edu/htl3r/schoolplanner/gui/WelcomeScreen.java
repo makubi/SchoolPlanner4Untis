@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
@@ -32,7 +33,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
+import android.widget.TextView;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
 import edu.htl3r.schoolplanner.backend.Cache;
@@ -41,22 +42,25 @@ import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
-import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginListener;
+import edu.htl3r.schoolplanner.gui.loginTask.LoginTask;
+import edu.htl3r.schoolplanner.gui.startup_wizard.StartupWizardIntroduction;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenContextMenu;
+import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenLoginTaskListener;
 
-public class WelcomeScreen extends SchoolPlannerActivity{
+public class WelcomeScreen extends SchoolPlannerActivity {
 	
 	private ListView mainListView;
-	
-	private LoginSetDialog dialog;
 	
 	private ScrollView emptyListView;
 	
 	private LoginSetManager loginmanager;
-	private LoginListener loginListener;
+	private LoginTask loginListener;
 	
 	private final int CONTEXT_MENU_ID = 1;
+	
+	private final int STARTUP_WIZARD_INTRODUCTION_REQUEST_CODE = 1;
+	private final int LOGIN_SET_EDITOR_REQUEST_CODE = 2;
 	
 	private WelcomeScreenContextMenu contextMenu;
 	
@@ -64,7 +68,8 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.welcome_screen);
-		
+		initTitle(getResources().getString(R.string.app_name));
+
 		mainListView = (ListView) findViewById(R.id.loginList);
 		
 		initEmptyListTextView();
@@ -75,15 +80,20 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		
 		initList();
 		
-		loginListener = new LoginListener(this);
+		loginListener = new LoginTask(this);
+		loginListener.addListener(new WelcomeScreenLoginTaskListener(this));
 		mainListView.setOnItemClickListener(loginListener);
-		
 		initContextMenu();
 	}
 	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
+		
+		if (loginmanager.getAllLoginSets().size() < 1) {
+			showStartupWizard();
+		}
+		
 		Settings settings = ((SchoolPlannerApp)getApplication()).getSettings();
 		String autoLoginSetString = settings.getAutoLoginSet();
 		
@@ -96,13 +106,18 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		}
 	}
 	
+	private void showStartupWizard() {
+		Intent t = new Intent(this, StartupWizardIntroduction.class);
+		startActivityForResult(t, STARTUP_WIZARD_INTRODUCTION_REQUEST_CODE);
+	}
+
 	private void initEmptyListTextView() {
 		emptyListView = (ScrollView) findViewById(R.id.login_set_list_empty_view);
 	}
 	
 	@Override
 	public void onBackPressed() {
-		AsyncTask<Void, AsyncTaskProgress, Boolean> loginTask = loginListener.getLoginTask();
+		AsyncTask<?, ?, ?> loginTask = loginListener.getAsyncTask();
 		if(loginTask != null && !loginTask.isCancelled() && !(loginTask.getStatus() == Status.FINISHED)) {
 			loginTask.cancel(true);
 		}
@@ -122,9 +137,7 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
 	    case R.id.add_login_set:
-	    	dialog = new LoginSetDialog(this);
-	    	dialog.setParent(this);
-	    	dialog.show();
+	    	showStartupWizard();
 	        return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
@@ -134,10 +147,17 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 	
 
 	public void editLoginSet(int id) {
-		dialog = new LoginSetDialog(this,loginmanager.getLoginSetOnPosition(id));
-    	dialog.setParent(this);
-    	dialog.setTitle(getString(R.string.login_set_edit_title));
-    	dialog.show();
+    	LoginSet selectedLoginSet = loginmanager.getLoginSetOnPosition(id);
+    	
+    	Intent loginSetEditor = new Intent(this, LoginSetEditor.class);
+    	loginSetEditor.putExtra(LoginSetConstants.nameKey, selectedLoginSet.getName());
+    	loginSetEditor.putExtra(LoginSetConstants.serverUrlKey, selectedLoginSet.getServerUrl());
+    	loginSetEditor.putExtra(LoginSetConstants.schoolKey, selectedLoginSet.getSchool());
+    	loginSetEditor.putExtra(LoginSetConstants.usernameKey, selectedLoginSet.getUsername());
+    	loginSetEditor.putExtra(LoginSetConstants.passwordKey, selectedLoginSet.getPassword());
+    	loginSetEditor.putExtra(LoginSetConstants.sslOnlyKey, selectedLoginSet.isSslOnly());
+    	
+    	startActivityForResult(loginSetEditor, LOGIN_SET_EDITOR_REQUEST_CODE);
 	}
 
 	private void initList(){
@@ -302,14 +322,25 @@ public class WelcomeScreen extends SchoolPlannerActivity{
 		task.execute();
 	}
 	
-	public void showToastMessage(String message) {
-		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-	}
-	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if(loginListener.getLoginTask() != null && loginListener.getLoginTask().getStatus() != Status.RUNNING) setInProgress("", false);
+		if(loginListener.getAsyncTask() != null && loginListener.getAsyncTask().getStatus() != Status.RUNNING) setInProgress("", false);
 	}
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch (requestCode) {
+		case STARTUP_WIZARD_INTRODUCTION_REQUEST_CODE:
+			loginSetListUpdated();
+			break;
+		case LOGIN_SET_EDITOR_REQUEST_CODE:
+			if(data != null) {
+				editLoginSet(data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_NAME_KEY), data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_SERVER_URL_KEY), data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_SCHOOL_KEY), data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_USERNAME_KEY), data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_PASSWORD_KEY), data.getBooleanExtra(LoginSetEditor.LOGIN_SET_EDIT_SSL_ONLY_KEY, false), data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_OLD_NAME_KEY), data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_OLD_SERVER_URL_KEY), data.getStringExtra(LoginSetEditor.LOGIN_SET_EDIT_OLD_SCHOOL_KEY));
+			}
+			break;
+		default:
+			super.onActivityResult(requestCode, resultCode, data);
+		}
+	}
 }

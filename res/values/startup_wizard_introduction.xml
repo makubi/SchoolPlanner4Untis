@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources>
+        <string name="startup_wizard_header">Startup wizard</string>       
+        <string name="startup_wizard_introduction_back_button">Exit</string>
+        <string name="startup_wizard_introduction_next_button">Next</string>
+        <string name="startup_wizard_introdcution_header_radios">Choose a mode:</string>
+        <string name="startup_wizard_introduction_easy">Easy (recommended)</string>
+        <string name="startup_wizard_introduction_expert">Expert</string>
+        
+        
+        
+        <string name="startup_wizard_introdcution_text">
+		\nWe have tried to make the initial configuration of <b>Schoolplanner4Untis</b> as simple as possible. Therefore, our <b>configuration assistant</b> helps you through the first steps.
+		\n\nIf you use this app the first time, please use the <b>easy mode</b>. The assistant will guide you through the creation process of a Loginset in three easy steps. 
+		\n\nIf you do not need any help, choose the <b>expert mode</b>. There, you are able to insert all needed information in a single step.</string>
+        
+    </resources>

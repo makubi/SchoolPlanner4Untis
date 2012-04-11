@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   	<string name="startup_wizard_login_information_check_login_text">Login wird durchgeführt...</string>
+   	<string name="startup_wizard_login_information_check_classlist_text">Lade Klassenliste...</string>
+   	<string name="startup_wizard_login_information_check_teacherlist_text">Lade Lehrerliste...</string>
+   	<string name="startup_wizard_login_information_check_roomlist_text">Lade Raumliste...</string>
+   	<string name="startup_wizard_login_information_check_subjectlist_text">Lade Fächerliste...</string>
+   	
+   	<string name="startup_wizard_login_information_check_back_button">Zurück</string>
+    <string name="startup_wizard_login_information_check_finish_button">Abschließen</string>
+</resources>

@@ -11,12 +11,7 @@
 		<item name="android:textSize">25sp</item>
 		<item name="android:textColor">@color/header_text</item>
 		<item name="android:textStyle">bold</item>
-		<item name="android:paddingLeft">5dip</item>
-		<item name="android:paddingTop">3dip</item>
 		<item name="android:gravity">center_vertical|left</item>
-		<item name="android:layout_height">70dip</item>
-		<item name="android:layout_width">fill_parent</item>
-		<item name="android:background">@color/header_background</item>
 	</style>
 
 	<style name="statusBarDelimiter">
@@ -143,6 +138,32 @@
 		<item name="android:paddingRight">@dimen/gui_actionbar_item_margin</item>
 		<item name="android:paddingLeft">@dimen/gui_actionbar_item_margin</item>
 		<item name="android:clickable">true</item>
+	</style>
+	
+	<style name="startup_wizard_login_information_input">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:inputType">text</item> 
+	</style>
+	
+	<style name="startup_wizard_button_bar">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:orientation">horizontal</item>
+		<item name="android:layout_alignParentBottom">true</item>
+		<item name="android:background">@color/background</item>
+	</style>
+	
+	<style name="startup_wizard_scroll_view" parent="@style/background_layout">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<!-- Im Landscape-Mode liegt die 'startup_wizard_button_bar' ueber der ScrollView -->
+		<item name="android:layout_marginBottom">50dip</item>
+	</style>
+	
+	<style name="startup_wizard_login_information_check_image">
+		<item name="android:layout_width">30dip</item>
+		<item name="android:layout_height">30dip</item>
 	</style>
 
 </resources>
