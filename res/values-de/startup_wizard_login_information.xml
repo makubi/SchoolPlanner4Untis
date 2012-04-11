@@ -21,7 +21,7 @@
         </string>
         
         <string name="startup_wizard_login_information_easy_login_data" >
-            \nBitte gebe Sie nun Ihre <b>Login Daten</b> ein. Diese sind identisch mit den Daten, die Sie im Web-Browser verweden.
+            \nBitte gebe Sie nun Ihre <b>Login Daten</b> ein. Diese sind identisch mit den Daten, die Sie im Web-Browser verwenden.
             \n
             <ol>
             	\n<li><b>Schule:</b> z.B. meine_schule</li>
@@ -37,7 +37,7 @@
         
         <string name="startup_wizard_login_information_easy_ssl_text">
             \n<b>Sicherheit</b>
-            \nWenn Sie die nachfolgende Checkbox aktivieren, werden alle Stundenplandaten ausschliesslich über eine verschlüsselte Verbindung abgerufen ()nicht überall verfügbar).
+            \nWenn Sie die nachfolgende Checkbox aktivieren, werden alle Stundenplandaten ausschließlich über eine verschlüsselte Verbindung abgerufen (nicht überall verfügbar).
             \nWenn nicht, wird SchoolPlanner4Untis trotzdem versuchen, eine verschlüsselte Verbindung aufzubauen, sofern möglich.
         </string>
         
