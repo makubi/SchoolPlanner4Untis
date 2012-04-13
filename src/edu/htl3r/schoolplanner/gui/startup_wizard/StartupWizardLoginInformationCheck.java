@@ -162,6 +162,7 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 
 	private void setLoginSuccess() {
 		loginImage.setChecked(true);
+		loginImage.setStatus(edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox.Status.CHECKED);
 		loginListener.skipLogin();
 		classListText.setTextColor(getColor(R.color.text));
 	}
@@ -201,9 +202,10 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		
 		outState.putInt(SAVED_INSTANCE_KEY_PROGRESS_VISIBILITY, progressWheel.getVisibility());
-		outState.putBoolean(SAVED_INSTANCE_KEY_LOGIN_CHECKED, loginImage.getChecked());
+		
+		outState.putSerializable(SAVED_INSTANCE_KEY_LOGIN_CHECKED, loginImage.getStatus());
+		
 		outState.putBoolean(SAVED_INSTANCE_KEY_CLASS_CHECKED, classListImage.getChecked());
 		outState.putBoolean(SAVED_INSTANCE_KEY_TEACHER_CHECKED, teacherListImage.getChecked());
 		outState.putBoolean(SAVED_INSTANCE_KEY_ROOMS_CHECKED, roomListImage.getChecked());
@@ -221,7 +223,11 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		progressWheel.setVisibility(savedInstanceState.getInt(SAVED_INSTANCE_KEY_PROGRESS_VISIBILITY));
-		if(savedInstanceState.getBoolean(SAVED_INSTANCE_KEY_LOGIN_CHECKED)) setLoginSuccess();
+		
+		edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox.Status loginImageStatus = (edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox.Status) savedInstanceState.getSerializable(SAVED_INSTANCE_KEY_LOGIN_CHECKED);
+		if(loginImageStatus == edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox.Status.CHECKED) setLoginSuccess();
+		loginImage.setStatus(loginImageStatus);
+		
 		if(savedInstanceState.getBoolean(SAVED_INSTANCE_KEY_CLASS_CHECKED)) setClassListSuccess();
 		if(savedInstanceState.getBoolean(SAVED_INSTANCE_KEY_TEACHER_CHECKED)) setTeacherListSuccess();
 		if(savedInstanceState.getBoolean(SAVED_INSTANCE_KEY_ROOMS_CHECKED)) setRoomListSuccess();
@@ -271,7 +277,7 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		}
 	
 		else if(status.equals(LoginTaskStatus.LOGIN_BAD_CREDENTIALS)) {
-			loginImage.setImageResource(R.drawable.ic_delete);
+			loginImage.setStatus(edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox.Status.ERROR);
 		}
 	}
 

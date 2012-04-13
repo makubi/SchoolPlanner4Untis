@@ -24,8 +24,15 @@ import edu.htl3r.schoolplanner.R;
 public class DrawableCheckBox extends ImageView {
 	
 	private boolean checked;
-	private final int BUTTON_CHECKED_OFF_RESOURCE = R.drawable.btn_check_buttonless_off;
+	private final int BUTTON_UNCHECKED_RESOURCE = R.drawable.btn_check_buttonless_off;
 	private final int BUTTON_CHECKED_ON_RESOURCE = R.drawable.btn_check_buttonless_on;
+	private final int BUTTON_ERROR_RESOURCE = R.drawable.ic_delete;
+	
+	public static enum Status {
+		CHECKED, UNCHECKED, ERROR
+	}
+	
+	private Status status = Status.UNCHECKED;
 	
 	public DrawableCheckBox(Context context) {
 		super(context);
@@ -47,7 +54,7 @@ public class DrawableCheckBox extends ImageView {
 	
 	private void initView() {
 		checked = false;
-		setImageResource(BUTTON_CHECKED_OFF_RESOURCE);
+		setImageResource(BUTTON_UNCHECKED_RESOURCE);
 	}
 	
 	public boolean getChecked() {
@@ -56,7 +63,28 @@ public class DrawableCheckBox extends ImageView {
 
 	public void setChecked(boolean checked) {
 		this.checked = checked;
-		setImageResource(checked ? BUTTON_CHECKED_ON_RESOURCE : BUTTON_CHECKED_OFF_RESOURCE);
+		setImageResource(checked ? BUTTON_CHECKED_ON_RESOURCE : BUTTON_UNCHECKED_RESOURCE);
 	}
 	
+	public Status getStatus() {
+		return status;
+	}
+	
+	public void setStatus(Status status) {
+		this.status = status;
+		
+		switch (status) {
+		case CHECKED:
+			setImageResource(BUTTON_CHECKED_ON_RESOURCE);
+			break;
+		case UNCHECKED:
+			setImageResource(BUTTON_UNCHECKED_RESOURCE);
+			break;
+		case ERROR:
+			setImageResource(BUTTON_ERROR_RESOURCE);
+			break;
+		default:
+			break;
+		}
+	}
 }

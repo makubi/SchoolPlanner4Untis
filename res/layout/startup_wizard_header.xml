@@ -7,7 +7,7 @@
     android:background="@drawable/baactionbar_background">
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/swi_header_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10sp"
         android:layout_centerVertical="true"
-        android:text="blub" 
-        android:layout_toRightOf="@id/imageView1"
+        android:text="SchoolPlanner4Untis" 
+        android:layout_toRightOf="@id/swi_header_logo"
         />
 
 </RelativeLayout>
