@@ -27,6 +27,7 @@ import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -65,10 +66,18 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		}
 		
 		final String v1_DatabaseName = "HTL3R_SchoolPlanner";
-		ContextWrapper c = new ContextWrapper(SchoolplannerContext.context);
+		Context c = SchoolplannerContext.context;
 		
-		transferLoginDataToLoginSet(db, c, v1_DatabaseName);
-		removeV1Database(c, v1_DatabaseName);
+		try {
+			SQLiteDatabase v1_db = SQLiteDatabase.openDatabase("/data/data/edu.htl3r.schoolplanner/databases/HTL3R_SchoolPlanner", null, SQLiteDatabase.OPEN_READONLY);
+			transferLoginDataToLoginSet(db, v1_db);
+			v1_db.close();
+			
+			removeV1Database(c, v1_DatabaseName);
+		}
+		catch(SQLiteException e) {
+			// Alte Datenbank existiert nicht
+		}
 	}
 	
 	@Override
@@ -153,15 +162,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		db.endTransaction();
 	}
 	
-	private void removeV1Database(ContextWrapper c, String v1_DatabaseName) {
-		for(String name : c.databaseList()) {
-			if(v1_DatabaseName.equals(name)) {
-				Log.i("database","Deleted old database: "+c.deleteDatabase(name));
-			}
-		}
+	private void removeV1Database(Context c, String v1_DatabaseName) {
+		Log.i("database","Deleted old database: "+c.deleteDatabase(v1_DatabaseName));
 	}
 	
-	private void transferLoginDataToLoginSet(SQLiteDatabase db, ContextWrapper c, String v1_DatabaseName) {		
+	private void transferLoginDataToLoginSet(SQLiteDatabase db, SQLiteDatabase v1_db) {		
 		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(SchoolplannerContext.context);
 		final String v1_pref_key_serverurl = "serverURL";
 		final String v1_pref_key_school = "school";
@@ -193,7 +198,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 		editor.clear();
 		editor.commit();
 		
-		SQLiteDatabase v1_db = c.openOrCreateDatabase(v1_DatabaseName, ContextWrapper.MODE_PRIVATE, null);
 		v1_db.execSQL("CREATE TABLE IF NOT EXISTS Presets (title TEXT, serverUrl TEXT, school TEXT, username TEXT, password TEXT);");
 		Cursor query = v1_db.query("Presets", null, null, null, null, null, null);
 		
