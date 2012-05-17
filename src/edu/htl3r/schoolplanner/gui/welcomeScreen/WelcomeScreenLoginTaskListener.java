@@ -1,3 +1,19 @@
+/* SchoolPlanner4Untis - Android app to manage your Untis timetable
+    Copyright (C) 2011  Mathias Kub <mail@makubi.at>
+			Sebastian Chlan <sebastian@schoolplanner.at>
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 package edu.htl3r.schoolplanner.gui.welcomeScreen;
 
 import android.content.Intent;
@@ -14,12 +30,6 @@ public class WelcomeScreenLoginTaskListener implements OnUpdatePublishingAsyncTa
 	
 	public WelcomeScreenLoginTaskListener(WelcomeScreen welcomeScreen) {
 		this.welcomeScreen = welcomeScreen;
-	}
-	
-	@Override
-	public void onStatusUpdated(String status) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -43,17 +53,12 @@ public class WelcomeScreenLoginTaskListener implements OnUpdatePublishingAsyncTa
 	public void onProgressUpdate(AsyncTaskProgress progress) {
 		String progressMessage = progress.getProgressMessage();
 		String toastMessage = progress.getToastMessage();
-		String status = progress.getStatus();
 		
 		if(progressMessage != null) {
 			welcomeScreen.setInProgress(progressMessage, progress.isShowProgressWheel());
 		}
 		if(toastMessage != null) {
 			welcomeScreen.showToastMessage(toastMessage);
-		}
-		
-		if(status != null) {
-			onStatusUpdated(status);
 		}
 	}
 

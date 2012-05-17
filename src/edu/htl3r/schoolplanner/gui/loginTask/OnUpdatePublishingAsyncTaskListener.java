@@ -22,14 +22,6 @@ package edu.htl3r.schoolplanner.gui.loginTask;
  * @see LoginTask
  */
 public interface OnUpdatePublishingAsyncTaskListener<Result> {
-	/**
-	 * Diese Methode wird aufgerufen, wenn sich der Status des {@link LoginTask} aendert.<br />
-	 * Dies ist z.B. der Fall, wenn der Login oder das Herunterladen der Stammdaten erfolgreich durchgefuehrt werden konnten.
-	 * @param status Status des {@link LoginTask}
-	 * @see LoginTaskStatus
-	 */
-	@Deprecated
-	public void onStatusUpdated(String status);
 	
 	public void onCancelled();
 	

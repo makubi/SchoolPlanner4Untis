@@ -254,7 +254,6 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		return getResources().getColor(resId);
 	}
 
-	@Override
 	public void onStatusUpdated(String status) {
 		if(status.equals(LoginTaskStatus.LOGIN_SUCCESS)) {
 			setLoginSuccess();
