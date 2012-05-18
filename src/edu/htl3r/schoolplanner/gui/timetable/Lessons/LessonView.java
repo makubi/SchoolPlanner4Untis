@@ -27,6 +27,8 @@ import android.graphics.Paint.Style;
 import android.graphics.Typeface;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.util.Log;
+import android.view.LayoutInflater;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
@@ -50,13 +52,12 @@ public class LessonView extends GUIWeekView {
 
 	public LessonView(Context context) {
 		super(context);
-
+		
 		setID(LESSON_ID);
 		paint.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_5));
 		paint.setStyle(Style.FILL);
 		paint.setTextSize(23);
 		paint.setAntiAlias(true);
-
 	}
 
 	@Override
@@ -235,9 +236,19 @@ public class LessonView extends GUIWeekView {
 
 			if (vt.size() != 0) {
 				String bcolor = vt.get(0).getBackColor();
+			
 				if (!bcolor.equalsIgnoreCase("")) {
-					setBackgroundColor(Color.parseColor("#55" + bcolor));
-					return Color.parseColor("#55" + bcolor);
+					if(bcolor.length() == 6){
+						setBackgroundColor(Color.parseColor("#55" + bcolor));
+						return Color.parseColor("#55" + bcolor);
+					}
+					
+					if(bcolor.length() == 8){
+						bcolor = bcolor.substring(2);
+						setBackgroundColor(Color.parseColor("#55" + bcolor));
+						return Color.parseColor("#55" + bcolor);
+					}
+					
 				}
 			}
 		}

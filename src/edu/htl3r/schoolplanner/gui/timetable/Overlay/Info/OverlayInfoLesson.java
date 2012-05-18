@@ -152,8 +152,19 @@ public class OverlayInfoLesson extends ViewGroup {
 
 		if (vt.size() != 0) {
 			String bcolor = vt.get(0).getBackColor();
+			bcolor = "ff" + bcolor;
 			if (!bcolor.equalsIgnoreCase("")) {
-				return Color.parseColor("#55" + bcolor);
+				if(bcolor.length() == 6){
+					setBackgroundColor(Color.parseColor("#55" + bcolor));
+					return Color.parseColor("#55" + bcolor);
+				}
+				
+				if(bcolor.length() == 8){
+					bcolor = bcolor.substring(2);
+					setBackgroundColor(Color.parseColor("#55" + bcolor));
+					return Color.parseColor("#55" + bcolor);
+				}
+				
 			}
 		}
 		return Color.WHITE;

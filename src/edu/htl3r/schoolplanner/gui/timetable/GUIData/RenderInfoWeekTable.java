@@ -83,9 +83,9 @@ public class RenderInfoWeekTable implements WebUntis {
 			dates.add(DateTimeUtils.iso8601StringToDateTime(string));
 		}
 
-		for (int i = 0; i < 4; i++) {
-			Log.d("basti", "timegrid: " + timegridRaw.getTimegridForDateTimeDay(2+i));
-		}
+//		for (int i = 0; i < 4; i++) {
+//			Log.d("basti", "timegrid: " + timegridRaw.getTimegridForDateTimeDay(2+i));
+//		}
 		HashMap<DateTime, List<TimegridUnit>> timegrid = initTimeGrid(timegridRaw, dates);
 		GUIWeek week = new GUIWeek();
 
