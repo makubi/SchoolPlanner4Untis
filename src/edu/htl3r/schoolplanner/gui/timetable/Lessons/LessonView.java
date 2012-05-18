@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.htl3r.schoolplanner.gui.timetable.Lessons;
 
 import java.util.ArrayList;
@@ -52,9 +52,10 @@ public class LessonView extends GUIWeekView {
 
 	public LessonView(Context context) {
 		super(context);
-		
+
 		setID(LESSON_ID);
-		paint.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_5));
+		paint.setStrokeWidth(getResources().getDimension(
+				R.dimen.gui_stroke_width_5));
 		paint.setStyle(Style.FILL);
 		paint.setTextSize(23);
 		paint.setAntiAlias(true);
@@ -64,15 +65,18 @@ public class LessonView extends GUIWeekView {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		List<Lesson> lessons = giveMeTheCorrectList();
-		int left = getResources().getDimensionPixelSize(R.dimen.gui_lesson_padding_left);
-		int top = getResources().getDimensionPixelSize(R.dimen.gui_lesson_padding_top);
-		int l1l2p = getResources().getDimensionPixelSize(R.dimen.gui_lesson_line1_line1_padding);
+		int left = getResources().getDimensionPixelSize(
+				R.dimen.gui_lesson_padding_left);
+		int top = getResources().getDimensionPixelSize(
+				R.dimen.gui_lesson_padding_top);
+		int l1l2p = getResources().getDimensionPixelSize(
+				R.dimen.gui_lesson_line1_line1_padding);
 		int all = top + l1l2p * 2;
 		boolean extendedView = (all < height) ? true : false;
 
-		if(lessoncontainer.isSomethinStrange() == GUILessonContainer.STRANGE || lessoncontainer.isSomethinStrange() == GUILessonContainer.STRANGE_NORMAL)
+		if (lessoncontainer.isSomethinStrange() == GUILessonContainer.STRANGE
+				|| lessoncontainer.isSomethinStrange() == GUILessonContainer.STRANGE_NORMAL)
 			__paintRedBorder(canvas);
-		
 
 		ArrayList<String> firstline = new ArrayList<String>();
 		ArrayList<String> secondline = new ArrayList<String>();
@@ -90,8 +94,12 @@ public class LessonView extends GUIWeekView {
 				vtthirdline = l.getSchoolRooms();
 
 				if (l.getLessonCode() instanceof LessonCodeSubstitute) {
-					secondline.add(substituteLessonTeacherString((LessonCodeSubstitute) l.getLessonCode()));
-					thirdline.add(substituteLessonRoomString((LessonCodeSubstitute) l.getLessonCode()));
+					secondline
+							.add(substituteLessonTeacherString((LessonCodeSubstitute) l
+									.getLessonCode()));
+					thirdline
+							.add(substituteLessonRoomString((LessonCodeSubstitute) l
+									.getLessonCode()));
 				}
 
 			} else if (viewtype instanceof SchoolTeacher) {
@@ -100,7 +108,9 @@ public class LessonView extends GUIWeekView {
 				vtthirdline = l.getSchoolRooms();
 
 				if (l.getLessonCode() instanceof LessonCodeSubstitute) {
-					thirdline.add(substituteLessonRoomString((LessonCodeSubstitute) l.getLessonCode()));
+					thirdline
+							.add(substituteLessonRoomString((LessonCodeSubstitute) l
+									.getLessonCode()));
 				}
 
 			} else if (viewtype instanceof SchoolRoom) {
@@ -109,7 +119,9 @@ public class LessonView extends GUIWeekView {
 				vtthirdline = l.getSchoolSubjects();
 
 				if (l.getLessonCode() instanceof LessonCodeSubstitute) {
-					secondline.add(substituteLessonTeacherString((LessonCodeSubstitute) l.getLessonCode()));
+					secondline
+							.add(substituteLessonTeacherString((LessonCodeSubstitute) l
+									.getLessonCode()));
 				}
 
 			} else if (viewtype instanceof SchoolSubject) {
@@ -118,8 +130,12 @@ public class LessonView extends GUIWeekView {
 				vtthirdline = l.getSchoolRooms();
 
 				if (l.getLessonCode() instanceof LessonCodeSubstitute) {
-					firstline.add(substituteLessonTeacherString((LessonCodeSubstitute) l.getLessonCode()));
-					thirdline.add(substituteLessonRoomString((LessonCodeSubstitute) l.getLessonCode()));
+					firstline
+							.add(substituteLessonTeacherString((LessonCodeSubstitute) l
+									.getLessonCode()));
+					thirdline
+							.add(substituteLessonRoomString((LessonCodeSubstitute) l
+									.getLessonCode()));
 				}
 			}
 
@@ -142,12 +158,14 @@ public class LessonView extends GUIWeekView {
 
 		TextPaint tp = new TextPaint(paint);
 		tp.setTypeface(Typeface.DEFAULT_BOLD);
-		tp.setTextSize(getResources().getDimension(R.dimen.gui_lesson_line1_size));
+		tp.setTextSize(getResources().getDimension(
+				R.dimen.gui_lesson_line1_size));
 
 		String line1 = prepareListForDisplay(firstline, tp);
 		canvas.drawText(line1, left, top, tp);
 
-		tp.setTextSize(getResources().getDimension(R.dimen.gui_lesson_line2_size));
+		tp.setTextSize(getResources().getDimension(
+				R.dimen.gui_lesson_line2_size));
 		tp.setTypeface(Typeface.DEFAULT);
 		String line2 = prepareListForDisplay(secondline, tp);
 		canvas.drawText(line2, left, l1l2p + top, tp);
@@ -226,7 +244,7 @@ public class LessonView extends GUIWeekView {
 			if (viewtype instanceof SchoolClass) {
 				vt = lessons.get(0).getSchoolSubjects();
 			} else if (viewtype instanceof SchoolTeacher) {
-				//vt = lessons.get(0).getSchoolClasses();
+				// vt = lessons.get(0).getSchoolClasses();
 				vt = lessons.get(0).getSchoolSubjects();
 			} else if (viewtype instanceof SchoolRoom) {
 				vt = lessons.get(0).getSchoolClasses();
@@ -236,37 +254,36 @@ public class LessonView extends GUIWeekView {
 
 			if (vt.size() != 0) {
 				String bcolor = vt.get(0).getBackColor();
-			
 				if (!bcolor.equalsIgnoreCase("")) {
-					if(bcolor.length() == 6){
-						setBackgroundColor(Color.parseColor("#55" + bcolor));
-						return Color.parseColor("#55" + bcolor);
+
+					int color;
+					try {
+						color = Color.parseColor("#" + bcolor);
+					} catch (RuntimeException e) {
+						return Color.WHITE;
 					}
-					
-					if(bcolor.length() == 8){
-						bcolor = bcolor.substring(2);
-						setBackgroundColor(Color.parseColor("#55" + bcolor));
-						return Color.parseColor("#55" + bcolor);
-					}
-					
+					color = Color.argb(85, Color.red(color), Color.green(color),Color.blue(color));
+					setBackgroundColor(color);
+					return color;
 				}
 			}
 		}
 		return Color.WHITE;
 	}
-	
-	private void setTextColor(int color){
+
+	private void setTextColor(int color) {
 		int red = Color.red(color);
 		int green = Color.green(color);
 		int blue = Color.blue(color);
-		
-		
-		// Magisch Formel von: http://www.nbdtech.com/Blog/archive/2008/04/27/Calculating-the-Perceived-Brightness-of-a-Color.aspx
-		double brightness =  Math.sqrt( red * red * .241 + green * green * .691 +  blue * blue * .068);
-		
-		if(brightness > 100){
+
+		// Magisch Formel von:
+		// http://www.nbdtech.com/Blog/archive/2008/04/27/Calculating-the-Perceived-Brightness-of-a-Color.aspx
+		double brightness = Math.sqrt(red * red * .241 + green * green * .691
+				+ blue * blue * .068);
+
+		if (brightness > 100) {
 			paint.setColor(Color.BLACK);
-		}else{
+		} else {
 			paint.setColor(Color.WHITE);
 
 		}
@@ -276,18 +293,24 @@ public class LessonView extends GUIWeekView {
 		Paint p = new Paint();
 		p.setColor(Color.RED);
 		p.setAlpha(100);
-		p.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_8));
+		p.setStrokeWidth(getResources()
+				.getDimension(R.dimen.gui_stroke_width_8));
 		p.setStyle(Style.STROKE);
 		p.setAntiAlias(true);
 
-		int halfborder = getResources().getDimensionPixelSize(R.dimen.gui_stroke_width_4)/2;
+		int halfborder = getResources().getDimensionPixelSize(
+				R.dimen.gui_stroke_width_4) / 2;
 		c.drawLine(0, 0, width + halfborder, 0, p);
 		c.drawLine(0, 0, 0, height + halfborder, p);
-		c.drawLine(0, height + halfborder, width + halfborder, height + halfborder, p);
-		c.drawLine(width + halfborder, 0, width + halfborder, height + halfborder, p);
+		c.drawLine(0, height + halfborder, width + halfborder, height
+				+ halfborder, p);
+		c.drawLine(width + halfborder, 0, width + halfborder, height
+				+ halfborder, p);
 
-		if (lessoncontainer.allCancelled() && lessoncontainer.isSomethinStrange() != GUILessonContainer.STRANGE_NORMAL) {
-			p.setStrokeWidth(getResources().getDimension(R.dimen.gui_stroke_width_4));
+		if (lessoncontainer.allCancelled()
+				&& lessoncontainer.isSomethinStrange() != GUILessonContainer.STRANGE_NORMAL) {
+			p.setStrokeWidth(getResources().getDimension(
+					R.dimen.gui_stroke_width_4));
 			c.drawLine(0, 0, width + 2, height + 2, p);
 		}
 	}
@@ -303,20 +326,22 @@ public class LessonView extends GUIWeekView {
 	public ViewType getViewType() {
 		return viewtype;
 	}
-	
-	private List<Lesson> giveMeTheCorrectList(){
+
+	private List<Lesson> giveMeTheCorrectList() {
 		List<Lesson> lessons = new ArrayList<Lesson>();
-		
-		switch(lessoncontainer.isSomethinStrange()){
+
+		switch (lessoncontainer.isSomethinStrange()) {
 		case GUILessonContainer.NORMAL:
 			lessons = lessoncontainer.getStandardLessons();
 			break;
 		case GUILessonContainer.STRANGE:
-			if (lessoncontainer.allCancelled()) {					//Wurde alle Stunden gestrichen?
+			if (lessoncontainer.allCancelled()) { // Wurde alle Stunden
+													// gestrichen?
 				lessons = lessoncontainer.getSpecialLessons();
-			} else if (lessoncontainer.containsSubsituteLesson()) {	// Gibt es Supplierstunden?
+			} else if (lessoncontainer.containsSubsituteLesson()) { // Gibt es
+																	// Supplierstunden?
 				lessons = lessoncontainer.getAllLessons();
-			} else {												//Zeige die 
+			} else { // Zeige die
 				lessons = lessoncontainer.getIrregularLessons();
 			}
 			break;
@@ -324,7 +349,7 @@ public class LessonView extends GUIWeekView {
 			lessons = lessoncontainer.getAllLessons();
 			break;
 		}
-		
+
 		return lessons;
 	}
 

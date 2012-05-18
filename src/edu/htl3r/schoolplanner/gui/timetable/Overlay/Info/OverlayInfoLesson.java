@@ -149,22 +149,19 @@ public class OverlayInfoLesson extends ViewGroup {
 		} else if (viewtype instanceof SchoolSubject) {
 			vt = lesson.getSchoolTeachers();
 		}
-
 		if (vt.size() != 0) {
 			String bcolor = vt.get(0).getBackColor();
-			bcolor = "ff" + bcolor;
 			if (!bcolor.equalsIgnoreCase("")) {
-				if(bcolor.length() == 6){
-					setBackgroundColor(Color.parseColor("#55" + bcolor));
-					return Color.parseColor("#55" + bcolor);
+
+				int color;
+				try {
+					color = Color.parseColor("#" + bcolor);
+				} catch (RuntimeException e) {
+					return Color.WHITE;
 				}
-				
-				if(bcolor.length() == 8){
-					bcolor = bcolor.substring(2);
-					setBackgroundColor(Color.parseColor("#55" + bcolor));
-					return Color.parseColor("#55" + bcolor);
-				}
-				
+				color = Color.argb(85, Color.red(color), Color.green(color),Color.blue(color));
+				setBackgroundColor(color);
+				return color;
 			}
 		}
 		return Color.WHITE;
