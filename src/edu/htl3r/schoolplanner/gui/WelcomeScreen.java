@@ -22,6 +22,7 @@ import java.util.concurrent.ExecutionException;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.gui.loginTask.LoginTask;
 import edu.htl3r.schoolplanner.gui.startup_wizard.StartupWizardIntroduction;
+import edu.htl3r.schoolplanner.gui.startup_wizard.expert.StartupWizardLoginInformationExpert;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenContextMenu;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenLoginTaskListener;
@@ -84,6 +86,7 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		loginListener.addListener(new WelcomeScreenLoginTaskListener(this));
 		mainListView.setOnItemClickListener(loginListener);
 		initContextMenu();
+		checkIfStartedByIntent();
 	}
 	
 	@Override
@@ -103,6 +106,35 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 			if(loginSet != null) {
 				loginListener.performLogin(loginSet);
 			}
+		}
+	}
+	
+	private void checkIfStartedByIntent(){
+		Intent intent = getIntent();
+		if(Intent.ACTION_VIEW.equals(intent.getAction())){
+			Uri uri = intent.getData();
+			String school_url = uri.getQueryParameter(LoginSetConstants.serverUrlKey);
+			String school = uri.getQueryParameter(LoginSetConstants.schoolKey);
+			String user = uri.getQueryParameter(LoginSetConstants.usernameKey);
+			String pass = uri.getQueryParameter(LoginSetConstants.passwordKey);
+			String name = uri.getQueryParameter(LoginSetConstants.usernameKey);
+			boolean ssl = Boolean.parseBoolean(uri.getQueryParameter(LoginSetConstants.sslOnlyKey));
+			Log.d("basti","URL: " + school_url +
+					"Schule: " + school +
+					"\nUser: " + user +
+					"\nPasswort: " + pass +
+					"\nName: " + name +
+					"\nSSL: " + ssl);
+   	
+	    	Intent loginSetEditor = new Intent(this, StartupWizardLoginInformationExpert.class);
+	    	loginSetEditor.putExtra(LoginSetConstants.nameKey, name);
+	    	loginSetEditor.putExtra(LoginSetConstants.serverUrlKey, school_url);
+	    	loginSetEditor.putExtra(LoginSetConstants.schoolKey, school);
+	    	loginSetEditor.putExtra(LoginSetConstants.usernameKey, user);
+	    	loginSetEditor.putExtra(LoginSetConstants.passwordKey, pass);
+	    	loginSetEditor.putExtra(LoginSetConstants.sslOnlyKey, ssl);
+	    	
+	    	startActivityForResult(loginSetEditor, STARTUP_WIZARD_INTRODUCTION_REQUEST_CODE);
 		}
 	}
 	

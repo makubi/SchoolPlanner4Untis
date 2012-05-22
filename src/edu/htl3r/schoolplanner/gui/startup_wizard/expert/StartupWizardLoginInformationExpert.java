@@ -71,9 +71,20 @@ public class StartupWizardLoginInformationExpert extends LoginInformationForm {
 		intent.putExtra(LoginSetConstants.sslOnlyKey, isSslOnly());
 	}
 
+	private void insertDataIntoFieldsIfIntent(){
+		Bundle extra = getIntent().getExtras();
+		initInputFields(extra.getString(LoginSetConstants.nameKey), 
+				extra.getString(LoginSetConstants.serverUrlKey), 
+				extra.getString(LoginSetConstants.schoolKey), 
+				extra.getString(LoginSetConstants.usernameKey), 
+				extra.getString(LoginSetConstants.passwordKey), 
+				extra.getBoolean(LoginSetConstants.sslOnlyKey));
+	}
+	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		thisActivity = this;
+		insertDataIntoFieldsIfIntent();
 	}
 }
