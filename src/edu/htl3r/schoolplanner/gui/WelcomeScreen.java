@@ -117,8 +117,9 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 			String school = uri.getQueryParameter(LoginSetConstants.schoolKey);
 			String user = uri.getQueryParameter(LoginSetConstants.usernameKey);
 			String pass = uri.getQueryParameter(LoginSetConstants.passwordKey);
-			String name = uri.getQueryParameter(LoginSetConstants.usernameKey);
+			String name = uri.getQueryParameter(LoginSetConstants.nameKey);
 			boolean ssl = Boolean.parseBoolean(uri.getQueryParameter(LoginSetConstants.sslOnlyKey));
+			Log.d("basti",uri.toString());
 			Log.d("basti","URL: " + school_url +
 					"Schule: " + school +
 					"\nUser: " + user +
