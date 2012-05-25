@@ -239,8 +239,10 @@ public class WeekLayout extends ViewGroup{
 				lv.setNeededData(lessonsContainer, week.getViewType());
 				
 				
-				if(!lessonsContainer.isEmpty())
+				if(!lessonsContainer.isEmpty()){
 					lv.setOnClickListener(clicklistener);
+				}
+				
 				this.addView(lv);
 			}
 		}
