@@ -43,13 +43,13 @@ public class BARefreshAction extends BAAction{
 	}
 	
 	public void startProgressBar(boolean scroll){
-		progressbar.bringToFront();
+//		progressbar.bringToFront();
 		if(scroll){
 			progressbar.setVisibility(VISIBLE);
 			icon.setVisibility(INVISIBLE);
 		}else{
-			progressbar.setVisibility(INVISIBLE);
 			icon.setVisibility(VISIBLE);
+			progressbar.setVisibility(INVISIBLE);
 		}
 	}
 	
