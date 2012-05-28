@@ -21,23 +21,22 @@ import android.util.AttributeSet;
 import android.widget.ProgressBar;
 import edu.htl3r.schoolplanner.R;
 
-public class BAHomeAction extends BAAction{
+public class BARefreshAction extends BAAction{
 
 	
 	private ProgressBar progressbar;
 	
-	public BAHomeAction(Context context) {
+	public BARefreshAction(Context context) {
 		super(context);
 	}
 	
-	public BAHomeAction(Context context, AttributeSet attrs) {
+	public BARefreshAction(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 	
-	public BAHomeAction(Context context, AttributeSet attrs, int defStyle){
+	public BARefreshAction(Context context, AttributeSet attrs, int defStyle){
 		super(context, attrs, defStyle);
 	}
-	
 	
 	public void initProgressBar(){
 		progressbar = (ProgressBar)findViewById(R.id.baactionbar_home_progress);
@@ -47,8 +46,10 @@ public class BAHomeAction extends BAAction{
 		progressbar.bringToFront();
 		if(scroll){
 			progressbar.setVisibility(VISIBLE);
+			icon.setVisibility(INVISIBLE);
 		}else{
 			progressbar.setVisibility(INVISIBLE);
+			icon.setVisibility(VISIBLE);
 		}
 	}
 	
