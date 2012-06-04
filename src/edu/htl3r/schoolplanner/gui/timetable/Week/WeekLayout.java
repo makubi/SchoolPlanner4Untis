@@ -177,6 +177,7 @@ public class WeekLayout extends ViewGroup{
 					}
 				}
 				c.layout(l + (BORDERWIDTH / 2), t + (BORDERWIDTH / 2), r - (BORDERWIDTH / 2), b - (BORDERWIDTH / 2));
+				//c.layout(l + (BORDERWIDTH), t + (BORDERWIDTH), r - (BORDERWIDTH), b - (BORDERWIDTH));
 				break;
 
 			case GUIWeekView.HEADER_ID:
@@ -239,8 +240,10 @@ public class WeekLayout extends ViewGroup{
 				lv.setNeededData(lessonsContainer, week.getViewType());
 				
 				
-				if(!lessonsContainer.isEmpty())
+				if(!lessonsContainer.isEmpty()){
 					lv.setOnClickListener(clicklistener);
+				}
+				
 				this.addView(lv);
 			}
 		}
