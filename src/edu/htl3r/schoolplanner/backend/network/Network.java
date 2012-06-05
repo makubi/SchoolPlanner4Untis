@@ -57,6 +57,7 @@ import android.util.Log;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.network.exceptions.SSLForcedButUnavailableException;
+import edu.htl3r.schoolplanner.backend.network.exceptions.WrongPortNumberException;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 
 /**
@@ -200,7 +201,7 @@ public class Network {
 		}
 	}
 
-	public String getResponse(String request) throws IOException {		
+	public String getResponse(String request) throws Exception {		
 		return executeRequest(request);
 	}
 	
@@ -212,7 +213,7 @@ public class Network {
 	 * @return Antwort auf die Anfrage
 	 * @throws IOException Wenn waehrend der Uebertragung ein Fehler auftritt
 	 */
-	private String executeRequest(String request) throws IOException {
+	private String executeRequest(String request) throws Exception {
 		checkPreferenceChange();
 		
 		HttpPost httpRequest = new HttpPost(usedUrl);
@@ -242,8 +243,8 @@ public class Network {
 		return !(loginCredentials.getServerUrl().equals(oldServerUrl) && loginCredentials.getSchool().equals(oldSchool));
 	}
 	
-	private void checkPreferenceChange() throws IOException {
-		if(preferencesChanged()) {
+	private void checkPreferenceChange() throws Exception {
+		if(preferencesChanged()) {			
 			String serverUrl = loginCredentials.getServerUrl();
 			String school = loginCredentials.getSchool();
 			
@@ -251,6 +252,11 @@ public class Network {
 				jsessionid = null;
 				
 				setServerUrl(serverUrl);
+				
+				int port = httpsServerUrl.getPort();
+				if(!properPort(port)) {
+					throw new WrongPortNumberException("Wrong port: " + port);
+				}
 				
 				initSSLSchemes();
 				checkServerCapability();
@@ -264,6 +270,15 @@ public class Network {
 			oldServerUrl = new String(serverUrl);
 			oldSchool = new String(school);
 		}
+	}
+
+	/**
+	 * Ueberprueft, ob ein passender oder gar kein Port angegeben wurde.
+	 * @param port Port, der ueberprueft werden soll
+	 * @return 'true', wenn der Port zwischen -1 (inkl.) und 65535 (inkl.) liegt
+	 */
+	private boolean properPort(int port) {
+		return port >= -1 && port <= 65535;
 	}
 
 	/**

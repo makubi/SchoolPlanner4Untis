@@ -14,4 +14,6 @@
     <string name="error_socket_timeout">Verbindung lief ins Timeout. Bitte überprüfen Sie Ihre Internet-Verbindung und versuchen Sie es erneut.</string>
     
     <string name="error_network_needed_but_unavailable">Sie sind mit keinem Netzwerk verbunden. Einloggen nicht möglich.</string>
+    
+    <string name="error_wrong_port_number">Falsche Portnummer. Bitte überprüfen Sie Ihre Server URL.</string>
 </resources>

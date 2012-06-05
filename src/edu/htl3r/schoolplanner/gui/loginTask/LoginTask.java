@@ -238,6 +238,10 @@ public class LoginTask implements OnItemClickListener, Serializable {
 							errorMessage = getString(R.string.error_network_needed_but_unavailable);
 							break;
 							
+						case ErrorCodes.WRONG_PORT_NUMBER:
+							errorMessage = getString(R.string.error_wrong_port_number);
+							break;
+							
 						default:
 							errorMessage = getString(R.string.error_occurred) + " "+errorCode+" ::: "+additionalInfo;
 							Log.e("login","========== ERROR");

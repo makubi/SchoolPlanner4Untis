@@ -43,6 +43,7 @@ import edu.htl3r.schoolplanner.backend.UnsaveDataSourceMasterdataProvider;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceTimetableDataProvider;
 import edu.htl3r.schoolplanner.backend.network.exceptions.SSLForcedButUnavailableException;
 import edu.htl3r.schoolplanner.backend.network.exceptions.WebUntisServiceException;
+import edu.htl3r.schoolplanner.backend.network.exceptions.WrongPortNumberException;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
@@ -106,7 +107,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	 * @throws IOException
 	 */
 	private JSONObject getJSONData(final JSONObject request)
-			throws IOException, JSONException {
+			throws Exception {
 		JSONObject response = parseData(network.getResponse(request.toString()));
 		if(response.has(JSONResponseObjectKeys.ERROR)) {
 			JSONObject errorObject = response.getJSONObject(JSONResponseObjectKeys.ERROR);
@@ -144,7 +145,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	}
 
 	private JSONObject requestList(String id, String method)
-			throws JSONException, IOException {
+			throws Exception {
 		final JSONObject request = new JSONObject();
 
 		request.put(JSONRequestObjectKeys.JSON_RPC_VERSION, JSON_RPC_VERSION);
@@ -183,9 +184,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 				}
 
 			}
-		} catch (JSONException e) {
-			data.setErrorMessage(getErrorMessage(e));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			data.setErrorMessage(getErrorMessage(e));
 		}
 
@@ -225,9 +224,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 				Log.w("JSON", "Unknown request method: " + method);
 			}
 
-		} catch (JSONException e) {
-			data.setErrorMessage(getErrorMessage(e));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			data.setErrorMessage(getErrorMessage(e));
 		}
 		return data;
@@ -260,9 +257,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 				Log.w("JSON", "Unknown request method: " + method);
 			}
 
-		} catch (JSONException e) {
-			data.setErrorMessage(getErrorMessage(e));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			data.setErrorMessage(getErrorMessage(e));
 		}
 		return data;
@@ -427,9 +422,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			JSONObject result = response.getJSONObject(JSONResponseObjectKeys.RESULT);
 			List<StatusData> statusData = jsonParser.jsonToStatusData(result);
 			data.setData(statusData);
-		} catch (JSONException e) {
-			data.setErrorMessage(getErrorMessage(e));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			data.setErrorMessage(getErrorMessage(e));
 		}
 	
@@ -526,9 +519,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 				data.setErrorMessage(errorMessage);
 			}
 	
-		} catch (JSONException e) {
-			data.setErrorMessage(getErrorMessage(e));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			data.setErrorMessage(getErrorMessage(e));
 		}
 	
@@ -596,9 +587,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 					}
 				}
 			}
-		} catch (JSONException e) {
-			data.setErrorMessage(getErrorMessage(e));
-		} catch (IOException e) {
+		} catch (Exception e) {
 			data.setErrorMessage(getErrorMessage(e));
 		}
 		return data;
@@ -622,7 +611,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			JSONObject response = requestList(id, method);
 			latestImport = response.getLong(JSONResponseObjectKeys.RESULT);
 			Log.v("Misc", "Last import time: " + response.get(JSONResponseObjectKeys.RESULT));
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			Log.e("JSON", "Unable to parse JSON-String", e);
 		}
 
@@ -659,26 +648,19 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		network.setLoginCredentials(loginSet);
 	}
 	
-	private ErrorMessage getErrorMessage(IOException e) {
+	private ErrorMessage getErrorMessage(Exception e) {
 		ErrorMessage errorMessage = new ErrorMessage();
 		int errorCode = ErrorCodes.IO_EXCEPTION;
 		
-		if(e instanceof HttpHostConnectException) errorCode = ErrorCodes.HTTP_HOST_CONNECTION_EXCEPTION;
+		if(e instanceof JSONException) {
+			errorCode = ErrorCodes.JSON_EXCEPTION;
+		}
+		else if (e instanceof HttpHostConnectException) errorCode = ErrorCodes.HTTP_HOST_CONNECTION_EXCEPTION;
 		else if (e instanceof UnknownHostException) errorCode = ErrorCodes.UNKNOWN_HOST_EXCEPTION;
 		else if (e instanceof SSLForcedButUnavailableException) errorCode = ErrorCodes.SSL_FORCED_BUT_UNAVAILABLE;
 		else if (e instanceof SocketTimeoutException) errorCode = ErrorCodes.SOCKET_TIMEOUT_EXCEPTION;
+		else if (e instanceof WrongPortNumberException) errorCode = ErrorCodes.WRONG_PORT_NUMBER;
 			
-		errorMessage.setErrorCode(errorCode);
-		errorMessage.setException(e);
-		
-		return errorMessage;
-	}
-	
-
-	private ErrorMessage getErrorMessage(JSONException e) {
-		ErrorMessage errorMessage = new ErrorMessage();
-		int errorCode = ErrorCodes.JSON_EXCEPTION;
-		
 		errorMessage.setErrorCode(errorCode);
 		errorMessage.setException(e);
 		

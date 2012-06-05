@@ -14,4 +14,6 @@
     <string name="error_socket_timeout">Connection timed out. Please check your internet connection and try again.</string>
     
     <string name="error_network_needed_but_unavailable">You are not connected to a network. Unable to login.</string>
+    
+    <string name="error_wrong_port_number">Wrong port number. Please check your server url.</string>
 </resources>

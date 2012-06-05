@@ -14,18 +14,15 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.backend.network;
 
-public interface ErrorCodes {
+package edu.htl3r.schoolplanner.backend.network.exceptions;
 
-	public static int JSON_EXCEPTION = 255;
-	public static int IO_EXCEPTION = 256;
-	public static int HTTP_HOST_CONNECTION_EXCEPTION = 1;
-	public static int UNKNOWN_HOST_EXCEPTION = 2;
-	public static int SSL_FORCED_BUT_UNAVAILABLE = 3;
-	public static int WEBUNTIS_SERVICE_EXCEPTION = 4;
-	public static int SOCKET_TIMEOUT_EXCEPTION = 5;
-	public static int NETWORK_NEEDED_BUT_UNAVAILABLE = 6;
-	public static int WRONG_PORT_NUMBER = 7;
+public class WrongPortNumberException extends IllegalArgumentException {
 	
+	private static final long serialVersionUID = -6485900771586955522L;
+	
+	public WrongPortNumberException(String detailMessage) {
+		super(detailMessage);
+	}
+
 }
