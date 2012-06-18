@@ -9,7 +9,7 @@
     
     <string name="error_webuntis_no_right_for_timetable">No right to display timetable</string>
     
-    <string name="json_exception">Unable to parse JSON data. Please check your server url.</string>
+    <string name="json_exception">Unable to parse JSON data. Please check your server url and school name.</string>
     
     <string name="error_socket_timeout">Connection timed out. Please check your internet connection and try again.</string>
     
