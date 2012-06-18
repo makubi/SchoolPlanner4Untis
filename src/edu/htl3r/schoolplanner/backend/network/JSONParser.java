@@ -35,7 +35,6 @@ import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCode;
@@ -172,8 +171,8 @@ public class JSONParser {
 	 * @return Eine Liste mit freien Tagen
 	 * @throws JSONException Wenn beim Abfragen der JSON-Daten ein Fehler auftritt
 	 */
-	public List<SchoolObject> jsonToHolidayList(JSONArray result) throws JSONException {
-		List<SchoolObject> schoolHolidayList = new ArrayList<SchoolObject>();
+	public List<SchoolHoliday> jsonToHolidayList(JSONArray result) throws JSONException {
+		List<SchoolHoliday> schoolHolidayList = new ArrayList<SchoolHoliday>();
 
 		for (int i = 0; i < result.length(); i++) {
 			SchoolHoliday schoolHolidayObject = new SchoolHoliday();
@@ -208,7 +207,7 @@ public class JSONParser {
 	 * @return Das initialisierte Zeitraster
 	 * @throws JSONException Wenn ein Fehler beim Abfragen der JSON-Daten auftritt
 	 */
-	public SchoolObject jsonToTimegrid(JSONArray result) throws JSONException {
+	public Timegrid jsonToTimegrid(JSONArray result) throws JSONException {
 		Timegrid timegrid = new Timegrid();
 		for (int i = 0; i < result.length(); i++) {
 			JSONObject timegridObject = result.getJSONObject(i);
@@ -336,7 +335,7 @@ public class JSONParser {
 	 * @throws JSONException Wird geworfen, wenn ein Fehler beim Abfragen der Daten aus den JSON-Objekten auftritt. Z.B. wenn ein benoetigter Parameter fehlt oder die Struktur des JSON-Objekts nicht passend ist
 	 * @throws IOException Wird geworfen, wenn beim Abfragen der Lehrer-, Klassen-, etc.-Listen ein Fehler auftritt
 	 */
-	public Map<String, List<Lesson>> jsonToLessonMap(JSONArray result) throws JSONException, IOException {
+	public Map<String, List<Lesson>> jsonToLessonMap(JSONArray result) throws JSONException {
 		// TODO Reagieren auf nicht-verfuegbare Listen
 		List<SchoolClass> schoolClassList = cache.getSchoolClassList().getData();
 		List<SchoolTeacher> schoolTeacherList = cache.getSchoolTeacherList().getData();

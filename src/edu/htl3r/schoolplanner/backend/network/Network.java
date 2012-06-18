@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLSocket;
 
 import org.apache.http.HttpResponse;
@@ -74,19 +73,14 @@ public class Network {
 	
 	private LoginSet loginCredentials;
 	
-	private URI serverUrl;
-	private URI httpsServerUrl;
-	
-	private URI usedUrl;
+	private URI url;
 	
 	private String jsessionid;
 	
 	// Prioritized
 	private SSLSocketFactory[] sslSocketFactories = new SSLSocketFactory[2];
 	private Scheme[] sslSchemes = new Scheme[2];
-	
-	boolean sslAvailable = true;
-	
+		
 	public Network() {
 		initSSLSocketFactories();
 		
@@ -119,9 +113,9 @@ public class Network {
 	/**
 	 * Initialisiert alle {@link Scheme}s fuer HTTPS.
 	 */
-	private void initSSLSchemes() {
-		sslSchemes[0] = new Scheme("https", sslSocketFactories[0], httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
-		sslSchemes[1] = new Scheme("https", sslSocketFactories[1], httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
+	private void initSSLSchemes(URI url) {
+		sslSchemes[0] = new Scheme("https", sslSocketFactories[0], url.getPort() != -1 ? url.getPort() : 443);
+		sslSchemes[1] = new Scheme("https", sslSocketFactories[1], url.getPort() != -1 ? url.getPort() : 443);
 	}
 
 	/**
@@ -152,17 +146,13 @@ public class Network {
 	
 	/**
 	 * Ueberprueft, ob der Server SSL unterstuetzt oder nicht und registriert die passenden {@link Scheme}s fuer die spaetere Verwendung.
+	 * @return 
 	 * @throws IOException Wenn die URL nicht zur Uebertragung verwendet werden kann
 	 */
-	private void checkServerCapability() throws IOException {
-		final SocketAddress sa;
-		try {
-			sa = new InetSocketAddress(httpsServerUrl.getHost(), httpsServerUrl.getPort() != -1 ? httpsServerUrl.getPort() : 443);
-		}
-		catch (IllegalArgumentException e) {
-			// Thrown, if server url can not be parsed
-			throw new IOException("Unable to parse URL");
-		}
+	private boolean checkServerCapability(URI url) throws IllegalArgumentException {
+		boolean sslAvailable = true;
+		
+		final SocketAddress sa = new InetSocketAddress(url.getHost(), url.getPort() != -1 ? url.getPort() : 443);
 		
 		try {
 			Map<SSLSocket, Scheme> checkSocketsToSchemeMapping = new HashMap<SSLSocket, Scheme>();			
@@ -179,7 +169,8 @@ public class Network {
 			sslAvailable = false;
 			registerSchemes();
 		}
-		Log.i("Network", "SSL available: "+sslAvailable);
+		
+		return sslAvailable;
 	}
 	
 	/**
@@ -194,7 +185,7 @@ public class Network {
 	 * @param scheme Scheme fuer HTTPS, die registriert werden soll
 	 */
 	private void registerSchemes(Scheme scheme) {
-		client.getConnectionManager().getSchemeRegistry().register(new Scheme("http", PlainSocketFactory.getSocketFactory(), serverUrl != null && serverUrl.getPort() != -1 ? serverUrl.getPort() : 80));
+		client.getConnectionManager().getSchemeRegistry().register(new Scheme("http", PlainSocketFactory.getSocketFactory(), url != null && url.getPort() != -1 ? url.getPort() : 80));
 		
 		if(scheme != null) {
 			client.getConnectionManager().getSchemeRegistry().register(scheme);
@@ -216,7 +207,7 @@ public class Network {
 	private String executeRequest(String request) throws Exception {
 		checkPreferenceChange();
 		
-		HttpPost httpRequest = new HttpPost(usedUrl);
+		HttpPost httpRequest = new HttpPost(url);
 
 		if (jsessionid != null) {
 			httpRequest.addHeader("Cookie", "JSESSIONID=" + jsessionid);
@@ -244,31 +235,40 @@ public class Network {
 	}
 	
 	private void checkPreferenceChange() throws Exception {
-		if(preferencesChanged()) {			
-			String serverUrl = loginCredentials.getServerUrl();
+		if(preferencesChanged()) {
+			URI serverUrl = new URI(loginCredentials.getServerUrl());
 			String school = loginCredentials.getSchool();
 			
-			try {
-				jsessionid = null;
-				
-				setServerUrl(serverUrl);
-				
-				int port = httpsServerUrl.getPort();
-				if(!properPort(port)) {
-					throw new WrongPortNumberException("Wrong port: " + port);
-				}
-				
-				initSSLSchemes();
-				checkServerCapability();
-				
-				setSchool(school);
-			} catch (URISyntaxException e) {
-				// Thrown, if server url can not be parsed
-				throw new IOException("Unable to parse URL: " + serverUrl);
+			// JSession-ID zuruecksetzen
+			jsessionid = null;
+			
+			// Port ueberpruefen
+			int port = serverUrl.getPort();
+			if(!properPort(port)) {
+				throw new WrongPortNumberException("Wrong port: " + port);
 			}
 			
-			oldServerUrl = new String(serverUrl);
-			oldSchool = new String(school);
+			// Ueberpruefe, ob SSL verfuegbar ist
+			initSSLSchemes(serverUrl);
+			boolean sslAvailable = checkServerCapability(new URI("https://"+serverUrl.toString()));
+			Log.i("Network", "SSL available: "+sslAvailable);
+			
+			// Ueberpruefe ob SSL erzwungen und verfuegbar ist
+			if(loginCredentials.isSslOnly() && !sslAvailable) {
+				throw new SSLForcedButUnavailableException(serverUrl.toString()+":"+serverUrl.getPort()+" does not have SSL enabled");
+			}
+			
+			// Vervollstaendige Server-URL
+			serverUrl = addProtocol(serverUrl, sslAvailable);
+			serverUrl = addTrail(serverUrl);
+			serverUrl = addSchool(serverUrl, school);
+			
+			oldServerUrl = new String(loginCredentials.getServerUrl());
+			oldSchool = new String(loginCredentials.getSchool());
+			
+			this.url = serverUrl;
+			
+			Log.d("Network", "Setting url: "+url.toString());
 		}
 	}
 
@@ -281,38 +281,8 @@ public class Network {
 		return port >= -1 && port <= 65535;
 	}
 
-	/**
-	 * Setzt den Namen der Schule, die als GET-Parameter in der Request-URL verwendet werden soll .
-	 * @param school Name der zu verwendenden Schule
-	 * @throws UnsupportedEncodingException Wenn die Kodierung nicht unterstuetzt wird
-	 * @throws URISyntaxException Wenn die URL nicht gesetzt werden konnte
-	 */
-	private void setSchool(String school) throws UnsupportedEncodingException, URISyntaxException, SSLException {
-			// Encode school as UTF-8 string
-			String encodedSchool = URLEncoder.encode(school, "UTF-8");
-			
-			if(loginCredentials.isSslOnly() && !sslAvailable) {
-				throw new SSLForcedButUnavailableException(httpsServerUrl.toString()+":"+httpsServerUrl.getPort()+" does not have SSL enabled");
-			}
-			else {
-				usedUrl = sslAvailable ? new URI(httpsServerUrl + "?school=" + encodedSchool) : new URI(serverUrl + "?school=" + encodedSchool);
-			}
-			
-			Log.d("Network", "Setting url: "+usedUrl.toString());
-	}
-
 	public void setJsessionid(String jsessionid) {
 		this.jsessionid = jsessionid;
-	}
-
-	/**
-	 * Setzt die URL des Servers (inklusive Port).
-	 * @param serverUrl URL des Servers inklusive Port
-	 * @throws URISyntaxException Wenn die URL nicht geparst werden konnte
-	 */
-	private void setServerUrl(String serverUrl) throws URISyntaxException {
-			this.serverUrl = new URI("http://"+serverUrl+"/WebUntis/jsonrpc.do");
-			this.httpsServerUrl = new URI("https://"+serverUrl+"/WebUntis/jsonrpc.do");
 	}
 	
 	private SSLSocketFactory additionalCASSLSocketFactory() {
@@ -335,6 +305,17 @@ public class Network {
 		this.loginCredentials = loginSet;
 	}
 	
+	private URI addProtocol(URI url, boolean ssl) throws URISyntaxException {
+		return new URI((ssl ? "https" : "http") + "://" + url.toString());
+	}
 	
+	private URI addTrail(URI url) throws URISyntaxException {
+		return new URI(url.toString() + "/WebUntis/jsonrpc.do");
+	}
+	
+	private URI addSchool(URI url, String school) throws URISyntaxException, UnsupportedEncodingException {
+		String encodedSchool = URLEncoder.encode(school, "UTF-8");
+		return new URI(url.toString() + "?school=" + encodedSchool);
+	}
 	
 }

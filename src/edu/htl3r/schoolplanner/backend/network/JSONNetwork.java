@@ -1,7 +1,6 @@
 /* SchoolPlanner4Untis - Android app to manage your Untis timetable
-    Copyright (C) 2011  Mathias Kub <mail@makubi.at>
-						Gerald Schreiber <mail@gerald-schreiber.at>
-						Philip Woelfel <philip@woelfel.at>
+    Copyright (C) 2011  Mathias Kub <mathias@schoolplanner.at>
+    					Sebastian Chlan <sebastian@schoolplanner.at>
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -21,7 +20,6 @@ package edu.htl3r.schoolplanner.backend.network;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +44,6 @@ import edu.htl3r.schoolplanner.backend.network.exceptions.WebUntisServiceExcepti
 import edu.htl3r.schoolplanner.backend.network.exceptions.WrongPortNumberException;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
@@ -76,12 +73,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	public String getNextID() {
 		return "" + id++;
 	}
-
-	/**
-	 * Zeitpunkt, wann das letzte mal der Stundenplan importiert wurde.
-	 */
-	private long latestTimetableImportTime = 0;
-
+	
 	/**
 	 * Mapping der internen ViewType-Klassen auf die Nummern, die sie jeweils in
 	 * WebUntis haben.
@@ -98,26 +90,40 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	}
 
 	/**
-	 * Liefert die Daten zu einer JSON-Anfrage.
+	 * Liefert die Daten zu einer JSON-Anfrage oder die ErrorMessage, falls ein Error aufgetreten ist.
 	 * 
 	 * @param request
 	 *            JSON-Anfrage
 	 * @return Antwort auf die Anfrage
-	 * @throws JSONException
-	 * @throws IOException
 	 */
-	private JSONObject getJSONData(final JSONObject request)
-			throws Exception {
-		JSONObject response = parseData(network.getResponse(request.toString()));
-		if(response.has(JSONResponseObjectKeys.ERROR)) {
-			JSONObject errorObject = response.getJSONObject(JSONResponseObjectKeys.ERROR);
-			if(errorObject.getInt(JSONResponseObjectKeys.ERROR_CODE) == WebUntisErrorCodes.WEBUNTIS_NOT_AUTHENTICATED) {
-				Log.i("Network", "Reauthenticating");
-				authenticate();
-				response = parseData(network.getResponse(request.toString()));
+	private DataFacade<JSONObject> getJSONData(final JSONObject request) {
+		DataFacade<JSONObject> data = new DataFacade<JSONObject>();
+		try {
+			JSONObject response = parseData(network.getResponse(request.toString()));
+			
+			if (response.has(JSONResponseObjectKeys.ERROR)) {
+				if(unauthenticated(response)) {
+					Log.i("Network", "Reauthenticating");
+					authenticate();
+					response = parseData(network.getResponse(request.toString()));
+				}
+				else {
+					data.setErrorMessage(getWebUntisErrorMessage(response));
+				}
 			}
+			
+			data.setData(response);
+		} catch (Exception e) {
+			data.setErrorMessage(getErrorMessage(e));
 		}
-		return response;
+		
+		return data;
+	}
+
+	private boolean unauthenticated(JSONObject response) throws JSONException {
+		JSONObject errorObject = response.getJSONObject(JSONResponseObjectKeys.ERROR);
+		
+		return errorObject.getInt(JSONResponseObjectKeys.ERROR_CODE) == WebUntisErrorCodes.WEBUNTIS_NOT_AUTHENTICATED;
 	}
 
 	/**
@@ -133,297 +139,185 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	 *             parsen
 	 */
 	private JSONObject parseData(String data) throws JSONException {
-		JSONTokener t = new JSONTokener(data);
-		Object next = t.nextValue();
+		JSONTokener tokener = new JSONTokener(data);
+		Object next = tokener.nextValue();
 
 		if (next instanceof JSONObject) {
 			return (JSONObject) next;
 		} else {
-			throw new JSONException("Unable to parse data");
+			throw new JSONException("Unable to parse JSON data");
 		}
 
 	}
 
-	private JSONObject requestList(String id, String method)
-			throws Exception {
+	private DataFacade<JSONObject> requestList(String method) {
+		DataFacade<JSONObject> data = new DataFacade<JSONObject>();
 		final JSONObject request = new JSONObject();
-
-		request.put(JSONRequestObjectKeys.JSON_RPC_VERSION, JSON_RPC_VERSION);
-		request.put(JSONRequestObjectKeys.METHOD, method);
-		request.put(JSONRequestObjectKeys.ID, id);
-		// Server benoetigt leere Params
-		request.put(JSONRequestObjectKeys.PARAMS, "");
-
-		return getJSONData(request);
-	}
-
-	private DataFacade<List<? extends ViewType>> getViewTypeList(String id,
-			String method) {
-		DataFacade<List<? extends ViewType>> data = new DataFacade<List<? extends ViewType>>();
+		
+		final String id = getNextID();
 
 		try {
-			JSONObject responseObject = requestList(id, method);
+			request.put(JSONRequestObjectKeys.JSON_RPC_VERSION, JSON_RPC_VERSION);
 
-			if (responseObject.has(JSONResponseObjectKeys.ERROR)) {
-				data.setErrorMessage(getWebUntisErrorMessage(responseObject));
-			}
-
-			else {
-				JSONArray result = responseObject.getJSONArray(JSONResponseObjectKeys.RESULT);
-
-				if (method.equals(JSONRequestMethods.getTeachers)) {
-					data.setData(jsonParser.jsonToTeacherList(result));
-				} else if (method.equals(JSONRequestMethods.getClasses)) {
-					data.setData(jsonParser.jsonToClassList(result));
-				} else if (method.equals(JSONRequestMethods.getSubjects)) {
-					data.setData(jsonParser.jsonToSubjectList(result));
-				} else if (method.equals(JSONRequestMethods.getRooms)) {
-					data.setData(jsonParser.jsonToRoomList(result));
-				} else {
-					Log.w("JSON", "Unknown request method: " + method);
-				}
-
-			}
-		} catch (Exception e) {
+			request.put(JSONRequestObjectKeys.METHOD, method);
+			request.put(JSONRequestObjectKeys.ID, id);
+			// Server benoetigt leere Params
+			request.put(JSONRequestObjectKeys.PARAMS, "");
+			
+			data = getJSONData(request);
+			
+		} catch (JSONException e) {
 			data.setErrorMessage(getErrorMessage(e));
 		}
-
-		return data;
-	}
-
-	/**
-	 * Liefert eine Liste anhand der uebergebenen Parameter, die passende
-	 * Objekten beinhaltet, z.B. ein Liste mit freien Tagen.
-	 * 
-	 * @param id
-	 *            ID, die fuer die Anfrage verwendet werden soll
-	 * @param method
-	 *            Methode, die fuer die Anfrage verwendet werden soll (siehe
-	 *            dazu {@link JSONRequestMethods}).
-	 * @return Eine Liste mit den Objekten fuer die uebergeben Methode
-	 * @throws IOException
-	 *             Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein
-	 *             Fehler auftritt
-	 */
-	private DataFacade<List<SchoolObject>> getList(String id, String method) {
-		DataFacade<List<SchoolObject>> data = new DataFacade<List<SchoolObject>>();
-
-		try {
-			JSONObject responseObject = requestList(id, method);
-
-			if (responseObject.has(JSONResponseObjectKeys.ERROR)) {
-				ErrorMessage errorMessage = getWebUntisErrorMessage(responseObject);
-				data.setErrorMessage(errorMessage);
-			}
-
-			JSONArray result = responseObject.getJSONArray(JSONResponseObjectKeys.RESULT);
-
-			if (method.equals(JSONRequestMethods.getHolidays)) {
-				data.setData(jsonParser.jsonToHolidayList(result));
-			} else {
-				Log.w("JSON", "Unknown request method: " + method);
-			}
-
-		} catch (Exception e) {
-			data.setErrorMessage(getErrorMessage(e));
-		}
-		return data;
-	}
-
-	/**
-	 * Liefert das passende Objekt zur angefragten Methode, z.B. das
-	 * Stundenraster.
-	 * 
-	 * @param id
-	 *            ID, die fuer die Anfrage verwendet werden soll
-	 * @param method
-	 *            Methode, die fuer die Anfrage verwendet werden soll (siehe
-	 *            dazu {@link JSONRequestMethods}).
-	 * @return Das passende Objekt zur Anfrage
-	 * @throws IOException
-	 *             Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein
-	 *             Fehler auftritt
-	 */
-	private DataFacade<SchoolObject> getSchoolObject(String id, String method) {
-		DataFacade<SchoolObject> data = new DataFacade<SchoolObject>();
-
-		try {
-			JSONObject responseObject = requestList(id, method);
-			JSONArray result = responseObject.getJSONArray(JSONResponseObjectKeys.RESULT);
-
-			if (method.equals(JSONRequestMethods.getTimegridUnits)) {
-				data.setData(jsonParser.jsonToTimegrid(result));
-			} else {
-				Log.w("JSON", "Unknown request method: " + method);
-			}
-
-		} catch (Exception e) {
-			data.setErrorMessage(getErrorMessage(e));
-		}
+		
 		return data;
 	}
 
 	@Override
 	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() {
-		final String id = getNextID();
+		DataFacade<List<SchoolTeacher>> data = new DataFacade<List<SchoolTeacher>>();
 		final String method = JSONRequestMethods.getTeachers;
 
-		DataFacade<List<? extends ViewType>> viewTypeList = getViewTypeList(id,
-				method);
-		DataFacade<List<SchoolTeacher>> data = new DataFacade<List<SchoolTeacher>>();
-
-		if (viewTypeList.isSuccessful()) {
-
-			List<SchoolTeacher> list = new ArrayList<SchoolTeacher>();
-			for (ViewType obj : viewTypeList.getData()) {
-				if (obj instanceof SchoolTeacher) {
-					list.add((SchoolTeacher) obj);
-				}
+		DataFacade<JSONObject> responseObject = requestList(method);
+		
+		if(responseObject.isSuccessful()) {
+			JSONObject responseData = responseObject.getData();
+		
+			try {	
+				JSONArray result = responseData.getJSONArray(JSONResponseObjectKeys.RESULT);
+				data.setData(jsonParser.jsonToTeacherList(result));
+			} catch (JSONException e) {
+				data.setErrorMessage(getErrorMessage(e));
 			}
-			data.setData(list);
-		} else {
-			data.setErrorMessage(viewTypeList.getErrorMessage());
 		}
-
+		
 		return data;
 	}
 
 	@Override
 	public DataFacade<List<SchoolClass>> getSchoolClassList() {
-		final String id = getNextID();
-		final String method = JSONRequestMethods.getClasses;
-
-		DataFacade<List<? extends ViewType>> viewTypeList = getViewTypeList(id,
-				method);
 		DataFacade<List<SchoolClass>> data = new DataFacade<List<SchoolClass>>();
-
-		if (viewTypeList.isSuccessful()) {
-
-			List<SchoolClass> list = new ArrayList<SchoolClass>();
-			for (ViewType obj : viewTypeList.getData()) {
-				if (obj instanceof SchoolClass) {
-					list.add((SchoolClass) obj);
-				}
+		final String method = JSONRequestMethods.getClasses;
+		
+		DataFacade<JSONObject> responseObject = requestList(method);
+		
+		if(responseObject.isSuccessful()) {
+			JSONObject responseData = responseObject.getData();
+		
+			try {	
+				JSONArray result = responseData.getJSONArray(JSONResponseObjectKeys.RESULT);
+				data.setData(jsonParser.jsonToClassList(result));
+			} catch (JSONException e) {
+				data.setErrorMessage(getErrorMessage(e));
 			}
-			data.setData(list);
-		} else {
-			data.setErrorMessage(viewTypeList.getErrorMessage());
 		}
-
+		
 		return data;
 	}
 
 	@Override
 	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() {
-		final String id = getNextID();
+		DataFacade<List<SchoolSubject>> data = new DataFacade<List<SchoolSubject>>();
 		final String method = JSONRequestMethods.getSubjects;
 
-		DataFacade<List<? extends ViewType>> viewTypeList = getViewTypeList(id,
-				method);
-		DataFacade<List<SchoolSubject>> data = new DataFacade<List<SchoolSubject>>();
-
-		if (viewTypeList.isSuccessful()) {
-
-			List<SchoolSubject> list = new ArrayList<SchoolSubject>();
-			for (ViewType obj : viewTypeList.getData()) {
-				if (obj instanceof SchoolSubject) {
-					list.add((SchoolSubject) obj);
-				}
+		DataFacade<JSONObject> responseObject = requestList(method);
+		
+		if(responseObject.isSuccessful()) {
+			JSONObject responseData = responseObject.getData();
+		
+			try {	
+				JSONArray result = responseData.getJSONArray(JSONResponseObjectKeys.RESULT);
+				data.setData(jsonParser.jsonToSubjectList(result));
+			} catch (JSONException e) {
+				data.setErrorMessage(getErrorMessage(e));
 			}
-			data.setData(list);
-		} else {
-			data.setErrorMessage(viewTypeList.getErrorMessage());
 		}
+		
 		return data;
 	}
 
 	@Override
 	public DataFacade<List<SchoolRoom>> getSchoolRoomList() {
-		final String id = getNextID();
-		final String method = JSONRequestMethods.getRooms;
-
-		DataFacade<List<? extends ViewType>> viewTypeList = getViewTypeList(id,
-				method);
 		DataFacade<List<SchoolRoom>> data = new DataFacade<List<SchoolRoom>>();
-
-		if (viewTypeList.isSuccessful()) {
-
-			List<SchoolRoom> list = new ArrayList<SchoolRoom>();
-			for (ViewType obj : viewTypeList.getData()) {
-				if (obj instanceof SchoolRoom) {
-					list.add((SchoolRoom) obj);
-				}
+		final String method = JSONRequestMethods.getRooms;
+		
+		DataFacade<JSONObject> responseObject = requestList(method);
+		
+		if(responseObject.isSuccessful()) {
+			JSONObject responseData = responseObject.getData();
+		
+			try {	
+				JSONArray result = responseData.getJSONArray(JSONResponseObjectKeys.RESULT);
+				data.setData(jsonParser.jsonToRoomList(result));
+			} catch (JSONException e) {
+				data.setErrorMessage(getErrorMessage(e));
 			}
-			data.setData(list);
-		} else {
-			data.setErrorMessage(viewTypeList.getErrorMessage());
 		}
-
+		
 		return data;
 	}
 
 	@Override
 	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList() {
-		final String id = getNextID();
-		final String method = JSONRequestMethods.getHolidays;
-
-		DataFacade<List<SchoolObject>> schoolObjectList = getList(id, method);
 		DataFacade<List<SchoolHoliday>> data = new DataFacade<List<SchoolHoliday>>();
-
-		if (schoolObjectList.isSuccessful()) {
-
-			List<SchoolHoliday> list = new ArrayList<SchoolHoliday>();
-			for (SchoolObject obj : schoolObjectList.getData()) {
-				if (obj instanceof SchoolHoliday) {
-					list.add((SchoolHoliday) obj);
-				}
+		final String method = JSONRequestMethods.getHolidays;
+		
+		DataFacade<JSONObject> responseObject = requestList(method);
+		
+		if(responseObject.isSuccessful()) {
+			JSONObject responseData = responseObject.getData();
+		
+			try {	
+				JSONArray result = responseData.getJSONArray(JSONResponseObjectKeys.RESULT);
+				data.setData(jsonParser.jsonToHolidayList(result));
+			} catch (JSONException e) {
+				data.setErrorMessage(getErrorMessage(e));
 			}
-			data.setData(list);
-		} else {
-			data.setErrorMessage(schoolObjectList.getErrorMessage());
 		}
-
+		
 		return data;
 	}
 
 	@Override
 	public DataFacade<Timegrid> getTimegrid() {
-		final String id = getNextID();
+		DataFacade<Timegrid> data = new DataFacade<Timegrid>();
 		final String method = JSONRequestMethods.getTimegridUnits;
 
-		DataFacade<SchoolObject> schoolObjectList = getSchoolObject(id, method);
-		DataFacade<Timegrid> data = new DataFacade<Timegrid>();
-
-		if (schoolObjectList.isSuccessful()) {
-
-			Timegrid timegrid = new Timegrid();
-			SchoolObject obj = schoolObjectList.getData();
-			if (obj instanceof Timegrid) {
-				timegrid = (Timegrid) obj;
+		DataFacade<JSONObject> responseObject = requestList(method);
+		
+		if(responseObject.isSuccessful()) {
+			JSONObject responseData = responseObject.getData();
+		
+			try {	
+				JSONArray result = responseData.getJSONArray(JSONResponseObjectKeys.RESULT);
+				data.setData(jsonParser.jsonToTimegrid(result));
+			} catch (JSONException e) {
+				data.setErrorMessage(getErrorMessage(e));
 			}
-			data.setData(timegrid);
-		} else {
-			data.setErrorMessage(schoolObjectList.getErrorMessage());
 		}
-
+		
 		return data;
 	}
 
 	@Override
 	public DataFacade<List<StatusData>> getStatusData() {
-		DataFacade<List<StatusData>> data = new DataFacade<List<StatusData>>();
-	
-		final String id = getNextID();
+		DataFacade<List<StatusData>> data = new DataFacade<List<StatusData>>();	
 		final String method = JSONRequestMethods.getStatusData;
 	
-		JSONObject response;
-		try {
-			response = requestList(id, method);
-			JSONObject result = response.getJSONObject(JSONResponseObjectKeys.RESULT);
-			List<StatusData> statusData = jsonParser.jsonToStatusData(result);
-			data.setData(statusData);
-		} catch (Exception e) {
-			data.setErrorMessage(getErrorMessage(e));
+		DataFacade<JSONObject> responseObject = requestList(method);
+
+		if(responseObject.isSuccessful()) {
+			JSONObject responseData = responseObject.getData();
+		
+			try {
+			
+				JSONObject result = responseData.getJSONObject(JSONResponseObjectKeys.RESULT);
+				List<StatusData> statusData = jsonParser.jsonToStatusData(result);
+				data.setData(statusData);
+			}
+			catch (JSONException e) {
+				data.setErrorMessage(getErrorMessage(e));
+			}
 		}
 	
 		return data;
@@ -500,12 +394,12 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			request.put(JSONRequestObjectKeys.PARAMS, params);
 	
 			// Netzwerkanfrage
-			JSONObject response = getJSONData(request);
+			DataFacade<JSONObject> response = getJSONData(request);
 			
-			ErrorMessage errorMessage = getWebUntisErrorMessage(response);
-			if(errorMessage == null) {
+			
+			if(response.isSuccessful()) {
 				// Extrahiere Nutzdaten
-				JSONArray result = response.getJSONArray(JSONResponseObjectKeys.RESULT);
+				JSONArray result = response.getData().getJSONArray(JSONResponseObjectKeys.RESULT);
 			
 				// Parse die JSON-Response zu passender Map
 				lessonMap = jsonParser.jsonToLessonMap(result);
@@ -515,11 +409,8 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	
 				data.setData(lessonMap);
 			}
-			else {
-				data.setErrorMessage(errorMessage);
-			}
 	
-		} catch (Exception e) {
+		} catch (JSONException e) {
 			data.setErrorMessage(getErrorMessage(e));
 		}
 	
@@ -561,82 +452,49 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			request.put(JSONRequestObjectKeys.METHOD, method);
 			request.put(JSONRequestObjectKeys.PARAMS, params);
 			request.put(JSONRequestObjectKeys.ID, id);
-
-			response = getJSONData(request);
-
-			if (response.has(JSONResponseObjectKeys.ERROR)) {
-				JSONObject errorObject = response.getJSONObject(JSONResponseObjectKeys.ERROR);
-				int errorCode = errorObject.getInt(JSONResponseObjectKeys.ERROR_CODE);
+		}
+		catch(JSONException e) {
+			
+		}
+			DataFacade<JSONObject> jsonData = getJSONData(request);
+			
+			if(jsonData.isSuccessful()) {
+				response = jsonData.getData();
+			
+				try {
 				
-				if(!(errorCode == WebUntisErrorCodes.WEBUNTIS_BAD_CREDENTIALS)) {
-					data.setErrorMessage(getWebUntisErrorMessage(response));
-				}					
-			}
-
-			else {
-				if (response != null) {
+				if (response.has(JSONResponseObjectKeys.ERROR)) {
+					JSONObject errorObject = response.getJSONObject(JSONResponseObjectKeys.ERROR);
+					int errorCode = errorObject.getInt(JSONResponseObjectKeys.ERROR_CODE);
+					
+					if(!(errorCode == WebUntisErrorCodes.WEBUNTIS_BAD_CREDENTIALS)) {
+						data.setErrorMessage(getWebUntisErrorMessage(response));
+					}
+				}
+				
+				else {
 					JSONObject result = response.getJSONObject(JSONResponseObjectKeys.RESULT);
-					if (result != null) {
-						String sessionId = result.getString("sessionId");
-						if (!result.equals("null")) {
-							network.setJsessionid(sessionId);
-							data.setData(true);
-						} else {
-							network.setJsessionid(null);
-						}
+					String sessionId = result.getString("sessionId");
+					if (!result.equals("null")) {
+						network.setJsessionid(sessionId);
+						data.setData(true);
+					} else {
+						network.setJsessionid(null);
 					}
 				}
 			}
-		} catch (Exception e) {
-			data.setErrorMessage(getErrorMessage(e));
-		}
+				catch (JSONException e) {
+					data.setErrorMessage(getErrorMessage(e));
+				}
+			}
+			else if(jsonData.getErrorMessage().getErrorCode() == WebUntisErrorCodes.WEBUNTIS_BAD_CREDENTIALS) {
+					data.setData(false);
+			}
+			else {
+				data.setErrorMessage(jsonData.getErrorMessage());
+			}
+		
 		return data;
-	}
-
-	/**
-	 * Liefert den Zeitpunkt des letzten Imports des Stundenplans.
-	 * 
-	 * @return Den Zeitpunkt des letzten Imports des Stundenplans
-	 * @throws IOException
-	 *             Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein
-	 *             Fehler auftritt
-	 */
-	private long getLatestTimetableImportTime() throws IOException {
-		final String id = getNextID();
-		final String method = JSONRequestMethods.getLatestImportTime;
-
-		long latestImport = -1;
-
-		try {
-			JSONObject response = requestList(id, method);
-			latestImport = response.getLong(JSONResponseObjectKeys.RESULT);
-			Log.v("Misc", "Last import time: " + response.get(JSONResponseObjectKeys.RESULT));
-		} catch (Exception e) {
-			Log.e("JSON", "Unable to parse JSON-String", e);
-		}
-
-		return latestImport >= 0 ? latestImport : latestTimetableImportTime;
-	}
-
-	/**
-	 * Eruiert, ob der Stundenplan seit dem letzten Methodenaufruf geaendert
-	 * wurde.
-	 * 
-	 * @return true, wenn der Stundenplan seit dem letzten Methodenaufruf
-	 *         geaendert wurde
-	 * @throws IOException
-	 *             Wird geworfen, falls waehrnd der Abfrage im Netzwerk ein
-	 *             Fehler auftritt
-	 */
-	public boolean timetableUpdated() throws IOException {
-		long newLatestTimetableImportTime = getLatestTimetableImportTime();
-
-		if (newLatestTimetableImportTime > latestTimetableImportTime) {
-			latestTimetableImportTime = newLatestTimetableImportTime;
-			return true;
-		}
-
-		return false;
 	}
 
 	public void setCache(Cache cache) {
