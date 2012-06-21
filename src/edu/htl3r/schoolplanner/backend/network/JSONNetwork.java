@@ -25,6 +25,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.http.conn.HttpHostConnectException;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -178,18 +182,46 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		DataFacade<List<SchoolTeacher>> data = new DataFacade<List<SchoolTeacher>>();
 		final String method = JSONRequestMethods.getTeachers;
 
-		DataFacade<JSONObject> responseObject = requestList(method);
+//		DataFacade<JSONObject> responseObject = requestList(method);
 		
-		if(responseObject.isSuccessful()) {
-			JSONObject responseData = responseObject.getData();
+		ObjectMapper objectMapper = new ObjectMapper();
 		
-			try {	
-				JSONArray result = responseData.getJSONArray(JSONResponseObjectKeys.RESULT);
-				data.setData(jsonParser.jsonToTeacherList(result));
-			} catch (JSONException e) {
-				data.setErrorMessage(getErrorMessage(e));
-			}
+		try {
+			JSONObject request = new JSONObject();
+			request.put(JSONRequestObjectKeys.JSON_RPC_VERSION, JSON_RPC_VERSION);
+
+			request.put(JSONRequestObjectKeys.METHOD, method);
+			request.put(JSONRequestObjectKeys.ID, id);
+			// Server benoetigt leere Params
+			request.put(JSONRequestObjectKeys.PARAMS, "");
+			
+			List<SchoolTeacher> list = objectMapper.readValue(getJSONData(request).getData().getJSONArray("result").toString(), new TypeReference<List<SchoolTeacher>>() {});
+			Log.d("Misc",list.get(0).getName());
+			
+		} catch (JsonParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (JsonMappingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+		
+//		if(responseObject.isSuccessful()) {
+//			JSONObject responseData = responseObject.getData();
+//		
+//			try {	
+//				JSONArray result = responseData.getJSONArray(JSONResponseObjectKeys.RESULT);
+//				data.setData(jsonParser.jsonToTeacherList(result));
+//			} catch (JSONException e) {
+//				data.setErrorMessage(getErrorMessage(e));
+//			}
+//		}
 		
 		return data;
 	}
