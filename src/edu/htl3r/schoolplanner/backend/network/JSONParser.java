@@ -62,6 +62,7 @@ public class JSONParser {
 		return jsonObject.has(key) ? jsonObject.getString(key) : defaultValue;
 	}
 	
+	@Deprecated
 	public List<SchoolTeacher> jsonToTeacherList(JSONArray result)
 			throws JSONException {
 		List<SchoolTeacher> schoolTeacherList = new ArrayList<SchoolTeacher>();
@@ -89,6 +90,7 @@ public class JSONParser {
 		return schoolTeacherList;
 	}
 
+	@Deprecated
 	public List<SchoolClass> jsonToClassList(JSONArray result)
 			throws JSONException {
 		List<SchoolClass> schoolClassList = new ArrayList<SchoolClass>();
@@ -115,6 +117,7 @@ public class JSONParser {
 		return schoolClassList;
 	}
 
+	@Deprecated
 	public List<SchoolSubject> jsonToSubjectList(JSONArray result)
 			throws JSONException {
 		List<SchoolSubject> schoolSubjectList = new ArrayList<SchoolSubject>();
@@ -140,6 +143,7 @@ public class JSONParser {
 		return schoolSubjectList;
 	}
 
+	@Deprecated
 	public List<SchoolRoom> jsonToRoomList(JSONArray result)
 			throws JSONException {
 		List<SchoolRoom> schoolRoomsList = new ArrayList<SchoolRoom>();

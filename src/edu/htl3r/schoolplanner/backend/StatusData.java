@@ -17,6 +17,7 @@
 package edu.htl3r.schoolplanner.backend;
 
 
+
 public class StatusData {
 
 	private Class<?> relatedStatusDataClass;

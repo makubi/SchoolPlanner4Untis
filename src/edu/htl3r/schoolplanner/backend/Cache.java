@@ -263,7 +263,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	@Override
 	public DataFacade<Boolean> resyncMasterData() {		
 		DataFacade<MasterData> masterData = externalDataLoader.resyncMasterData();
-
+		
 		DataFacade<Boolean> data = new DataFacade<Boolean>();
 		
 		if(masterData.isSuccessful()) {

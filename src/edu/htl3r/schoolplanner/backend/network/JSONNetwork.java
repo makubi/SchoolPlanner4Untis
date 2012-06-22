@@ -28,7 +28,6 @@ import org.apache.http.conn.HttpHostConnectException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -153,7 +152,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		}
 
 	}
-
+	
 	private DataFacade<JSONObject> requestList(String method) {
 		DataFacade<JSONObject> data = new DataFacade<JSONObject>();
 		final JSONObject request = new JSONObject();
@@ -177,115 +176,54 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		return data;
 	}
 	
-	private <E> DataFacade<E> getViewTypeList(String method) {
-		DataFacade<E> data = new DataFacade<E>();
+	private <E> DataFacade<List<E>> getList(E typeDef, String method) {
+		DataFacade<List<E>> data = new DataFacade<List<E>>();
 		
-			ObjectMapper objectMapper = new ObjectMapper();
-			JSONObject request = new JSONObject();
-			try {
-				request.put(JSONRequestObjectKeys.JSON_RPC_VERSION, JSON_RPC_VERSION);
-				
-				request.put(JSONRequestObjectKeys.METHOD, method);
-				request.put(JSONRequestObjectKeys.ID, id);
-				// Server benoetigt leere Params
-				request.put(JSONRequestObjectKeys.PARAMS, "");
-				
-				DataFacade<JSONObject> jsonData = getJSONData(request);
-				
-				if(jsonData.isSuccessful()) {
-					E e = objectMapper.readValue(jsonData.getData().getJSONArray("result").toString(), new TypeReference<E>() {});
-					data.setData(e);
-				}
-				else {
-					data.setErrorMessage(jsonData.getErrorMessage());
-				}
-			} catch (JSONException e) {
-				data.setErrorMessage(getErrorMessage(e));
-			} catch (JsonParseException e) {
-				data.setErrorMessage(getErrorMessage(e));
-			} catch (JsonMappingException e) {
-				data.setErrorMessage(getErrorMessage(e));
-			} catch (IOException e) {
-				data.setErrorMessage(getErrorMessage(e));
+		try {		
+			DataFacade<JSONObject> jsonData = requestList(method);
+			
+			if(jsonData.isSuccessful()) {
+				ObjectMapper objectMapper = new ObjectMapper();
+				List <E> list = objectMapper.readValue(jsonData.getData().getJSONArray(JSONResponseObjectKeys.RESULT).toString(), objectMapper.getTypeFactory().constructCollectionType(List.class,typeDef.getClass()));
+				data.setData(list);
 			}
+			else {
+				data.setErrorMessage(jsonData.getErrorMessage());
+			}
+		} catch (JSONException e) {
+			data.setErrorMessage(getErrorMessage(e));
+		} catch (JsonParseException e) {
+			data.setErrorMessage(getErrorMessage(e));
+		} catch (JsonMappingException e) {
+			data.setErrorMessage(getErrorMessage(e));
+		} catch (IOException e) {
+			data.setErrorMessage(getErrorMessage(e));
+		}
+			
 		return data;
 	}
-
+	
 	@Override
 	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() {
-		DataFacade<List<SchoolTeacher>> viewTypeList = getViewTypeList(JSONRequestMethods.getTeachers);
-		
-		// "result":[{"id":1,"name":"AIG","foreName":"Wolfgang","longName":"AIGNER"},{"id":2,"name":"AIZ","foreName":"Mikhail","longName":"AIZENBERG"},{"id":3,"name":"AJD","foreName":"Karl","longName":"AJDOVIC"},{"id":4,"name":"ALL","foreName":"Karl","longName":"ALLABAUER"},{"id":5,"name":"ANG","foreName":"Thomas","longName":"ANGERER"},{"id":7,"name":"BAA","foreName":"Alex","longName":"BAUER"},{"id":142,"name":"BAI","foreName":"Josef","longName":"BAIER"},{"id":130,"name":"BAY","foreName":"Mitra","longName":"BAYANDOR"},{"id":8,"name":"BAU","foreName":"Nikolaus","longName":"BAUMGARTINGER"},{"id":9,"name":"BIC","foreName":"Andreas","longName":"BICHL"},{"id":10,"name":"BRE","foreName":"Franz","longName":"BREUNIG"},{"id":11,"name":"BRU","foreName":"Rudolf","longName":"BRUCKNER"},{"id":12,"name":"BUG","foreName":"Claus","longName":"BÜRGER"},{"id":13,"name":"BUR","foreName":"Wolfgang","longName":"BURIC"},{"id":110,"name":"BSB","foreName":"Herbert","longName":"BUSCHBECK"},{"id":14,"name":"CEK","foreName":"Ewald","longName":"CEKAN"},{"id":15,"name":"DAM","foreName":"Richard","longName":"DAM"},{"id":16,"name":"DAZ","foreName":"Robert","longName":"DAZINGER"},{"id":18,"name":"DRU","foreName":"Matthias","longName":"DRUCKS"},{"id":22,"name":"FAS","foreName":"Isabella","longName":"FASTENBAUER"},{"id":24,"name":"FEE","foreName":"Elisabeth","longName":"FERNER"},{"id":25,"name":"FER","foreName":"Walter","longName":"FERTL"},{"id":26,"name":"FIN","foreName":"Andreas","longName":"FINK"},{"id":27,"name":"FLA","foreName":"Günter","longName":"FLACKER"},{"id":28,"name":"FLK","foreName":"Herbert","longName":"FLECK"},{"id":29,"name":"FNC","foreName":"Jaroslav","longName":"FRANC"},{"id":30,"name":"FRA","foreName":"Peter","longName":"FRANEK"},{"id":156,"name":"FRE","foreName":"Thomas","longName":"FRESIA"},{"id":111,"name":"FRL","foreName":"Thomas","longName":"FRÖHHLICH"},{"id":34,"name":"GOT","foreName":"Reinhard","longName":"GOTTWEIS"},{"id":36,"name":"GRL","foreName":"Karin","longName":"GRÄLL"},{"id":35,"name":"GRI","foreName":"Christoph","longName":"GRINSCHGL"},{"id":38,"name":"HAG","foreName":"Gerhard","longName":"HAGER"},{"id":39,"name":"HER","foreName":"Gabriela","longName":"HERRELE"},{"id":41,"name":"HLA","foreName":"Silvia","longName":"HLATKY"},{"id":157,"name":"HOR","foreName":"August","longName":"HÖRANDL"},{"id":43,"name":"HRD","foreName":"Thomas","longName":"HRDINKA"},{"id":45,"name":"JKR","foreName":"Erwin","longName":"JAUKER"},{"id":129,"name":"JAV","foreName":"Stephan","longName":"JAVUREK"},{"id":115,"name":"JEL","foreName":"Claudia","longName":"JELL-VOCK"},{"id":46,"name":"JRB","foreName":"Roman","longName":"JERABEK"},{"id":44,"name":"JEN","foreName":"Wolfgang","longName":"JUEN"},{"id":47,"name":"JUE","foreName":"Gerhard","longName":"JÜNGLING"},{"id":48,"name":"KAM","foreName":"Waltraud","longName":"KAMINGER"},{"id":49,"name":"KAR","foreName":"Helmut","longName":"KARANITSCH"},{"id":54,"name":"KSP","foreName":"Ferdinand","longName":"KASPER"},{"id":53,"name":"KRG","foreName":"Günther","longName":"KAUER"},{"id":155,"name":"KPE","foreName":"Peter","longName":"KISS"},{"id":50,"name":"KLE","foreName":"Christian","longName":"KLEIN"},{"id":116,"name":"KOM","foreName":"Jörg","longName":"KOMENDA"},{"id":51,"name":"KOR","foreName":"Ruth","longName":"KORPER"},{"id":139,"name":"KRL","foreName":"Leopold","longName":"KRÖLL"},{"id":52,"name":"KOW","foreName":"Helmut","longName":"KOWAR"},{"id":55,"name":"KUS","foreName":"Clemens","longName":"KUSSBACH"},{"id":134,"name":"LGR","foreName":"Werner","longName":"LAGER"},{"id":160,"name":"LAG","foreName":"Franz","longName":"LAGLER"},{"id":133,"name":"LGM","foreName":"Sandra","longName":"LANGMEIER"},{"id":57,"name":"LUG","foreName":"Werner","longName":"LUGSCHITZ"},{"id":58,"name":"MAI","foreName":"Martin","longName":"MAIR"},{"id":59,"name":"MAN","foreName":"Christina","longName":"MANDL"},{"id":144,"name":"MTJ","foreName":"Peter","longName":"MATEJOWSKY"},{"id":60,"name":"MEL","foreName":"Wolfgang","longName":"MELCHIOR"},{"id":65,"name":"MSK","fore
-
-		
-		// java.lang.ClassCastException: java.util.LinkedHashMap cannot be cast to edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher
-		Log.d("Misc", viewTypeList.getData().getClass().getSimpleName());
-		Log.d("Misc", viewTypeList.getData().get(0).getClass().getSimpleName());
-		
-		return null;
+		// TODO logging mit commons-logging
+		// TODO enum
+		// TODO command object
+		return getList(new SchoolTeacher(), JSONRequestMethods.getTeachers);
 	}
 
 	@Override
 	public DataFacade<List<SchoolClass>> getSchoolClassList() {
-		DataFacade<List<SchoolClass>> data = new DataFacade<List<SchoolClass>>();
-		final String method = JSONRequestMethods.getClasses;
-		
-		DataFacade<JSONObject> responseObject = requestList(method);
-		
-		if(responseObject.isSuccessful()) {
-			JSONObject responseData = responseObject.getData();
-		
-			try {	
-				JSONArray result = responseData.getJSONArray(JSONResponseObjectKeys.RESULT);
-				data.setData(jsonParser.jsonToClassList(result));
-			} catch (JSONException e) {
-				data.setErrorMessage(getErrorMessage(e));
-			}
-		}
-		
-		return data;
+		return getList(new SchoolClass(), JSONRequestMethods.getClasses);
 	}
 
 	@Override
 	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() {
-		DataFacade<List<SchoolSubject>> data = new DataFacade<List<SchoolSubject>>();
-		final String method = JSONRequestMethods.getSubjects;
-
-		DataFacade<JSONObject> responseObject = requestList(method);
-		
-		if(responseObject.isSuccessful()) {
-			JSONObject responseData = responseObject.getData();
-		
-			try {	
-				JSONArray result = responseData.getJSONArray(JSONResponseObjectKeys.RESULT);
-				data.setData(jsonParser.jsonToSubjectList(result));
-			} catch (JSONException e) {
-				data.setErrorMessage(getErrorMessage(e));
-			}
-		}
-		
-		return data;
+		return getList(new SchoolSubject(), JSONRequestMethods.getSubjects);
 	}
 
 	@Override
-	public DataFacade<List<SchoolRoom>> getSchoolRoomList() {
-		DataFacade<List<SchoolRoom>> data = new DataFacade<List<SchoolRoom>>();
-		final String method = JSONRequestMethods.getRooms;
-		
-		DataFacade<JSONObject> responseObject = requestList(method);
-		
-		if(responseObject.isSuccessful()) {
-			JSONObject responseData = responseObject.getData();
-		
-			try {	
-				JSONArray result = responseData.getJSONArray(JSONResponseObjectKeys.RESULT);
-				data.setData(jsonParser.jsonToRoomList(result));
-			} catch (JSONException e) {
-				data.setErrorMessage(getErrorMessage(e));
-			}
-		}
-		
-		return data;
+	public DataFacade<List<SchoolRoom>> getSchoolRoomList() {		
+		return getList(new SchoolRoom(), JSONRequestMethods.getRooms);
 	}
 
 	@Override
