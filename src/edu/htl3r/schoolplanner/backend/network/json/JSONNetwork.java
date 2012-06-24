@@ -15,7 +15,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package edu.htl3r.schoolplanner.backend.network;
+package edu.htl3r.schoolplanner.backend.network.json;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -42,6 +42,11 @@ import edu.htl3r.schoolplanner.backend.ErrorMessage;
 import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceMasterdataProvider;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceTimetableDataProvider;
+import edu.htl3r.schoolplanner.backend.network.ErrorCodes;
+import edu.htl3r.schoolplanner.backend.network.LessonProcessor;
+import edu.htl3r.schoolplanner.backend.network.Network;
+import edu.htl3r.schoolplanner.backend.network.WebUntis;
+import edu.htl3r.schoolplanner.backend.network.WebUntisErrorCodes;
 import edu.htl3r.schoolplanner.backend.network.exceptions.SSLForcedButUnavailableException;
 import edu.htl3r.schoolplanner.backend.network.exceptions.WebUntisServiceException;
 import edu.htl3r.schoolplanner.backend.network.exceptions.WrongPortNumberException;
@@ -84,7 +89,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	private Map<Class<? extends ViewType>, Integer> viewTypeMapping = new HashMap<Class<? extends ViewType>, Integer>();
 
 	private LessonProcessor lessonProcessor = new LessonProcessor();
-
+	
 	public JSONNetwork() {
 		viewTypeMapping.put(SchoolClass.class, WebUntis.SCHOOLCLASS);
 		viewTypeMapping.put(SchoolTeacher.class, WebUntis.SCHOOLTEACHER);
@@ -153,7 +158,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 
 	}
 	
-	private DataFacade<JSONObject> requestList(String method) {
+	private DataFacade<JSONObject> requestList(JSONRequestMethod method) {
 		DataFacade<JSONObject> data = new DataFacade<JSONObject>();
 		final JSONObject request = new JSONObject();
 		
@@ -162,7 +167,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		try {
 			request.put(JSONRequestObjectKeys.JSON_RPC_VERSION, JSON_RPC_VERSION);
 
-			request.put(JSONRequestObjectKeys.METHOD, method);
+			request.put(JSONRequestObjectKeys.METHOD, method.getRequestMethod());
 			request.put(JSONRequestObjectKeys.ID, id);
 			// Server benoetigt leere Params
 			request.put(JSONRequestObjectKeys.PARAMS, "");
@@ -176,7 +181,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		return data;
 	}
 	
-	private <E> DataFacade<List<E>> getList(E typeDef, String method) {
+	private <E> DataFacade<List<E>> getList(E typeDef, JSONRequestMethod method) {
 		DataFacade<List<E>> data = new DataFacade<List<E>>();
 		
 		try {		
@@ -206,30 +211,29 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	@Override
 	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() {
 		// TODO logging mit commons-logging
-		// TODO enum
 		// TODO command object
-		return getList(new SchoolTeacher(), JSONRequestMethods.getTeachers);
+		return getList(new SchoolTeacher(), JSONRequestMethod.GET_TEACHERS);
 	}
 
 	@Override
 	public DataFacade<List<SchoolClass>> getSchoolClassList() {
-		return getList(new SchoolClass(), JSONRequestMethods.getClasses);
+		return getList(new SchoolClass(), JSONRequestMethod.GET_CLASSES);
 	}
 
 	@Override
 	public DataFacade<List<SchoolSubject>> getSchoolSubjectList() {
-		return getList(new SchoolSubject(), JSONRequestMethods.getSubjects);
+		return getList(new SchoolSubject(), JSONRequestMethod.GET_SUBJECTS);
 	}
 
 	@Override
 	public DataFacade<List<SchoolRoom>> getSchoolRoomList() {		
-		return getList(new SchoolRoom(), JSONRequestMethods.getRooms);
+		return getList(new SchoolRoom(), JSONRequestMethod.GET_ROOMS);
 	}
 
 	@Override
 	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList() {
 		DataFacade<List<SchoolHoliday>> data = new DataFacade<List<SchoolHoliday>>();
-		final String method = JSONRequestMethods.getHolidays;
+		final JSONRequestMethod method = JSONRequestMethod.GET_HOLIDAYS;
 		
 		DataFacade<JSONObject> responseObject = requestList(method);
 		
@@ -250,7 +254,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	@Override
 	public DataFacade<Timegrid> getTimegrid() {
 		DataFacade<Timegrid> data = new DataFacade<Timegrid>();
-		final String method = JSONRequestMethods.getTimegridUnits;
+		final JSONRequestMethod method = JSONRequestMethod.GET_TIMEGRID_UNITS;
 
 		DataFacade<JSONObject> responseObject = requestList(method);
 		
@@ -271,7 +275,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	@Override
 	public DataFacade<List<StatusData>> getStatusData() {
 		DataFacade<List<StatusData>> data = new DataFacade<List<StatusData>>();	
-		final String method = JSONRequestMethods.getStatusData;
+		final JSONRequestMethod method = JSONRequestMethod.GET_STATUS_DATA;
 	
 		DataFacade<JSONObject> responseObject = requestList(method);
 
@@ -312,7 +316,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType view,
 			DateTime startDate, DateTime endDate) {
 		final String id = getNextID();
-		final String method = JSONRequestMethods.getTimetable;
+		final JSONRequestMethod method = JSONRequestMethod.GET_TIMETABLE;
 	
 		final JSONObject request = new JSONObject();
 		final JSONObject params = new JSONObject();
@@ -358,7 +362,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			params.put("endDate", endYear + endMonth + endDay);
 	
 			request.put(JSONRequestObjectKeys.JSON_RPC_VERSION, JSON_RPC_VERSION);
-			request.put(JSONRequestObjectKeys.METHOD, method);
+			request.put(JSONRequestObjectKeys.METHOD, method.getRequestMethod());
 			request.put(JSONRequestObjectKeys.ID, id);
 			request.put(JSONRequestObjectKeys.PARAMS, params);
 	
@@ -404,7 +408,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	 */
 	public DataFacade<Boolean> authenticate() {
 		final String id = getNextID();
-		final String method = JSONRequestMethods.authenticate;
+		final JSONRequestMethod method = JSONRequestMethod.AUTHENTICATE;
 		final JSONObject params = new JSONObject();
 		final JSONObject request = new JSONObject();
 
@@ -418,7 +422,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			params.put("password", loginCredentials.getPassword());
 
 			request.put(JSONRequestObjectKeys.JSON_RPC_VERSION, JSON_RPC_VERSION);
-			request.put(JSONRequestObjectKeys.METHOD, method);
+			request.put(JSONRequestObjectKeys.METHOD, method.getRequestMethod());
 			request.put(JSONRequestObjectKeys.PARAMS, params);
 			request.put(JSONRequestObjectKeys.ID, id);
 		}

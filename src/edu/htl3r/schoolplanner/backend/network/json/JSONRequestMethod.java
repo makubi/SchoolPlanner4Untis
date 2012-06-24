@@ -1,7 +1,6 @@
 /* SchoolPlanner4Untis - Android app to manage your Untis timetable
     Copyright (C) 2011  Mathias Kub <mail@makubi.at>
-						Gerald Schreiber <mail@gerald-schreiber.at>
-						Philip Woelfel <philip@woelfel.at>
+			Sebastian Chlan <sebastian@schoolplanner.at>
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -16,20 +15,28 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package edu.htl3r.schoolplanner.backend.network;
+package edu.htl3r.schoolplanner.backend.network.json;
 
-public interface JSONRequestMethods {
-	public static final String getTeachers = "getTeachers";
-	public static final String getClasses = "getKlassen";
-	public static final String getSubjects = "getSubjects";
-	public static final String getRooms = "getRooms";
+public enum JSONRequestMethod {	
 	
-	public static final String getHolidays = "getHolidays";
-	public static final String getTimegridUnits = "getTimegridUnits";
+	GET_TEACHERS("getTeachers"),
+	GET_CLASSES("getKlassen"),
+	GET_SUBJECTS("getSubjects"),
+	GET_ROOMS("getRooms"),
+	GET_HOLIDAYS("getHolidays"),
+	GET_TIMEGRID_UNITS("getTimegridUnits"),
+	GET_STATUS_DATA("getStatusData"),
+	GET_TIMETABLE("getTimetable"),
+	GET_LATEST_IMPORT_TIME("getLatestImportTime"),
+	AUTHENTICATE("authenticate");
 	
-	public static final String getTimetable = "getTimetable";
-	public static final String getStatusData = "getStatusData";
-	public static final String getLatestImportTime = "getLatestImportTime";
+	private String requestMethod;
 	
-	public static final String authenticate = "authenticate";
+	private JSONRequestMethod(String requestMethod) {
+		this.requestMethod = requestMethod;
+	}
+	
+	public String getRequestMethod() {
+		return requestMethod;
+	}
 }
