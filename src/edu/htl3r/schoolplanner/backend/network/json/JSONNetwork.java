@@ -31,7 +31,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
@@ -55,7 +54,6 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridDay;
-import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
@@ -148,15 +146,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	 *             parsen
 	 */
 	private JSONObject parseData(String data) throws JSONException {
-		JSONTokener tokener = new JSONTokener(data);
-		Object next = tokener.nextValue();
-
-		if (next instanceof JSONObject) {
-			return (JSONObject) next;
-		} else {
-			throw new JSONException("Unable to parse JSON data");
-		}
-
+		return new JSONObject(data);
 	}
 	
 	private DataFacade<JSONObject> requestList(JSONRequestMethod method) {
