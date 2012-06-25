@@ -26,19 +26,12 @@ import java.util.List;
 import android.text.format.Time;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeCancelled;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeIrregular;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeBreakSupervision;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeExamination;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeOfficeHour;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeStandby;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
-public class Lesson implements Serializable, Cloneable {
+public class Lesson implements Serializable {
 	
 	private static final long serialVersionUID = 6168669480973047866L;
 
@@ -57,6 +50,24 @@ public class Lesson implements Serializable, Cloneable {
 	private LessonCode lessonCode;
 
 	@Deprecated private long last_update;
+
+	public Lesson() {}
+	
+	public Lesson(Lesson lesson) {
+		this.id = lesson.id;
+		
+		this.date = lesson.startTime;
+		this.startTime = lesson.startTime;
+		this.endTime = lesson.endTime;
+		
+		this.schoolClasses = lesson.schoolClasses;
+		this.schoolTeachers = lesson.schoolTeachers;
+		this.schoolSubjects = lesson.schoolSubjects;
+		this.schoolRooms = lesson.schoolRooms;
+		
+		if(lessonType != null) this.lessonType = lesson.lessonType;
+		if(lessonCode != null) this.lessonCode = lesson.lessonCode;
+	}
 
 	/**
 	 * Liefert das Datum der Stunde.<br>
@@ -257,57 +268,6 @@ public class Lesson implements Serializable, Cloneable {
 	
 	private void sortList(List<? extends ViewType> viewTypeList) {
 		Collections.sort(viewTypeList);
-	}
-	
-	@Override
-	public Lesson clone() {
-		Lesson lessonClone =  new Lesson();
-		
-		lessonClone.id = id;
-		
-		lessonClone.date = date.clone();
-		lessonClone.startTime = startTime.clone();
-		lessonClone.endTime = endTime.clone();
-		
-		lessonClone.schoolClasses = new ArrayList<SchoolClass>(schoolClasses);
-		lessonClone.schoolTeachers = new ArrayList<SchoolTeacher>(schoolTeachers);
-		lessonClone.schoolRooms = new ArrayList<SchoolRoom>(schoolRooms);
-		lessonClone.schoolSubjects = new ArrayList<SchoolSubject>(schoolSubjects);
-		
-		try {
-			lessonClone.lessonType = (LessonType) lessonType.clone();
-		} catch (CloneNotSupportedException e) {
-			if(lessonType instanceof LessonTypeExamination) {
-				lessonClone.lessonType = new LessonTypeExamination();
-			}
-			else if(lessonType instanceof LessonTypeBreakSupervision) {
-				lessonClone.lessonType = new LessonTypeBreakSupervision();
-			}
-			else if(lessonType instanceof LessonTypeOfficeHour) {
-				lessonClone.lessonType = new LessonTypeOfficeHour();
-			}
-			else if(lessonType instanceof LessonTypeStandby) {
-				lessonClone.lessonType = new LessonTypeStandby();
-			}
-		}
-		
-		try {
-			lessonClone.lessonCode = (LessonCode) lessonCode.clone();
-		} catch (CloneNotSupportedException e) {
-			if(lessonCode instanceof LessonCodeSubstitute) {
-				lessonClone.lessonCode = new LessonCodeSubstitute();
-				((LessonCodeSubstitute) lessonClone.lessonCode).setOriginSchoolRoom(((LessonCodeSubstitute) lessonCode).getOriginSchoolRoom());
-				((LessonCodeSubstitute) lessonClone.lessonCode).setOriginSchoolTeacher(((LessonCodeSubstitute) lessonCode).getOriginSchoolTeacher());
-			}
-			else if(lessonCode instanceof LessonCodeIrregular) {
-				lessonClone.lessonCode = new LessonCodeIrregular();
-			}
-			else if(lessonCode instanceof LessonCodeCancelled) {
-				lessonClone.lessonCode = new LessonCodeCancelled();
-			}
-		}
-		
-		return lessonClone;
 	}
 	
 }

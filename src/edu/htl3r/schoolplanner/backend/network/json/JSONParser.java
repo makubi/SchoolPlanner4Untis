@@ -18,15 +18,10 @@
 
 package edu.htl3r.schoolplanner.backend.network.json;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.Cache;
@@ -36,7 +31,6 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCode;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonCodeFactory;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.LessonTypeFactory;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
@@ -51,146 +45,176 @@ public class JSONParser {
 	private final LessonCodeFactory lessonCodeCreator = new LessonCodeFactory();
 	private final LessonTypeFactory lessonTypeCreator = new LessonTypeFactory();
 	
-	/**
-	 * Diese Methode erzeugt aus dem uebergeben JSONArray eine Map mit den darin enthaltenen Stunden.
-	 * Lehrer-, Klassen-, etc.-Listen vom Cache werden verwendet, um direkt die Objekte, statt den IDs aus dem Netzwerk zuzuweisen.
-	 * @param result JSONArray, das die Daten im JSON-Format enthaelt
-	 * @return Eine Map mit Datums-String (siehe {@link DateTimeUtils#toISO8601Date(android.text.format.Time)}) zu Liste mit Stunden an diesem Tag
-	 * @throws JSONException Wird geworfen, wenn ein Fehler beim Abfragen der Daten aus den JSON-Objekten auftritt. Z.B. wenn ein benoetigter Parameter fehlt oder die Struktur des JSON-Objekts nicht passend ist
-	 * @throws IOException Wird geworfen, wenn beim Abfragen der Lehrer-, Klassen-, etc.-Listen ein Fehler auftritt
-	 */
-	public Map<String, List<Lesson>> jsonToLessonMap(JSONArray result) throws JSONException {
-		// TODO Reagieren auf nicht-verfuegbare Listen
+	private Map<Integer, ? extends ViewType> schoolClassIdObjectMap;
+	private Map<Integer, ? extends ViewType> schoolTeacherIdObjectMap;
+	private Map<Integer, ? extends ViewType> schoolSubjectIdObjectMap;
+	private Map<Integer, ? extends ViewType> schoolRoomIdObjectMap;
+	
+	public Map<String,List<Lesson>> jsonLessonsToTimetable(List<JSONLesson> jsonLessonList) {
+		initViewTypeIdObjectMappings();
+		
+		Map<String,List<Lesson>> data = new HashMap<String, List<Lesson>>();
+		
+		for(JSONLesson jsonLesson : jsonLessonList) {
+			Lesson lesson = jsonLessonToLesson(jsonLesson);
+			data = putLessonToMap(data,lesson);
+		}
+		
+		return data;
+	}
+	
+	private void initViewTypeIdObjectMappings() {
 		List<SchoolClass> schoolClassList = cache.getSchoolClassList().getData();
 		List<SchoolTeacher> schoolTeacherList = cache.getSchoolTeacherList().getData();
 		List<SchoolRoom> schoolRoomList = cache.getSchoolRoomList().getData();
 		List<SchoolSubject> schoolSubjectList = cache.getSchoolSubjectList().getData();
 		
-		Map<Integer, ? extends ViewType> schoolClassIdObjectMap = initIdToSchoolObjectListMapping(schoolClassList);
-		Map<Integer, ? extends ViewType> schoolTeacherIdObjectMap = initIdToSchoolObjectListMapping(schoolTeacherList);
-		Map<Integer, ? extends ViewType> schoolSubjectIdObjectMap = initIdToSchoolObjectListMapping(schoolSubjectList);
-		Map<Integer, ? extends ViewType> schoolRoomIdObjectMap = initIdToSchoolObjectListMapping(schoolRoomList);
+		schoolClassIdObjectMap = initIdToSchoolObjectListMapping(schoolClassList);
+		schoolTeacherIdObjectMap = initIdToSchoolObjectListMapping(schoolTeacherList);
+		schoolSubjectIdObjectMap = initIdToSchoolObjectListMapping(schoolSubjectList);
+		schoolRoomIdObjectMap = initIdToSchoolObjectListMapping(schoolRoomList);
+	}
+
+	private Lesson jsonLessonToLesson(JSONLesson jsonLesson) {
+		Lesson lesson = new Lesson();
 		
-		Map<String,List<Lesson>> lessonList = new HashMap<String, List<Lesson>>();
+		lesson = lessonSetId(jsonLesson, lesson);
+		lesson = lessonSetDateAndTimes(jsonLesson, lesson);
+		lesson = lessonSetViewTypeLists(jsonLesson, lesson);
+		lesson = lessonSetLessonCodeAndType(jsonLesson, lesson);
 		
-		for(int i = 0; i < result.length(); i++){
-			JSONObject lessonObject = result.getJSONObject(i);
-			
-			int id = lessonObject.getInt("id");
-			
-			// Verarbeite Datumsstring
-			String rawDateString = ""+lessonObject.getInt("date");
-			
-			String rawYear = rawDateString.substring(0,4);
-			String rawMonth = rawDateString.substring(4,6);
-			String rawDay = rawDateString.substring(6,8);
-			
-			String startTime = ""+lessonObject.getInt("startTime");
-			String endTime = ""+lessonObject.getInt("endTime");
-			
-			int year = Integer.parseInt(rawYear);
-			int month = Integer.parseInt(rawMonth);
-			int day = Integer.parseInt(rawDay);
-			
-			// WebUntis date string --> ISO8601 date string
-			String dateString = rawYear+"-"+rawMonth+"-"+rawDay;
-			
-			int startMinute = Integer.parseInt(getMinute(startTime));
-			int startHour = Integer.parseInt(getHour(startTime));
-			
-			int endMinute = Integer.parseInt(getMinute(endTime));
-			int endHour = Integer.parseInt(getHour(endTime));
-			
-			
-			LessonCode lessonCode = null;
-			LessonType lessonType = null;
-			
-			// Ermittle Schulklassenliste
-			List<SchoolClass> klList = new ArrayList<SchoolClass>();
-			JSONArray klArray = lessonObject.getJSONArray("kl");
-			for(int j = 0; j < klArray.length(); j++) {
-				JSONObject kl = klArray.getJSONObject(j);
-				int klId = kl.getInt("id");
-				
-				klList.add(getSchoolClassListObjectFromMap(schoolClassIdObjectMap, klId));
-			}
-			
-			// Ermittle Lehrerliste
-			List<SchoolTeacher> teList = new ArrayList<SchoolTeacher>();
-			JSONArray teArray = lessonObject.getJSONArray("te");
-			for(int j = 0; j < teArray.length(); j++) {
-				JSONObject te = teArray.getJSONObject(j);
-				int teId = te.getInt("id");
-				
-				if(te.has("orgid")) {
-					int orgId = te.getInt("orgid");
-					lessonCode = lessonCode == null ? new LessonCodeSubstitute() : lessonCode;
-					((LessonCodeSubstitute)lessonCode).setOriginSchoolTeacher(getSchoolTeacherListObjectFromMap(schoolTeacherIdObjectMap, orgId));
-				}
-				
-				teList.add(getSchoolTeacherListObjectFromMap(schoolTeacherIdObjectMap, teId));
-			}
-			
-			// Ermittle Fachliste
-			List<SchoolSubject> suList = new ArrayList<SchoolSubject>();
-			JSONArray suArray = lessonObject.getJSONArray("su");
-			for(int j = 0; j < suArray.length(); j++) {
-				JSONObject su = suArray.getJSONObject(j);
-				int suId = su.getInt("id");
-				
-				suList.add(getSchoolSubjectListObjectFromMap(schoolSubjectIdObjectMap, suId));
-			}
-			
-			// Ermittle Raumliste
-			List<SchoolRoom> roList = new ArrayList<SchoolRoom>();
-			JSONArray roArray = lessonObject.getJSONArray("ro");
-			for(int j = 0; j < roArray.length(); j++) {
-				JSONObject ro = roArray.getJSONObject(j);
-				int roId = ro.getInt("id");
-				
-				if(ro.has("orgid")) {
-					int orgId = ro.getInt("orgid");
-					lessonCode = lessonCode == null ? new LessonCodeSubstitute() : lessonCode;
-					((LessonCodeSubstitute)lessonCode).setOriginSchoolRoom(getSchoolRoomListObjectFromMap(schoolRoomIdObjectMap, orgId));
-				}
-				
-				roList.add(getSchoolRoomListObjectFromMap(schoolRoomIdObjectMap, roId));
-			}
-			
-			// Ermittle LessonType
-			if(lessonObject.has("lstype")) {				
-				lessonType = lessonTypeCreator.createLessonType(lessonObject.getString("lstype"));
-			}
-			
-			// Ermittle LessonCode
-			if(lessonObject.has("code")) {				
-				lessonCode = lessonCodeCreator.createLessonCode(lessonObject.getString("code"));
-				// Wenn Supplierung und Entfall, ueberschreibt Entfall hier.
-			}
-			
-			// Baue Lesson zusammen
-			Lesson lesson = new Lesson();
-			lesson.setId(id);
-			lesson.setDate(year, month, day);
-			lesson.setStartTime(startHour, startMinute);
-			lesson.setEndTime(endHour, endMinute);
-			lesson.setSchoolClasses(klList);
-			lesson.setSchoolTeachers(teList);
-			lesson.setSchoolSubjects(suList);
-			lesson.setSchoolRooms(roList);
-			
-			lesson.setLessonType(lessonType);
-			lesson.setLessonCode(lessonCode);
-			
-			// Fuege neue Leere ArrayList hinzu, wenn fuer Datum noch kein Eintrag in Map vorhanden
-			if(!lessonList.containsKey(dateString)) {
-				lessonList.put(dateString, new ArrayList<Lesson>());
-			}
-			
-			// Fuege Lesson zu Datum in Map hinzu
-			lessonList.get(dateString).add(lesson);
+		return lesson;
+	}
+
+	private Lesson lessonSetId(JSONLesson jsonLesson, Lesson lesson) {
+		Lesson updatedLesson = new Lesson(lesson);
+		
+		updatedLesson.setId(jsonLesson.getId());
+		
+		return updatedLesson;
+	}
+
+	private Lesson lessonSetDateAndTimes(JSONLesson jsonLesson, Lesson lesson) {
+		Lesson updatedLesson = new Lesson(lesson);
+		
+		// Verarbeite Datumsstring
+		String rawDateString = ""+jsonLesson.getDate();
+		
+		String rawYear = rawDateString.substring(0,4);
+		String rawMonth = rawDateString.substring(4,6);
+		String rawDay = rawDateString.substring(6,8);
+		
+		String startTime = ""+jsonLesson.getStartTime();
+		String endTime = ""+jsonLesson.getEndTime();
+		
+		int year = Integer.parseInt(rawYear);
+		int month = Integer.parseInt(rawMonth);
+		int day = Integer.parseInt(rawDay);
+		
+		int startMinute = Integer.parseInt(getMinute(startTime));
+		int startHour = Integer.parseInt(getHour(startTime));
+		
+		int endMinute = Integer.parseInt(getMinute(endTime));
+		int endHour = Integer.parseInt(getHour(endTime));
+		
+		updatedLesson.setDate(year, month, day);
+		updatedLesson.setStartTime(startHour, startMinute);
+		updatedLesson.setEndTime(endHour, endMinute);
+		
+		return updatedLesson;
+	}
+
+	private Lesson lessonSetViewTypeLists(JSONLesson jsonLesson, Lesson lesson) {
+		Lesson updatedLesson = new Lesson(lesson);
+		
+		List<SchoolClass> schoolClassList = getSchoolClassList(jsonLesson.getSchoolClasses(), schoolClassIdObjectMap);		
+		List<SchoolRoom> schoolRoomList = getSchoolRoomList(jsonLesson.getSchoolRooms(), schoolRoomIdObjectMap);
+		List<SchoolSubject> schoolSubjectsList = getSchoolSubjectList(jsonLesson.getSchoolSubjects(), schoolSubjectIdObjectMap);
+		List<SchoolTeacher> schoolTeacherList = getSchoolTeacherList(jsonLesson.getSchoolTeachers(), schoolTeacherIdObjectMap);
+		
+		updatedLesson.setSchoolClasses(schoolClassList);
+		updatedLesson.setSchoolRooms(schoolRoomList);
+		updatedLesson.setSchoolSubjects(schoolSubjectsList);
+		updatedLesson.setSchoolTeachers(schoolTeacherList);
+		
+		return updatedLesson;
+	}
+
+	private List<SchoolClass> getSchoolClassList(List<Integer> viewTypeIds, Map<Integer, ? extends ViewType> idObjectMap) {
+		List<SchoolClass> viewTypeList = new ArrayList<SchoolClass>();
+		
+		for(int id : viewTypeIds) {
+			viewTypeList.add(getSchoolClassListObjectFromMap(idObjectMap, id));
 		}
-		return lessonList;
+		
+		return viewTypeList;
+	}
+	
+	private List<SchoolRoom> getSchoolRoomList(List<Integer> viewTypeIds, Map<Integer, ? extends ViewType> idObjectMap) {
+		List<SchoolRoom> viewTypeList = new ArrayList<SchoolRoom>();
+		
+		for(int id : viewTypeIds) {
+			viewTypeList.add(getSchoolRoomListObjectFromMap(idObjectMap, id));
+		}
+		
+		return viewTypeList;
+	}
+	
+	private List<SchoolSubject> getSchoolSubjectList(List<Integer> viewTypeIds, Map<Integer, ? extends ViewType> idObjectMap) {
+		List<SchoolSubject> viewTypeList = new ArrayList<SchoolSubject>();
+		
+		for(int id : viewTypeIds) {
+			viewTypeList.add(getSchoolSubjectListObjectFromMap(idObjectMap, id));
+		}
+		
+		return viewTypeList;
+	}
+	
+	private List<SchoolTeacher> getSchoolTeacherList(List<Integer> viewTypeIds, Map<Integer, ? extends ViewType> idObjectMap) {
+		List<SchoolTeacher> viewTypeList = new ArrayList<SchoolTeacher>();
+		
+		for(int id : viewTypeIds) {
+			viewTypeList.add(getSchoolTeacherListObjectFromMap(idObjectMap, id));
+		}
+		
+		return viewTypeList;
+	}
+	
+	private Lesson lessonSetLessonCodeAndType(JSONLesson jsonLesson,
+			Lesson lesson) {
+		Lesson updatedLesson = new Lesson(lesson);
+		
+		LessonCode lessonCode = null;
+		LessonType lessonType = null;
+		
+		// Ermittle LessonType
+		if(jsonLesson.getLessonType() != null) {				
+			lessonType = lessonTypeCreator.createLessonType(jsonLesson.getLessonType());
+		}
+					
+		// Ermittle LessonCode
+		if(jsonLesson.getLessonCode() != null) {				
+			lessonCode = lessonCodeCreator.createLessonCode(jsonLesson.getLessonCode());
+			// Wenn Supplierung und Entfall, ueberschreibt Entfall hier.
+		}
+		
+		updatedLesson.setLessonCode(lessonCode);
+		updatedLesson.setLessonType(lessonType);
+		
+		return updatedLesson;
+	}
+
+	private Map<String, List<Lesson>> putLessonToMap(Map<String, List<Lesson>> data, Lesson lesson) {
+		Map<String, List<Lesson>> updatedMap = new HashMap<String, List<Lesson>>(data);
+		String date = DateTimeUtils.toISO8601Date(lesson.getDate());
+		
+		if(!updatedMap.containsKey(date)) {
+			updatedMap.put(date, new ArrayList<Lesson>());
+		}
+		
+		updatedMap.get(date).add(lesson);
+		
+		return updatedMap;
 	}
 
 	private String getMinute(String time) {

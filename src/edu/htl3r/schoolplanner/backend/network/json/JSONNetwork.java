@@ -28,7 +28,6 @@ import org.apache.http.conn.HttpHostConnectException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -149,7 +148,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		return new JSONObject(data);
 	}
 	
-	private DataFacade<JSONObject> requestList(JSONRequestMethod method) {
+	private DataFacade<JSONObject> requestJSONData(JSONRequestMethod method, JSONObject params) {
 		DataFacade<JSONObject> data = new DataFacade<JSONObject>();
 		final JSONObject request = new JSONObject();
 		
@@ -160,8 +159,9 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 
 			request.put(JSONRequestObjectKeys.METHOD, method.getRequestMethod());
 			request.put(JSONRequestObjectKeys.ID, id);
+			
 			// Server benoetigt leere Params
-			request.put(JSONRequestObjectKeys.PARAMS, "");
+			request.put(JSONRequestObjectKeys.PARAMS, params);
 			
 			data = getJSONData(request);
 			
@@ -172,11 +172,11 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		return data;
 	}
 	
-	private <E> DataFacade<List<E>> getList(E typeDef, JSONRequestMethod method) {
+	private <E> DataFacade<List<E>> getList(E typeDef, JSONRequestMethod method, JSONObject params) {
 		DataFacade<List<E>> data = new DataFacade<List<E>>();
 		
 		try {		
-			DataFacade<JSONObject> jsonData = requestList(method);
+			DataFacade<JSONObject> jsonData = requestJSONData(method, params);
 			
 			if(jsonData.isSuccessful()) {
 				ObjectMapper objectMapper = new ObjectMapper();
@@ -199,6 +199,10 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 		return data;
 	}
 	
+	private <E> DataFacade<List<E>> getList(E typeDef, JSONRequestMethod method) {
+		return getList(typeDef, method, new JSONObject());
+	}
+
 	@Override
 	public DataFacade<List<SchoolTeacher>> getSchoolTeacherList() {
 		// TODO logging mit commons-logging
@@ -262,81 +266,52 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	}
 
 	@Override
-	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType view,
-			DateTime startDate, DateTime endDate) {
-		final String id = getNextID();
-		final JSONRequestMethod method = JSONRequestMethod.GET_TIMETABLE;
-	
-		final JSONObject request = new JSONObject();
-		final JSONObject params = new JSONObject();
-	
+	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType view, DateTime startDate, DateTime endDate) {
 		DataFacade<Map<String, List<Lesson>>> data = new DataFacade<Map<String, List<Lesson>>>();
 	
-		Map<String, List<Lesson>> lessonMap = new HashMap<String, List<Lesson>>();
-	
 		try {
+			final JSONObject params = new JSONObject();
+			
 			// Setze die ID des ViewTypes (z.B. 5AN)
 			params.put("id", view.getId());
 	
 			// Setze die Art des ViewTypes (z.B. Klasse)
 			params.put("type", viewTypeMapping.get(view.getClass()));
 	
-			// Parsen der Daten
-			String startYear = "" + startDate.getYear();
-			String startMonth = "" + startDate.getMonth();
-			String startDay = "" + startDate.getDay();
-	
-			if (startMonth.length() < 2) {
-				startMonth = "0" + startMonth;
-			}
-	
-			if (startDay.length() < 2) {
-				startDay = "0" + startDay;
-			}
-	
-			String endYear = "" + endDate.getYear();
-			String endMonth = "" + endDate.getMonth();
-			String endDay = "" + endDate.getDay();
-	
-			if (endMonth.length() < 2) {
-				endMonth = "0" + endMonth;
-			}
-	
-			if (endDay.length() < 2) {
-				endDay = "0" + endDay;
-			}
-	
-			// Setze die Daten der Abfrage
-			params.put("startDate", startYear + startMonth + startDay);
-			params.put("endDate", endYear + endMonth + endDay);
-	
-			request.put(JSONRequestObjectKeys.JSON_RPC_VERSION, JSON_RPC_VERSION);
-			request.put(JSONRequestObjectKeys.METHOD, method.getRequestMethod());
-			request.put(JSONRequestObjectKeys.ID, id);
-			request.put(JSONRequestObjectKeys.PARAMS, params);
-	
-			// Netzwerkanfrage
-			DataFacade<JSONObject> response = getJSONData(request);
+			params.put("startDate", getWebUntisTimetableString(startDate.getYear(), startDate.getMonth(), startDate.getDay()));
+			params.put("endDate", getWebUntisTimetableString(endDate.getYear(), endDate.getMonth(), endDate.getDay()));
 			
-			
-			if(response.isSuccessful()) {
-				// Extrahiere Nutzdaten
-				JSONArray result = response.getData().getJSONArray(JSONResponseObjectKeys.RESULT);
-			
-				// Parse die JSON-Response zu passender Map
-				lessonMap = jsonParser.jsonToLessonMap(result);
-				
-				// Fuege leere Listen fuer Daten ohne Stunden hinzu
+			DataFacade<List<JSONLesson>> list = getList(new JSONLesson(), JSONRequestMethod.GET_TIMETABLE, params);
+			if(list.isSuccessful()) {
+				Map<String, List<Lesson>> lessonMap = new HashMap<String, List<Lesson>>();
+				lessonMap = jsonParser.jsonLessonsToTimetable(list.getData());
 				lessonProcessor.addEmptyDaysToLessonMap(lessonMap, startDate, endDate);
-	
+				
 				data.setData(lessonMap);
 			}
+			else data.setErrorMessage(list.getErrorMessage());
 	
 		} catch (JSONException e) {
 			data.setErrorMessage(getErrorMessage(e));
 		}
 	
 		return data;
+	}
+	
+	private String getWebUntisTimetableString(int year, int month, int day) {		
+		String yearString = "" + year;
+		String monthString = "" + month;
+		String dayString = "" + day;
+		
+		if (monthString.length() < 2) {
+			monthString = "0" + monthString;
+		}
+
+		if (dayString.length() < 2) {
+			dayString = "0" + dayString;
+		}
+		
+		return yearString + monthString + dayString;
 	}
 
 	@Override
