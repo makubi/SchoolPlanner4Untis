@@ -117,8 +117,9 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 					data.setErrorMessage(getWebUntisErrorMessage(response));
 				}
 			}
-			
-			data.setData(response);
+			else {
+				data.setData(response);
+			}
 		} catch (Exception e) {
 			data.setErrorMessage(getErrorMessage(e));
 		}
