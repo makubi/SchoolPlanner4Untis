@@ -29,7 +29,6 @@ import edu.htl3r.schoolplanner.backend.AutoSelectHandler;
 import edu.htl3r.schoolplanner.backend.LoginSetHandler;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.MasterdataStore;
-import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseCreateConstants;
 import edu.htl3r.schoolplanner.backend.preferences.AutoSelectSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
@@ -122,11 +121,6 @@ public class Database implements MasterdataStore, MasterdataProvider, LoginSetHa
 	}
 
 	@Override
-	public synchronized List<StatusData> getStatusData() {
-		return masterDataDatabase.getStatusData();
-	}
-
-	@Override
 	public synchronized void setSchoolClassList(List<SchoolClass> schoolClasses) {
 		masterDataDatabase.setSchoolClassList(schoolClasses);
 	}
@@ -154,11 +148,6 @@ public class Database implements MasterdataStore, MasterdataProvider, LoginSetHa
 	@Override
 	public synchronized void setTimegrid(Timegrid timegrid) {
 		masterDataDatabase.setTimegrid(timegrid);
-	}
-
-	@Override
-	public synchronized void setStatusData(List<StatusData> statusData) {
-		masterDataDatabase.setStatusData(statusData);
 	}
 
 	@Override

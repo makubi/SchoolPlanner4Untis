@@ -50,8 +50,6 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 	
 	private Timetable timetable = new Timetable();
 	
-	private List<StatusData> statusData;
-	
 	@Override
 	public List<SchoolClass> getSchoolClassList() {
 		return schoolClassList;
@@ -156,16 +154,6 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 			timetable.put(view, date, lessonMap.get(date));
 			tmpDate.increaseDay();
 		}
-	}
-
-	@Override
-	public List<StatusData> getStatusData() {
-		return statusData;
-	}
-
-	@Override
-	public void setStatusData(List<StatusData> statusData) {
-		this.statusData = statusData;
 	}
 	
 }

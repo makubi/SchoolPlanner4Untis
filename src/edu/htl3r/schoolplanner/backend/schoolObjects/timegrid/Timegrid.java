@@ -97,6 +97,10 @@ public class Timegrid implements SchoolObject {
 		days.put(day,gridDay);
 	}
 	
+	public void setTimegridForDay(int day, TimegridDay timegridDay) {
+		days.put(day, timegridDay);
+	}
+	
 	/**
 	 * Fuegt eine Zeitraster-Einheit zu einem {@link Time}-Tag hinzu.
 	 * @param day Time-Tag, zu dem die Zeitraster-Einheit hinzugefuegt werden soll

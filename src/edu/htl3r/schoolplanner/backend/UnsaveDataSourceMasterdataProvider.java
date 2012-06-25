@@ -67,10 +67,4 @@ public interface UnsaveDataSourceMasterdataProvider {
 	 */
 	public DataFacade<Timegrid> getTimegrid();
 	
-	/**
-	 * Ermoeglicht den Zugriff auf die Liste der Status Daten.<br>
-	 * @return Ein {@link DataFacade}-Objekt mit den passenden Daten.
-	 */
-	public DataFacade<List<StatusData>> getStatusData();
-	
 }

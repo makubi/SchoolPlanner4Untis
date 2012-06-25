@@ -194,31 +194,6 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 	}
 
 	@Override
-	public DataFacade<List<StatusData>> getStatusData() {
-		DataFacade<List<StatusData>> statusDataList = new DataFacade<List<StatusData>>();
-
-		// Check database
-		List<StatusData> data = database.getStatusData();
-		if (data != null && data.size() > 0) {
-			Log.v("data_source","status data: database");
-			statusDataList.setData(data);
-		}
-		// Check network
-		else if (networkAvailable) {
-			if ((statusDataList = network.getStatusData()).isSuccessful()) {
-				Log.v("data_source","status data: network");
-				database.setStatusData(statusDataList.getData());
-			}
-		}
-		else {
-			statusDataList.setErrorMessage(getUnableToLoadDataErrorMessage());
-		}
-
-		return statusDataList;
-	
-	}
-
-	@Override
 	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
 		DataFacade<List<Lesson>> lessonList = new DataFacade<List<Lesson>>();
 
@@ -315,7 +290,6 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		
 		DataFacade<List<SchoolHoliday>> schoolHolidayList = network.getSchoolHolidayList();
 		DataFacade<Timegrid> timegrid = network.getTimegrid();
-		DataFacade<List<StatusData>> statusData = network.getStatusData();
 		
 		// Collect data
 		requests.add(schoolClassList);
@@ -325,7 +299,6 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		
 		requests.add(schoolHolidayList);
 		requests.add(timegrid);
-		requests.add(statusData);
 		
 		// check for errors
 		DataFacade<MasterData> data = new DataFacade<MasterData>();
@@ -344,7 +317,6 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		masterData.setSchoolTeacherList(schoolTeacherList.getData());
 		masterData.setSchoolHolidayList(schoolHolidayList.getData());
 		masterData.setTimegrid(timegrid.getData());
-		masterData.setStatusData(statusData.getData());
 		
 		data.setData(masterData);
 		
@@ -356,7 +328,6 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		database.setSchoolSubjectList(schoolSubjectList.getData());
 		database.setSchoolHolidayList(schoolHolidayList.getData());
 		database.setTimegrid(timegrid.getData());
-		database.setStatusData(statusData.getData());
 		
 		return data;
 	}

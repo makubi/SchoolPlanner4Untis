@@ -39,7 +39,6 @@ import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.ErrorMessage;
-import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceMasterdataProvider;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceTimetableDataProvider;
 import edu.htl3r.schoolplanner.backend.network.ErrorCodes;
@@ -55,6 +54,8 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
+import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridDay;
+import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
@@ -78,7 +79,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 
 	private int id = 0;
 
-	public String getNextID() {
+	private String getNextID() {
 		return "" + id++;
 	}
 	
@@ -232,67 +233,25 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 
 	@Override
 	public DataFacade<List<SchoolHoliday>> getSchoolHolidayList() {
-		DataFacade<List<SchoolHoliday>> data = new DataFacade<List<SchoolHoliday>>();
-		final JSONRequestMethod method = JSONRequestMethod.GET_HOLIDAYS;
-		
-		DataFacade<JSONObject> responseObject = requestList(method);
-		
-		if(responseObject.isSuccessful()) {
-			JSONObject responseData = responseObject.getData();
-		
-			try {	
-				JSONArray result = responseData.getJSONArray(JSONResponseObjectKeys.RESULT);
-				data.setData(jsonParser.jsonToHolidayList(result));
-			} catch (JSONException e) {
-				data.setErrorMessage(getErrorMessage(e));
-			}
-		}
-		
-		return data;
+		return getList(new SchoolHoliday(), JSONRequestMethod.GET_HOLIDAYS);
 	}
 
 	@Override
-	public DataFacade<Timegrid> getTimegrid() {
+	public DataFacade<Timegrid> getTimegrid() {		
 		DataFacade<Timegrid> data = new DataFacade<Timegrid>();
-		final JSONRequestMethod method = JSONRequestMethod.GET_TIMEGRID_UNITS;
-
-		DataFacade<JSONObject> responseObject = requestList(method);
+		DataFacade<List<TimegridDay>> list = getList(new TimegridDay(), JSONRequestMethod.GET_TIMEGRID_UNITS);
 		
-		if(responseObject.isSuccessful()) {
-			JSONObject responseData = responseObject.getData();
-		
-			try {	
-				JSONArray result = responseData.getJSONArray(JSONResponseObjectKeys.RESULT);
-				data.setData(jsonParser.jsonToTimegrid(result));
-			} catch (JSONException e) {
-				data.setErrorMessage(getErrorMessage(e));
-			}
-		}
-		
-		return data;
-	}
-
-	@Override
-	public DataFacade<List<StatusData>> getStatusData() {
-		DataFacade<List<StatusData>> data = new DataFacade<List<StatusData>>();	
-		final JSONRequestMethod method = JSONRequestMethod.GET_STATUS_DATA;
-	
-		DataFacade<JSONObject> responseObject = requestList(method);
-
-		if(responseObject.isSuccessful()) {
-			JSONObject responseData = responseObject.getData();
-		
-			try {
+		if(list.isSuccessful()) {
+			Timegrid timegrid = new Timegrid();
 			
-				JSONObject result = responseData.getJSONObject(JSONResponseObjectKeys.RESULT);
-				List<StatusData> statusData = jsonParser.jsonToStatusData(result);
-				data.setData(statusData);
+			for(TimegridDay timegridDay : list.getData()) {
+				timegrid.setTimegridForDay(timegridDay.getDay(), timegridDay);
 			}
-			catch (JSONException e) {
-				data.setErrorMessage(getErrorMessage(e));
-			}
+			
+			data.setData(timegrid);
 		}
-	
+		else data.setErrorMessage(list.getErrorMessage());
+		
 		return data;
 	}
 

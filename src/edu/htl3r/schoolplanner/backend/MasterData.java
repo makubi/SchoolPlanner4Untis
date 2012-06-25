@@ -42,7 +42,6 @@ public class MasterData {
 	private List<SchoolTestType> schoolTestTypeList;
 	
 	private Timegrid timegrid;
-	private List<StatusData> statusData;
 	
 	public List<SchoolClass> getSchoolClassList() {
 		return schoolClassList;
@@ -106,14 +105,6 @@ public class MasterData {
 	 */
 	public void setSchoolTestTypeList(List<SchoolTestType> schoolTestTypeList) {
 		this.schoolTestTypeList = schoolTestTypeList;
-	}
-
-	public List<StatusData> getStatusData() {
-		return statusData;
-	}
-	
-	public void setStatusData(List<StatusData> statusData) {
-		this.statusData = statusData;
 	}
 	
 }

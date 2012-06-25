@@ -84,5 +84,4 @@ public interface MasterdataProvider {
 	 */
 	public Timegrid getTimegrid();
 	
-	public List<StatusData> getStatusData();
 }

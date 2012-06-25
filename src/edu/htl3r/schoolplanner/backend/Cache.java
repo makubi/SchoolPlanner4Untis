@@ -165,25 +165,6 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	}
 
 	@Override
-	public DataFacade<List<StatusData>> getStatusData() {
-		DataFacade<List<StatusData>> data;
-		List<StatusData> internalSchoolSubjectList = internalMemory.getStatusData();
-		
-		if(internalSchoolSubjectList != null) {
-			data = new DataFacade<List<StatusData>>();
-			data.setData(internalSchoolSubjectList);
-		}
-		else {
-			data = externalDataLoader.getStatusData();
-			if(data.isSuccessful()) {
-				internalMemory.setStatusData(data.getData());
-			}
-		}
-		
-		return data;
-	}
-
-	@Override
 	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
 		DataFacade<List<Lesson>> data;
 		List<Lesson> internalLessons = internalMemory.getLessons(viewType, date);
@@ -275,7 +256,6 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 			internalMemory.setSchoolSubjectList(masterDataContent.getSchoolSubjectList());
 			internalMemory.setSchoolHolidayList(masterDataContent.getSchoolHolidayList());
 			internalMemory.setTimegrid(masterDataContent.getTimegrid());
-			internalMemory.setStatusData(masterDataContent.getStatusData());
 		
 			data.setData(true);
 		}
