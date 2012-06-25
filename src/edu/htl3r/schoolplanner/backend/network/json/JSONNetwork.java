@@ -332,17 +332,15 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	 *             Fehler auftritt
 	 */
 	public DataFacade<Boolean> authenticate() {
-		final String id = getNextID();
-		final JSONRequestMethod method = JSONRequestMethod.AUTHENTICATE;
-		final JSONObject params = new JSONObject();
-		final JSONObject request = new JSONObject();
-
-		JSONObject response = null;
-
 		DataFacade<Boolean> data = new DataFacade<Boolean>();
 		data.setData(false);
 
 		try {
+			final String id = getNextID();
+			final JSONRequestMethod method = JSONRequestMethod.AUTHENTICATE;
+			final JSONObject params = new JSONObject();
+			final JSONObject request = new JSONObject();
+			
 			params.put("user", loginCredentials.getUsername());
 			params.put("password", loginCredentials.getPassword());
 
@@ -350,47 +348,31 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 			request.put(JSONRequestObjectKeys.METHOD, method.getRequestMethod());
 			request.put(JSONRequestObjectKeys.PARAMS, params);
 			request.put(JSONRequestObjectKeys.ID, id);
-		}
-		catch(JSONException e) {
-			
-		}
+		
 			DataFacade<JSONObject> jsonData = getJSONData(request);
-			
+		
 			if(jsonData.isSuccessful()) {
-				response = jsonData.getData();
-			
-				try {
+				JSONObject response = jsonData.getData();
+				JSONObject result = response.getJSONObject(JSONResponseObjectKeys.RESULT);
 				
-				if (response.has(JSONResponseObjectKeys.ERROR)) {
-					JSONObject errorObject = response.getJSONObject(JSONResponseObjectKeys.ERROR);
-					int errorCode = errorObject.getInt(JSONResponseObjectKeys.ERROR_CODE);
-					
-					if(!(errorCode == WebUntisErrorCodes.WEBUNTIS_BAD_CREDENTIALS)) {
-						data.setErrorMessage(getWebUntisErrorMessage(response));
-					}
-				}
-				
-				else {
-					JSONObject result = response.getJSONObject(JSONResponseObjectKeys.RESULT);
-					String sessionId = result.getString("sessionId");
-					if (!result.equals("null")) {
-						network.setJsessionid(sessionId);
-						data.setData(true);
-					} else {
-						network.setJsessionid(null);
-					}
-				}
-			}
-				catch (JSONException e) {
-					data.setErrorMessage(getErrorMessage(e));
+				String sessionId = result.getString("sessionId");
+				if (!result.equals("null")) {
+					network.setJsessionid(sessionId);
+					data.setData(true);
+				} else {
+					network.setJsessionid(null);
 				}
 			}
 			else if(jsonData.getErrorMessage().getErrorCode() == WebUntisErrorCodes.WEBUNTIS_BAD_CREDENTIALS) {
-					data.setData(false);
+				data.setData(false);
 			}
 			else {
 				data.setErrorMessage(jsonData.getErrorMessage());
 			}
+		}
+		catch (JSONException e) {
+			data.setErrorMessage(getErrorMessage(e));
+		}
 		
 		return data;
 	}
@@ -424,24 +406,16 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	}
 	
 	private ErrorMessage getWebUntisErrorMessage(JSONObject jsonObject) throws JSONException {
-		if(jsonObject.has(JSONResponseObjectKeys.ERROR)) {
-			try {
-				ErrorMessage errorMessage = new ErrorMessage();
-				JSONObject errorObject = jsonObject.getJSONObject(JSONResponseObjectKeys.ERROR);
-				int errorCode = errorObject.getInt(JSONResponseObjectKeys.ERROR_CODE);
-				String errorString = errorObject.optString(JSONResponseObjectKeys.ERROR_MESSAGE);
-				
-				errorMessage.setErrorCode(ErrorCodes.WEBUNTIS_SERVICE_EXCEPTION);
-				errorMessage.setException(new WebUntisServiceException(errorCode));
-				errorMessage.setAdditionalInfo(errorString);
-				
-				return errorMessage;
-			} catch (JSONException e) {
-				Log.e("Network","Unable to parse JSON error",e);
-				throw new JSONException("Unable to parse JSON error: "+jsonObject);
-			}
-		}
-		else return null;
+		ErrorMessage errorMessage = new ErrorMessage();
+		JSONObject errorObject = jsonObject.getJSONObject(JSONResponseObjectKeys.ERROR);
+		int errorCode = errorObject.getInt(JSONResponseObjectKeys.ERROR_CODE);
+		String errorString = errorObject.optString(JSONResponseObjectKeys.ERROR_MESSAGE);
+		
+		errorMessage.setErrorCode(ErrorCodes.WEBUNTIS_SERVICE_EXCEPTION);
+		errorMessage.setException(new WebUntisServiceException(errorCode));
+		errorMessage.setAdditionalInfo(errorString);
+		
+		return errorMessage;
 	}
 
 }
