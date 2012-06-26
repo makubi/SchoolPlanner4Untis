@@ -21,9 +21,8 @@ package edu.htl3r.schoolplanner.backend.schoolObjects.timegrid;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import edu.htl3r.schoolplanner.DateTime;
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 
-public class TimegridUnit implements SchoolObject, Comparable<TimegridUnit> {
+public class TimegridUnit implements Comparable<TimegridUnit> {
 
 	private String name;
 	

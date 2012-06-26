@@ -26,14 +26,13 @@ import java.util.Map;
 import android.text.format.Time;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.network.WebUntis;
-import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolObject;
 
 /**
  * Diese Klasse repraesentiert einen Zeitraster.
  * Die Zeitrastereinheiten koennen fuer alle Tag, die sich im Zeitraster befinden, abgerufen werden.
  * Zu unterscheiden ist die Abfrage nach den Zeitrastern nach Calendar.DAY oder WebUntis.DAY. 
  */
-public class Timegrid implements SchoolObject {
+public class Timegrid {
 
 	private Map<Integer, Integer> staticCalendarDayMapping = new HashMap<Integer, Integer>();
 	private Map<Integer, Integer> staticTimeDayMapping = new HashMap<Integer, Integer>();

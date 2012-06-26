@@ -23,7 +23,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 import edu.htl3r.schoolplanner.DateTime;
 
 
-public class SchoolHoliday implements SchoolObject{
+public class SchoolHoliday {
 
 	private int id;
 	private String name;
