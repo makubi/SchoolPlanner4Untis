@@ -7,6 +7,13 @@
     <packaging>apk</packaging>
     <name>SchoolPlanner4Untis</name>
 
+	<properties>
+		<android.version>2.1.2</android.version>
+		<androidsdk.version>7</androidsdk.version>
+		<jackson.version>1.9.7</jackson.version>
+		<androidmavenplugin.version>3.1.1</androidmavenplugin.version>
+	</properties>
+
     <repositories>
 	    <repository>
 		    <id>coding4coffee</id>
@@ -19,7 +26,7 @@
         <dependency>
 		<groupId>com.google.android</groupId>
 		<artifactId>android</artifactId>
-		<version>2.1.2</version>
+		<version>${android.version}</version>
 		<scope>provided</scope>
 	</dependency>
 	<dependency>
@@ -36,7 +43,7 @@
 	<dependency>
 		<groupId>org.codehaus.jackson</groupId>
 		<artifactId>jackson-mapper-asl</artifactId>
-		<version>1.9.7</version>
+		<version>${jackson.version}</version>
 	</dependency>
     </dependencies>
 
@@ -47,11 +54,10 @@
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>${androidmavenplugin.version}</version>
                 <configuration>
                     <sdk>
-                        <!-- platform or api level (api level 4 = platform 1.6)-->
-                        <platform>7</platform>
+                        <platform>${androidsdk.version}</platform>
                     </sdk>
                     <deleteConflictingFiles>true</deleteConflictingFiles>
                     <undeployBeforeDeploy>true</undeployBeforeDeploy>
@@ -60,7 +66,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <!-- version 2.3 defaults to java 1.5, so no further configuration needed-->
                 <version>2.3.2</version>
 		<configuration>
           		<source>1.6</source>
