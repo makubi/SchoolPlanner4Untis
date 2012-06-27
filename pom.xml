@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>edu.htl3r.schoolplanner</groupId>
-    <artifactId>sp4u</artifactId>
-    <version>2.4</version>
-    <packaging>apk</packaging>
-    <name>SchoolPlanner4Untis</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>edu.htl3r.schoolplanner</groupId>
+	<artifactId>sp4u</artifactId>
+	<version>2.4</version>
+	<packaging>apk</packaging>
+	<name>SchoolPlanner4Untis</name>
 
 	<properties>
 		<android.version>2.1.2</android.version>
@@ -14,64 +15,118 @@
 		<androidmavenplugin.version>3.1.1</androidmavenplugin.version>
 	</properties>
 
-    <repositories>
-	    <repository>
-		    <id>coding4coffee</id>
-		    <name>coding4coffee</name>
-		    <url>http://nexus.coding4coffee.org/content/groups/public/</url>
-	    </repository>
-    </repositories>
+	<repositories>
+		<repository>
+			<id>coding4coffee</id>
+			<name>coding4coffee</name>
+			<url>http://nexus.coding4coffee.org/content/groups/public/</url>
+		</repository>
+	</repositories>
 
-    <dependencies>
-        <dependency>
-		<groupId>com.google.android</groupId>
-		<artifactId>android</artifactId>
-		<version>${android.version}</version>
-		<scope>provided</scope>
-	</dependency>
-	<dependency>
-		<groupId>android-extras</groupId>
-		<artifactId>compatibility-library</artifactId>
-		<version>v4</version>
-	</dependency>
-	<dependency>
-		  <groupId>commons-logging</groupId>
-		   <artifactId>commons-logging</artifactId>
-		   <version>1.1.1</version>
-		   <scope>provided</scope>
-	</dependency>
-	<dependency>
-		<groupId>org.codehaus.jackson</groupId>
-		<artifactId>jackson-mapper-asl</artifactId>
-		<version>${jackson.version}</version>
-	</dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>${android.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>android-extras</groupId>
+			<artifactId>compatibility-library</artifactId>
+			<version>v4</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+	</dependencies>
 
-    <build>
-        <finalName>${project.artifactId}</finalName>
-        <sourceDirectory>src</sourceDirectory>
-        <plugins>
-            <plugin>
-                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
-                <artifactId>android-maven-plugin</artifactId>
-                <version>${androidmavenplugin.version}</version>
-                <configuration>
-                    <sdk>
-                        <platform>${androidsdk.version}</platform>
-                    </sdk>
-                    <deleteConflictingFiles>true</deleteConflictingFiles>
-                    <undeployBeforeDeploy>true</undeployBeforeDeploy>
-                </configuration>
-                <extensions>true</extensions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-		<configuration>
-          		<source>1.6</source>
-          		<target>1.6</target>
-        	</configuration>
-            </plugin>
-        </plugins>
-    </build>
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<version>${androidmavenplugin.version}</version>
+				<configuration>
+					<sdk>
+						<platform>${androidsdk.version}</platform>
+					</sdk>
+					<deleteConflictingFiles>true</deleteConflictingFiles>
+					<undeployBeforeDeploy>true</undeployBeforeDeploy>
+				</configuration>
+				<extensions>true</extensions>
+
+
+				<executions>
+					<execution>
+						<id>update-manifest</id>
+						<goals>
+							<goal>manifest-update</goal>
+						</goals>
+						<configuration>
+							<manifest>
+								<versionName>2.4</versionName>
+								<versionCodeAutoIncrement>true</versionCodeAutoIncrement>
+								<versionCodeUpdateFromVersion>false</versionCodeUpdateFromVersion>
+							</manifest>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+
+
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											com.jayway.maven.plugins.android.generation2
+										</groupId>
+										<artifactId>
+											android-maven-plugin
+										</artifactId>
+										<versionRange>
+											[3.1.1,)
+										</versionRange>
+										<goals>
+											<goal>manifest-update</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
 </project>
