@@ -24,6 +24,7 @@ import java.util.Map;
 
 import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.backend.cache.Cache;
 import edu.htl3r.schoolplanner.backend.database.Database;
 import edu.htl3r.schoolplanner.backend.network.json.JSONNetwork;
 import edu.htl3r.schoolplanner.backend.preferences.AutoSelectSet;
@@ -42,7 +43,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see Database
  * @see JSONNetwork
  */
-public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider, LoginSetHandler, AutoSelectHandler {
+public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, NetworkTimetableDataProvider, LoginSetHandler, AutoSelectHandler {
 
 	private Database database = new Database();
 	private JSONNetwork network = new JSONNetwork();
@@ -239,23 +240,9 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 	}
 
 	@Override
-	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
-			DateTime startDate, DateTime endDate, boolean forceNetwork) {
-		DataFacade<Map<String, List<Lesson>>> lessonMap = new DataFacade<Map<String, List<Lesson>>>();
-		
-		if(forceNetwork) {
-			
-			// Check network
-			if (networkAvailable) {
-				if ((lessonMap = network.getLessons(viewType, startDate, endDate)).isSuccessful()) {
-					//database.setLessons(lessonList.getData());
-				}
-			}
-			else lessonMap.setErrorMessage(getUnableToLoadDataErrorMessage());
-		}
-		else return getLessons(viewType, startDate, endDate);
-		
-		return lessonMap;
+	public DataFacade<Map<String, List<Lesson>>> getLessonsFromNetwork(ViewType viewType,
+			DateTime startDate, DateTime endDate) {		
+		return network.getLessons(viewType, startDate, endDate);
 	}
 
 	/**

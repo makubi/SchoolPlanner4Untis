@@ -25,8 +25,8 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
-import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
+import edu.htl3r.schoolplanner.backend.cache.Cache;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 

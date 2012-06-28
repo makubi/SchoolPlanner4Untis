@@ -21,7 +21,7 @@ import android.os.AsyncTask;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
-import edu.htl3r.schoolplanner.backend.Cache;
+import edu.htl3r.schoolplanner.backend.cache.Cache;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.timetable.LoadDataTask.LogObject;

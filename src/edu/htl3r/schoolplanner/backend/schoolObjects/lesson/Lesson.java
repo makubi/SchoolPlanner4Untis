@@ -23,8 +23,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import android.text.format.Time;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
@@ -77,6 +80,11 @@ public class Lesson implements Serializable {
 	public DateTime getDate() {
 		return date;
 	}
+	
+	@JsonProperty(value="date")
+	public String getDateAsISO8601String() {
+		return DateTimeUtils.toISO8601Date(date);
+	}
 
 	/**
 	 * Setzt das Datum der Stunde und der {@link Time}-Objekte, die fuer Start- und Endzeit verwendet werden.
@@ -90,6 +98,14 @@ public class Lesson implements Serializable {
 		endTime.set(day, month, year);
 	}
 	
+	@JsonProperty(value="date")
+	public void setDate(String iso8601Date) {
+		DateTime dateTime = DateTimeUtils.iso8601StringToDateTime(iso8601Date);
+		date.set(dateTime.getDay(), dateTime.getMonth(), dateTime.getYear());
+		startTime.set(dateTime.getDay(), dateTime.getMonth(), dateTime.getYear());
+		endTime.set(dateTime.getDay(), dateTime.getMonth(), dateTime.getYear());
+	}
+	
 	/**
 	 * Liefert den Anfangszeitpunkt der Stunde (+ richtig gesetztem Datum).<br>
 	 * <b>ACHTUNG: Die Monatsnummer laeuft von 1 - 12!</b>
@@ -97,6 +113,11 @@ public class Lesson implements Serializable {
 	 */
 	public DateTime getStartTime() {
 		return startTime;
+	}
+	
+	@JsonProperty(value="startTime")
+	public String getStartTimeAsISO8601String() {
+		return DateTimeUtils.toISO8601Time(startTime);
 	}
 
 	/**
@@ -108,6 +129,12 @@ public class Lesson implements Serializable {
 		startTime.set(0, minute, hour, startTime.getDay(), startTime.getMonth(), startTime.getYear());
 	}
 	
+	@JsonProperty(value="startTime")
+	public void setStartTime(String iso8601Date) {
+		DateTime dateTime = DateTimeUtils.iso8601StringToTime(iso8601Date);
+		startTime.set(dateTime.getMinute(), dateTime.getHour(), startTime.getDay(), startTime.getMonth(), startTime.getYear());
+	}
+	
 	/**
 	 * Liefert den Anfangszeitpunkt der Stunde (+ richtig gesetztem Datum).<br>
 	 * <b>ACHTUNG: Die Monatsnummer laeuft von 1 - 12!</b>
@@ -115,6 +142,11 @@ public class Lesson implements Serializable {
 	 */
 	public DateTime getEndTime() {
 		return endTime;
+	}
+	
+	@JsonProperty(value="endTime")
+	public String getEndTimeAsISO8601String() {
+		return DateTimeUtils.toISO8601Time(endTime);
 	}
 
 	/**
@@ -124,7 +156,13 @@ public class Lesson implements Serializable {
 	 */
 	public void setEndTime(int hour, int minute) {
 		endTime.set(0, minute, hour, endTime.getDay(), endTime.getMonth(), endTime.getYear());
-	}	
+	}
+	
+	@JsonProperty(value="endTime")
+	public void setEndTime(String iso8601Date) {
+		DateTime dateTime = DateTimeUtils.iso8601StringToTime(iso8601Date);
+		endTime.set(dateTime.getMinute(), dateTime.getHour(), endTime.getDay(), endTime.getMonth(), endTime.getYear());
+	}
 	
 	public LessonType getLessonType() {
 		return lessonType;

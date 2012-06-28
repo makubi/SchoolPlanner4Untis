@@ -34,11 +34,11 @@ import org.json.JSONObject;
 import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
-import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.ErrorMessage;
+import edu.htl3r.schoolplanner.backend.NetworkTimetableDataProvider;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceMasterdataProvider;
-import edu.htl3r.schoolplanner.backend.UnsaveDataSourceTimetableDataProvider;
+import edu.htl3r.schoolplanner.backend.cache.Cache;
 import edu.htl3r.schoolplanner.backend.network.ErrorCodes;
 import edu.htl3r.schoolplanner.backend.network.LessonProcessor;
 import edu.htl3r.schoolplanner.backend.network.Network;
@@ -61,8 +61,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 /**
  * Netzwerkzugriff fuer die Datenabfrage ueber JSON.
  */
-public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
-		UnsaveDataSourceTimetableDataProvider {
+public class JSONNetwork implements UnsaveDataSourceMasterdataProvider, NetworkTimetableDataProvider {
 
 	/**
 	 * JSON-RPC Version, die der Untis-Server verwendet.
@@ -316,8 +315,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 	}
 
 	@Override
-	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
-			DateTime startDate, DateTime endDate, boolean forceNetwork) {
+	public DataFacade<Map<String, List<Lesson>>> getLessonsFromNetwork(ViewType viewType, DateTime startDate, DateTime endDate) {
 		return getLessons(viewType, startDate, endDate);
 	}
 

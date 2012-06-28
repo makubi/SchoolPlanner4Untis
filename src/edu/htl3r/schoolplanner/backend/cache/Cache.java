@@ -16,12 +16,22 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package edu.htl3r.schoolplanner.backend;
+package edu.htl3r.schoolplanner.backend.cache;
 
 import java.util.List;
 import java.util.Map;
 
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.backend.AutoSelectHandler;
+import edu.htl3r.schoolplanner.backend.DataConnection;
+import edu.htl3r.schoolplanner.backend.DataFacade;
+import edu.htl3r.schoolplanner.backend.ErrorMessage;
+import edu.htl3r.schoolplanner.backend.ExternalDataLoader;
+import edu.htl3r.schoolplanner.backend.LoginSetHandler;
+import edu.htl3r.schoolplanner.backend.MasterData;
+import edu.htl3r.schoolplanner.backend.NetworkTimetableDataProvider;
+import edu.htl3r.schoolplanner.backend.UnsaveDataSourceMasterdataProvider;
+import edu.htl3r.schoolplanner.backend.cache.timetable.TimetableCache;
 import edu.htl3r.schoolplanner.backend.network.ErrorCodes;
 import edu.htl3r.schoolplanner.backend.preferences.AutoSelectSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
@@ -39,9 +49,11 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see InternalMemory
  * @see ExternalDataLoader
  */
-public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider, LoginSetHandler, AutoSelectHandler {
+public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider, NetworkTimetableDataProvider, LoginSetHandler, AutoSelectHandler {
 	
 	private InternalMemory internalMemory = new InternalMemory();
+	private TimetableCache timetableCache = new TimetableCache();
+	
 	private ExternalDataLoader externalDataLoader = new ExternalDataLoader();
 	private boolean networkAvailable;
 	
@@ -167,16 +179,21 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	@Override
 	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
 		DataFacade<List<Lesson>> data;
-		List<Lesson> internalLessons = internalMemory.getLessons(viewType, date);
+		List<Lesson> lessons;
 	
-		if(internalLessons != null) {
+		if((lessons = internalMemory.getLessons(viewType, date)) != null) {
 			data = new DataFacade<List<Lesson>>();
-			data.setData(internalLessons);
+			data.setData(lessons);
+		}
+		else if ((data = timetableCache.getLessons(viewType, date)).isSuccessful()) {
+			internalMemory.setLessons(viewType, date, data.getData());
 		}
 		else {
 			data = externalDataLoader.getLessons(viewType, date);
 			if(data.isSuccessful()) {
-				internalMemory.setLessons(viewType, date, data.getData());
+				lessons = data.getData();
+				internalMemory.setLessons(viewType, date, lessons);
+				timetableCache.setLessons(viewType, date, lessons);
 			}
 		}
 		
@@ -188,16 +205,21 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 			DateTime startDate, DateTime endDate) {
 		
 		DataFacade<Map<String, List<Lesson>>> data;
-		Map<String, List<Lesson>> internalLessons = internalMemory.getLessons(viewType, startDate, endDate);
+		Map<String, List<Lesson>> lessonMap;
 		
-		if(internalLessons != null) {
+		if((lessonMap = internalMemory.getLessons(viewType, startDate, endDate)) != null) {
 			data = new DataFacade<Map<String, List<Lesson>>>();
-			data.setData(internalLessons);
+			data.setData(lessonMap);
+		}
+		else if ((data = timetableCache.getLessons(viewType, startDate, endDate)).isSuccessful()) {
+			internalMemory.setLessons(viewType, startDate, endDate, data.getData());
 		}
 		else {
 			data = externalDataLoader.getLessons(viewType, startDate, endDate);
 			if(data.isSuccessful()) {
-				internalMemory.setLessons(viewType, startDate, endDate, data.getData());
+				lessonMap = data.getData();
+				internalMemory.setLessons(viewType, startDate, endDate, lessonMap);
+				timetableCache.setLessons(viewType, startDate, endDate, lessonMap);
 			}
 		}
 		
@@ -205,19 +227,16 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	}
 
 	@Override
-	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
-			DateTime startDate, DateTime endDate, boolean forceNetwork) {
+	public DataFacade<Map<String, List<Lesson>>> getLessonsFromNetwork(ViewType viewType,
+			DateTime startDate, DateTime endDate) {
 		
-		if(forceNetwork) {
-			DataFacade<Map<String, List<Lesson>>> data = externalDataLoader.getLessons(viewType, startDate, endDate, forceNetwork);
+			DataFacade<Map<String, List<Lesson>>> data = externalDataLoader.getLessonsFromNetwork(viewType, startDate, endDate);
 			if(data.isSuccessful()) {
-				internalMemory.setLessons(viewType, startDate, endDate, data.getData());
+				Map<String, List<Lesson>> lessonMap = data.getData();
+				internalMemory.setLessons(viewType, startDate, endDate, lessonMap);
+				timetableCache.setLessons(viewType, startDate, endDate, lessonMap);
 			}
 			return data;
-		}
-		else {
-			return getLessons(viewType, startDate, endDate);
-		}
 	}
 
 	@Override

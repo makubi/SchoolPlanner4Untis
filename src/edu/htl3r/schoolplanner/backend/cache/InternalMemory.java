@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package edu.htl3r.schoolplanner.backend;
+package edu.htl3r.schoolplanner.backend.cache;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +24,11 @@ import java.util.Map;
 
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
+import edu.htl3r.schoolplanner.backend.MasterdataProvider;
+import edu.htl3r.schoolplanner.backend.MasterdataStore;
+import edu.htl3r.schoolplanner.backend.Timetable;
+import edu.htl3r.schoolplanner.backend.TimetableDataProvider;
+import edu.htl3r.schoolplanner.backend.TimetableDataStore;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;

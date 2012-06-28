@@ -20,6 +20,7 @@ package edu.htl3r.schoolplanner.backend;
 
 import java.util.List;
 
+import edu.htl3r.schoolplanner.backend.cache.InternalMemory;
 import edu.htl3r.schoolplanner.backend.database.Database;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;

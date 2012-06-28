@@ -64,7 +64,7 @@ public class GUIContentManager{
 
 			Map<String, List<Lesson>> lessonsForSomeTime;
 			if(forceNetWork)
-				lessonsForSomeTime = datacenter.getLessonsForSomeTime(viewtype, start, end,true);
+				lessonsForSomeTime = datacenter.getLessonsForSomeTimeFromNetwork(viewtype, start, end);
 			else
 				lessonsForSomeTime = datacenter.getLessonsForSomeTime(viewtype, start, end);
 			
