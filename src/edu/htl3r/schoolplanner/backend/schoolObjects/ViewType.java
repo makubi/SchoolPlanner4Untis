@@ -35,8 +35,8 @@ public abstract class ViewType implements Serializable, Comparable<ViewType>, Cl
 	private int id;
 	private String name;
 	private String longName;
-	private String foreColor;
-	private String backColor;
+	private String foreColor = "000000";
+	private String backColor = "FFFFFF";
 	
 	/**
 	 * Liefert die ID dieses Objekts. Diese wird mit der ID in der gegebenen Datenbank uebereinstimmen.
