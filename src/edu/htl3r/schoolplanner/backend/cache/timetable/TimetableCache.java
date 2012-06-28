@@ -17,11 +17,9 @@
 
 package edu.htl3r.schoolplanner.backend.cache.timetable;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +46,9 @@ public class TimetableCache implements UnsaveDataSourceTimetableDataProvider, Ti
 
 	private static final Context CONTEXT = SchoolplannerContext.context;
 	private static final String ABSOLUTE_CACHE_PATH = CONTEXT.getCacheDir().getAbsolutePath();
-	private ObjectMapper objectMapper = new ObjectMapper();
+	private final ObjectMapper objectMapper = new ObjectMapper();
+	
+	private String currentCacheFolder;
 	
 	public TimetableCache() {
 		  objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
@@ -59,15 +59,10 @@ public class TimetableCache implements UnsaveDataSourceTimetableDataProvider, Ti
 		DataFacade<List<Lesson>> data = new DataFacade<List<Lesson>>();
 		
 		final String fileName = DateTimeUtils.toISO8601Date(date)+".json";
-		File file = new File(ABSOLUTE_CACHE_PATH, fileName);
+		File file = new File(currentCacheFolder, fileName);
 		
 		if(file.exists()) {
 			try {
-				BufferedReader r = new BufferedReader(new FileReader(file));
-				String line;
-				while((line = r.readLine()) != null) {
-					Log.d("Misc",line);
-				}
 				List<Lesson> readValue = objectMapper.readValue(file, objectMapper.getTypeFactory().constructCollectionType(List.class, new Lesson().getClass()));
 				data.setData(readValue);
 			} catch (FileNotFoundException e) {
@@ -129,8 +124,11 @@ public class TimetableCache implements UnsaveDataSourceTimetableDataProvider, Ti
 	public void setLessons(ViewType view, DateTime date, List<Lesson> lessons) {
 		final String fileName = DateTimeUtils.toISO8601Date(date)+".json";
 		
+		File folder = new File(currentCacheFolder);
+		if(!folder.exists()) folder.mkdir();
+		
 		try {
-			FileOutputStream fos = new FileOutputStream(new File(ABSOLUTE_CACHE_PATH, fileName));
+			FileOutputStream fos = new FileOutputStream(new File(currentCacheFolder, fileName));
 			
 			fos.write(objectMapper.writeValueAsString(lessons).getBytes());
 			
@@ -154,6 +152,23 @@ public class TimetableCache implements UnsaveDataSourceTimetableDataProvider, Ti
 		while(tmpDateTime.beforeOrEquals(endDate)) {
 			setLessons(view, tmpDateTime, lessonMap.get(DateTimeUtils.toISO8601Date(tmpDateTime)));
 			tmpDateTime.increaseDay();
+		}
+	}
+
+	public void setCurrentLoginSetName(String currentLoginSetName) {
+		String alphaOnly = currentLoginSetName.replaceAll("[^\\p{Alpha}]+","_");
+		this.currentCacheFolder = ABSOLUTE_CACHE_PATH+File.separator+alphaOnly;
+	}
+
+	public void loginSetRemoved(String name) {
+		String alphaOnly = name.replaceAll("[^\\p{Alpha}]+","_");
+		File loginSetCacheRoot = new File(ABSOLUTE_CACHE_PATH+File.separator+alphaOnly);
+		
+		if(loginSetCacheRoot.exists()) {
+			for(File file : loginSetCacheRoot.listFiles()) {
+				file.delete();
+			}
+		loginSetCacheRoot.delete();
 		}
 	}
 

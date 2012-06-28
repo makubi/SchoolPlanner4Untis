@@ -287,6 +287,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 
 	@Override
 	public void setLoginCredentials(LoginSet loginSet) {
+		timetableCache.setCurrentLoginSetName(loginSet.getName());
 		externalDataLoader.setLoginCredentials(loginSet);
 	}
 	
@@ -302,12 +303,14 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 
 	@Override
 	public void removeLoginSet(LoginSet loginSet) {
+		timetableCache.loginSetRemoved(loginSet.getName());
 		externalDataLoader.removeLoginSet(loginSet);
 	}
 
 	@Override
 	public void editLoginSet(String name, String serverUrl, String school,
 			String username, String password, boolean checked, String oldServerUrl, String oldSchool) {
+		// TODO Timetable-Cache updaten
 		externalDataLoader.editLoginSet(name, serverUrl, school, username, password, checked, oldServerUrl, oldSchool);
 	}
 
