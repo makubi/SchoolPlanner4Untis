@@ -51,7 +51,7 @@ public interface LoginSetHandler {
 	 * @param oldSchool Schulname vor dem Editieren des LoginSets
 	 * @see Database#getLoginSetKeyForTable()
 	 */
-	public void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked, String oldServerUrl, String oldSchool);
+	public void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked, String oldName, String oldServerUrl, String oldSchool);
 
 	/**
 	 * Liefert eine Liste mit allen LoginSets.

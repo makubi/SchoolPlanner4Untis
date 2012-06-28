@@ -165,7 +165,7 @@ public class Database implements MasterdataStore, MasterdataProvider, LoginSetHa
 	}
 
 	@Override
-	public synchronized void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked, String oldServerUrl, String oldSchool) {
+	public synchronized void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked, String oldName, String oldServerUrl, String oldSchool) {
 		if(!serverUrl.equals(oldServerUrl) || !school.equals(oldSchool)) {
 			String loginSetKey = md5(serverUrl+school);
 			deleteMasterdataForLoginSetKey(loginSetKey);
