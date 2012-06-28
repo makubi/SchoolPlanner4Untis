@@ -309,9 +309,9 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 
 	@Override
 	public void editLoginSet(String name, String serverUrl, String school,
-			String username, String password, boolean checked, String oldServerUrl, String oldSchool) {
-		// TODO Timetable-Cache updaten
-		externalDataLoader.editLoginSet(name, serverUrl, school, username, password, checked, oldServerUrl, oldSchool);
+			String username, String password, boolean checked, String oldName, String oldServerUrl, String oldSchool) {
+		timetableCache.loginSetRemoved(oldName);
+		externalDataLoader.editLoginSet(name, serverUrl, school, username, password, checked, oldName, oldServerUrl, oldSchool);
 	}
 
 	@Override
