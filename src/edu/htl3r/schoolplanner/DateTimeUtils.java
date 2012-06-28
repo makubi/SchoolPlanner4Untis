@@ -77,6 +77,10 @@ public class DateTimeUtils {
 		return date.getYear() + "-" + month + "-" + day;
 	}
 	
+	public static String toISO8601Time(DateTime time) {
+		return normalizeTimePart(""+time.getHour()) + ":" + normalizeTimePart(""+time.getMinute());
+	}
+	
 	/**
 	 * Wandelt einen {@link #toISO8601Date(DateTime)}-String in ein DateTime-Objekt um.
 	 * @param dateString String, der umgewandelt werden soll
@@ -94,8 +98,24 @@ public class DateTimeUtils {
 		throw new ParseException("Unable to parse String "+dateString+" to date.");
 	}
 	
+	public static DateTime iso8601StringToTime(String timeString) throws ParseException {
+		Pattern p = Pattern.compile("^([0-9]{2}):([0-9]{2})$");
+		Matcher m = p.matcher(timeString);
+		if(m.matches()) {
+			DateTime dateTime = new DateTime();
+			dateTime.setHour(Integer.parseInt(m.group(1)));
+			dateTime.setMinute(Integer.parseInt(m.group(2)));
+			return dateTime;
+		}
+		throw new ParseException("Unable to parse String "+timeString+" to time.");
+	}
+	
 	private static String normalizeDate(String datePart) {
 		return datePart.length() < 2 ? "0" + datePart : datePart;
+	}
+	
+	private static String normalizeTimePart(String timePart) {
+		return timePart.length() < 2 ? "0" + timePart : timePart;
 	}
 	
 	public static Time toTime(DateTime dateTime) {

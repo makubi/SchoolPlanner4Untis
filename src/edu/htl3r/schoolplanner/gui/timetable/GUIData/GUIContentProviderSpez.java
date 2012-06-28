@@ -41,5 +41,5 @@ public interface GUIContentProviderSpez {
 
 	public List<Lesson> getLessonsForDate(ViewType vt, DateTime start);
 	public Map<String,List<Lesson>> getLessonsForSomeTime(ViewType vt, DateTime start, DateTime end);
-	public Map<String,List<Lesson>> getLessonsForSomeTime(ViewType vt, DateTime start, DateTime end, boolean forceNetwork);
+	public Map<String,List<Lesson>> getLessonsForSomeTimeFromNetwork(ViewType vt, DateTime start, DateTime end);
 }

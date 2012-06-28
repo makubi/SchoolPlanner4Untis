@@ -25,9 +25,9 @@ import android.content.Context;
 import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.ErrorMessage;
+import edu.htl3r.schoolplanner.backend.cache.Cache;
 import edu.htl3r.schoolplanner.backend.network.ErrorCodes;
 import edu.htl3r.schoolplanner.backend.network.WebUntisErrorCodes;
 import edu.htl3r.schoolplanner.backend.network.exceptions.WebUntisServiceException;
@@ -141,8 +141,8 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 	}
 
 	@Override
-	public Map<String, List<Lesson>> getLessonsForSomeTime(ViewType vt, DateTime start, DateTime end, boolean forceNetwork) {
-		DataFacade<Map<String, List<Lesson>>> data = cache.getLessons(vt, start, end, forceNetwork);
+	public Map<String, List<Lesson>> getLessonsForSomeTimeFromNetwork(ViewType vt, DateTime start, DateTime end) {
+		DataFacade<Map<String, List<Lesson>>> data = cache.getLessonsFromNetwork(vt, start, end);
 		if (data.isSuccessful()) {
 			return data.getData();
 		} else {
