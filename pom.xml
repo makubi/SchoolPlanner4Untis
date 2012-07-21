@@ -13,6 +13,7 @@
 		<androidsdk.version>7</androidsdk.version>
 		<jackson.version>1.9.7</jackson.version>
 		<androidmavenplugin.version>3.1.1</androidmavenplugin.version>
+		<compatibilitylibrary.version>v4</compatibilitylibrary.version>
 	</properties>
 
 	<repositories>
@@ -33,7 +34,7 @@
 		<dependency>
 			<groupId>android-extras</groupId>
 			<artifactId>compatibility-library</artifactId>
-			<version>v4</version>
+			<version>${compatibilitylibrary.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
@@ -73,7 +74,7 @@
 						<configuration>
 							<manifest>
 								<versionName>2.4</versionName>
-								<versionCodeAutoIncrement>true</versionCodeAutoIncrement>
+								<versionCodeAutoIncrement>false</versionCodeAutoIncrement>
 								<versionCodeUpdateFromVersion>false</versionCodeUpdateFromVersion>
 							</manifest>
 						</configuration>
