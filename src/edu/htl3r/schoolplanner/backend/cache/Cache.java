@@ -191,6 +191,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		if((lessons = internalMemory.getLessons(viewType, date)) != null) {
 			data = new DataFacade<List<Lesson>>();
 			data.setDataSource(DataSource.INTERNAL_RAM);
+			// TODO Setzen der LastModifiedTime
 			data.setData(lessons);
 		}
 		else if ((data = timetableCache.getLessons(viewType, date)).isSuccessful()) {
@@ -219,6 +220,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		if((lessonMap = internalMemory.getLessons(viewType, startDate, endDate)) != null) {
 			data = new DataFacade<Map<String, List<Lesson>>>();
 			data.setDataSource(DataSource.INTERNAL_RAM);
+			// TODO Setzen der LastModifiedTime
 			data.setData(lessonMap);
 		}
 		else if ((data = timetableCache.getLessons(viewType, startDate, endDate)).isSuccessful()) {
