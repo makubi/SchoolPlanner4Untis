@@ -112,6 +112,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider,
 					Log.i("Network", "Reauthenticating");
 					authenticate();
 					response = parseData(network.getResponse(request.toString()));
+					data.setData(response);
 				}
 				else {
 					data.setErrorMessage(getWebUntisErrorMessage(response));
