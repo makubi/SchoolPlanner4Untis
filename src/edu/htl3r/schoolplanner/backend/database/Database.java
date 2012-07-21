@@ -23,6 +23,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.AutoSelectHandler;
@@ -236,9 +237,9 @@ public class Database implements MasterdataStore, MasterdataProvider, LoginSetHa
 			return hexString.toString();
 	
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			Log.w("database",e);
 		}
-		return "";
+		return "nomd5"+s;
 	}
 
 	@Override
