@@ -31,7 +31,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import android.content.Context;
-import android.text.format.Time;
 import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
@@ -49,7 +48,7 @@ public class TimetableCache implements UnsaveDataSourceTimetableDataProvider, Ti
 	private static final String ABSOLUTE_CACHE_PATH = CONTEXT.getCacheDir().getAbsolutePath();
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	
-	private String currentCacheFolder;
+	private String currentLoginSetCacheFolder;
 	
 	public TimetableCache() {
 		  objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
@@ -58,9 +57,10 @@ public class TimetableCache implements UnsaveDataSourceTimetableDataProvider, Ti
 	@Override
 	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
 		DataFacade<List<Lesson>> data = new DataFacade<List<Lesson>>();
+		final String viewTypeFolder = viewType.getClass().getCanonicalName();
 		
 		final String fileName = DateTimeUtils.toISO8601Date(date)+".json";
-		File file = new File(currentCacheFolder, fileName);
+		File file = new File(currentLoginSetCacheFolder + File.separator + viewTypeFolder + File.separator + viewType.getId(), fileName);
 		
 		if(file.exists()) {
 			try {
@@ -132,12 +132,13 @@ public class TimetableCache implements UnsaveDataSourceTimetableDataProvider, Ti
 	@Override
 	public void setLessons(ViewType view, DateTime date, List<Lesson> lessons) {
 		final String fileName = DateTimeUtils.toISO8601Date(date)+".json";
+		final String viewTypeFolder = view.getClass().getCanonicalName();
 		
-		File folder = new File(currentCacheFolder);
-		if(!folder.exists()) folder.mkdir();
+		File folder = new File(currentLoginSetCacheFolder + File.separator + viewTypeFolder + File.separator + view.getId());
+		if(!folder.exists()) folder.mkdirs();
 		
 		try {
-			FileOutputStream fos = new FileOutputStream(new File(currentCacheFolder, fileName));
+			FileOutputStream fos = new FileOutputStream(new File(folder, fileName));
 			
 			fos.write(objectMapper.writeValueAsString(lessons).getBytes());
 			
@@ -165,12 +166,12 @@ public class TimetableCache implements UnsaveDataSourceTimetableDataProvider, Ti
 	}
 
 	public void setCurrentLoginSetName(String currentLoginSetName) {
-		String alphaOnly = currentLoginSetName.replaceAll("[^\\p{Alpha}]+","_");
-		this.currentCacheFolder = ABSOLUTE_CACHE_PATH+File.separator+alphaOnly;
+		String alphaOnly = getAlphaOnlyString(currentLoginSetName);
+		this.currentLoginSetCacheFolder = ABSOLUTE_CACHE_PATH+File.separator+alphaOnly;
 	}
 
 	public void loginSetRemoved(String name) {
-		String alphaOnly = name.replaceAll("[^\\p{Alpha}]+","_");
+		String alphaOnly = getAlphaOnlyString(name);
 		File loginSetCacheRoot = new File(ABSOLUTE_CACHE_PATH+File.separator+alphaOnly);
 		
 		if(loginSetCacheRoot.exists()) {
@@ -179,6 +180,10 @@ public class TimetableCache implements UnsaveDataSourceTimetableDataProvider, Ti
 			}
 		loginSetCacheRoot.delete();
 		}
+	}
+	
+	private String getAlphaOnlyString(String string) {
+		return string.replaceAll("[^\\p{Alpha}]+","_");
 	}
 
 }
