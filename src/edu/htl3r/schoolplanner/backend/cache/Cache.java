@@ -25,6 +25,7 @@ import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.AutoSelectHandler;
 import edu.htl3r.schoolplanner.backend.DataConnection;
 import edu.htl3r.schoolplanner.backend.DataFacade;
+import edu.htl3r.schoolplanner.backend.DataSource;
 import edu.htl3r.schoolplanner.backend.ErrorMessage;
 import edu.htl3r.schoolplanner.backend.ExternalDataLoader;
 import edu.htl3r.schoolplanner.backend.LoginSetHandler;
@@ -68,6 +69,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		
 		if(internalSchoolClassList != null) {
 			data = new DataFacade<List<SchoolClass>>();
+			data.setDataSource(DataSource.INTERNAL_RAM);
 			data.setData(internalSchoolClassList);
 		}
 		else {
@@ -88,6 +90,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		
 		if(internalSchoolTeacherList != null) {
 			data = new DataFacade<List<SchoolTeacher>>();
+			data.setDataSource(DataSource.INTERNAL_RAM);
 			data.setData(internalSchoolTeacherList);
 		}
 		else {
@@ -107,6 +110,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		
 		if(internalSchoolRoomList != null) {
 			data = new DataFacade<List<SchoolRoom>>();
+			data.setDataSource(DataSource.INTERNAL_RAM);
 			data.setData(internalSchoolRoomList);
 		}
 		else {
@@ -126,6 +130,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		
 		if(internalSchoolSubjectList != null) {
 			data = new DataFacade<List<SchoolSubject>>();
+			data.setDataSource(DataSource.INTERNAL_RAM);
 			data.setData(internalSchoolSubjectList);
 		}
 		else {
@@ -145,6 +150,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		
 		if(internalSchoolHolidayList != null) {
 			data = new DataFacade<List<SchoolHoliday>>();
+			data.setDataSource(DataSource.INTERNAL_RAM);
 			data.setData(internalSchoolHolidayList);
 		}
 		else {
@@ -164,6 +170,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		
 		if(internalTimegrid != null) {
 			data = new DataFacade<Timegrid>();
+			data.setDataSource(DataSource.INTERNAL_RAM);
 			data.setData(internalTimegrid);
 		}
 		else {
@@ -183,10 +190,12 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	
 		if((lessons = internalMemory.getLessons(viewType, date)) != null) {
 			data = new DataFacade<List<Lesson>>();
+			data.setDataSource(DataSource.INTERNAL_RAM);
 			data.setData(lessons);
 		}
 		else if ((data = timetableCache.getLessons(viewType, date)).isSuccessful()) {
 			internalMemory.setLessons(viewType, date, data.getData());
+			data.setDataSource(DataSource.CACHE);
 		}
 		else {
 			data = externalDataLoader.getLessons(viewType, date);
@@ -209,9 +218,11 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		
 		if((lessonMap = internalMemory.getLessons(viewType, startDate, endDate)) != null) {
 			data = new DataFacade<Map<String, List<Lesson>>>();
+			data.setDataSource(DataSource.INTERNAL_RAM);
 			data.setData(lessonMap);
 		}
 		else if ((data = timetableCache.getLessons(viewType, startDate, endDate)).isSuccessful()) {
+			data.setDataSource(DataSource.CACHE);
 			internalMemory.setLessons(viewType, startDate, endDate, data.getData());
 		}
 		else {

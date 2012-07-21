@@ -18,6 +18,8 @@ package edu.htl3r.schoolplanner.backend;
 
 import java.io.Serializable;
 
+import edu.htl3r.schoolplanner.DateTime;
+
 /**
  * Diese Klasse wird verwendet, um Datenabfragen aus unsicheren Quellen zu behandeln.<br>
  * Sie dient als Schnittstelle zu den Daten, um im Fehlerfall ueber einen Error-Code diesen bekannt zu geben.
@@ -31,7 +33,8 @@ public class DataFacade<E> implements Serializable {
 	
 	private E data;
 	private ErrorMessage errorMessage;
-	
+	private DataSource dataSource;
+	private DateTime lastRefreshTime;
 	
 	/**
 	 * Diese Methode gibt 'true' zurueck, wenn die Daten erfolgreich abgefragt werden konnten.<br>
@@ -90,6 +93,25 @@ public class DataFacade<E> implements Serializable {
 		this.errorMessage = errorMessage;
 		successful = false;
 	}
-	
-	
+
+	public DataSource getDataSource() {
+		return dataSource;
+	}
+
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+
+	/**
+	 * Liefert den Zeitpunkt, zu dem die Daten zuletzt neu aus dem Netzwerk geladen wurden.<br>
+	 * ACHTUNG: ZUR ZEIT NUR AUF STUNDENPLAENE ANWENDBAR
+	 * @return Zeitpunkt, zu dem die Daten zuletzt neu aus dem Netzwerk geladen wurden
+	 */
+	public DateTime getLastRefreshTime() {
+		return lastRefreshTime;
+	}
+
+	public void setLastRefresh(DateTime lastRefresh) {
+		this.lastRefreshTime = lastRefresh;
+	}
 }

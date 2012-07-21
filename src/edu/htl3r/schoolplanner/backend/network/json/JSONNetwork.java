@@ -294,7 +294,7 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider, NetworkT
 		} catch (JSONException e) {
 			data.setErrorMessage(getErrorMessage(e));
 		}
-	
+		
 		return data;
 	}
 	
