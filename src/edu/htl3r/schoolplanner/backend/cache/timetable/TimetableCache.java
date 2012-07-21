@@ -31,6 +31,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import android.content.Context;
+import android.text.format.Time;
 import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
@@ -65,6 +66,11 @@ public class TimetableCache implements UnsaveDataSourceTimetableDataProvider, Ti
 			try {
 				List<Lesson> readValue = objectMapper.readValue(file, objectMapper.getTypeFactory().constructCollectionType(List.class, new Lesson().getClass()));
 				data.setData(readValue);
+				
+				// Last refresh setzen
+				DateTime dateTime = new DateTime();
+				dateTime.getAndroidTime().set(file.lastModified());
+				data.setLastRefresh(dateTime);
 			} catch (FileNotFoundException e) {
 				ErrorMessage errorMessage = new ErrorMessage();
 				errorMessage.setException(e);
@@ -108,6 +114,9 @@ public class TimetableCache implements UnsaveDataSourceTimetableDataProvider, Ti
 			DataFacade<List<Lesson>> lessons = getLessons(viewType, tmpDateTime);
 			if(lessons.isSuccessful()) {
 				lessonMap.put(DateTimeUtils.toISO8601Date(tmpDateTime), lessons.getData());
+				// Last refresh setzen
+				// Datum vom letzten Tag der Woche wird verwendet
+				data.setLastRefresh(lessons.getLastRefreshTime());
 			}
 			else {
 				data.setErrorMessage(lessons.getErrorMessage());

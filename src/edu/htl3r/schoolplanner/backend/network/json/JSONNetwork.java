@@ -259,6 +259,8 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider, NetworkT
 		if (tmpData.isSuccessful()) {
 			data.setData(tmpData.getData().get(
 					DateTimeUtils.toISO8601Date(date)));
+			// Last refresh setzen
+			data.setLastRefresh(DateTimeUtils.getNow());
 		} else {
 			data.setErrorMessage(tmpData.getErrorMessage());
 		}
@@ -289,13 +291,14 @@ public class JSONNetwork implements UnsaveDataSourceMasterdataProvider, NetworkT
 				lessonProcessor.addEmptyDaysToLessonMap(lessonMap, startDate, endDate);
 				
 				data.setData(lessonMap);
+				// Last refresh setzen
+				data.setLastRefresh(DateTimeUtils.getNow());
 			}
 			else data.setErrorMessage(list.getErrorMessage());
 	
 		} catch (JSONException e) {
 			data.setErrorMessage(getErrorMessage(e));
 		}
-		
 		return data;
 	}
 	
