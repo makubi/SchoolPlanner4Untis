@@ -14,6 +14,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 package edu.htl3r.schoolplanner.backend;
 
 import java.util.List;
@@ -23,13 +24,10 @@ import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 
-/**
- * Speichert Daten zum Stundenplan.
- */
-public interface TimetableDataStore {
+public interface InternalMemoryTimetableDataStore {
 
-	public void setLessons(ViewType view, DateTime date, List<Lesson> lessons);
+	public void setLessonsForDay(ViewType view, DateTime date, List<Lesson> lessons, DateTime lastRefreshTime);
 	
-	public void setLessons(ViewType view, DateTime startDate, DateTime endDate,
-			Map<String, List<Lesson>> lessonMap);
+	public void setLessonsForDay(ViewType view, DateTime startDate, DateTime endDate,
+			Map<String, List<Lesson>> lessonMap, DateTime lastRefreshTime);
 }
