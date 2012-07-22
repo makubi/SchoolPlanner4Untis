@@ -13,7 +13,7 @@
 		<androidsdk.version>7</androidsdk.version>
 		<jackson.version>1.9.7</jackson.version>
 		<androidmavenplugin.version>3.1.1</androidmavenplugin.version>
-		<compatibilitylibrary.version>v4</compatibilitylibrary.version>
+		<compatibilitylibrary.version>r3</compatibilitylibrary.version>
 	</properties>
 
 	<repositories>
@@ -33,7 +33,7 @@
 		</dependency>
 		<dependency>
 			<groupId>android-extras</groupId>
-			<artifactId>compatibility-library</artifactId>
+			<artifactId>compatibility-library-v4</artifactId>
 			<version>${compatibilitylibrary.version}</version>
 		</dependency>
 		<dependency>
