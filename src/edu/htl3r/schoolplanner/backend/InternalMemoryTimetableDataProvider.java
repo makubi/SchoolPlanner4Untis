@@ -16,20 +16,18 @@
 */
 package edu.htl3r.schoolplanner.backend;
 
-import java.util.List;
 import java.util.Map;
 
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 
 /**
- * Speichert Daten zum Stundenplan.
+ * Liefert Daten zum Stundenplan.
  */
-public interface TimetableDataStore {
-
-	public void setLessons(ViewType view, DateTime date, List<Lesson> lessons);
+public interface InternalMemoryTimetableDataProvider {
 	
-	public void setLessons(ViewType view, DateTime startDate, DateTime endDate,
-			Map<String, List<Lesson>> lessonMap);
+	public TimetableDay getTimetableForDay(ViewType view, DateTime date);
+
+	public Map<String, TimetableDay> getTimetableForTimePeriod(ViewType view, DateTime startDate,
+			DateTime endDate);
 }

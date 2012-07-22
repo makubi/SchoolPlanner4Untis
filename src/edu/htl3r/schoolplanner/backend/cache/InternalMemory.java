@@ -24,11 +24,12 @@ import java.util.Map;
 
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
+import edu.htl3r.schoolplanner.backend.InternalMemoryTimetableDataProvider;
+import edu.htl3r.schoolplanner.backend.InternalMemoryTimetableDataStore;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.MasterdataStore;
 import edu.htl3r.schoolplanner.backend.Timetable;
-import edu.htl3r.schoolplanner.backend.TimetableDataProvider;
-import edu.htl3r.schoolplanner.backend.TimetableDataStore;
+import edu.htl3r.schoolplanner.backend.TimetableDay;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
@@ -42,7 +43,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * Diese Klasse repraesentiert den internen, fluechtigen Speicher und haelt
  * Daten, um sie bei Gebrauch schneller und direkt aus dem RAM laden zu koennen.
  */
-public class InternalMemory implements MasterdataProvider, MasterdataStore, TimetableDataProvider, TimetableDataStore {
+public class InternalMemory implements MasterdataProvider, MasterdataStore, InternalMemoryTimetableDataProvider, InternalMemoryTimetableDataStore {
 
 	private List<SchoolClass> schoolClassList;
 	private List<SchoolTeacher> schoolTeacherList;
@@ -114,21 +115,21 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 	public void setTimegrid(Timegrid timegrid) {
 		this.timegrid = timegrid;
 	}
-
+	
 	@Override
-	public List<Lesson> getLessons(ViewType view, DateTime date) {
-		return timetable.get(view, DateTimeUtils.toISO8601Date(date));
+	public TimetableDay getTimetableForDay(ViewType view, DateTime date) {
+		return getTimetableForDay(view, date);
 	}
 
 	@Override
-	public Map<String, List<Lesson>> getLessons(ViewType view, DateTime startDate,
-			DateTime endDate) {
-		Map<String, List<Lesson>> lessonMap = new HashMap<String, List<Lesson>>();
+	public Map<String, TimetableDay> getTimetableForTimePeriod(ViewType view,
+			DateTime startDate, DateTime endDate) {
+		Map<String, TimetableDay> lessonMap = new HashMap<String, TimetableDay>();
 		DateTime tmpDate = startDate.clone();
 		
 		while(tmpDate.beforeOrEquals(endDate)) {
 			String date = DateTimeUtils.toISO8601Date(tmpDate);
-			List<Lesson> list = timetable.get(view, date);
+			TimetableDay list = timetable.getTimetableForDay(view, date);
 			
 			// If any day was not set yet, return null.
 			// This can happen, if e.g. you retrieved timetable for
@@ -144,19 +145,21 @@ public class InternalMemory implements MasterdataProvider, MasterdataStore, Time
 	}
 
 	@Override
-	public void setLessons(ViewType view, DateTime date, List<Lesson> lessons) {
-		timetable.put(view, DateTimeUtils.toISO8601Date(date), lessons);
+	public void setLessonsForDay(ViewType view, DateTime date,
+			List<Lesson> lessons, DateTime lastRefreshTime) {
+		timetable.putTimetableForDay(view, DateTimeUtils.toISO8601Date(date), lessons, lastRefreshTime);
 	}
 
 	@Override
-	public void setLessons(ViewType view, DateTime startDate, DateTime endDate,
-			Map<String, List<Lesson>> lessonMap) {
+	public void setLessonsForDay(ViewType view, DateTime startDate,
+			DateTime endDate, Map<String, List<Lesson>> lessonMap,
+			DateTime lastRefreshTime) {
 		DateTime tmpDate = startDate.clone();
 		
 		while(tmpDate.beforeOrEquals(endDate)) {
 			String date = DateTimeUtils.toISO8601Date(tmpDate);
 			
-			timetable.put(view, date, lessonMap.get(date));
+			timetable.putTimetableForDay(view, date, lessonMap.get(date), lastRefreshTime);
 			tmpDate.increaseDay();
 		}
 	}

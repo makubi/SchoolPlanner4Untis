@@ -18,9 +18,11 @@
 
 package edu.htl3r.schoolplanner.backend.cache;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.AutoSelectHandler;
 import edu.htl3r.schoolplanner.backend.DataConnection;
@@ -31,6 +33,7 @@ import edu.htl3r.schoolplanner.backend.ExternalDataLoader;
 import edu.htl3r.schoolplanner.backend.LoginSetHandler;
 import edu.htl3r.schoolplanner.backend.MasterData;
 import edu.htl3r.schoolplanner.backend.NetworkTimetableDataProvider;
+import edu.htl3r.schoolplanner.backend.TimetableDay;
 import edu.htl3r.schoolplanner.backend.UnsaveDataSourceMasterdataProvider;
 import edu.htl3r.schoolplanner.backend.cache.timetable.TimetableCache;
 import edu.htl3r.schoolplanner.backend.network.ErrorCodes;
@@ -187,22 +190,24 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
 		DataFacade<List<Lesson>> data;
 		List<Lesson> lessons;
+		TimetableDay timetableDay;
 	
-		if((lessons = internalMemory.getLessons(viewType, date)) != null) {
+		if((timetableDay = internalMemory.getTimetableForDay(viewType, date)) != null) {
+			lessons = timetableDay.getLessons();
 			data = new DataFacade<List<Lesson>>();
 			data.setDataSource(DataSource.INTERNAL_RAM);
-			// TODO Setzen der LastModifiedTime
+			data.setLastRefresh(timetableDay.getLastRefreshTime());
 			data.setData(lessons);
 		}
 		else if ((data = timetableCache.getLessons(viewType, date)).isSuccessful()) {
-			internalMemory.setLessons(viewType, date, data.getData());
+			internalMemory.setLessonsForDay(viewType, date, data.getData(), data.getLastRefreshTime());
 			data.setDataSource(DataSource.CACHE);
 		}
 		else {
 			data = externalDataLoader.getLessons(viewType, date);
 			if(data.isSuccessful()) {
 				lessons = data.getData();
-				internalMemory.setLessons(viewType, date, lessons);
+				internalMemory.setLessonsForDay(viewType, date, lessons, data.getLastRefreshTime());
 				timetableCache.setLessons(viewType, date, lessons);
 			}
 		}
@@ -215,26 +220,35 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 			DateTime startDate, DateTime endDate) {
 		
 		DataFacade<Map<String, List<Lesson>>> data;
-		Map<String, List<Lesson>> lessonMap;
+		Map<String, List<Lesson>> lessonMap = new HashMap<String, List<Lesson>>();
+		Map<String, TimetableDay> timetableDayMap;
 		
-		if((lessonMap = internalMemory.getLessons(viewType, startDate, endDate)) != null) {
+		if((timetableDayMap = internalMemory.getTimetableForTimePeriod(viewType, startDate, endDate)) != null) {
 			data = new DataFacade<Map<String, List<Lesson>>>();
 			data.setDataSource(DataSource.INTERNAL_RAM);
-			// TODO Setzen der LastModifiedTime
+			
+			for(String date : timetableDayMap.keySet()) {
+				TimetableDay timetableDay = timetableDayMap.get(date);
+				lessonMap.put(date, timetableDay.getLessons());
+				data.setLastRefresh(timetableDay.getLastRefreshTime());
+			}
+			
 			data.setData(lessonMap);
 		}
 		else if ((data = timetableCache.getLessons(viewType, startDate, endDate)).isSuccessful()) {
 			data.setDataSource(DataSource.CACHE);
-			internalMemory.setLessons(viewType, startDate, endDate, data.getData());
+			internalMemory.setLessonsForDay(viewType, startDate, endDate, data.getData(), data.getLastRefreshTime());
 		}
 		else {
 			data = externalDataLoader.getLessons(viewType, startDate, endDate);
 			if(data.isSuccessful()) {
 				lessonMap = data.getData();
-				internalMemory.setLessons(viewType, startDate, endDate, lessonMap);
+				internalMemory.setLessonsForDay(viewType, startDate, endDate, lessonMap, data.getLastRefreshTime());
 				timetableCache.setLessons(viewType, startDate, endDate, lessonMap);
 			}
 		}
+		
+		Log.d("Misc","last loaded: "+data.getLastRefreshTime());
 		
 		return data;
 	}
@@ -246,7 +260,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 			DataFacade<Map<String, List<Lesson>>> data = externalDataLoader.getLessonsFromNetwork(viewType, startDate, endDate);
 			if(data.isSuccessful()) {
 				Map<String, List<Lesson>> lessonMap = data.getData();
-				internalMemory.setLessons(viewType, startDate, endDate, lessonMap);
+				internalMemory.setLessonsForDay(viewType, startDate, endDate, lessonMap, data.getLastRefreshTime());
 				timetableCache.setLessons(viewType, startDate, endDate, lessonMap);
 			}
 			return data;

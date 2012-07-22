@@ -14,30 +14,29 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 package edu.htl3r.schoolplanner.backend;
 
 import java.util.List;
-import java.util.Map;
 
 import edu.htl3r.schoolplanner.DateTime;
-import edu.htl3r.schoolplanner.DateTimeUtils;
-import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
 
-/**
- * Liefert Daten zum Stundenplan.
- */
-public interface TimetableDataProvider {
-
-	public List<Lesson> getLessons(ViewType view, DateTime date);
-
-	/**
-	 * <b>String der Map = Datum als String in Form {@link DateTimeUtils#toISO8601Date(android.text.format.Time)}</b>
-	 * @param view
-	 * @param startDate
-	 * @param endDate
-	 * @return
-	 */
-	Map<String, List<Lesson>> getLessons(ViewType view, DateTime startDate,
-			DateTime endDate);
+public class TimetableDay {
+	
+	private List<Lesson> lessons;
+	private DateTime lastRefreshTime;
+	public List<Lesson> getLessons() {
+		return lessons;
+	}
+	public void setLessons(List<Lesson> lessons) {
+		this.lessons = lessons;
+	}
+	public DateTime getLastRefreshTime() {
+		return lastRefreshTime;
+	}
+	public void setLastRefreshTime(DateTime lastRefreshTime) {
+		this.lastRefreshTime = lastRefreshTime;
+	}
+	
 }
