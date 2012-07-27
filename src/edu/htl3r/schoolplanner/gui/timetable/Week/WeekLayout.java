@@ -256,6 +256,14 @@ public class WeekLayout extends ViewGroup{
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ID;
+		return result;
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if( obj == null )
 			return false;
@@ -265,12 +273,13 @@ public class WeekLayout extends ViewGroup{
 			return false;
 		
 		ScrollView scr = (ScrollView)obj;
-		if( !(scr.getChildAt(0) instanceof WeekLayout))
+		View scrChild = scr.getChildAt(0);
+		if( !(scrChild instanceof WeekLayout))
 			return false;
 		
-		return (this.getID() == ((WeekLayout) scr.getChildAt(0)).getID()) ? true : false;
+		return ID == ((WeekLayout) scrChild).ID;
 	}
-
+	
 	public boolean isDataHere() {
 		return isDataHere;
 	}
