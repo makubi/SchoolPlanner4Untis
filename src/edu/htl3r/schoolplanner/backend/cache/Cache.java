@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.AutoSelectHandler;
 import edu.htl3r.schoolplanner.backend.DataConnection;
@@ -247,8 +246,6 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 				timetableCache.setLessons(viewType, startDate, endDate, lessonMap);
 			}
 		}
-		
-		Log.d("Misc","last loaded: "+data.getLastRefreshTime());
 		
 		return data;
 	}
