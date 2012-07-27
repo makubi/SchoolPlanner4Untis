@@ -20,6 +20,7 @@ import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ScrollView;
 import edu.htl3r.schoolplanner.DateTime;
@@ -59,6 +60,7 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 
 	@Override
 	public void destroyItem(View collection, int arg1, Object view) {
+		Log.d("basti", "destroy it now ---- this is SPAAARTAA");
 		ScrollView s = (ScrollView) view;
 		s.removeAllViews();
 		((ViewPager) collection).removeView(s);

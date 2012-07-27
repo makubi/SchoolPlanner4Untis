@@ -26,6 +26,7 @@ import android.graphics.Paint.Style;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
@@ -256,7 +257,18 @@ public class WeekLayout extends ViewGroup{
 
 	@Override
 	public boolean equals(Object obj) {
-		return (this.getID() == ((WeekLayout) obj).getID()) ? true : false;
+		if( obj == null )
+			return false;
+		if(obj == this)
+			return true;
+		if( !(obj instanceof ScrollView))
+			return false;
+		
+		ScrollView scr = (ScrollView)obj;
+		if( !(scr.getChildAt(0) instanceof WeekLayout))
+			return false;
+		
+		return (this.getID() == ((WeekLayout) scr.getChildAt(0)).getID()) ? true : false;
 	}
 
 	public boolean isDataHere() {
