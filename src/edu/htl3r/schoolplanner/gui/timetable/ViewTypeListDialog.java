@@ -118,10 +118,10 @@ public class ViewTypeListDialog extends Dialog implements OnItemClickListener{
 			teacher = content.getAllSchoolTeachers();
 			subjects = content.getAllSchoolSubjects();
 			rooms = content.getAllSchoolRooms();
-			Log.d("basti", classes + "");
-			Log.d("basti", teacher + "");
-			Log.d("basti", subjects + "");
-			Log.d("basti", rooms + "");
+//			Log.d("basti", classes + "");
+//			Log.d("basti", teacher + "");
+//			Log.d("basti", subjects + "");
+//			Log.d("basti", rooms + "");
 			return null;
 		}
 

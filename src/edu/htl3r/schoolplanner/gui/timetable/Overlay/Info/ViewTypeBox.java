@@ -47,7 +47,7 @@ public class ViewTypeBox extends View {
 		paint.setAntiAlias(true);
 		paint.setTextSize(getResources().getDimension(R.dimen.gui_overlay_text_size_big));
 
-		s = new StaticLayout(toString(), paint, getDesiredWidth(),Alignment.ALIGN_CENTER, 0, 0, true);
+		s = new StaticLayout(toString(), paint, getDesiredWidth(),Alignment.ALIGN_CENTER, 1, 0, true);
 		
 		setBackground(false);
 

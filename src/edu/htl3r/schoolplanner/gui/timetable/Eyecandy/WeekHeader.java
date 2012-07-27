@@ -25,9 +25,11 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.text.DynamicLayout;
 import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
+import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
@@ -118,11 +120,12 @@ public class WeekHeader extends GUIWeekView {
 
 			DateTime dateTime = datum.get(i);
 
-			StaticLayout s = new StaticLayout(DateTimeUtils.getShortWeekDayName(dateTime), tp, lessonwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+			StaticLayout s = new StaticLayout(DateTimeUtils.getShortWeekDayName(dateTime), tp, lessonwidth, Layout.Alignment.ALIGN_CENTER, 1, 0, false);
 			s.draw(canvas);
+			
 			canvas.translate(0, padding_bottom);
 
-			s = new StaticLayout(dateTime.getDay() + "." + dateTime.getMonth() + "." + dateTime.getYear(), tp2, lessonwidth, Layout.Alignment.ALIGN_CENTER, 0,
+			s = new StaticLayout(dateTime.getDay() + "." + dateTime.getMonth() + "." + dateTime.getYear(), tp2, lessonwidth, Layout.Alignment.ALIGN_CENTER, 1,
 					0, false);
 			s.draw(canvas);
 			canvas.translate(lessonwidth, -(padding_bottom + paddint_top));

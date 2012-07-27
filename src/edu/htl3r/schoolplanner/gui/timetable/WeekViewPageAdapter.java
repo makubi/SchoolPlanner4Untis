@@ -60,7 +60,6 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 
 	@Override
 	public void destroyItem(View collection, int arg1, Object view) {
-		Log.d("basti", "destroy it now ---- this is SPAAARTAA");
 		ScrollView s = (ScrollView) view;
 		s.removeAllViews();
 		((ViewPager) collection).removeView(s);

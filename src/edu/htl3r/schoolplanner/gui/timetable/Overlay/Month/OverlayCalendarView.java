@@ -118,7 +118,7 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 		
 		String title[] = getResources().getStringArray(R.array.timetable_overlay_month_header_name);
 		for (int i = 0; i < title.length; i++) {
-			StaticLayout s = new StaticLayout(title[i], tp, colwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+			StaticLayout s = new StaticLayout(title[i], tp, colwidth, Layout.Alignment.ALIGN_CENTER, 1, 0, false);
 			s.draw(canvas);
 			canvas.translate(colwidth, 0);
 		}
@@ -194,7 +194,7 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 	
 	private void paintDay(int day, TextPaint tp, Canvas canvas){
 		StaticLayout s = null;
-		s = new StaticLayout(day + "", tp, colwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+		s = new StaticLayout(day + "", tp, colwidth, Layout.Alignment.ALIGN_CENTER, 1, 0, false);
 
 		DateTime today = new DateTime();
 		today.getAndroidTime().setToNow();
@@ -228,7 +228,7 @@ public class OverlayCalendarView extends View implements OnTouchListener {
 		while (tmp.getMonth() == firstDay.getMonth()) {
 			if (weeknumber != tmp.getAndroidTime().getWeekNumber()) {
 				weeknumber = tmp.getAndroidTime().getWeekNumber();
-				s = new StaticLayout(weeknumber + "", tp, colwidth, Layout.Alignment.ALIGN_CENTER, 0, 0, false);
+				s = new StaticLayout(weeknumber + "", tp, colwidth, Layout.Alignment.ALIGN_CENTER, 1, 0, false);
 				s.draw(canvas);
 				canvas.translate(0, rowheight);
 			}

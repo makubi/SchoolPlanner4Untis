@@ -29,7 +29,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
 
-public class GUIWeek implements DataGUItoGraphicGUI{
+public class GUIWeek{
 	
 	
 	private Map<DateTime, GUIDay> week = new HashMap<DateTime, GUIDay>();
