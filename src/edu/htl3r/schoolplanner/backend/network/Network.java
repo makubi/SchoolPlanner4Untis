@@ -31,6 +31,8 @@ import java.security.KeyStore;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.net.ssl.SSLSocket;
 
@@ -113,9 +115,9 @@ public class Network {
 	/**
 	 * Initialisiert alle {@link Scheme}s fuer HTTPS.
 	 */
-	private void initSSLSchemes(URI url) {
-		sslSchemes[0] = new Scheme("https", sslSocketFactories[0], url.getPort() != -1 ? url.getPort() : 443);
-		sslSchemes[1] = new Scheme("https", sslSocketFactories[1], url.getPort() != -1 ? url.getPort() : 443);
+	private void initSSLSchemes(int port) {
+		sslSchemes[0] = new Scheme("https", sslSocketFactories[0], port != -1 ? port : 443);
+		sslSchemes[1] = new Scheme("https", sslSocketFactories[1], port != -1 ? port : 443);
 	}
 
 	/**
@@ -236,40 +238,55 @@ public class Network {
 	
 	private void checkPreferenceChange() throws Exception {
 		if(preferencesChanged()) {
-			URI serverUrl = new URI(loginCredentials.getServerUrl());
+			String serverUrl = loginCredentials.getServerUrl();
 			String school = loginCredentials.getSchool();
 			
 			// JSession-ID zuruecksetzen
 			jsessionid = null;
 			
 			// Port ueberpruefen
-			int port = serverUrl.getPort();
+			int port = -1;
+			
+			Pattern p = Pattern.compile("^(.*?):(\\d+)$");
+			Matcher m = p.matcher(serverUrl);
+			if (m.matches()) {
+//			  String host = m.group(1);
+			  port = Integer.parseInt(m.group(2));
+			}
+			
 			if(!properPort(port)) {
 				throw new WrongPortNumberException("Wrong port: " + port);
 			}
 			
 			// Ueberpruefe, ob SSL verfuegbar ist
-			initSSLSchemes(serverUrl);
+			initSSLSchemes(port);
 			boolean sslAvailable = checkServerCapability(new URI("https://"+serverUrl.toString()));
 			Log.i("Network", "SSL available: "+sslAvailable);
 			
 			// Ueberpruefe ob SSL erzwungen und verfuegbar ist
 			if(loginCredentials.isSslOnly() && !sslAvailable) {
-				throw new SSLForcedButUnavailableException(serverUrl.toString()+":"+serverUrl.getPort()+" does not have SSL enabled");
+				throw new SSLForcedButUnavailableException(serverUrl+" does not have SSL enabled");
 			}
 			
 			// Vervollstaendige Server-URL
-			serverUrl = addProtocol(serverUrl, sslAvailable);
-			serverUrl = addTrail(serverUrl);
-			serverUrl = addSchool(serverUrl, school);
+			URI url = getServerURLasURI( sslAvailable, serverUrl, school);
+//			url = addProtocol(url, sslAvailable);
+//			url = addTrail(url);
+//			url = addSchool(url, school);
 			
 			oldServerUrl = new String(loginCredentials.getServerUrl());
 			oldSchool = new String(loginCredentials.getSchool());
 			
-			this.url = serverUrl;
+			this.url = url;
 			
 			Log.d("Network", "Setting url: "+url.toString());
 		}
+	}
+
+	private URI getServerURLasURI(boolean sslAvailable, String serverUrl,
+			String school) throws UnsupportedEncodingException, URISyntaxException {
+		final String encodedSchool = URLEncoder.encode(school, "UTF-8");
+		return new URI((sslAvailable ? "https" : "http") + "://" + serverUrl + "/WebUntis/jsonrpc.do" + "?school=" + encodedSchool);
 	}
 
 	/**
@@ -305,14 +322,17 @@ public class Network {
 		this.loginCredentials = loginSet;
 	}
 	
+	@Deprecated
 	private URI addProtocol(URI url, boolean ssl) throws URISyntaxException {
 		return new URI((ssl ? "https" : "http") + "://" + url.toString());
 	}
 	
+	@Deprecated
 	private URI addTrail(URI url) throws URISyntaxException {
 		return new URI(url.toString() + "/WebUntis/jsonrpc.do");
 	}
 	
+	@Deprecated
 	private URI addSchool(URI url, String school) throws URISyntaxException, UnsupportedEncodingException {
 		String encodedSchool = URLEncoder.encode(school, "UTF-8");
 		return new URI(url.toString() + "?school=" + encodedSchool);
