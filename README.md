@@ -18,6 +18,7 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 	* SDK in Eclipse einrichten
 		* http://developer.android.com/sdk/installing/installing-adt.html#Configure
 	* SDK updaten / APIs installieren
+		* API 7 + 14 installieren
 	* Installation von m2e direkt aus Eclipse
 	* In Eclipse "Problems" -> "Discover new m2e connectors"
 	* "Android Connector" installieren 
