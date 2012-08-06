@@ -128,7 +128,9 @@ public class RenderInfoWeekTable implements WebUntis {
 
 			if (timegridraw != null) {
 				for (TimegridUnit tunit : timegridraw) {
-
+					if(tunit.getName() == null) {
+						tunit.setName("0");
+					}
 					if (!dispZerolesson) {
 						if (tunit.getName().equals("0") && tunit.getEnd().getHour() <= 8 && tunit.getEnd().getMinute() == 0) {
 							zerolesson = tunit;
