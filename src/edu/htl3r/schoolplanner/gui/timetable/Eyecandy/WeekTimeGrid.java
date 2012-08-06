@@ -57,7 +57,7 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 		//int color = getResources().getColor(R.color.header_background);
 		//setBackgroundColor(Color.argb(200, Color.red(color), Color.green(color), Color.blue(color)));
 		
-		int color = getResources().getColor(R.color.element_background);
+//		int color = getResources().getColor(R.color.element_background);
 		setBackgroundColor(Color.parseColor("#D3D3D3"));
 		
 		paint = new Paint();

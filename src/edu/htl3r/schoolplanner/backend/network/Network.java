@@ -322,20 +322,4 @@ public class Network {
 		this.loginCredentials = loginSet;
 	}
 	
-	@Deprecated
-	private URI addProtocol(URI url, boolean ssl) throws URISyntaxException {
-		return new URI((ssl ? "https" : "http") + "://" + url.toString());
-	}
-	
-	@Deprecated
-	private URI addTrail(URI url) throws URISyntaxException {
-		return new URI(url.toString() + "/WebUntis/jsonrpc.do");
-	}
-	
-	@Deprecated
-	private URI addSchool(URI url, String school) throws URISyntaxException, UnsupportedEncodingException {
-		String encodedSchool = URLEncoder.encode(school, "UTF-8");
-		return new URI(url.toString() + "?school=" + encodedSchool);
-	}
-	
 }

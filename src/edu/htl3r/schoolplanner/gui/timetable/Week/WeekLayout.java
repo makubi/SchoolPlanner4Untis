@@ -68,14 +68,11 @@ public class WeekLayout extends ViewGroup{
 	
 	private WeekView weekview;
 	
-	private Settings settings;
-
 	public WeekLayout(Context context, int id, WeekView wv, Settings settings) {
 		super(context);
 		this.context = context;
 		this.ID = id;
 		this.weekview = wv;
-		this.settings = settings;
 		
 		boolean highlightCurrentHour = settings.isHighlightCurrentLesson();
 		clicklistener = new OnLessonsClickListener();

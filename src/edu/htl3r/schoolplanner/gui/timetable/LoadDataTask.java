@@ -123,11 +123,6 @@ public class LoadDataTask extends AsyncTask<Void, LogObject, Void> implements GU
 		forceNetwork = true;
 		forceCount = 0;
 	}
-	
-	@Deprecated
-	private String getString(int resId) {
-		return context.getString(resId);
-	}
 
 	@Override
 	public void logToUser(String msg) {

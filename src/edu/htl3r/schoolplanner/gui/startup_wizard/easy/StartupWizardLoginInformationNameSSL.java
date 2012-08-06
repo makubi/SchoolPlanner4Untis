@@ -35,7 +35,6 @@ public class StartupWizardLoginInformationNameSSL extends SchoolPlannerActivity 
 	private Activity thisActivity;
 	private EditText name;
 	private CheckBox ssl;
-	private Bundle information;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,6 @@ public class StartupWizardLoginInformationNameSSL extends SchoolPlannerActivity 
 		name = (EditText)findViewById(R.id.swi_name);
 		ssl = (CheckBox)findViewById(R.id.swi_force_ssl);
 		thisActivity = this;
-		information = getIntent().getExtras();
 		initButtons();
 		
 	}
