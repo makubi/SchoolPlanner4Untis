@@ -8,26 +8,30 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 	* Download und Entpacken von Eclipse (Classic wird empfohlen; aktuell 4.2)
 	* Installation von Maven 3
 		* Download und Entpacken von Maven 3 (aktuell 3.0.3)
-			-> http://maven.apache.org/download.html
+			 * http://maven.apache.org/download.html
+                         * M3_HOME=/path/to/maven
+                         * M3=$M3_HOME/bin
+                         * PATH=$M3:$PATH
+	* Installation von m2e direkt aus Eclipse
 	* Hinzufügen des entpackten Mavens in Eclipse
 		* In Eclipse
 			* Window -> Preferences -> Maven -> Installations -> Add... -> Vorher entpacktes Maven auswählen
 	* Download und Entpacken des Android SDKs (aktuell 20.0.1)
 	* Hinzufügen der ADT Update Site und installieren des Plugins
 		* http://developer.android.com/sdk/installing/installing-adt.html#Download
+		* SDK_ROOT=/path/to/android
+		* PATH=$SDK_ROOT/tools:$SDK_ROOT/platform-tools:$PATH
+		* ANDROID_HOME=$SDK_ROOT
 	* SDK in Eclipse einrichten
 		* http://developer.android.com/sdk/installing/installing-adt.html#Configure
 	* SDK updaten / APIs installieren
 		* API 7 + 14 installieren
-	* Installation von m2e direkt aus Eclipse
+* Hinzufügen des Projekts
+	* Projekt als Android oder Maven Project importieren
+	* Maven-/Android-Nature zum Projekt hinzufuegen
+	* Refresh des Projekts
 	* In Eclipse "Problems" -> "Discover new m2e connectors"
 	* "Android Connector" installieren 
-* Hinzufügen des Projekts
-	* Setzen der Variable
-		* ANDROID_HOME=$SDK_ROOT
-	* Projekt als Android Project importieren
-	* Maven-Nature zum Projekt hinzufuegen
-	* Refresh des Projekts
 
 ERROR IM PROJEKT (in Eclipse)
 -----------------------------
