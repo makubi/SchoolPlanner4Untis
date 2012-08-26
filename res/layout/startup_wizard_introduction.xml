@@ -8,8 +8,7 @@
     <ScrollView
         android:id="@+id/swi_text"
         style="@style/startup_wizard_scroll_view"
-        android:layout_above="@+id/swi_radios"
-        android:layout_below="@id/swi_header" >
+        android:layout_below="@id/swi_header">
 
         <TextView
             android:layout_width="wrap_content"
@@ -21,7 +20,7 @@
     </ScrollView>
 
     <RelativeLayout
-        android:id="@id/swi_radios"
+        android:id="@+id/swi_radios"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/swi_buttonbar" >
