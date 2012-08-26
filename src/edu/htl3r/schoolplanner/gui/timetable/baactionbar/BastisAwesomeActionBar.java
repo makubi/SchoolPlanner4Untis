@@ -122,6 +122,7 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 		refresh = (BARefreshAction) findViewById(R.id.baactionbar_refresh);
 		refresh.setIcon(getResources().getDrawable(R.drawable.ic_actionbar_refresh));
 		refresh.initProgressBar();
+		refresh.initTextView();
 
 		refresh.setOnClickListener(new OnClickListener() {
 			@Override

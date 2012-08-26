@@ -13,7 +13,7 @@
 		<androidsdk.version>7</androidsdk.version>
 		<jackson.version>1.9.7</jackson.version>
 		<androidmavenplugin.version>3.1.1</androidmavenplugin.version>
-		<compatibilitylibrary.version>r3</compatibilitylibrary.version>
+		<compatibilitylibrary.version>r9</compatibilitylibrary.version>
 	</properties>
 
 	<repositories>

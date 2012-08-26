@@ -36,7 +36,7 @@ import android.widget.TextView;
  * 
  * @author Mark Gjol @ Zylinc
  */
-public class ViewPagerIndicator extends RelativeLayout implements OnPageChangeListener {
+public class ViewPagerIndicator extends RelativeLayout implements ViewPagerEventDistributerOnPageChangeListener {
 	private static final int PADDING = 5;
 	
 	TextView mPrevious;

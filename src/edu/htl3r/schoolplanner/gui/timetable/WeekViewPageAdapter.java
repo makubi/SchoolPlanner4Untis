@@ -121,10 +121,6 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 		return POSITION_NONE;
 	}
 	
-	public int getPosition(){
-		return oldpos-1;
-	}
-
 	@Override
 	public String getTitle(int pos) {
 		int di = pos - 50;
@@ -140,9 +136,11 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 		}
 	}
 
-	public DateTime getLastRefreshDate(int position) {
+	public DateTime getLastRefresh(int position) {
 		return view_cach[position].getLastRefresh();
 	}
+
+
 	
 
 }

@@ -16,6 +16,7 @@
 */
 package edu.htl3r.schoolplanner.gui.timetable.Week;
 
+import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -290,11 +291,6 @@ public class WeekLayout extends ViewGroup{
 		return weekdata.getViewType();
 	}
 	
-	public DateTime getLastRefresh(){
-		if(isDataHere)
-			return weekdata.getLastRefresh();
-		return new DateTime();
-	}
 	
 	private class OnLessonsClickListener implements OnClickListener, OnTouchListener{
 		@Override
@@ -311,6 +307,14 @@ public class WeekLayout extends ViewGroup{
 				weekview.notifyActionBarTouch();
 			return false;
 		}
+	}
+
+
+	public DateTime getLastRefresh() {
+		if(isDataHere()){
+			return weekdata.getLastRefresh();
+		}
+		return new DateTime();
 	}
 		
 }

@@ -13,49 +13,101 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.htl3r.schoolplanner.gui.timetable.baactionbar;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
 
-public class BARefreshAction extends BAAction{
+public class BARefreshAction extends BAAction {
 
-	
 	private ProgressBar progressbar;
-	
+	private TextView lastRefreshText;
+
 	public BARefreshAction(Context context) {
 		super(context);
 	}
-	
+
 	public BARefreshAction(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
-	
-	public BARefreshAction(Context context, AttributeSet attrs, int defStyle){
+
+	public BARefreshAction(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
-	
-	public void initProgressBar(){
-		progressbar = (ProgressBar)findViewById(R.id.baactionbar_home_progress);
+
+	public void initProgressBar() {
+		progressbar = new ProgressBar(getContext(), null,
+				android.R.attr.progressBarStyleSmall);
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+		layoutParams.addRule(CENTER_VERTICAL);
+		layoutParams.addRule(CENTER_HORIZONTAL);
+		addView(progressbar, layoutParams);
 	}
-	
-	public void startProgressBar(boolean scroll){
-		if(scroll){
+
+	public void initTextView() {
+		lastRefreshText = new TextView(getContext());
+		lastRefreshText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 9);
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+		layoutParams.addRule(ALIGN_PARENT_BOTTOM);
+		layoutParams.addRule(ALIGN_PARENT_RIGHT);
+		layoutParams.setMargins(0, 0, 0, getResources().getDimensionPixelSize(R.dimen.gui_actionbar_action_refresh_text_margin_bottom));
+		
+		addView(lastRefreshText, layoutParams);
+	}
+
+	public void startProgressBar(boolean scroll) {
+		if (scroll) {
 			progressbar.setVisibility(VISIBLE);
 			icon.setVisibility(INVISIBLE);
-		}else{
+		} else {
 			icon.setVisibility(VISIBLE);
 			progressbar.setVisibility(INVISIBLE);
 		}
 	}
 
 	public void setLastRefresh(DateTime lastRefresh) {
-		Log.d("basti", "Lastrefresh: " + lastRefresh);
+		DateTime now = DateTimeUtils.getNow();
+		Log.d("basti", "lasR: " + lastRefresh);
+		if (lastRefresh.compareTo(new DateTime()) == 0) {
+			lastRefreshText.setTextColor(Color.WHITE);
+			lastRefreshText.setText("-");
+		} else {
+			float difference = now.getAndroidTime().toMillis(true)
+					- lastRefresh.getAndroidTime().toMillis(true);
+
+			difference /= 1000;
+			difference /= 60;
+			String einheit = "m";
+			int color = Color.WHITE;
+			if (difference >= 60) {
+
+				difference /= 60;
+				einheit = "h";
+
+				if (difference >= 24) {
+					difference /= 24;
+					einheit = "d";
+					color = Color.RED;
+				}
+			}			
+			lastRefreshText.setTextColor(color);
+			lastRefreshText.setText((int) difference + einheit);
+		}
 	}
-	
+
 }

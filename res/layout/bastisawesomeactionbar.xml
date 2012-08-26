@@ -54,16 +54,8 @@
     <edu.htl3r.schoolplanner.gui.timetable.baactionbar.BARefreshAction
         android:id="@+id/baactionbar_refresh"
         style="@style/baa_icon"
-        android:layout_alignRight="@id/baactionbar_sep2">
-        <ProgressBar
-            android:id="@+id/baactionbar_home_progress"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
-        </edu.htl3r.schoolplanner.gui.timetable.baactionbar.BARefreshAction>
-
+        android:layout_alignRight="@id/baactionbar_sep2" />
+     
     <android.view.View
         android:id="@+id/baactionbar_sep4"
         style="@style/baa_seperator"
