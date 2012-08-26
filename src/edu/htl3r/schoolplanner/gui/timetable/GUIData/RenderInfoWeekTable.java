@@ -46,6 +46,7 @@ public class RenderInfoWeekTable implements WebUntis {
 	private Timegrid timegridRaw;
 	private List<SchoolHoliday> holidays;
 	private ViewType viewtype;
+	private DateTime lastRefresh;
 
 	private Settings settings;
 
@@ -72,9 +73,13 @@ public class RenderInfoWeekTable implements WebUntis {
 	public void setSettings(Settings settings) {
 		this.settings = settings;
 	}
+	
+
+	public void setLastRefresh(DateTime lastRefresh) {
+		this.lastRefresh = lastRefresh;
+	}
 
 	public GUIWeek analyse() {
-		// TODO Alles da?
 		Set<String> keySet = weekdata.keySet();
 		TreeSet<DateTime> dates = new TreeSet<DateTime>();
 
@@ -98,6 +103,7 @@ public class RenderInfoWeekTable implements WebUntis {
 		week.setViewType(viewtype);
 		week.setTimegrid(getMondayTimeGrid(timegrid));
 		week.setHolidays(holidays);
+		week.setLastRefreshDate(lastRefresh);
 		return week;
 	}
 
@@ -327,5 +333,7 @@ public class RenderInfoWeekTable implements WebUntis {
 			}
 		}
 	}
+
+
 
 }

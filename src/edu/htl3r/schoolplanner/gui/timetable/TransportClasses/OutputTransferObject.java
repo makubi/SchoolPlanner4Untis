@@ -16,6 +16,7 @@
 */
 package edu.htl3r.schoolplanner.gui.timetable.TransportClasses;
 
+import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIWeek;
 
 public class OutputTransferObject extends TransferObject{
@@ -36,6 +37,5 @@ public class OutputTransferObject extends TransferObject{
 	public int getPos() {
 		return pos;
 	}
-	
-	
+
 }

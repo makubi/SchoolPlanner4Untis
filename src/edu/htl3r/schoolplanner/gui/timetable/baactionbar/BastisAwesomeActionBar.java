@@ -24,6 +24,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 
@@ -174,6 +175,10 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 		for (BAActoinBarEvent a : actionbarevent) {
 			a.onBAActionbarActionClicked(ID);
 		}
+	}
+	
+	public void setLastRefresh(DateTime lastRefresh){
+		refresh.setLastRefresh(lastRefresh);
 	}
 
 	public interface BAActoinBarEvent {

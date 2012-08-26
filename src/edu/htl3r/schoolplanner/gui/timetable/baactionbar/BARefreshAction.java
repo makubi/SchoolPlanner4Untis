@@ -18,7 +18,9 @@ package edu.htl3r.schoolplanner.gui.timetable.baactionbar;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ProgressBar;
+import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 
 public class BARefreshAction extends BAAction{
@@ -43,7 +45,6 @@ public class BARefreshAction extends BAAction{
 	}
 	
 	public void startProgressBar(boolean scroll){
-//		progressbar.bringToFront();
 		if(scroll){
 			progressbar.setVisibility(VISIBLE);
 			icon.setVisibility(INVISIBLE);
@@ -51,6 +52,10 @@ public class BARefreshAction extends BAAction{
 			icon.setVisibility(VISIBLE);
 			progressbar.setVisibility(INVISIBLE);
 		}
+	}
+
+	public void setLastRefresh(DateTime lastRefresh) {
+		Log.d("basti", "Lastrefresh: " + lastRefresh);
 	}
 	
 }

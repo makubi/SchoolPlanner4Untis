@@ -36,6 +36,7 @@ public class GUIWeek{
 	private ViewType viewtype;
 	private List<TimegridUnit> timegrid;
 	private List<SchoolHoliday> holidays;
+	private DateTime lastRefresh;
 
 	
 	public void setTimegrid(List <TimegridUnit> time){
@@ -49,6 +50,11 @@ public class GUIWeek{
 	public void setViewType(ViewType vt){
 		viewtype = vt;
 	}
+	
+	public void setLastRefreshDate(DateTime lastRefresh) {
+		this.lastRefresh = lastRefresh;
+	}
+	
 	public ViewType getViewType(){
 		return viewtype;
 	}
@@ -61,6 +67,10 @@ public class GUIWeek{
 		return timegrid;
 	}
 	
+
+	public DateTime getLastRefresh() {
+		return lastRefresh;
+	}	
 	
 	public List<SchoolHoliday> getHolidays() {
 		return holidays;
@@ -112,4 +122,6 @@ public class GUIWeek{
 		}
 		return sb.toString();
 	}
+
+
 }

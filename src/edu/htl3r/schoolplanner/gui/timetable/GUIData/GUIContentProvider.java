@@ -118,36 +118,36 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 		}
 	}
 
-	@Override
-	public List<Lesson> getLessonsForDate(ViewType vt, DateTime start) {
-		DataFacade<List<Lesson>> data = cache.getLessons(vt, start);
-		if (data.isSuccessful()) {
-			return data.getData();
-		} else {
-			logToUser(getDisplayErrorMessage(data.getErrorMessage()));
-			return new ArrayList<Lesson>();
-		}
-	}
+//	@Override
+//	public List<Lesson> getLessonsForDate(ViewType vt, DateTime start) {
+//		DataFacade<List<Lesson>> data = cache.getLessons(vt, start);
+//		if (data.isSuccessful()) {
+//			return data.getData();
+//		} else {
+//			logToUser(getDisplayErrorMessage(data.getErrorMessage()));
+//			return new ArrayList<Lesson>();
+//		}
+//	}
 
 	@Override
-	public Map<String, List<Lesson>> getLessonsForSomeTime(ViewType vt, DateTime start, DateTime end) {
+	public DataFromNetwork getLessonsForSomeTime(ViewType vt, DateTime start, DateTime end) {
 		DataFacade<Map<String, List<Lesson>>> data = cache.getLessons(vt, start, end);
 		if (data.isSuccessful()) {
-			return data.getData();
+			return new DataFromNetwork(data.getData(), data.getLastRefreshTime());
 		} else {
 			logToUser(getDisplayErrorMessage(data.getErrorMessage()));
-			return new HashMap<String, List<Lesson>>();
+			return new DataFromNetwork(new HashMap<String, List<Lesson>>(), new DateTime());
 		}
 	}
 
 	@Override
-	public Map<String, List<Lesson>> getLessonsForSomeTimeFromNetwork(ViewType vt, DateTime start, DateTime end) {
+	public DataFromNetwork getLessonsForSomeTimeFromNetwork(ViewType vt, DateTime start, DateTime end) {
 		DataFacade<Map<String, List<Lesson>>> data = cache.getLessonsFromNetwork(vt, start, end);
 		if (data.isSuccessful()) {
-			return data.getData();
+			return new DataFromNetwork(data.getData(), data.getLastRefreshTime());
 		} else {
 			logToUser(getDisplayErrorMessage(data.getErrorMessage()));
-			return new HashMap<String, List<Lesson>>();
+			return new DataFromNetwork(new HashMap<String, List<Lesson>>(), new DateTime());
 		}
 	}
 
@@ -204,4 +204,5 @@ public class GUIContentProvider implements GUIContentProviderSpez {
 	public interface ErrorHandler{
 		public void logToUser(String msg);
 	}
+
 }

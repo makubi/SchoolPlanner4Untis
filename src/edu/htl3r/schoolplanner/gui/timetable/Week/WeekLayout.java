@@ -23,6 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -287,6 +288,12 @@ public class WeekLayout extends ViewGroup{
 	
 	public ViewType getVT(){
 		return weekdata.getViewType();
+	}
+	
+	public DateTime getLastRefresh(){
+		if(isDataHere)
+			return weekdata.getLastRefresh();
+		return new DateTime();
 	}
 	
 	private class OnLessonsClickListener implements OnClickListener, OnTouchListener{

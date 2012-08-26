@@ -140,4 +140,9 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 		}
 	}
 
+	public DateTime getLastRefreshDate(int position) {
+		return view_cach[position].getLastRefresh();
+	}
+	
+
 }

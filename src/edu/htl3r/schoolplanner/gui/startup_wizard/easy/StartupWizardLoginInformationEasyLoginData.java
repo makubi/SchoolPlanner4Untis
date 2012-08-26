@@ -80,7 +80,6 @@ public class StartupWizardLoginInformationEasyLoginData extends
 					intent.putExtra(LoginSetConstants.schoolKey,school.getText().toString());
 					intent.putExtra(LoginSetConstants.usernameKey,user.getText().toString());
 					intent.putExtra(LoginSetConstants.passwordKey,pass.getText().toString());
-					Log.d("basti", intent.getExtras()+"");
 					startActivity(intent);
 				}
 				else {

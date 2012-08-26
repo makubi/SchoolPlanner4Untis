@@ -24,7 +24,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.format.Time;
+import android.util.Log;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
@@ -122,7 +124,12 @@ public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActi
 		public void handleMessage(Message msg) {
 			OutputTransferObject result = (OutputTransferObject) msg.obj;
 			wvpageadapter.setWeeData(result.getWeek(), result.getPos());
-
+			
+			
+			if(result.getWeek() != null && result.getPos() == wvpageadapter.getPosition()){
+				actionbar.setLastRefresh(result.getWeek().getLastRefresh());
+			}
+			
 			if (result.getWeek() != null && holidays == null)
 				holidays = result.getWeek().getHolidays();
 		}
@@ -168,6 +175,25 @@ public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActi
 		wvpageadapter.setDate(getMonday());
 		myViewPager.setAdapter(wvpageadapter);
 		myViewPager.setOnPageChangeListener(indicator);
+		
+		myViewPager.setOnPageChangeListener(new OnPageChangeListener() {
+			
+	
+			@Override
+			public void onPageScrolled(int position, float arg1, int arg2) {
+				if(arg1 == 0 && arg2 == 0){
+					actionbar.setLastRefresh(wvpageadapter.getLastRefreshDate(position));
+				}
+					
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {}
+			@Override
+			public void onPageSelected(int arg0) {}
+			
+		});
+		
 		indicator.init(50, wvpageadapter.getCount(), wvpageadapter);
 
 		Resources res = getResources();
