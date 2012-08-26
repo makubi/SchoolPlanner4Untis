@@ -57,6 +57,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/startup_wizard_introduction_expert"
                 android:textColor="@color/text" />
+            
+             <RadioButton
+                android:id="@+id/swi_radio_qrcode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/startup_wizard_introduction_qrcode"
+                android:textColor="@color/text" />
         </RadioGroup>
     </RelativeLayout>
 

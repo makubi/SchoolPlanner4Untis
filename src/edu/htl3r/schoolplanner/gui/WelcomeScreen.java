@@ -45,6 +45,7 @@ import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.gui.loginTask.LoginTask;
 import edu.htl3r.schoolplanner.gui.startup_wizard.StartupWizardIntroduction;
 import edu.htl3r.schoolplanner.gui.startup_wizard.expert.StartupWizardLoginInformationExpert;
+import edu.htl3r.schoolplanner.gui.startup_wizard.qrcode.QRCodeUrlAnalyser;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenContextMenu;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenLoginTaskListener;
@@ -62,7 +63,7 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 	
 	private final int STARTUP_WIZARD_INTRODUCTION_REQUEST_CODE = 1;
 	private final int LOGIN_SET_EDITOR_REQUEST_CODE = 2;
-	
+
 	private WelcomeScreenContextMenu contextMenu;
 	
 	@Override
@@ -85,14 +86,19 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		loginListener.addListener(new WelcomeScreenLoginTaskListener(this));
 		mainListView.setOnItemClickListener(loginListener);
 		initContextMenu();
-		checkIfStartedByIntent();
+		
+		
 	}
 	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		
-		if (loginmanager.getAllLoginSets().size() < 1) {
+		Intent intent = getIntent();
+		if(Intent.ACTION_VIEW.equals(intent.getAction())){
+			QRCodeUrlAnalyser qrCodeUrlAnalyser = new QRCodeUrlAnalyser();
+			qrCodeUrlAnalyser.startWizardCauseOfUriInput(intent.getData(), this);			
+		}else if (loginmanager.getAllLoginSets().size() < 1) {
 			showStartupWizard();
 		}
 		
@@ -108,35 +114,7 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		}
 	}
 	
-	private void checkIfStartedByIntent(){
-		Intent intent = getIntent();
-		if(Intent.ACTION_VIEW.equals(intent.getAction())){
-			Uri uri = intent.getData();
-			String school_url = uri.getQueryParameter(LoginSetConstants.serverUrlKey);
-			String school = uri.getQueryParameter(LoginSetConstants.schoolKey);
-			String user = uri.getQueryParameter(LoginSetConstants.usernameKey);
-			String pass = uri.getQueryParameter(LoginSetConstants.passwordKey);
-			String name = uri.getQueryParameter(LoginSetConstants.nameKey);
-			boolean ssl = Boolean.parseBoolean(uri.getQueryParameter(LoginSetConstants.sslOnlyKey));
-			Log.d("basti",uri.toString());
-			Log.d("basti","URL: " + school_url +
-					"Schule: " + school +
-					"\nUser: " + user +
-					"\nPasswort: " + pass +
-					"\nName: " + name +
-					"\nSSL: " + ssl);
-   	
-	    	Intent loginSetEditor = new Intent(this, StartupWizardLoginInformationExpert.class);
-	    	loginSetEditor.putExtra(LoginSetConstants.nameKey, name);
-	    	loginSetEditor.putExtra(LoginSetConstants.serverUrlKey, school_url);
-	    	loginSetEditor.putExtra(LoginSetConstants.schoolKey, school);
-	    	loginSetEditor.putExtra(LoginSetConstants.usernameKey, user);
-	    	loginSetEditor.putExtra(LoginSetConstants.passwordKey, pass);
-	    	loginSetEditor.putExtra(LoginSetConstants.sslOnlyKey, ssl);
-	    	
-	    	startActivityForResult(loginSetEditor, STARTUP_WIZARD_INTRODUCTION_REQUEST_CODE);
-		}
-	}
+	
 	
 	private void showStartupWizard() {
 		Intent t = new Intent(this, StartupWizardIntroduction.class);
