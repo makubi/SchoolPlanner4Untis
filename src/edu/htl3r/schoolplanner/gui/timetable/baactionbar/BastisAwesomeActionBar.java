@@ -24,6 +24,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 
@@ -41,9 +42,9 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 	
 	private BADropdown dropdown;
 	private BAAction month;
-	private BAHomeAction home;
+	private BAAction home;
 	private BAAction dropdown_action;
-	private BAAction refresh;
+	private BARefreshAction refresh;
 	private TextView title;
 	private View everything;
 
@@ -86,9 +87,8 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 	}
 	
 	private void setHomeIcon() {
-		home = (BAHomeAction) findViewById(R.id.baactionbar_home);
+		home = (BAAction) findViewById(R.id.baactionbar_home);
 		home.setIcon(getResources().getDrawable(R.drawable.logo));
-		home.initProgressBar();
 
 		home.setOnClickListener(new OnClickListener() {
 			@Override
@@ -119,8 +119,10 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 	}
 
 	private void setRefreshIcon() {
-		refresh = (BAAction) findViewById(R.id.baactionbar_refresh);
+		refresh = (BARefreshAction) findViewById(R.id.baactionbar_refresh);
 		refresh.setIcon(getResources().getDrawable(R.drawable.ic_actionbar_refresh));
+		refresh.initProgressBar();
+		refresh.initTextView();
 
 		refresh.setOnClickListener(new OnClickListener() {
 			@Override
@@ -155,7 +157,7 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 	}
 
 	public void setProgress(boolean active) {
-		home.startProgressBar(active);
+		refresh.startProgressBar(active);
 	}
 
 	public void closeDropDown() {
@@ -174,6 +176,10 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 		for (BAActoinBarEvent a : actionbarevent) {
 			a.onBAActionbarActionClicked(ID);
 		}
+	}
+	
+	public void setLastRefresh(DateTime lastRefresh){
+		refresh.setLastRefresh(lastRefresh);
 	}
 
 	public interface BAActoinBarEvent {

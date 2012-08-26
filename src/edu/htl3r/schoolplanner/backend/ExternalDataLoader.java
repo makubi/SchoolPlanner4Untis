@@ -24,8 +24,9 @@ import java.util.Map;
 
 import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.backend.cache.Cache;
 import edu.htl3r.schoolplanner.backend.database.Database;
-import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
+import edu.htl3r.schoolplanner.backend.network.json.JSONNetwork;
 import edu.htl3r.schoolplanner.backend.preferences.AutoSelectSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
@@ -42,7 +43,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see Database
  * @see JSONNetwork
  */
-public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider, LoginSetHandler, AutoSelectHandler {
+public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, NetworkTimetableDataProvider, LoginSetHandler, AutoSelectHandler {
 
 	private Database database = new Database();
 	private JSONNetwork network = new JSONNetwork();
@@ -57,12 +58,14 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		List<SchoolClass> data = database.getSchoolClassList();
 		if (data != null && data.size() > 0) {
 			Log.v("data_source","class list: database");
+			schoolClassList.setDataSource(DataSource.DATABASE);
 			schoolClassList.setData(data);
 		}
 		// Check network
 		else if (networkAvailable) {
 			if ((schoolClassList = network.getSchoolClassList()).isSuccessful()) {
 				Log.v("data_source","class list: network");
+				schoolClassList.setDataSource(DataSource.NETWORK);
 				database.setSchoolClassList(schoolClassList.getData());
 			}
 		}
@@ -81,12 +84,14 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		List<SchoolTeacher> data = database.getSchoolTeacherList();
 		if (data != null && data.size() > 0) {
 			Log.v("data_source","teacher list: database");
+			schoolTeacherList.setDataSource(DataSource.DATABASE);
 			schoolTeacherList.setData(data);
 		}
 		// Check network
 		else if (networkAvailable) {
 			if ((schoolTeacherList = network.getSchoolTeacherList()).isSuccessful()) {
 				Log.v("data_source","teacher list: network");
+				schoolTeacherList.setDataSource(DataSource.NETWORK);
 				database.setSchoolTeacherList(schoolTeacherList.getData());
 			}
 		}
@@ -105,12 +110,14 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		List<SchoolRoom> data = database.getSchoolRoomList();
 		if (data != null && data.size() > 0) {
 			Log.v("data_source","room list: database");
+			schoolRoomList.setDataSource(DataSource.DATABASE);
 			schoolRoomList.setData(data);
 		}
 		// Check network
 		else if (networkAvailable) {
 			if ((schoolRoomList = network.getSchoolRoomList()).isSuccessful()) {
 				Log.v("data_source","room list: network");
+				schoolRoomList.setDataSource(DataSource.NETWORK);
 				database.setSchoolRoomList(schoolRoomList.getData());
 			}
 		}
@@ -129,12 +136,14 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		List<SchoolSubject> data = database.getSchoolSubjectList();
 		if (data != null && data.size() > 0) {
 			Log.v("data_source","subject list: database");
+			schoolSubjectList.setDataSource(DataSource.DATABASE);
 			schoolSubjectList.setData(data);
 		}
 		// Check network
 		else if (networkAvailable) {
 			if ((schoolSubjectList = network.getSchoolSubjectList()).isSuccessful()) {
 				Log.v("data_source","subject list: network");
+				schoolSubjectList.setDataSource(DataSource.NETWORK);
 				database.setSchoolSubjectList(schoolSubjectList.getData());
 			}
 		}
@@ -153,12 +162,14 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		List<SchoolHoliday> data = database.getSchoolHolidayList();
 		if (data != null && data.size() > 0) {
 			Log.v("data_source","holiday list: database");
+			schoolHolidayList.setDataSource(DataSource.DATABASE);
 			schoolHolidayList.setData(data);
 		}
 		// Check network
 		else if (networkAvailable) {
 			if ((schoolHolidayList = network.getSchoolHolidayList()).isSuccessful()) {
 				Log.v("data_source","holiday list: network");
+				schoolHolidayList.setDataSource(DataSource.NETWORK);
 				database.setSchoolHolidayList(schoolHolidayList.getData());
 			}
 		}
@@ -177,12 +188,14 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		Timegrid data = database.getTimegrid();
 		if (data != null) {
 			Log.v("data_source","timegrid: database");
+			timegrid.setDataSource(DataSource.DATABASE);
 			timegrid.setData(data);
 		}
 		// Check network
 		else if (networkAvailable) {
 			if ((timegrid = network.getTimegrid()).isSuccessful()) {
 				Log.v("data_source","timegrid: network");
+				timegrid.setDataSource(DataSource.NETWORK);
 				database.setTimegrid(timegrid.getData());
 			}
 		}
@@ -194,43 +207,12 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 	}
 
 	@Override
-	public DataFacade<List<StatusData>> getStatusData() {
-		DataFacade<List<StatusData>> statusDataList = new DataFacade<List<StatusData>>();
-
-		// Check database
-		List<StatusData> data = database.getStatusData();
-		if (data != null && data.size() > 0) {
-			Log.v("data_source","status data: database");
-			statusDataList.setData(data);
-		}
-		// Check network
-		else if (networkAvailable) {
-			if ((statusDataList = network.getStatusData()).isSuccessful()) {
-				Log.v("data_source","status data: network");
-				database.setStatusData(statusDataList.getData());
-			}
-		}
-		else {
-			statusDataList.setErrorMessage(getUnableToLoadDataErrorMessage());
-		}
-
-		return statusDataList;
-	
-	}
-
-	@Override
 	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
 		DataFacade<List<Lesson>> lessonList = new DataFacade<List<Lesson>>();
-
-		// Check database
-		/*List<Lesson> data = database.getLessons(viewType, date);
-		if (data != null) {
-			lessonList.setData(data);
-		}
-		// Check network
-		else*/ if (networkAvailable) {
+		
+		if (networkAvailable) {
 			if ((lessonList = network.getLessons(viewType, date)).isSuccessful()) {
-				//database.setLessons(lessonList.getData());
+				lessonList.setDataSource(DataSource.NETWORK);
 			}
 		}
 		else {
@@ -244,16 +226,10 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
 			DateTime startDate, DateTime endDate) {
 		DataFacade<Map<String, List<Lesson>>> lessonMap = new DataFacade<Map<String, List<Lesson>>>();
-
-		// Check database
-		/*List<Lesson> data = database.getLessons(viewType, startDate, endDate);
-		if (data != null) {
-			lessonList.setData(data);
-		}
-		// Check network
-		else*/ if (networkAvailable) {
+		
+		if (networkAvailable) {
 			if ((lessonMap = network.getLessons(viewType, startDate, endDate)).isSuccessful()) {
-				//database.setLessons(lessonList.getData());
+				lessonMap.setDataSource(DataSource.NETWORK);
 			}
 		}
 		else {
@@ -264,23 +240,13 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 	}
 
 	@Override
-	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
-			DateTime startDate, DateTime endDate, boolean forceNetwork) {
-		DataFacade<Map<String, List<Lesson>>> lessonMap = new DataFacade<Map<String, List<Lesson>>>();
+	public DataFacade<Map<String, List<Lesson>>> getLessonsFromNetwork(ViewType viewType,
+			DateTime startDate, DateTime endDate) {		
+		DataFacade<Map<String, List<Lesson>>> lessons = network.getLessons(viewType, startDate, endDate);
 		
-		if(forceNetwork) {
-			
-			// Check network
-			if (networkAvailable) {
-				if ((lessonMap = network.getLessons(viewType, startDate, endDate)).isSuccessful()) {
-					//database.setLessons(lessonList.getData());
-				}
-			}
-			else lessonMap.setErrorMessage(getUnableToLoadDataErrorMessage());
-		}
-		else return getLessons(viewType, startDate, endDate);
+		if(lessons.isSuccessful()) lessons.setDataSource(DataSource.NETWORK);
 		
-		return lessonMap;
+		return lessons;
 	}
 
 	/**
@@ -288,7 +254,11 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 	 * @return true, wenn die Authentifizierung erfolgreich war, sonst false
 	 */
 	public DataFacade<Boolean> authenticate() {
-		return network.authenticate();
+		DataFacade<Boolean> authenticate = network.authenticate();
+		
+		if(authenticate.isSuccessful()) authenticate.setDataSource(DataSource.NETWORK);
+		
+		return authenticate;
 	}
 
 	/**
@@ -315,7 +285,6 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		
 		DataFacade<List<SchoolHoliday>> schoolHolidayList = network.getSchoolHolidayList();
 		DataFacade<Timegrid> timegrid = network.getTimegrid();
-		DataFacade<List<StatusData>> statusData = network.getStatusData();
 		
 		// Collect data
 		requests.add(schoolClassList);
@@ -325,7 +294,6 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		
 		requests.add(schoolHolidayList);
 		requests.add(timegrid);
-		requests.add(statusData);
 		
 		// check for errors
 		DataFacade<MasterData> data = new DataFacade<MasterData>();
@@ -344,7 +312,6 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		masterData.setSchoolTeacherList(schoolTeacherList.getData());
 		masterData.setSchoolHolidayList(schoolHolidayList.getData());
 		masterData.setTimegrid(timegrid.getData());
-		masterData.setStatusData(statusData.getData());
 		
 		data.setData(masterData);
 		
@@ -356,7 +323,8 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 		database.setSchoolSubjectList(schoolSubjectList.getData());
 		database.setSchoolHolidayList(schoolHolidayList.getData());
 		database.setTimegrid(timegrid.getData());
-		database.setStatusData(statusData.getData());
+		
+		if(data.isSuccessful()) data.setDataSource(DataSource.NETWORK);
 		
 		return data;
 	}
@@ -398,8 +366,8 @@ public class ExternalDataLoader implements UnsaveDataSourceMasterdataProvider, U
 
 	@Override
 	public void editLoginSet(String name, String serverUrl, String school,
-			String username, String password, boolean checked, String oldServerUrl, String oldSchool) {
-		database.editLoginSet(name, serverUrl, school, username, password, checked, oldServerUrl, oldSchool);
+			String username, String password, boolean checked, String oldName, String oldServerUrl, String oldSchool) {
+		database.editLoginSet(name, serverUrl, school, username, password, checked, oldName, oldServerUrl, oldSchool);
 	}
 
 	@Override

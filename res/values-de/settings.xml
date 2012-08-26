@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>	
-	<string name="settings_autoselect_deprecated_title">Veraltete Auto-Auswahl Einstellungen</string>
-	<string name="settings_autoselect_deprecated_summary">Die Auto-Auswahl Einstellungen sind ab jetzt über den Auswahl-Bildschirm verwaltbar</string>
-	
 	<!-- Strings on UI -->
     <string name="settings_login_header">Login Optionen</string>
     <string name="settings_login_autologin_title">Auto-Login</string>
@@ -10,15 +7,6 @@
     <string name="settings_login_autologin_set_title">Login Set</string>
     <string name="settings_login_autologin_set_summary">Auswahl des Login Sets für den Auto-Login</string>
     <string name="settings_login_autologin_set_dialog_title">Login Set</string>
-    
-    
-    <string name="settings_autoselect_header">Auto-Auswahl Optionen</string>
-    <string name="settings_autoselect_enabled_title">Auto-Auswahl Stundenplan</string>
-    <string name="settings_autoselect_enabled_summary">Auto-Auswahl des Stundenplans nach dem Login?</string>
-    
-    <string name="settings_autoselect_type_title">Auto-Auswahl Art</string>
-    <string name="settings_autoselect_type_summary">Typ des Stundenplans, der nach dem Login angezeigt werden soll</string>
-    <string name="settings_autoselect_type_dialog_title">Auto-Auswahl Art</string>
     
     <string name="settings_display_header">Anzeige Optionen</string>
     <string name="settings_display_show_saturday_title">Samstag anzeigen</string>

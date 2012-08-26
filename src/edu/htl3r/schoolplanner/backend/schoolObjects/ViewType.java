@@ -19,12 +19,15 @@
 package edu.htl3r.schoolplanner.backend.schoolObjects;
 
 import java.io.Serializable;
+
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 /**
  * 
  * Diese abstrakte Klasse ist ein Ansichts-Typ wie z.B. Klasse, Raum, Lehrer oder Fach.
  * Implementierungen, wie oben genannte, enthalten jeweils konkrete Angaben, wie z.B. Klasse: 5AN.
  *
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class ViewType implements Serializable, Comparable<ViewType>, Cloneable {
 	
 	private static final long serialVersionUID = 4424283163744496080L;
@@ -32,8 +35,8 @@ public abstract class ViewType implements Serializable, Comparable<ViewType>, Cl
 	private int id;
 	private String name;
 	private String longName;
-	private String foreColor;
-	private String backColor;
+	private String foreColor = "000000";
+	private String backColor = "FFFFFF";
 	
 	/**
 	 * Liefert die ID dieses Objekts. Diese wird mit der ID in der gegebenen Datenbank uebereinstimmen.

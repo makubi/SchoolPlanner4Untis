@@ -20,7 +20,8 @@ package edu.htl3r.schoolplanner.backend;
 
 import java.io.IOException;
 
-import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
+import edu.htl3r.schoolplanner.backend.cache.Cache;
+import edu.htl3r.schoolplanner.backend.network.json.JSONNetwork;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 
 /**

@@ -22,7 +22,7 @@ import android.text.format.Time;
  * Diese Klasse repraesentiert ein {@link Time}-Objekt mit erweiterter Funktionalitaet.<br>
  * Es ist moeglich, den Tag dieses Objekts problemlos zu erhoehen oder verringern.
  */
-public class DateTime implements Cloneable,Comparable<DateTime> {
+public class DateTime implements Cloneable, Comparable<DateTime> {
 
 	private Time internalTime;
 	

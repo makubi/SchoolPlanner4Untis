@@ -26,5 +26,6 @@ public interface ErrorCodes {
 	public static int WEBUNTIS_SERVICE_EXCEPTION = 4;
 	public static int SOCKET_TIMEOUT_EXCEPTION = 5;
 	public static int NETWORK_NEEDED_BUT_UNAVAILABLE = 6;
+	public static int WRONG_PORT_NUMBER = 7;
 	
 }

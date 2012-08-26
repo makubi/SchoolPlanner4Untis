@@ -16,12 +16,25 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package edu.htl3r.schoolplanner.backend;
+package edu.htl3r.schoolplanner.backend.cache;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.backend.AutoSelectHandler;
+import edu.htl3r.schoolplanner.backend.DataConnection;
+import edu.htl3r.schoolplanner.backend.DataFacade;
+import edu.htl3r.schoolplanner.backend.DataSource;
+import edu.htl3r.schoolplanner.backend.ErrorMessage;
+import edu.htl3r.schoolplanner.backend.ExternalDataLoader;
+import edu.htl3r.schoolplanner.backend.LoginSetHandler;
+import edu.htl3r.schoolplanner.backend.MasterData;
+import edu.htl3r.schoolplanner.backend.NetworkTimetableDataProvider;
+import edu.htl3r.schoolplanner.backend.TimetableDay;
+import edu.htl3r.schoolplanner.backend.UnsaveDataSourceMasterdataProvider;
+import edu.htl3r.schoolplanner.backend.cache.timetable.TimetableCache;
 import edu.htl3r.schoolplanner.backend.network.ErrorCodes;
 import edu.htl3r.schoolplanner.backend.preferences.AutoSelectSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
@@ -39,9 +52,11 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
  * @see InternalMemory
  * @see ExternalDataLoader
  */
-public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider, UnsaveDataSourceTimetableDataProvider, LoginSetHandler, AutoSelectHandler {
+public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider, NetworkTimetableDataProvider, LoginSetHandler, AutoSelectHandler {
 	
 	private InternalMemory internalMemory = new InternalMemory();
+	private TimetableCache timetableCache = new TimetableCache();
+	
 	private ExternalDataLoader externalDataLoader = new ExternalDataLoader();
 	private boolean networkAvailable;
 	
@@ -56,6 +71,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		
 		if(internalSchoolClassList != null) {
 			data = new DataFacade<List<SchoolClass>>();
+			data.setDataSource(DataSource.INTERNAL_RAM);
 			data.setData(internalSchoolClassList);
 		}
 		else {
@@ -76,6 +92,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		
 		if(internalSchoolTeacherList != null) {
 			data = new DataFacade<List<SchoolTeacher>>();
+			data.setDataSource(DataSource.INTERNAL_RAM);
 			data.setData(internalSchoolTeacherList);
 		}
 		else {
@@ -95,6 +112,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		
 		if(internalSchoolRoomList != null) {
 			data = new DataFacade<List<SchoolRoom>>();
+			data.setDataSource(DataSource.INTERNAL_RAM);
 			data.setData(internalSchoolRoomList);
 		}
 		else {
@@ -114,6 +132,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		
 		if(internalSchoolSubjectList != null) {
 			data = new DataFacade<List<SchoolSubject>>();
+			data.setDataSource(DataSource.INTERNAL_RAM);
 			data.setData(internalSchoolSubjectList);
 		}
 		else {
@@ -133,6 +152,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		
 		if(internalSchoolHolidayList != null) {
 			data = new DataFacade<List<SchoolHoliday>>();
+			data.setDataSource(DataSource.INTERNAL_RAM);
 			data.setData(internalSchoolHolidayList);
 		}
 		else {
@@ -152,6 +172,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 		
 		if(internalTimegrid != null) {
 			data = new DataFacade<Timegrid>();
+			data.setDataSource(DataSource.INTERNAL_RAM);
 			data.setData(internalTimegrid);
 		}
 		else {
@@ -165,37 +186,28 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	}
 
 	@Override
-	public DataFacade<List<StatusData>> getStatusData() {
-		DataFacade<List<StatusData>> data;
-		List<StatusData> internalSchoolSubjectList = internalMemory.getStatusData();
-		
-		if(internalSchoolSubjectList != null) {
-			data = new DataFacade<List<StatusData>>();
-			data.setData(internalSchoolSubjectList);
-		}
-		else {
-			data = externalDataLoader.getStatusData();
-			if(data.isSuccessful()) {
-				internalMemory.setStatusData(data.getData());
-			}
-		}
-		
-		return data;
-	}
-
-	@Override
 	public DataFacade<List<Lesson>> getLessons(ViewType viewType, DateTime date) {
 		DataFacade<List<Lesson>> data;
-		List<Lesson> internalLessons = internalMemory.getLessons(viewType, date);
+		List<Lesson> lessons;
+		TimetableDay timetableDay;
 	
-		if(internalLessons != null) {
+		if((timetableDay = internalMemory.getTimetableForDay(viewType, date)) != null) {
+			lessons = timetableDay.getLessons();
 			data = new DataFacade<List<Lesson>>();
-			data.setData(internalLessons);
+			data.setDataSource(DataSource.INTERNAL_RAM);
+			data.setLastRefresh(timetableDay.getLastRefreshTime());
+			data.setData(lessons);
+		}
+		else if ((data = timetableCache.getLessons(viewType, date)).isSuccessful()) {
+			internalMemory.setLessonsForDay(viewType, date, data.getData(), data.getLastRefreshTime());
+			data.setDataSource(DataSource.CACHE);
 		}
 		else {
 			data = externalDataLoader.getLessons(viewType, date);
 			if(data.isSuccessful()) {
-				internalMemory.setLessons(viewType, date, data.getData());
+				lessons = data.getData();
+				internalMemory.setLessonsForDay(viewType, date, lessons, data.getLastRefreshTime());
+				timetableCache.setLessons(viewType, date, lessons);
 			}
 		}
 		
@@ -207,16 +219,31 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 			DateTime startDate, DateTime endDate) {
 		
 		DataFacade<Map<String, List<Lesson>>> data;
-		Map<String, List<Lesson>> internalLessons = internalMemory.getLessons(viewType, startDate, endDate);
+		Map<String, List<Lesson>> lessonMap = new HashMap<String, List<Lesson>>();
+		Map<String, TimetableDay> timetableDayMap;
 		
-		if(internalLessons != null) {
+		if((timetableDayMap = internalMemory.getTimetableForTimePeriod(viewType, startDate, endDate)) != null) {
 			data = new DataFacade<Map<String, List<Lesson>>>();
-			data.setData(internalLessons);
+			data.setDataSource(DataSource.INTERNAL_RAM);
+			
+			for(String date : timetableDayMap.keySet()) {
+				TimetableDay timetableDay = timetableDayMap.get(date);
+				lessonMap.put(date, timetableDay.getLessons());
+				data.setLastRefresh(timetableDay.getLastRefreshTime());
+			}
+			
+			data.setData(lessonMap);
+		}
+		else if ((data = timetableCache.getLessons(viewType, startDate, endDate)).isSuccessful()) {
+			data.setDataSource(DataSource.CACHE);
+			internalMemory.setLessonsForDay(viewType, startDate, endDate, data.getData(), data.getLastRefreshTime());
 		}
 		else {
 			data = externalDataLoader.getLessons(viewType, startDate, endDate);
 			if(data.isSuccessful()) {
-				internalMemory.setLessons(viewType, startDate, endDate, data.getData());
+				lessonMap = data.getData();
+				internalMemory.setLessonsForDay(viewType, startDate, endDate, lessonMap, data.getLastRefreshTime());
+				timetableCache.setLessons(viewType, startDate, endDate, lessonMap);
 			}
 		}
 		
@@ -224,19 +251,16 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	}
 
 	@Override
-	public DataFacade<Map<String, List<Lesson>>> getLessons(ViewType viewType,
-			DateTime startDate, DateTime endDate, boolean forceNetwork) {
+	public DataFacade<Map<String, List<Lesson>>> getLessonsFromNetwork(ViewType viewType,
+			DateTime startDate, DateTime endDate) {
 		
-		if(forceNetwork) {
-			DataFacade<Map<String, List<Lesson>>> data = externalDataLoader.getLessons(viewType, startDate, endDate, forceNetwork);
+			DataFacade<Map<String, List<Lesson>>> data = externalDataLoader.getLessonsFromNetwork(viewType, startDate, endDate);
 			if(data.isSuccessful()) {
-				internalMemory.setLessons(viewType, startDate, endDate, data.getData());
+				Map<String, List<Lesson>> lessonMap = data.getData();
+				internalMemory.setLessonsForDay(viewType, startDate, endDate, lessonMap, data.getLastRefreshTime());
+				timetableCache.setLessons(viewType, startDate, endDate, lessonMap);
 			}
 			return data;
-		}
-		else {
-			return getLessons(viewType, startDate, endDate);
-		}
 	}
 
 	@Override
@@ -263,7 +287,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 	@Override
 	public DataFacade<Boolean> resyncMasterData() {		
 		DataFacade<MasterData> masterData = externalDataLoader.resyncMasterData();
-
+		
 		DataFacade<Boolean> data = new DataFacade<Boolean>();
 		
 		if(masterData.isSuccessful()) {
@@ -275,7 +299,6 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 			internalMemory.setSchoolSubjectList(masterDataContent.getSchoolSubjectList());
 			internalMemory.setSchoolHolidayList(masterDataContent.getSchoolHolidayList());
 			internalMemory.setTimegrid(masterDataContent.getTimegrid());
-			internalMemory.setStatusData(masterDataContent.getStatusData());
 		
 			data.setData(true);
 		}
@@ -288,6 +311,7 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 
 	@Override
 	public void setLoginCredentials(LoginSet loginSet) {
+		timetableCache.setCurrentLoginSetName(loginSet.getName());
 		externalDataLoader.setLoginCredentials(loginSet);
 	}
 	
@@ -303,13 +327,15 @@ public class Cache implements DataConnection, UnsaveDataSourceMasterdataProvider
 
 	@Override
 	public void removeLoginSet(LoginSet loginSet) {
+		timetableCache.loginSetRemoved(loginSet.getName());
 		externalDataLoader.removeLoginSet(loginSet);
 	}
 
 	@Override
 	public void editLoginSet(String name, String serverUrl, String school,
-			String username, String password, boolean checked, String oldServerUrl, String oldSchool) {
-		externalDataLoader.editLoginSet(name, serverUrl, school, username, password, checked, oldServerUrl, oldSchool);
+			String username, String password, boolean checked, String oldName, String oldServerUrl, String oldSchool) {
+		timetableCache.loginSetRemoved(oldName);
+		externalDataLoader.editLoginSet(name, serverUrl, school, username, password, checked, oldName, oldServerUrl, oldSchool);
 	}
 
 	@Override

@@ -22,7 +22,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -30,7 +29,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import edu.htl3r.schoolplanner.R;
-import edu.htl3r.schoolplanner.backend.Cache;
+import edu.htl3r.schoolplanner.backend.cache.Cache;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
@@ -118,10 +117,6 @@ public class ViewTypeListDialog extends Dialog implements OnItemClickListener{
 			teacher = content.getAllSchoolTeachers();
 			subjects = content.getAllSchoolSubjects();
 			rooms = content.getAllSchoolRooms();
-			Log.d("basti", classes + "");
-			Log.d("basti", teacher + "");
-			Log.d("basti", subjects + "");
-			Log.d("basti", rooms + "");
 			return null;
 		}
 

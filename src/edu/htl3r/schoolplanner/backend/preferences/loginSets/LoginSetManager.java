@@ -130,7 +130,7 @@ public class LoginSetManager {
 		String parsedServerUrl = urlParser.parseUrl(serverUrl);
 		if(has(name)) {
 			if(name.equals(oldName)) {
-				loginSetHandler.editLoginSet(name, parsedServerUrl, school, username, password, checked, oldServerUrl, oldSchool);
+				loginSetHandler.editLoginSet(name, parsedServerUrl, school, username, password, checked, oldName, oldServerUrl, oldSchool);
 
 				for(LoginSet loginSet : loginSets) {
 					if(loginSet.getName().equals(name)) {

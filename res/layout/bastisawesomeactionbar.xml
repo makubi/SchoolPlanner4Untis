@@ -6,20 +6,14 @@
     android:layout_alignParentTop="true"
     android:background="@drawable/baactionbar_background" >
 
-    <edu.htl3r.schoolplanner.gui.timetable.baactionbar.BAHomeAction
+    <edu.htl3r.schoolplanner.gui.timetable.baactionbar.BAAction
         android:id="@+id/baactionbar_home"
         style="@style/baa_icon"
         android:layout_alignParentLeft="true" >
 
-        <ProgressBar
-            android:id="@+id/baactionbar_home_progress"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
         
-    </edu.htl3r.schoolplanner.gui.timetable.baactionbar.BAHomeAction>
+        
+    </edu.htl3r.schoolplanner.gui.timetable.baactionbar.BAAction>
 
     <android.view.View
         android:id="@+id/baactionbar_sep1"
@@ -57,11 +51,11 @@
         style="@style/baa_seperator"
         android:layout_alignLeft="@id/baactionbar_month" />
     
-    <edu.htl3r.schoolplanner.gui.timetable.baactionbar.BAAction
+    <edu.htl3r.schoolplanner.gui.timetable.baactionbar.BARefreshAction
         android:id="@+id/baactionbar_refresh"
         style="@style/baa_icon"
         android:layout_alignRight="@id/baactionbar_sep2" />
-
+     
     <android.view.View
         android:id="@+id/baactionbar_sep4"
         style="@style/baa_seperator"

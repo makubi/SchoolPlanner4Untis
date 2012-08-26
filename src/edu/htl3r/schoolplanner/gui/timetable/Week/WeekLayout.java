@@ -16,6 +16,7 @@
 */
 package edu.htl3r.schoolplanner.gui.timetable.Week;
 
+import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -23,9 +24,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
@@ -67,14 +70,11 @@ public class WeekLayout extends ViewGroup{
 	
 	private WeekView weekview;
 	
-	private Settings settings;
-
 	public WeekLayout(Context context, int id, WeekView wv, Settings settings) {
 		super(context);
 		this.context = context;
 		this.ID = id;
 		this.weekview = wv;
-		this.settings = settings;
 		
 		boolean highlightCurrentHour = settings.isHighlightCurrentLesson();
 		clicklistener = new OnLessonsClickListener();
@@ -177,6 +177,7 @@ public class WeekLayout extends ViewGroup{
 					}
 				}
 				c.layout(l + (BORDERWIDTH / 2), t + (BORDERWIDTH / 2), r - (BORDERWIDTH / 2), b - (BORDERWIDTH / 2));
+				//c.layout(l + (BORDERWIDTH), t + (BORDERWIDTH), r - (BORDERWIDTH), b - (BORDERWIDTH));
 				break;
 
 			case GUIWeekView.HEADER_ID:
@@ -239,8 +240,10 @@ public class WeekLayout extends ViewGroup{
 				lv.setNeededData(lessonsContainer, week.getViewType());
 				
 				
-				if(!lessonsContainer.isEmpty())
+				if(!lessonsContainer.isEmpty()){
 					lv.setOnClickListener(clicklistener);
+				}
+				
 				this.addView(lv);
 			}
 		}
@@ -252,10 +255,30 @@ public class WeekLayout extends ViewGroup{
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return (this.getID() == ((WeekLayout) obj).getID()) ? true : false;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ID;
+		return result;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if( obj == null )
+			return false;
+		if(obj == this)
+			return true;
+		if( !(obj instanceof ScrollView))
+			return false;
+		
+		ScrollView scr = (ScrollView)obj;
+		View scrChild = scr.getChildAt(0);
+		if( !(scrChild instanceof WeekLayout))
+			return false;
+		
+		return ID == ((WeekLayout) scrChild).ID;
+	}
+	
 	public boolean isDataHere() {
 		return isDataHere;
 	}
@@ -267,6 +290,7 @@ public class WeekLayout extends ViewGroup{
 	public ViewType getVT(){
 		return weekdata.getViewType();
 	}
+	
 	
 	private class OnLessonsClickListener implements OnClickListener, OnTouchListener{
 		@Override
@@ -283,6 +307,14 @@ public class WeekLayout extends ViewGroup{
 				weekview.notifyActionBarTouch();
 			return false;
 		}
+	}
+
+
+	public DateTime getLastRefresh() {
+		if(isDataHere()){
+			return weekdata.getLastRefresh();
+		}
+		return new DateTime();
 	}
 		
 }

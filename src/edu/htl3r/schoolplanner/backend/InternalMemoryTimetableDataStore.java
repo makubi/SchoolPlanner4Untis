@@ -14,13 +14,20 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.backend.network;
 
-public interface JSONResponseObjectKeys {
+package edu.htl3r.schoolplanner.backend;
 
-	public static final String RESULT = "result";
-	public static final String ERROR = "error";
+import java.util.List;
+import java.util.Map;
+
+import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
+
+public interface InternalMemoryTimetableDataStore {
+
+	public void setLessonsForDay(ViewType view, DateTime date, List<Lesson> lessons, DateTime lastRefreshTime);
 	
-	public static final String ERROR_CODE = "code";
-	public static final String ERROR_MESSAGE = "message";
+	public void setLessonsForDay(ViewType view, DateTime startDate, DateTime endDate,
+			Map<String, List<Lesson>> lessonMap, DateTime lastRefreshTime);
 }

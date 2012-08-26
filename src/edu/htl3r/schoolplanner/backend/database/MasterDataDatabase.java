@@ -27,7 +27,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.format.Time;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.MasterdataStore;
-import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseCreateConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseSchoolHolidayConstants;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseStatusDataConstants;
@@ -145,36 +144,6 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 		
 		return query.getCount() > 0 ? timegrid : null;
 		
-	}
-
-	@Override
-	public List<StatusData> getStatusData() {
-		List<StatusData> statusDataList = new ArrayList<StatusData>();
-		
-		SQLiteDatabase database = this.database.openDatabase(false);
-		
-		Cursor query = this.database.queryWithLoginSetKey(database, DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME);
-		
-		int indexCode = query.getColumnIndex(DatabaseStatusDataConstants.CODE);
-		int indexForeColor = query.getColumnIndex(DatabaseStatusDataConstants.FORE_COLOR);
-		int indexBackColor = query.getColumnIndex(DatabaseStatusDataConstants.BACK_COLOR);
-		
-		while(query.moveToNext()) {
-			String code = query.getString(indexCode);
-			String foreColor = query.getString(indexForeColor);
-			String backColor = query.getString(indexBackColor);
-			
-			StatusData statusData = new StatusData();
-			statusData.setCode(code);
-			statusData.setForeColor(foreColor);
-			statusData.setBackColor(backColor);
-			
-			statusDataList.add(statusData);
-		}
-		query.close();
-		this.database.closeDatabase(database);
-		
-		return statusDataList;
 	}
 	
 	private <E> List<E> getViewTypeList(String table) {
@@ -318,31 +287,6 @@ public class MasterDataDatabase implements MasterdataStore, MasterdataProvider {
 					this.database.insert(database, table, values);
 				}
 			}
-		}
-		database.setTransactionSuccessful();
-		database.endTransaction();
-		this.database.closeDatabase(database);
-	}
-	
-	@Override
-	public void setStatusData(List<StatusData> statusData) {
-		writeStatusData(statusData, DatabaseStatusDataConstants.TABLE_STATUS_DATA_NAME);
-	}
-
-	private void writeStatusData(List<StatusData> statusDataList, String table) {
-		SQLiteDatabase database = this.database.openDatabase(true);
-		
-		this.database.deleteAllRowsWithLoginSetKey(database, table);
-		
-		database.beginTransaction();
-		for(StatusData statusData : statusDataList) {
-			ContentValues values = new ContentValues();
-			values.put(DatabaseCreateConstants.TABLE_LOGINSET_KEY, this.database.getLoginSetKeyForTable());
-			values.put(DatabaseStatusDataConstants.CODE, statusData.getCode());
-			values.put(DatabaseStatusDataConstants.FORE_COLOR, statusData.getForeColor());
-			values.put(DatabaseStatusDataConstants.BACK_COLOR, statusData.getBackColor());
-			
-			this.database.insert(database, table, values);
 		}
 		database.setTransactionSuccessful();
 		database.endTransaction();

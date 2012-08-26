@@ -21,18 +21,31 @@ package edu.htl3r.schoolplanner.backend.schoolObjects.timegrid;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
+
 public class TimegridDay {
 
+	private int day;
 	private List<TimegridUnit> timegridUnitList = new ArrayList<TimegridUnit>();
 
 	public void addTimegridUnit(TimegridUnit timegridUnit) {
 		timegridUnitList.add(timegridUnit);
 	}
 	
+	public int getDay() {
+		return day;
+	}
+
+	public void setDay(int day) {
+		this.day = day;
+	}
+
 	public List<TimegridUnit> getTimegridUnitList() {
 		return timegridUnitList;
 	}
 	
+	@JsonProperty(value="timeUnits")
 	public void setTimegridUnitList(List<TimegridUnit> timegridUnitList) {
 		this.timegridUnitList = timegridUnitList;
 	}

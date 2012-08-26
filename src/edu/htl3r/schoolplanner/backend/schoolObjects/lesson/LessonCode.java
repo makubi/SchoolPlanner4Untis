@@ -20,6 +20,12 @@ package edu.htl3r.schoolplanner.backend.schoolObjects.lesson;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.annotate.JsonTypeInfo;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+
+@JsonSerialize(include = Inclusion.NON_NULL)
+@JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
 public abstract class LessonCode implements Serializable,Cloneable {
 	
 	private static final long serialVersionUID = 126291868822043825L;

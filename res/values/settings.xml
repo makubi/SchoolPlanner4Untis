@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-	<string name="settings_autoselect_deprecated_title">Deprecated Autoselect settings</string>
-	<string name="settings_autoselect_deprecated_summary">The autoselect preference can be managed via the select screen now</string>
-	
+<resources>	
 	<!-- Strings on UI -->
     <string name="settings_login_header">Login options</string>
     <string name="settings_login_autologin_title">Auto login</string>
@@ -10,16 +7,7 @@
     <string name="settings_login_autologin_set_title">Login set</string>
     <string name="settings_login_autologin_set_summary">Select login set for auto login</string>
     <string name="settings_login_autologin_set_dialog_title">Login set</string>
-    
-    
-    <string name="settings_autoselect_header">Autoselect options</string>
-    <string name="settings_autoselect_enabled_title">Autoselect timetable</string>
-    <string name="settings_autoselect_enabled_summary">Autoselect timetable after login?</string>
-    
-    <string name="settings_autoselect_type_title">Autoselect type</string>
-    <string name="settings_autoselect_type_summary">Select type of timetable to show after login</string>
-    <string name="settings_autoselect_type_dialog_title">Autoselect type</string>	
-    
+        
     <string name="settings_display_header">Display options</string>
     <string name="settings_display_show_saturday_title">Display Saturday</string>
     <string name="settings_display_show_saturday_summary">Display Saturday in timetable</string>

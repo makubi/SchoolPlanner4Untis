@@ -18,7 +18,7 @@ package edu.htl3r.schoolplanner.backend;
 
 import java.util.List;
 
-import edu.htl3r.schoolplanner.backend.network.JSONNetwork;
+import edu.htl3r.schoolplanner.backend.network.json.JSONNetwork;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
@@ -66,11 +66,5 @@ public interface UnsaveDataSourceMasterdataProvider {
 	 * @return Ein {@link DataFacade}-Objekt mit den passenden Daten.
 	 */
 	public DataFacade<Timegrid> getTimegrid();
-	
-	/**
-	 * Ermoeglicht den Zugriff auf die Liste der Status Daten.<br>
-	 * @return Ein {@link DataFacade}-Objekt mit den passenden Daten.
-	 */
-	public DataFacade<List<StatusData>> getStatusData();
 	
 }

@@ -29,9 +29,7 @@ public class WebUntisUrlTokenizer implements MultiAutoCompleteTextView.Tokenizer
 	
 	@Override
 	public int findTokenStart(CharSequence text, int cursor) {
-		String currentText = text.toString();
-		if(currentText.startsWith(delimiter)) return delimiterLength;
-		else return 0;
+		return text.toString().startsWith(delimiter) ? delimiterLength : 0;
 	}
 
 	@Override

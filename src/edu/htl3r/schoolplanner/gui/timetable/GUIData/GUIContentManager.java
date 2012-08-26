@@ -62,19 +62,21 @@ public class GUIContentManager{
 			else
 				end.set(start.getDay()+4, start.getMonth(), start.getYear());
 
-			Map<String, List<Lesson>> lessonsForSomeTime;
+			DataFromNetwork dataFromNetwork = null;
+			
 			if(forceNetWork)
-				lessonsForSomeTime = datacenter.getLessonsForSomeTime(viewtype, start, end,true);
+				dataFromNetwork = datacenter.getLessonsForSomeTimeFromNetwork(viewtype, start, end);
 			else
-				lessonsForSomeTime = datacenter.getLessonsForSomeTime(viewtype, start, end);
+				dataFromNetwork = datacenter.getLessonsForSomeTime(viewtype, start, end);
 			
-			
-			if(lessonsForSomeTime.size() != 0 && lessonsForSomeTime != null){
-				weekinfo.setWeekData(lessonsForSomeTime);
+			Map<String, List<Lesson>> lessons = dataFromNetwork.getLessons();
+			if(lessons.size() != 0 && lessons != null){
+				weekinfo.setWeekData(lessons);
 				weekinfo.setHolidays(datacenter.getAllSchoolHolidays());
 				weekinfo.setTimeGrid(datacenter.getTimeGrid());
 				weekinfo.setViewType(viewtype);
 				weekinfo.setSettings(settings);
+				weekinfo.setLastRefresh(dataFromNetwork.getLastRefresh());
 				return weekinfo.analyse();
 			}else{
 				return null;
@@ -84,6 +86,7 @@ public class GUIContentManager{
 		return null;
 	}
 
+	
 	public void setSettings(Settings settings) {
 		this.settings = settings;
 	}

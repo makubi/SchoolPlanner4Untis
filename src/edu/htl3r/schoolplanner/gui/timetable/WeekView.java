@@ -25,6 +25,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.text.format.Time;
+import android.util.Log;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
@@ -49,6 +50,8 @@ public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActi
 
 	private ViewPager myViewPager;
 	private WeekViewPageAdapter wvpageadapter;
+	private ViewPagerEventDistributer viewPagerEventDistributer;
+		
 	private LoadDataTask loadweekdata;
 	private ViewPagerIndicator indicator;
 	private ViewType viewtype;
@@ -60,7 +63,9 @@ public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActi
 
 	public BlockingDownloadQueue downloadschlange = new BlockingDownloadQueue();
 	private BastisAwesomeActionBar actionbar;
-
+	
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -122,7 +127,11 @@ public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActi
 		public void handleMessage(Message msg) {
 			OutputTransferObject result = (OutputTransferObject) msg.obj;
 			wvpageadapter.setWeeData(result.getWeek(), result.getPos());
-
+			
+			if(result.getWeek() != null && myViewPager.getCurrentItem() == result.getPos()){
+				actionbar.setLastRefresh(result.getWeek().getLastRefresh());
+			}
+			
 			if (result.getWeek() != null && holidays == null)
 				holidays = result.getWeek().getHolidays();
 		}
@@ -163,11 +172,39 @@ public class WeekView extends SchoolPlannerActivity implements BastisAwesomeActi
 		myViewPager = (ViewPager) findViewById(R.id.week_pager);
 		indicator = (ViewPagerIndicator) findViewById(R.id.week_indicator);
 		wvpageadapter = new WeekViewPageAdapter();
+		viewPagerEventDistributer = new ViewPagerEventDistributer();
 
 		wvpageadapter.setContext(this, downloadschlange, this, ((SchoolPlannerApp) getApplication()).getSettings());
 		wvpageadapter.setDate(getMonday());
 		myViewPager.setAdapter(wvpageadapter);
-		myViewPager.setOnPageChangeListener(indicator);
+		
+		viewPagerEventDistributer.addViewPagerEventDistributer(indicator);
+		viewPagerEventDistributer.addViewPagerEventDistributer(new ViewPagerEventDistributerOnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				if(arg1 == 0 && arg2 == 0){
+					actionbar.setLastRefresh(wvpageadapter.getLastRefresh(arg0));
+				}
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		myViewPager.setOnPageChangeListener(viewPagerEventDistributer);
+		
+		
+				
 		indicator.init(50, wvpageadapter.getCount(), wvpageadapter);
 
 		Resources res = getResources();

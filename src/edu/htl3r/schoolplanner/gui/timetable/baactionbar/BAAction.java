@@ -30,7 +30,7 @@ import edu.htl3r.schoolplanner.R;
 
 public class BAAction extends RelativeLayout implements OnTouchListener{
 	
-	private ImageView icon;
+	protected ImageView icon;
 	
 	public BAAction(Context context) {
 		super(context);

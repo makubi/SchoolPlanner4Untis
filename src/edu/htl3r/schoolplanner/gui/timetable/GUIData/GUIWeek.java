@@ -29,13 +29,14 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
 
-public class GUIWeek implements DataGUItoGraphicGUI{
+public class GUIWeek{
 	
 	
 	private Map<DateTime, GUIDay> week = new HashMap<DateTime, GUIDay>();
 	private ViewType viewtype;
 	private List<TimegridUnit> timegrid;
 	private List<SchoolHoliday> holidays;
+	private DateTime lastRefresh;
 
 	
 	public void setTimegrid(List <TimegridUnit> time){
@@ -49,6 +50,11 @@ public class GUIWeek implements DataGUItoGraphicGUI{
 	public void setViewType(ViewType vt){
 		viewtype = vt;
 	}
+	
+	public void setLastRefreshDate(DateTime lastRefresh) {
+		this.lastRefresh = lastRefresh;
+	}
+	
 	public ViewType getViewType(){
 		return viewtype;
 	}
@@ -61,6 +67,10 @@ public class GUIWeek implements DataGUItoGraphicGUI{
 		return timegrid;
 	}
 	
+
+	public DateTime getLastRefresh() {
+		return lastRefresh;
+	}	
 	
 	public List<SchoolHoliday> getHolidays() {
 		return holidays;
@@ -112,4 +122,6 @@ public class GUIWeek implements DataGUItoGraphicGUI{
 		}
 		return sb.toString();
 	}
+
+
 }

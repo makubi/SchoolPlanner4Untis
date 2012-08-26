@@ -57,7 +57,7 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 		//int color = getResources().getColor(R.color.header_background);
 		//setBackgroundColor(Color.argb(200, Color.red(color), Color.green(color), Color.blue(color)));
 		
-		int color = getResources().getColor(R.color.element_background);
+//		int color = getResources().getColor(R.color.element_background);
 		setBackgroundColor(Color.parseColor("#D3D3D3"));
 		
 		paint = new Paint();
@@ -128,7 +128,7 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 		for(int i=0; i<hours; i++){
 			
 			String anz = (timegrid.get(i).getName()).length() <=2 ? (timegrid.get(i).getName()) : (timegrid.get(i).getName()).substring(0, 2);
-			StaticLayout s = new StaticLayout(anz, tp, width-padding_right, Layout.Alignment.ALIGN_OPPOSITE, 0, 0, false);
+			StaticLayout s = new StaticLayout(anz, tp, width-padding_right, Layout.Alignment.ALIGN_OPPOSITE, 1, 0, false);
 			s.draw(canvas);
 			
 			if(landscape){
@@ -136,12 +136,12 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 				String end = timegrid.get(i).getEnd().getHour() + ":" + ((timegrid.get(i).getEnd().getMinute()+"").length()==1 ? "0"+ timegrid.get(i).getEnd().getMinute(): timegrid.get(i).getEnd().getMinute()+"");
 				
 				canvas.translate(0, getResources().getDimension(R.dimen.gui_header_line1_line1_padding));
-				s = new StaticLayout(start, tp2, width-padding_right, Layout.Alignment.ALIGN_OPPOSITE, 0, 0, false);
+				s = new StaticLayout(start, tp2, width-padding_right, Layout.Alignment.ALIGN_OPPOSITE, 1, 0, false);
 				s.draw(canvas);
 				
 				canvas.translate(0, getResources().getDimension(R.dimen.gui_timegrid_padding_line2_line3));
 				
-				s = new StaticLayout(end, tp2, width-padding_right, Layout.Alignment.ALIGN_OPPOSITE, 0, 0, false);
+				s = new StaticLayout(end, tp2, width-padding_right, Layout.Alignment.ALIGN_OPPOSITE, 1, 0, false);
 				s.draw(canvas);
 				
 				canvas.translate(0, -(getResources().getDimension(R.dimen.gui_header_line1_line1_padding) + 

@@ -39,7 +39,8 @@ public interface GUIContentProviderSpez {
  	public Timegrid getTimeGrid();
  	
 
-	public List<Lesson> getLessonsForDate(ViewType vt, DateTime start);
-	public Map<String,List<Lesson>> getLessonsForSomeTime(ViewType vt, DateTime start, DateTime end);
-	public Map<String,List<Lesson>> getLessonsForSomeTime(ViewType vt, DateTime start, DateTime end, boolean forceNetwork);
+	//public List<Lesson> getLessonsForDate(ViewType vt, DateTime start);
+	public DataFromNetwork getLessonsForSomeTime(ViewType vt, DateTime start, DateTime end);
+	public DataFromNetwork getLessonsForSomeTimeFromNetwork(ViewType vt, DateTime start, DateTime end);
+	
 }

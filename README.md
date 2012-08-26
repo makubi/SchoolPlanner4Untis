@@ -5,28 +5,33 @@ ANDROID PROJEKT IN ECLIPSE EINBINDEN
 ------------------------------------
 
 * Einrichten der Entwicklungsumgebung
-	* Installation von Eclipse
-	* Installation von ADT
-		-> http://developer.android.com/sdk/eclipse-adt.html#installing
-		* API 7 (2.1) wird benoetigt
+	* Download und Entpacken von Eclipse (Classic wird empfohlen; aktuell 4.2)
 	* Installation von Maven 3
-		* Download Maven 3.0.3
-			-> http://maven.apache.org/download.html
-		* Entpacke Maven 3
-		* Setzen der Variablen
-			* M3_HOME=/path/to/maven
-			* M3=$M3_HOME/bin
-			* PATH=$M3:$PATH
-	* Installation von m2e - Maven integration for Eclipse ueber die Eclipse-Update-Site
-	* Hinzufuegen des entpackten Mavens in Eclipse
+		* Download und Entpacken von Maven 3 (aktuell 3.0.3)
+			 * http://maven.apache.org/download.html
+                         * M3_HOME=/path/to/maven
+                         * M3=$M3_HOME/bin
+                         * PATH=$M3:$PATH
+	* Installation von m2e direkt aus Eclipse
+	* Hinzufügen des entpackten Mavens in Eclipse
 		* In Eclipse
 			* Window -> Preferences -> Maven -> Installations -> Add... -> Vorher entpacktes Maven auswählen
-* Hinzufügen des Projekts
-	* Setzen der Variable
+	* Download und Entpacken des Android SDKs (aktuell 20.0.1)
+	* Hinzufügen der ADT Update Site und installieren des Plugins
+		* http://developer.android.com/sdk/installing/installing-adt.html#Download
+		* SDK_ROOT=/path/to/android
+		* PATH=$SDK_ROOT/tools:$SDK_ROOT/platform-tools:$PATH
 		* ANDROID_HOME=$SDK_ROOT
-	* Projekt als Android Project importieren
-	* Maven-Nature zum Projekt hinzufuegen
+	* SDK in Eclipse einrichten
+		* http://developer.android.com/sdk/installing/installing-adt.html#Configure
+	* SDK updaten / APIs installieren
+		* API 7 + 14 installieren
+* Hinzufügen des Projekts
+	* Projekt als Android oder Maven Project importieren
+	* Maven-/Android-Nature zum Projekt hinzufuegen
 	* Refresh des Projekts
+	* In Eclipse "Problems" -> "Discover new m2e connectors"
+	* "Android Connector" installieren 
 
 ERROR IM PROJEKT (in Eclipse)
 -----------------------------

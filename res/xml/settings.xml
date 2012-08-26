@@ -20,13 +20,6 @@
     </PreferenceCategory>
     
     <PreferenceCategory
-            android:title="@string/settings_autoselect_header">
-
-	<Preference android:title="@string/settings_autoselect_deprecated_title" android:summary="@string/settings_autoselect_deprecated_summary" />
-	
-	</PreferenceCategory>
-    
-    <PreferenceCategory
             android:title="@string/settings_display_header">
 
 		<CheckBoxPreference

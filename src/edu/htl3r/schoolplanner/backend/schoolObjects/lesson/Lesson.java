@@ -23,22 +23,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import android.text.format.Time;
 import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeCancelled;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeIrregular;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeBreakSupervision;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeExamination;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeOfficeHour;
-import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonType.LessonTypeStandby;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolClass;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolRoom;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolSubject;
 import edu.htl3r.schoolplanner.backend.schoolObjects.viewtypes.SchoolTeacher;
 
-public class Lesson implements Serializable, Cloneable {
+public class Lesson implements Serializable {
 	
 	private static final long serialVersionUID = 6168669480973047866L;
 
@@ -58,6 +54,24 @@ public class Lesson implements Serializable, Cloneable {
 
 	@Deprecated private long last_update;
 
+	public Lesson() {}
+	
+	public Lesson(Lesson lesson) {
+		this.id = lesson.id;
+		
+		this.date = lesson.startTime;
+		this.startTime = lesson.startTime;
+		this.endTime = lesson.endTime;
+		
+		this.schoolClasses = lesson.schoolClasses;
+		this.schoolTeachers = lesson.schoolTeachers;
+		this.schoolSubjects = lesson.schoolSubjects;
+		this.schoolRooms = lesson.schoolRooms;
+		
+		if(lessonType != null) this.lessonType = lesson.lessonType;
+		if(lessonCode != null) this.lessonCode = lesson.lessonCode;
+	}
+
 	/**
 	 * Liefert das Datum der Stunde.<br>
 	 * <b>ACHTUNG: Die Monatsnummer laeuft von 1 - 12!</b>
@@ -65,6 +79,11 @@ public class Lesson implements Serializable, Cloneable {
 	 */
 	public DateTime getDate() {
 		return date;
+	}
+	
+	@JsonProperty(value="date")
+	public String getDateAsISO8601String() {
+		return DateTimeUtils.toISO8601Date(date);
 	}
 
 	/**
@@ -79,6 +98,14 @@ public class Lesson implements Serializable, Cloneable {
 		endTime.set(day, month, year);
 	}
 	
+	@JsonProperty(value="date")
+	public void setDate(String iso8601Date) {
+		DateTime dateTime = DateTimeUtils.iso8601StringToDateTime(iso8601Date);
+		date.set(dateTime.getDay(), dateTime.getMonth(), dateTime.getYear());
+		startTime.set(dateTime.getDay(), dateTime.getMonth(), dateTime.getYear());
+		endTime.set(dateTime.getDay(), dateTime.getMonth(), dateTime.getYear());
+	}
+	
 	/**
 	 * Liefert den Anfangszeitpunkt der Stunde (+ richtig gesetztem Datum).<br>
 	 * <b>ACHTUNG: Die Monatsnummer laeuft von 1 - 12!</b>
@@ -86,6 +113,11 @@ public class Lesson implements Serializable, Cloneable {
 	 */
 	public DateTime getStartTime() {
 		return startTime;
+	}
+	
+	@JsonProperty(value="startTime")
+	public String getStartTimeAsISO8601String() {
+		return DateTimeUtils.toISO8601Time(startTime);
 	}
 
 	/**
@@ -97,6 +129,12 @@ public class Lesson implements Serializable, Cloneable {
 		startTime.set(0, minute, hour, startTime.getDay(), startTime.getMonth(), startTime.getYear());
 	}
 	
+	@JsonProperty(value="startTime")
+	public void setStartTime(String iso8601Date) {
+		DateTime dateTime = DateTimeUtils.iso8601StringToTime(iso8601Date);
+		startTime.set(dateTime.getMinute(), dateTime.getHour(), startTime.getDay(), startTime.getMonth(), startTime.getYear());
+	}
+	
 	/**
 	 * Liefert den Anfangszeitpunkt der Stunde (+ richtig gesetztem Datum).<br>
 	 * <b>ACHTUNG: Die Monatsnummer laeuft von 1 - 12!</b>
@@ -104,6 +142,11 @@ public class Lesson implements Serializable, Cloneable {
 	 */
 	public DateTime getEndTime() {
 		return endTime;
+	}
+	
+	@JsonProperty(value="endTime")
+	public String getEndTimeAsISO8601String() {
+		return DateTimeUtils.toISO8601Time(endTime);
 	}
 
 	/**
@@ -113,7 +156,13 @@ public class Lesson implements Serializable, Cloneable {
 	 */
 	public void setEndTime(int hour, int minute) {
 		endTime.set(0, minute, hour, endTime.getDay(), endTime.getMonth(), endTime.getYear());
-	}	
+	}
+	
+	@JsonProperty(value="endTime")
+	public void setEndTime(String iso8601Date) {
+		DateTime dateTime = DateTimeUtils.iso8601StringToTime(iso8601Date);
+		endTime.set(dateTime.getMinute(), dateTime.getHour(), endTime.getDay(), endTime.getMonth(), endTime.getYear());
+	}
 	
 	public LessonType getLessonType() {
 		return lessonType;
@@ -257,57 +306,6 @@ public class Lesson implements Serializable, Cloneable {
 	
 	private void sortList(List<? extends ViewType> viewTypeList) {
 		Collections.sort(viewTypeList);
-	}
-	
-	@Override
-	public Lesson clone() {
-		Lesson lessonClone =  new Lesson();
-		
-		lessonClone.id = id;
-		
-		lessonClone.date = date.clone();
-		lessonClone.startTime = startTime.clone();
-		lessonClone.endTime = endTime.clone();
-		
-		lessonClone.schoolClasses = new ArrayList<SchoolClass>(schoolClasses);
-		lessonClone.schoolTeachers = new ArrayList<SchoolTeacher>(schoolTeachers);
-		lessonClone.schoolRooms = new ArrayList<SchoolRoom>(schoolRooms);
-		lessonClone.schoolSubjects = new ArrayList<SchoolSubject>(schoolSubjects);
-		
-		try {
-			lessonClone.lessonType = (LessonType) lessonType.clone();
-		} catch (CloneNotSupportedException e) {
-			if(lessonType instanceof LessonTypeExamination) {
-				lessonClone.lessonType = new LessonTypeExamination();
-			}
-			else if(lessonType instanceof LessonTypeBreakSupervision) {
-				lessonClone.lessonType = new LessonTypeBreakSupervision();
-			}
-			else if(lessonType instanceof LessonTypeOfficeHour) {
-				lessonClone.lessonType = new LessonTypeOfficeHour();
-			}
-			else if(lessonType instanceof LessonTypeStandby) {
-				lessonClone.lessonType = new LessonTypeStandby();
-			}
-		}
-		
-		try {
-			lessonClone.lessonCode = (LessonCode) lessonCode.clone();
-		} catch (CloneNotSupportedException e) {
-			if(lessonCode instanceof LessonCodeSubstitute) {
-				lessonClone.lessonCode = new LessonCodeSubstitute();
-				((LessonCodeSubstitute) lessonClone.lessonCode).setOriginSchoolRoom(((LessonCodeSubstitute) lessonCode).getOriginSchoolRoom());
-				((LessonCodeSubstitute) lessonClone.lessonCode).setOriginSchoolTeacher(((LessonCodeSubstitute) lessonCode).getOriginSchoolTeacher());
-			}
-			else if(lessonCode instanceof LessonCodeIrregular) {
-				lessonClone.lessonCode = new LessonCodeIrregular();
-			}
-			else if(lessonCode instanceof LessonCodeCancelled) {
-				lessonClone.lessonCode = new LessonCodeCancelled();
-			}
-		}
-		
-		return lessonClone;
 	}
 	
 }

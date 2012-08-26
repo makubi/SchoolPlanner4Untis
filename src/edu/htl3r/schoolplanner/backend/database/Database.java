@@ -23,13 +23,13 @@ import java.util.List;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
 import edu.htl3r.schoolplanner.backend.AutoSelectHandler;
 import edu.htl3r.schoolplanner.backend.LoginSetHandler;
 import edu.htl3r.schoolplanner.backend.MasterdataProvider;
 import edu.htl3r.schoolplanner.backend.MasterdataStore;
-import edu.htl3r.schoolplanner.backend.StatusData;
 import edu.htl3r.schoolplanner.backend.database.constants.DatabaseCreateConstants;
 import edu.htl3r.schoolplanner.backend.preferences.AutoSelectSet;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
@@ -122,11 +122,6 @@ public class Database implements MasterdataStore, MasterdataProvider, LoginSetHa
 	}
 
 	@Override
-	public synchronized List<StatusData> getStatusData() {
-		return masterDataDatabase.getStatusData();
-	}
-
-	@Override
 	public synchronized void setSchoolClassList(List<SchoolClass> schoolClasses) {
 		masterDataDatabase.setSchoolClassList(schoolClasses);
 	}
@@ -157,11 +152,6 @@ public class Database implements MasterdataStore, MasterdataProvider, LoginSetHa
 	}
 
 	@Override
-	public synchronized void setStatusData(List<StatusData> statusData) {
-		masterDataDatabase.setStatusData(statusData);
-	}
-
-	@Override
 	public synchronized void saveLoginSet(LoginSet loginSet) {
 		loginSetDatabase.saveLoginSet(loginSet);
 	}
@@ -175,7 +165,7 @@ public class Database implements MasterdataStore, MasterdataProvider, LoginSetHa
 	}
 
 	@Override
-	public synchronized void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked, String oldServerUrl, String oldSchool) {
+	public synchronized void editLoginSet(String name, String serverUrl, String school, String username, String password, boolean checked, String oldName, String oldServerUrl, String oldSchool) {
 		if(!serverUrl.equals(oldServerUrl) || !school.equals(oldSchool)) {
 			String loginSetKey = md5(serverUrl+school);
 			deleteMasterdataForLoginSetKey(loginSetKey);
@@ -247,9 +237,9 @@ public class Database implements MasterdataStore, MasterdataProvider, LoginSetHa
 			return hexString.toString();
 	
 		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
+			Log.w("database",e);
 		}
-		return "";
+		return "nomd5"+s;
 	}
 
 	@Override

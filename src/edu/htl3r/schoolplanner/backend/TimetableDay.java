@@ -14,13 +14,29 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.backend.network;
 
-public interface JSONRequestObjectKeys {
+package edu.htl3r.schoolplanner.backend;
 
-	public static final String JSON_RPC_VERSION = "jsonrpc";
-	public static final String METHOD = "method";
-	public static final String PARAMS = "params";
-	public static final String ID = "id";
+import java.util.List;
+
+import edu.htl3r.schoolplanner.DateTime;
+import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
+
+public class TimetableDay {
+	
+	private List<Lesson> lessons;
+	private DateTime lastRefreshTime;
+	public List<Lesson> getLessons() {
+		return lessons;
+	}
+	public void setLessons(List<Lesson> lessons) {
+		this.lessons = lessons;
+	}
+	public DateTime getLastRefreshTime() {
+		return lastRefreshTime;
+	}
+	public void setLastRefreshTime(DateTime lastRefreshTime) {
+		this.lastRefreshTime = lastRefreshTime;
+	}
 	
 }

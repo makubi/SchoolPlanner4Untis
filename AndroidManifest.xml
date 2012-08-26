@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.htl3r.schoolplanner"
-    android:versionCode="30"
-    android:versionName="2.3" >
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="35" android:versionName="2.4" package="edu.htl3r.schoolplanner">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
-    <uses-sdk
-        android:minSdkVersion="7"
-        android:targetSdkVersion="7" >
+    <uses-sdk android:minSdkVersion="7" android:targetSdkVersion="7">
     </uses-sdk>
 
     <application
@@ -25,6 +20,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
             
             <intent-filter >
@@ -35,54 +31,25 @@
             </intent-filter>
             
         </activity>
-        <activity
-            android:name=".gui.SelectScreen"
-            android:launchMode="singleTop"
-            android:theme="@android:style/Theme.NoTitleBar" >
+        <activity android:launchMode="singleTop" android:name=".gui.SelectScreen" android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
 
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+            <meta-data android:name="android.app.searchable" android:resource="@xml/searchable"/>
         </activity>
 
-        <provider
-            android:name=".gui.SelectScreenSavedSearches"
-            android:authorities="edu.htl3r.schoolplanner.gui.SelectScreenSavedSearches" />
+        <provider android:authorities="edu.htl3r.schoolplanner.gui.SelectScreenSavedSearches" android:name=".gui.SelectScreenSavedSearches"/>
 
-        <activity
-            android:name=".gui.settings.SettingsScreen"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name=".gui.timetable.WeekView"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name=".gui.startup_wizard.StartupWizardIntroduction"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name=".gui.startup_wizard.expert.StartupWizardLoginInformationExpert"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".gui.startup_wizard.StartupWizardLoginInformationCheck"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name=".gui.startup_wizard.easy.StartupWizardLoginInformationEasyServerUrl"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".gui.startup_wizard.easy.StartupWizardLoginInformationEasyLoginData"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".gui.LoginSetEditor"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name=".gui.startup_wizard.easy.StartupWizardLoginInformationNameSSL"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".gui.settings.SettingsScreen" android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".gui.timetable.WeekView" android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".gui.startup_wizard.StartupWizardIntroduction" android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".gui.startup_wizard.expert.StartupWizardLoginInformationExpert" android:theme="@android:style/Theme.NoTitleBar" android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".gui.startup_wizard.StartupWizardLoginInformationCheck" android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".gui.startup_wizard.easy.StartupWizardLoginInformationEasyServerUrl" android:theme="@android:style/Theme.NoTitleBar" android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".gui.startup_wizard.easy.StartupWizardLoginInformationEasyLoginData" android:theme="@android:style/Theme.NoTitleBar" android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".gui.LoginSetEditor" android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".gui.startup_wizard.easy.StartupWizardLoginInformationNameSSL" android:theme="@android:style/Theme.NoTitleBar" android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>

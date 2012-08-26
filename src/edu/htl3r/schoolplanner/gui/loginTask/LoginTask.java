@@ -29,9 +29,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
-import edu.htl3r.schoolplanner.backend.Cache;
 import edu.htl3r.schoolplanner.backend.DataFacade;
 import edu.htl3r.schoolplanner.backend.ErrorMessage;
+import edu.htl3r.schoolplanner.backend.cache.Cache;
 import edu.htl3r.schoolplanner.backend.network.ErrorCodes;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSet;
 import edu.htl3r.schoolplanner.gui.BundleConstants;
@@ -236,6 +236,10 @@ public class LoginTask implements OnItemClickListener, Serializable {
 							
 						case ErrorCodes.NETWORK_NEEDED_BUT_UNAVAILABLE:
 							errorMessage = getString(R.string.error_network_needed_but_unavailable);
+							break;
+							
+						case ErrorCodes.WRONG_PORT_NUMBER:
+							errorMessage = getString(R.string.error_wrong_port_number);
 							break;
 							
 						default:

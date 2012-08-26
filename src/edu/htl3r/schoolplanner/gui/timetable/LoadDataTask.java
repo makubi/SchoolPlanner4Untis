@@ -21,7 +21,7 @@ import android.os.AsyncTask;
 import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
-import edu.htl3r.schoolplanner.backend.Cache;
+import edu.htl3r.schoolplanner.backend.cache.Cache;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.gui.timetable.LoadDataTask.LogObject;
@@ -122,11 +122,6 @@ public class LoadDataTask extends AsyncTask<Void, LogObject, Void> implements GU
 	public void forceNetwork(){
 		forceNetwork = true;
 		forceCount = 0;
-	}
-	
-	@Deprecated
-	private String getString(int resId) {
-		return context.getString(resId);
 	}
 
 	@Override

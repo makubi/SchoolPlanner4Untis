@@ -31,5 +31,5 @@ public interface TimetableDataStore {
 	public void setLessons(ViewType view, DateTime date, List<Lesson> lessons);
 	
 	public void setLessons(ViewType view, DateTime startDate, DateTime endDate,
-			Map<String, List<Lesson>> lessonList);
+			Map<String, List<Lesson>> lessonMap);
 }

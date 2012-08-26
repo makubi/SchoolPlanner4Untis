@@ -18,10 +18,12 @@
 
 package edu.htl3r.schoolplanner.backend.schoolObjects;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import edu.htl3r.schoolplanner.DateTime;
 
 
-public class SchoolHoliday implements SchoolObject{
+public class SchoolHoliday {
 
 	private int id;
 	private String name;
@@ -61,6 +63,22 @@ public class SchoolHoliday implements SchoolObject{
 	}
 	
 	public void setEndDate(DateTime endDate) {
+		this.endDate = endDate;
+	}
+	
+	@JsonProperty(value="startDate")
+	public void setStartDate(String startDateString) {
+		DateTime startDate = new DateTime();
+		startDate.set(Integer.parseInt(startDateString.substring(6, 8)), Integer.parseInt(startDateString.substring(4, 6)), Integer.parseInt(startDateString.substring(0, 4)));
+		
+		this.startDate = startDate;
+	}
+	
+	@JsonProperty(value="endDate")
+	public void setEndDate(String endDateString) {
+		DateTime endDate = new DateTime();
+		endDate.set(Integer.parseInt(endDateString.substring(6, 8)), Integer.parseInt(endDateString.substring(4, 6)), Integer.parseInt(endDateString.substring(0, 4)));
+		
 		this.endDate = endDate;
 	}
 }

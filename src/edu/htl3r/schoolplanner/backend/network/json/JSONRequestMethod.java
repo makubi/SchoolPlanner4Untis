@@ -14,42 +14,29 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-package edu.htl3r.schoolplanner.gui.timetable.baactionbar;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.widget.ProgressBar;
-import edu.htl3r.schoolplanner.R;
+package edu.htl3r.schoolplanner.backend.network.json;
 
-public class BAHomeAction extends BAAction{
-
+public enum JSONRequestMethod {	
 	
-	private ProgressBar progressbar;
+	GET_TEACHERS("getTeachers"),
+	GET_CLASSES("getKlassen"),
+	GET_SUBJECTS("getSubjects"),
+	GET_ROOMS("getRooms"),
+	GET_HOLIDAYS("getHolidays"),
+	GET_TIMEGRID_UNITS("getTimegridUnits"),
+	GET_STATUS_DATA("getStatusData"),
+	GET_TIMETABLE("getTimetable"),
+	GET_LATEST_IMPORT_TIME("getLatestImportTime"),
+	AUTHENTICATE("authenticate");
 	
-	public BAHomeAction(Context context) {
-		super(context);
+	private String requestMethod;
+	
+	private JSONRequestMethod(String requestMethod) {
+		this.requestMethod = requestMethod;
 	}
 	
-	public BAHomeAction(Context context, AttributeSet attrs) {
-		super(context, attrs);
+	public String getRequestMethod() {
+		return requestMethod;
 	}
-	
-	public BAHomeAction(Context context, AttributeSet attrs, int defStyle){
-		super(context, attrs, defStyle);
-	}
-	
-	
-	public void initProgressBar(){
-		progressbar = (ProgressBar)findViewById(R.id.baactionbar_home_progress);
-	}
-	
-	public void startProgressBar(boolean scroll){
-		progressbar.bringToFront();
-		if(scroll){
-			progressbar.setVisibility(VISIBLE);
-		}else{
-			progressbar.setVisibility(INVISIBLE);
-		}
-	}
-	
 }

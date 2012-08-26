@@ -17,9 +17,9 @@
 package edu.htl3r.schoolplanner.gui.timetable.Week;
 
 import android.content.Context;
-import android.view.View;
+import android.widget.RelativeLayout;
 
-public class GUIWeekView extends View{
+public class GUIWeekView extends RelativeLayout{
 
 	
 	public final static int LESSON_ID = 0;
@@ -40,5 +40,9 @@ public class GUIWeekView extends View{
 		return id;
 	}
 
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+	    super.onLayout(changed,l, t, r, b);
+	}
 	
 }
