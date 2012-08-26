@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.htl3r.schoolplanner.gui.startup_wizard;
 
 import java.net.URI;
@@ -36,76 +36,75 @@ import edu.htl3r.schoolplanner.gui.startup_wizard.qrcode.IntentResult;
 import edu.htl3r.schoolplanner.gui.startup_wizard.qrcode.QRCodeUrlAnalyser;
 
 /**
- * Startup-Assistent Seite 1, welche dem Benutzer erklaert, welche Informationen angegeben werden muessen.
+ * Startup-Assistent Seite 1, welche dem Benutzer erklaert, welche Informationen
+ * angegeben werden muessen.
  */
 public class StartupWizardIntroduction extends SchoolPlannerActivity {
 
 	private Button nextButton;
 	private Button backButton;
-	
+
 	private RadioButton expert;
 	private RadioButton easy;
 	private RadioButton qrcode;
-	
+
 	private Activity thisActivity;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.startup_wizard_introduction);
 		initTitle(getResources().getString(R.string.startup_wizard_header));
 
-		
-		expert = (RadioButton)findViewById(R.id.swi_radio_expert);
-		easy = (RadioButton)findViewById(R.id.swi_radio_easy);
-		qrcode = (RadioButton)findViewById(R.id.swi_radio_qrcode);
-		
+		expert = (RadioButton) findViewById(R.id.swi_radio_expert);
+		easy = (RadioButton) findViewById(R.id.swi_radio_easy);
+		qrcode = (RadioButton) findViewById(R.id.swi_radio_qrcode);
+
 		nextButton = (Button) findViewById(R.id.startup_wizard_introduction_next_button);
 		nextButton.setOnClickListener(new Button.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				if(expert.isChecked())
-					startActivity(new Intent(thisActivity, StartupWizardLoginInformationExpert.class));
-				if(easy.isChecked())
-					startActivity(new Intent(thisActivity, StartupWizardLoginInformationEasyServerUrl.class));
-				if(qrcode.isChecked())
+				if (expert.isChecked())
+					startActivity(new Intent(thisActivity,
+							StartupWizardLoginInformationExpert.class));
+				if (easy.isChecked())
+					startActivity(new Intent(thisActivity,
+							StartupWizardLoginInformationEasyServerUrl.class));
+				if (qrcode.isChecked())
 					startQRCodeReader();
 			}
 		});
-		
+
 		backButton = (Button) findViewById(R.id.startup_wizard_introduction_back_button);
 		backButton.setOnClickListener(new Button.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				//onBackPressed();
-				finish();
-				// TODO: Wieso finish() und nicht onBackPressed()
+				onBackPressed();
 			}
-			
+
 		});
 	}
 
-	private void startQRCodeReader(){
+	private void startQRCodeReader() {
 		IntentIntegrator integrator = new IntentIntegrator(this);
 		integrator.initiateScan();
 	}
-	
+
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		  IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-		  String data = scanResult.getContents();
-		  if (scanResult != null && data.startsWith("http://loginset.schoolplanner.at/")) {
-			  
-			  Uri uri = Uri.parse(scanResult.getContents());
-			  QRCodeUrlAnalyser qrCodeUrlAnalyser = new QRCodeUrlAnalyser();
-			  qrCodeUrlAnalyser.startWizardCauseOfUriInput(uri, this);
-			  Log.d("basti", scanResult.toString());
-		  }else{
-			  Toast.makeText(getApplicationContext(), getResources().getString(R.string.startup_wizard_introduction_qrcode_error), Toast.LENGTH_SHORT).show();
-		  }
+		if (resultCode == RESULT_OK) {
+			IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+			String data = scanResult.getContents();
+			if (scanResult != null && data.startsWith("http://loginset.schoolplanner.at/")) {
+				QRCodeUrlAnalyser qrCodeUrlAnalyser = new QRCodeUrlAnalyser();
+				qrCodeUrlAnalyser.startWizardCauseOfUriInput(scanResult.getContents(), this);
+			} else {
+				Toast.makeText(getApplicationContext(),getResources().getString(R.string.startup_wizard_introduction_qrcode_error),Toast.LENGTH_SHORT).show();
+			}
 		}
-	
+	}
+
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);

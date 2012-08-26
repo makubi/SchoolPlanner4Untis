@@ -97,7 +97,7 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		Intent intent = getIntent();
 		if(Intent.ACTION_VIEW.equals(intent.getAction())){
 			QRCodeUrlAnalyser qrCodeUrlAnalyser = new QRCodeUrlAnalyser();
-			qrCodeUrlAnalyser.startWizardCauseOfUriInput(intent.getData(), this);			
+			qrCodeUrlAnalyser.startWizardCauseOfUriInput(intent.getDataString(), this);			
 		}else if (loginmanager.getAllLoginSets().size() < 1) {
 			showStartupWizard();
 		}
