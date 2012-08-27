@@ -52,6 +52,8 @@ import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenLoginTaskListener;
 
 public class WelcomeScreen extends SchoolPlannerActivity {
 	
+	private final String NFC_INTENT = "android.nfc.action.NDEF_DISCOVERED";
+	
 	private ListView mainListView;
 	
 	private ScrollView emptyListView;
@@ -94,8 +96,10 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		
+		
+		
 		Intent intent = getIntent();
-		if(Intent.ACTION_VIEW.equals(intent.getAction())){
+		if(Intent.ACTION_VIEW.equals(intent.getAction()) || NFC_INTENT.equals(intent.getAction())){
 			QRCodeUrlAnalyser qrCodeUrlAnalyser = new QRCodeUrlAnalyser();
 			qrCodeUrlAnalyser.startWizardCauseOfUriInput(intent.getDataString(), this);			
 		}else if (loginmanager.getAllLoginSets().size() < 1) {

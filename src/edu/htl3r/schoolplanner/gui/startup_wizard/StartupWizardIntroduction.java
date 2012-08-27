@@ -66,11 +66,9 @@ public class StartupWizardIntroduction extends SchoolPlannerActivity {
 			@Override
 			public void onClick(View v) {
 				if (expert.isChecked())
-					startActivity(new Intent(thisActivity,
-							StartupWizardLoginInformationExpert.class));
+					startActivity(new Intent(thisActivity, StartupWizardLoginInformationExpert.class));
 				if (easy.isChecked())
-					startActivity(new Intent(thisActivity,
-							StartupWizardLoginInformationEasyServerUrl.class));
+					startActivity(new Intent(thisActivity, StartupWizardLoginInformationEasyServerUrl.class));
 				if (qrcode.isChecked())
 					startQRCodeReader();
 			}
@@ -100,7 +98,7 @@ public class StartupWizardIntroduction extends SchoolPlannerActivity {
 				QRCodeUrlAnalyser qrCodeUrlAnalyser = new QRCodeUrlAnalyser();
 				qrCodeUrlAnalyser.startWizardCauseOfUriInput(scanResult.getContents(), this);
 			} else {
-				Toast.makeText(getApplicationContext(),getResources().getString(R.string.startup_wizard_introduction_qrcode_error),Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.startup_wizard_introduction_qrcode_error), Toast.LENGTH_SHORT).show();
 			}
 		}
 	}

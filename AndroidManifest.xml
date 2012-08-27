@@ -28,6 +28,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" /> 
                 <data android:scheme="http" android:host="loginset.schoolplanner.at" />
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
             </intent-filter>
             
         </activity>
