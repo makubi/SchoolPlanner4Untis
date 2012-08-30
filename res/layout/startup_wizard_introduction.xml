@@ -7,9 +7,12 @@
 
     <ScrollView
         android:id="@+id/swi_text"
-        style="@style/startup_wizard_scroll_view"
-        android:layout_below="@id/swi_header">
-
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        
+        android:layout_above="@+id/swi_radios"
+        android:layout_below="@id/swi_header" >
+        
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,7 +43,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/swi_header_radios" 
-            android:paddingLeft="10dip">
+            android:paddingLeft="10dip"
+            >
 
             <RadioButton
                 android:id="@+id/swi_radio_easy"
@@ -55,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/startup_wizard_introduction_expert"
-                android:textColor="@color/text" />
+                android:textColor="@color/text"/>
             
              <RadioButton
                 android:id="@+id/swi_radio_qrcode"
