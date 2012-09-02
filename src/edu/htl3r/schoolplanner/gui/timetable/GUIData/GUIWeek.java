@@ -28,6 +28,7 @@ import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.schoolObjects.SchoolHoliday;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
+import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.LastRefreshTransferObject;
 
 public class GUIWeek{
 	
@@ -36,7 +37,7 @@ public class GUIWeek{
 	private ViewType viewtype;
 	private List<TimegridUnit> timegrid;
 	private List<SchoolHoliday> holidays;
-	private DateTime lastRefresh;
+	private LastRefreshTransferObject lastRefresh;
 
 	
 	public void setTimegrid(List <TimegridUnit> time){
@@ -51,8 +52,8 @@ public class GUIWeek{
 		viewtype = vt;
 	}
 	
-	public void setLastRefreshDate(DateTime lastRefresh) {
-		this.lastRefresh = lastRefresh;
+	public void setLastRefreshDate(LastRefreshTransferObject lastRefresh2) {
+		this.lastRefresh = lastRefresh2;
 	}
 	
 	public ViewType getViewType(){
@@ -68,7 +69,7 @@ public class GUIWeek{
 	}
 	
 
-	public DateTime getLastRefresh() {
+	public LastRefreshTransferObject getLastRefresh() {
 		return lastRefresh;
 	}	
 	

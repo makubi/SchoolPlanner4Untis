@@ -72,6 +72,7 @@ public class LoadDataTask extends AsyncTask<Void, LogObject, Void> implements GU
 			publishProgress(new LogObjectProgress(true));
 			InputTransferObject input = (InputTransferObject)d;
 			GUIWeek timeTable4GUI;
+			
 			if(forceNetwork && forceCount < 3){
 				Log.d("basti", "Force Network - Data Task");
 				timeTable4GUI = contentmanager.getTimeTable4GUI(input.getDate(), true);
@@ -80,6 +81,7 @@ public class LoadDataTask extends AsyncTask<Void, LogObject, Void> implements GU
 				timeTable4GUI = contentmanager.getTimeTable4GUI(input.getDate(), false);
 				forceNetwork = false;
 			}
+			
 			Message m = new Message();
 			OutputTransferObject r= new OutputTransferObject(timeTable4GUI,input.getPos());
 			m.obj = r;

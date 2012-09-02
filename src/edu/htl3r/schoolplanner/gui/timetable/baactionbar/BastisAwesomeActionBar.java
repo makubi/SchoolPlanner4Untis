@@ -27,6 +27,7 @@ import android.widget.TextView;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
+import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.LastRefreshTransferObject;
 
 public class BastisAwesomeActionBar extends RelativeLayout {
 
@@ -178,8 +179,8 @@ public class BastisAwesomeActionBar extends RelativeLayout {
 		}
 	}
 	
-	public void setLastRefresh(DateTime lastRefresh){
-		refresh.setLastRefresh(lastRefresh);
+	public void setLastRefresh(LastRefreshTransferObject lastRefreshTransferObject){
+		refresh.setLastRefresh(lastRefreshTransferObject);
 	}
 
 	public interface BAActoinBarEvent {

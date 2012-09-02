@@ -38,6 +38,7 @@ import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCod
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.lessonCode.LessonCodeSubstitute;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.Timegrid;
 import edu.htl3r.schoolplanner.backend.schoolObjects.timegrid.TimegridUnit;
+import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.LastRefreshTransferObject;
 
 public class RenderInfoWeekTable implements WebUntis {
 
@@ -46,7 +47,7 @@ public class RenderInfoWeekTable implements WebUntis {
 	private Timegrid timegridRaw;
 	private List<SchoolHoliday> holidays;
 	private ViewType viewtype;
-	private DateTime lastRefresh;
+	private LastRefreshTransferObject lastRefresh;
 
 	private Settings settings;
 
@@ -75,7 +76,7 @@ public class RenderInfoWeekTable implements WebUntis {
 	}
 	
 
-	public void setLastRefresh(DateTime lastRefresh) {
+	public void setLastRefresh(LastRefreshTransferObject lastRefresh) {
 		this.lastRefresh = lastRefresh;
 	}
 
