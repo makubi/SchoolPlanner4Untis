@@ -28,6 +28,7 @@ import android.widget.TextView;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.R;
+import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.LastRefreshTransferObject;
 
 public class BARefreshAction extends BAAction {
 
@@ -47,11 +48,8 @@ public class BARefreshAction extends BAAction {
 	}
 
 	public void initProgressBar() {
-		progressbar = new ProgressBar(getContext(), null,
-				android.R.attr.progressBarStyleSmall);
-		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-				ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
+		progressbar = new ProgressBar(getContext(), null, android.R.attr.progressBarStyleSmall);
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		layoutParams.addRule(CENTER_VERTICAL);
 		layoutParams.addRule(CENTER_HORIZONTAL);
 		addView(progressbar, layoutParams);
@@ -60,13 +58,11 @@ public class BARefreshAction extends BAAction {
 	public void initTextView() {
 		lastRefreshText = new TextView(getContext());
 		lastRefreshText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 9);
-		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-				ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 		layoutParams.addRule(ALIGN_PARENT_BOTTOM);
 		layoutParams.addRule(ALIGN_PARENT_RIGHT);
 		layoutParams.setMargins(0, 0, 0, getResources().getDimensionPixelSize(R.dimen.gui_actionbar_action_refresh_text_margin_bottom));
-		
+
 		addView(lastRefreshText, layoutParams);
 	}
 
@@ -80,34 +76,10 @@ public class BARefreshAction extends BAAction {
 		}
 	}
 
-	public void setLastRefresh(DateTime lastRefresh) {
-		DateTime now = DateTimeUtils.getNow();
-		Log.d("basti", "lasR: " + lastRefresh);
-		if (lastRefresh.compareTo(new DateTime()) == 0) {
-			lastRefreshText.setTextColor(Color.WHITE);
-			lastRefreshText.setText("-");
-		} else {
-			float difference = now.getAndroidTime().toMillis(true)
-					- lastRefresh.getAndroidTime().toMillis(true);
-
-			difference /= 1000;
-			difference /= 60;
-			String einheit = "m";
-			int color = Color.WHITE;
-			if (difference >= 60) {
-
-				difference /= 60;
-				einheit = "h";
-
-				if (difference >= 24) {
-					difference /= 24;
-					einheit = "d";
-					color = Color.RED;
-				}
-			}			
-			lastRefreshText.setTextColor(color);
-			lastRefreshText.setText((int) difference + einheit);
-		}
+	public void setLastRefresh(LastRefreshTransferObject lastRefreshTransferObject) {
+		Log.d("basti", "lasR: " + lastRefreshTransferObject.getDiffernceForDisply());
+		lastRefreshText.setTextColor(lastRefreshTransferObject.getTextColor());
+		lastRefreshText.setText(lastRefreshTransferObject.getDiffernceForDisply());
 	}
 
 }

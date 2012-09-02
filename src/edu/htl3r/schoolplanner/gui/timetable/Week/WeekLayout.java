@@ -41,6 +41,7 @@ import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUILessonContainer;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIWeek;
 import edu.htl3r.schoolplanner.gui.timetable.Lessons.LessonView;
 import edu.htl3r.schoolplanner.gui.timetable.Overlay.Info.OverlayInfo;
+import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.LastRefreshTransferObject;
 
 public class WeekLayout extends ViewGroup{
 
@@ -310,11 +311,11 @@ public class WeekLayout extends ViewGroup{
 	}
 
 
-	public DateTime getLastRefresh() {
+	public LastRefreshTransferObject getLastRefresh() {
 		if(isDataHere()){
 			return weekdata.getLastRefresh();
 		}
-		return new DateTime();
+		return new LastRefreshTransferObject();
 	}
 		
 }

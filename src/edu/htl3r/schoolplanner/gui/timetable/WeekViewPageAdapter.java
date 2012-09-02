@@ -26,6 +26,7 @@ import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.gui.timetable.GUIData.GUIWeek;
 import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.InputTransferObject;
+import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.LastRefreshTransferObject;
 import edu.htl3r.schoolplanner.gui.timetable.Week.WeekLayout;
 
 public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndicator.PageInfoProvider {
@@ -136,7 +137,7 @@ public class WeekViewPageAdapter extends PagerAdapter implements ViewPagerIndica
 		}
 	}
 
-	public DateTime getLastRefresh(int position) {
+	public LastRefreshTransferObject getLastRefresh(int position) {
 		return view_cach[position].getLastRefresh();
 	}
 

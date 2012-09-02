@@ -20,10 +20,12 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.backend.preferences.Settings;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
 import edu.htl3r.schoolplanner.backend.schoolObjects.lesson.Lesson;
+import edu.htl3r.schoolplanner.gui.timetable.TransportClasses.LastRefreshTransferObject;
 
 public class GUIContentManager{
 	
@@ -64,10 +66,20 @@ public class GUIContentManager{
 
 			DataFromNetwork dataFromNetwork = null;
 			
-			if(forceNetWork)
+			if(forceNetWork || !settings.isCachingEnabled()){
 				dataFromNetwork = datacenter.getLessonsForSomeTimeFromNetwork(viewtype, start, end);
-			else
+			} else{
 				dataFromNetwork = datacenter.getLessonsForSomeTime(viewtype, start, end);
+			}
+			
+			LastRefreshTransferObject lastRefreshTransferObject = new LastRefreshTransferObject(dataFromNetwork.getLastRefresh());
+			
+			if(settings.isCachingEnabled() && settings.getCacheLifeTimeInHours() < lastRefreshTransferObject.getDiffernceInHours()){
+				Log.d("basti", "Daten zu alt, lade neu "+ lastRefreshTransferObject.getDiffernceInHours());
+				dataFromNetwork = datacenter.getLessonsForSomeTimeFromNetwork(viewtype, start, end);
+				lastRefreshTransferObject = new LastRefreshTransferObject(dataFromNetwork.getLastRefresh());
+			}
+			
 			
 			Map<String, List<Lesson>> lessons = dataFromNetwork.getLessons();
 			if(lessons.size() != 0 && lessons != null){
@@ -76,7 +88,7 @@ public class GUIContentManager{
 				weekinfo.setTimeGrid(datacenter.getTimeGrid());
 				weekinfo.setViewType(viewtype);
 				weekinfo.setSettings(settings);
-				weekinfo.setLastRefresh(dataFromNetwork.getLastRefresh());
+				weekinfo.setLastRefresh(lastRefreshTransferObject);
 				return weekinfo.analyse();
 			}else{
 				return null;
@@ -86,6 +98,7 @@ public class GUIContentManager{
 		return null;
 	}
 
+	
 	
 	public void setSettings(Settings settings) {
 		this.settings = settings;
