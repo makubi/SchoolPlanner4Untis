@@ -90,4 +90,12 @@ public class Settings {
 		return SchoolplannerContext.context.getString(resId);
 	}
 	
+	public boolean isCachingEnabled() {
+		return false;
+	}
+	
+	public int getCacheLifeTimeInHours() {
+		return 0;
+	}
+	
 }
