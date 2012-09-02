@@ -20,7 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.SchoolPlannerApp;
@@ -39,6 +42,22 @@ public class SettingsScreen extends PreferenceActivity{
         
         autologinSetSetting.setEntryValues(loginSetNames);
         autologinSetSetting.setEntries(loginSetNames);
+        
+        EditTextPreference cacheLifeTimeInHours = (EditTextPreference) findPreference(getString(R.string.settings_key_caching_life_time_in_hours));
+        
+        cacheLifeTimeInHours.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				try {
+					int newCacheLifeTimeInHours = Integer.parseInt(newValue.toString());
+					return newCacheLifeTimeInHours >= 0;
+				}
+				catch (NumberFormatException e) {
+					return false;
+				}
+			}
+		});
     }
 	
     private String[] getLoginSetNames() {
