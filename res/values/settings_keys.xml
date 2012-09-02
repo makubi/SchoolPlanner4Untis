@@ -12,4 +12,7 @@
 	<string name="settings_key_show_saturday">show_saturday</string>
 	<string name="settings_key_show_zeroth_lesson">show_zeroth_lesson</string>
 	<string name="settings_key_highlight_current_lesson">highlight_current_lesson</string>
+	
+	<string name="settings_key_caching_enabled">caching_enabled</string>
+	<string name="settings_key_cache_life_time_in_hours">cache_life_time_in_hours</string>
 </resources>

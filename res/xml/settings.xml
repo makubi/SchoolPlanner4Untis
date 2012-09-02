@@ -39,4 +39,21 @@
                 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:title="@string/settings_caching_header">
+        
+        <CheckBoxPreference
+            android:key="@string/settings_key_caching_enabled"
+            android:title="@string/settings_caching_caching_enabled_title"
+            android:summary="@string/settings_caching_caching_enabled_summary" />
+        
+        <EditTextPreference
+            android:key="@string/settings_key_caching_life_time_in_hours"
+            android:title="@string/settings_caching_life_time_in_hours_title"
+            android:summary="@string/settings_caching_life_time_in_hours_summary"
+            android:dialogTitle="@string/settings_caching_life_time_in_hours_dialog_title"
+            android:dependency="@string/settings_key_caching_enabled" />
+                
+        </PreferenceCategory>
+
 </PreferenceScreen>

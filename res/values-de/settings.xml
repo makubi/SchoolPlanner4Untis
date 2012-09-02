@@ -15,4 +15,12 @@
     <string name="settings_display_show_zeroth_lesson_summary">Zeige nullte Stunde im Stundenplan an</string>
     <string name="settings_display_highlight_current_lesson_title">Aktuelle Stunde markieren</string>
     <string name="settings_display_highlight_current_lesson_summary">Markiere aktuelle Stunde im Stundenplan</string>
+    
+    <string name="settings_caching_header">TODO</string>
+    <string name="settings_caching_caching_enabled_title">TODO</string>
+    <string name="settings_caching_caching_enabled_summary">TODO</string>
+    <string name="settings_key_caching_life_time_in_hours">TODO</string>
+    <string name="settings_caching_life_time_in_hours_title">TODO</string>
+    <string name="settings_caching_life_time_in_hours_summary">TODO</string>
+    <string name="settings_caching_life_time_in_hours_dialog_title">TODO</string>
 </resources>

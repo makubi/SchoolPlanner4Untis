@@ -34,6 +34,9 @@ public class Settings {
 	private boolean displayZerothLesson;
 	private boolean highlightCurrentLesson;
 	
+	private boolean cachingEnabled;
+	private int cacheLifeTimeInHours;
+	
 	public Settings() {
 		 preferences = PreferenceManager.getDefaultSharedPreferences(SchoolplannerContext.context);
 		 listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -60,6 +63,9 @@ public class Settings {
 		displaySaturday = preferences.getBoolean(getString(R.string.settings_key_show_saturday), false);
 		displayZerothLesson = preferences.getBoolean(getString(R.string.settings_key_show_zeroth_lesson), false);
 		highlightCurrentLesson = preferences.getBoolean(getString(R.string.settings_key_highlight_current_lesson), false);
+		
+		cachingEnabled = preferences.getBoolean(getString(R.string.settings_key_caching_enabled), false);
+		cacheLifeTimeInHours = preferences.getInt(getString(R.string.settings_key_cache_life_time_in_hours), 0);
 	}
 	
 	public boolean isAutoLogin() {
@@ -91,11 +97,11 @@ public class Settings {
 	}
 	
 	public boolean isCachingEnabled() {
-		return false;
+		return cachingEnabled;
 	}
 	
 	public int getCacheLifeTimeInHours() {
-		return 0;
+		return cacheLifeTimeInHours;
 	}
 	
 }
