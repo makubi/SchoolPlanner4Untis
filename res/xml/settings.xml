@@ -45,7 +45,8 @@
         <CheckBoxPreference
             android:key="@string/settings_key_caching_enabled"
             android:title="@string/settings_caching_caching_enabled_title"
-            android:summary="@string/settings_caching_caching_enabled_summary" />
+            android:summary="@string/settings_caching_caching_enabled_summary"
+            android:defaultValue="true" />
                 
         <edu.htl3r.schoolplanner.backend.preferences.ValidatedEditTextPreference
             android:key="@string/settings_key_caching_life_time_in_hours"

@@ -20,6 +20,6 @@
     <string name="settings_caching_caching_enabled_title">Cache verwenden</string>
     <string name="settings_caching_caching_enabled_summary">Verwende den Stundenplan-Cache</string>
     <string name="settings_caching_life_time_in_hours_title">Cache-Lebensdauer</string>
-    <string name="settings_caching_life_time_in_hours_summary">Zeit (in Stunden), die der Stundenplan zwischengespeichert werden soll</string>
+    <string name="settings_caching_life_time_in_hours_summary">Zeit (in Stunden), die Stundenpläne zwischengespeichert werden soll</string>
     <string name="settings_caching_life_time_in_hours_dialog_title">Cache-Lebensdauer (in Stunden)</string>
 </resources>
