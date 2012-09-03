@@ -93,5 +93,15 @@ public class ValidatedEditTextPreference extends EditTextPreference
         getEditText().removeTextChangedListener(m_watcher);
         getEditText().addTextChangedListener(m_watcher);
         onEditTextChanged();
-    }    
+    }
+    
+    @Override
+    protected String getPersistedString(String defaultReturnValue) {
+        return String.valueOf(getPersistedInt(-1));
+    }
+
+    @Override
+    protected boolean persistString(String value) {
+        return persistInt(Integer.valueOf(value));
+    }
 }

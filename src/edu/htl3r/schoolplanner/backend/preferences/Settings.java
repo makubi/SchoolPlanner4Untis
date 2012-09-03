@@ -67,8 +67,8 @@ public class Settings {
 		displayZerothLesson = preferences.getBoolean(getString(R.string.settings_key_show_zeroth_lesson), false);
 		highlightCurrentLesson = preferences.getBoolean(getString(R.string.settings_key_highlight_current_lesson), false);
 		
-		cachingEnabled = preferences.getBoolean(getString(R.string.settings_key_caching_enabled), false);
-		cacheLifeTimeInHours = preferences.getInt(getString(R.string.settings_key_cache_life_time_in_hours), 1);
+		cachingEnabled = preferences.getBoolean(getString(R.string.settings_key_caching_enabled), true);
+		cacheLifeTimeInHours = preferences.getInt(getString(R.string.settings_key_caching_life_time_in_hours), 1);
 	}
 	
 	public boolean isAutoLogin() {

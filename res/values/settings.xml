@@ -16,11 +16,10 @@
     <string name="settings_display_highlight_current_lesson_title">Highlight current lesson</string>
     <string name="settings_display_highlight_current_lesson_summary">Highlight current lesson in timetable</string>
     
-    <string name="settings_caching_header">TODO</string>
-    <string name="settings_caching_caching_enabled_title">TODO</string>
-    <string name="settings_caching_caching_enabled_summary">TODO</string>
-    <string name="settings_key_caching_life_time_in_hours">TODO</string>
-    <string name="settings_caching_life_time_in_hours_title">TODO</string>
-    <string name="settings_caching_life_time_in_hours_summary">TODO</string>
-    <string name="settings_caching_life_time_in_hours_dialog_title">TODO</string>
+    <string name="settings_caching_header">Timetable caching options</string>
+    <string name="settings_caching_caching_enabled_title">Enable caching</string>
+    <string name="settings_caching_caching_enabled_summary">Enable caching of timetable</string>
+    <string name="settings_caching_life_time_in_hours_title">Cache lifetime</string>
+    <string name="settings_caching_life_time_in_hours_summary">Time (in hours) timetables should be buffered, before being refreshed</string>
+    <string name="settings_caching_life_time_in_hours_dialog_title">Cache lifetime (in hours)</string>
 </resources>
