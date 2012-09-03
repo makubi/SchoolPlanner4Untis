@@ -37,6 +37,9 @@ public class Settings {
 	private boolean cachingEnabled;
 	private int cacheLifeTimeInHours;
 	
+	public static final int MIN_CACHE_LIFE_TIME = 0;
+	public static final int MAX_CACHE_LIFE_TIME = 8784;
+	
 	public Settings() {
 		 preferences = PreferenceManager.getDefaultSharedPreferences(SchoolplannerContext.context);
 		 listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -65,7 +68,7 @@ public class Settings {
 		highlightCurrentLesson = preferences.getBoolean(getString(R.string.settings_key_highlight_current_lesson), false);
 		
 		cachingEnabled = preferences.getBoolean(getString(R.string.settings_key_caching_enabled), false);
-		cacheLifeTimeInHours = preferences.getInt(getString(R.string.settings_key_cache_life_time_in_hours), 0);
+		cacheLifeTimeInHours = preferences.getInt(getString(R.string.settings_key_cache_life_time_in_hours), 1);
 	}
 	
 	public boolean isAutoLogin() {
