@@ -95,3 +95,8 @@ WEITERE INFORMATIONEN ZUM PROJEKT
 * Android Market: https://market.android.com/details?id=edu.htl3r.schoolplanner
 * Bugtracker: http://jira.schoolplanner.at/
 * Continuous Integration System: http://jenkins.coding4coffee.org/job/SchoolPlanner4Untis/
+
+RELEASE VORBEREITEN
+-------------------
+* mvn android:manifest-update replacer:replace
+* versionCode + 1

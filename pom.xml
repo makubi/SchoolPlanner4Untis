@@ -14,6 +14,8 @@
 		<jackson.version>1.9.7</jackson.version>
 		<androidmavenplugin.version>3.1.1</androidmavenplugin.version>
 		<compatibilitylibrary.version>r9</compatibilitylibrary.version>
+		
+		<version.name>beverly hofstadter</version.name>
 	</properties>
 
 	<repositories>
@@ -73,9 +75,7 @@
 						</goals>
 						<configuration>
 							<manifest>
-								<versionName>2.4</versionName>
-								<versionCodeAutoIncrement>false</versionCodeAutoIncrement>
-								<versionCodeUpdateFromVersion>false</versionCodeUpdateFromVersion>
+								<versionName></versionName>
 							</manifest>
 						</configuration>
 					</execution>
@@ -89,6 +89,28 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
+       <plugin>
+           <groupId>com.google.code.maven-replacer-plugin</groupId>
+           <artifactId>replacer</artifactId>
+           <version>1.5.0</version>
+           <executions>
+               <execution>
+                   <phase>prepare-package</phase>
+                   <goals>
+                       <goal>replace</goal>
+                   </goals>                   
+               </execution>
+           </executions>
+           <configuration>
+               <file>res/values/info_dialog.xml</file>
+               <replacements>
+                   <replacement>
+                       <token>Version [0-9.]+ \(.+\)</token>
+                       <value>Version ${project.version} (${version.name})</value>
+                   </replacement>         
+               </replacements>
+           </configuration>
+       </plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
