@@ -16,6 +16,7 @@
 */
 package edu.htl3r.schoolplanner.backend.database;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,15 +45,17 @@ import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 
 public class DatabaseHelper extends SQLiteOpenHelper{
 
-	private final static int DATABASE_VERSION = 8;
+	private final static int DATABASE_VERSION = 9;
 	private final static String DATABASE_NAME = "db_schoolplanner_data";
 	
 	private final List<String> CREATE_TABLE_STATEMENTS = new ArrayList<String>();
 	private final String CREATE_TABLE_SQL = "CREATE TABLE";
 	
+	private Context context;
+	
 	public DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		
+		this.context = context;
 		CREATE_TABLE_STATEMENTS.addAll(getCreateMasterDataTables());
 		CREATE_TABLE_STATEMENTS.addAll(getCreatePermanentLessonTables());
 		CREATE_TABLE_STATEMENTS.addAll(getCreateSettingsTables());
@@ -98,9 +101,26 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 			editor.remove("autoselect");
 			editor.remove("autoselect_type");
 			editor.commit();
-			
+		}
+		if(oldVersion < 9){
+			db.delete(DatabaseViewTypeConstants.TABLE_SCHOOL_CLASSES_NAME, null, null);
+			db.delete(DatabaseViewTypeConstants.TABLE_SCHOOL_ROOMS_NAME, null, null);
+			db.delete(DatabaseViewTypeConstants.TABLE_SCHOOL_SUBJECTS_NAME, null, null);
+			db.delete(DatabaseViewTypeConstants.TABLE_SCHOOL_TEACHER_NAME, null, null);
+			deleteFilesInFolder(context.getCacheDir().getAbsoluteFile());
 		}
 	}
+	
+	private void deleteFilesInFolder(File dir){
+		for (File file : dir.listFiles()) {
+			if(file.isDirectory()){
+				deleteFilesInFolder(file);
+			}else{
+				file.delete();
+			}
+		}
+	}
+
 	
 	private List<String> getCreateMasterDataTables() {		
 		final Map<String, String> coloumnDefinitions = new HashMap<String, String>();
