@@ -17,4 +17,7 @@
 		begleitet Sie unser <b>Konfigurations-Assistent</b> durch die ersten Schritte.
 		\n\nWenn Sie diese App zum ersten Mal verwenden, wählen Sie bitte den <b>Einfachen Konfigurationsmodus</b> aus. Dieser hilft Ihnen in drei einfachen Schritten, ein LoginSet zu erstellen. 
 		\n\nWenn Sie keine Hilfestellung benötigen, wählen Sie den <b>Experten Modus</b>, über den Sie alle Daten in einem Schritte eingeben können.</string>
+		
+	        <string name="startup_wizard_introduction_qrcode_help">QR-Code generieren</string>
+	
 </resources>

@@ -16,16 +16,16 @@
  */
 package edu.htl3r.schoolplanner.gui.startup_wizard;
 
-import java.net.URI;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.R;
 import edu.htl3r.schoolplanner.gui.SchoolPlannerActivity;
@@ -34,6 +34,7 @@ import edu.htl3r.schoolplanner.gui.startup_wizard.expert.StartupWizardLoginInfor
 import edu.htl3r.schoolplanner.gui.startup_wizard.qrcode.IntentIntegrator;
 import edu.htl3r.schoolplanner.gui.startup_wizard.qrcode.IntentResult;
 import edu.htl3r.schoolplanner.gui.startup_wizard.qrcode.QRCodeUrlAnalyser;
+
 
 /**
  * Startup-Assistent Seite 1, welche dem Benutzer erklaert, welche Informationen
@@ -47,6 +48,8 @@ public class StartupWizardIntroduction extends SchoolPlannerActivity {
 	private RadioButton expert;
 	private RadioButton easy;
 	private RadioButton qrcode;
+	
+	private TextView helpQrCode;
 
 	private Activity thisActivity;
 
@@ -59,6 +62,16 @@ public class StartupWizardIntroduction extends SchoolPlannerActivity {
 		expert = (RadioButton) findViewById(R.id.swi_radio_expert);
 		easy = (RadioButton) findViewById(R.id.swi_radio_easy);
 		qrcode = (RadioButton) findViewById(R.id.swi_radio_qrcode);
+		helpQrCode = (TextView) findViewById(R.id.swi_qrcode_help);
+		
+		helpQrCode.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				 Intent browse = new Intent( Intent.ACTION_VIEW , Uri.parse( "http://www.schoolplanner.at/qr-code" ) );
+				 startActivity( browse );
+			}
+		});
 
 		nextButton = (Button) findViewById(R.id.startup_wizard_introduction_next_button);
 		nextButton.setOnClickListener(new Button.OnClickListener() {

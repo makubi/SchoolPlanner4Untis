@@ -15,4 +15,7 @@
 		\n\nIf you use this app the first time, please use the <b>easy mode</b>. The assistant will guide you through the creation process of a Loginset in three easy steps. 
 		\n\nIf you do not need any help, choose the <b>expert mode</b>. There, you are able to insert all needed information in a single step.</string>
         
+        
+        <string name="startup_wizard_introduction_qrcode_help">Generate a QR-code</string>
+        
     </resources>
