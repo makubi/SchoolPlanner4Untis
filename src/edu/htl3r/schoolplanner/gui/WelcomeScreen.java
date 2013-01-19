@@ -22,6 +22,7 @@ import java.util.concurrent.ExecutionException;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.os.Bundle;
@@ -43,11 +44,15 @@ import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetConstants;
 import edu.htl3r.schoolplanner.backend.preferences.loginSets.LoginSetManager;
 import edu.htl3r.schoolplanner.gui.loginTask.LoginTask;
 import edu.htl3r.schoolplanner.gui.startup_wizard.StartupWizardIntroduction;
+import edu.htl3r.schoolplanner.gui.startup_wizard.expert.StartupWizardLoginInformationExpert;
+import edu.htl3r.schoolplanner.gui.startup_wizard.qrcode.QRCodeUrlAnalyser;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.LoginSetUpdateAsyncTask;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenContextMenu;
 import edu.htl3r.schoolplanner.gui.welcomeScreen.WelcomeScreenLoginTaskListener;
 
 public class WelcomeScreen extends SchoolPlannerActivity {
+	
+	private final String NFC_INTENT = "android.nfc.action.NDEF_DISCOVERED";
 	
 	private ListView mainListView;
 	
@@ -60,7 +65,7 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 	
 	private final int STARTUP_WIZARD_INTRODUCTION_REQUEST_CODE = 1;
 	private final int LOGIN_SET_EDITOR_REQUEST_CODE = 2;
-	
+
 	private WelcomeScreenContextMenu contextMenu;
 	
 	@Override
@@ -83,13 +88,21 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 		loginListener.addListener(new WelcomeScreenLoginTaskListener(this));
 		mainListView.setOnItemClickListener(loginListener);
 		initContextMenu();
+		
+		
 	}
 	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		
-		if (loginmanager.getAllLoginSets().size() < 1) {
+		
+		
+		Intent intent = getIntent();
+			QRCodeUrlAnalyser qrCodeUrlAnalyser = new QRCodeUrlAnalyser();
+			if(Intent.ACTION_VIEW.equals(intent.getAction()) || NFC_INTENT.equals(intent.getAction())){
+			qrCodeUrlAnalyser.startWizardCauseOfUriInput(intent.getDataString(), this);			
+		}else if (loginmanager.getAllLoginSets().size() < 1) {
 			showStartupWizard();
 		}
 		
@@ -104,6 +117,8 @@ public class WelcomeScreen extends SchoolPlannerActivity {
 			}
 		}
 	}
+	
+	
 	
 	private void showStartupWizard() {
 		Intent t = new Intent(this, StartupWizardIntroduction.class);

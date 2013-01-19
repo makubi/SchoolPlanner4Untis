@@ -13,7 +13,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 package edu.htl3r.schoolplanner.gui.startup_wizard.expert;
 
 import android.app.Activity;
@@ -27,39 +27,41 @@ import edu.htl3r.schoolplanner.gui.LoginInformationForm;
 import edu.htl3r.schoolplanner.gui.startup_wizard.StartupWizardLoginInformationCheck;
 
 /**
- * Startup-Assistent Seite 2, welche den Benutzer auffordert, Login-Informationen anzugeben.
+ * Startup-Assistent Seite 2, welche den Benutzer auffordert,
+ * Login-Informationen anzugeben.
  */
 public class StartupWizardLoginInformationExpert extends LoginInformationForm {
-	
+
 	private Activity thisActivity;
-		
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		initTitle(getResources().getString(R.string.startup_wizard_header));
 
 		setOnButtonClickListener(new Button.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				if(requiredDataEntered()) {
+				if (requiredDataEntered()) {
 					Intent nextScreen = new Intent(thisActivity, StartupWizardLoginInformationCheck.class);
 					putEnteredLoginInformation(nextScreen);
-					
+
 					startActivity(nextScreen);
-				}
-				else {
+				} else {
 					showToastMessage(getString(R.string.error_login_set_information_missing));
 				}
 			}
-			
+
 		});
 	}
-	
+
 	/**
 	 * Speichert die eingegebenen Login-Daten im uebergebenen Intent.<br />
 	 * Verwendet die Keys aus der Klasse {@link LoginSetConstants}.
-	 * @param intent {@link Intent}, in das die Daten gespeichert werden sollen
+	 * 
+	 * @param intent
+	 *            {@link Intent}, in das die Daten gespeichert werden sollen
 	 * @see LoginSetConstants
 	 */
 	private void putEnteredLoginInformation(Intent intent) {
@@ -71,9 +73,19 @@ public class StartupWizardLoginInformationExpert extends LoginInformationForm {
 		intent.putExtra(LoginSetConstants.sslOnlyKey, isSslOnly());
 	}
 
+	private void insertDataIntoFieldsIfIntent() {
+		Bundle extra = getIntent().getExtras();
+		if (extra != null) {
+			initInputFields(extra.getString(LoginSetConstants.nameKey), extra.getString(LoginSetConstants.serverUrlKey),
+					extra.getString(LoginSetConstants.schoolKey), extra.getString(LoginSetConstants.usernameKey),
+					extra.getString(LoginSetConstants.passwordKey), extra.getBoolean(LoginSetConstants.sslOnlyKey));
+		}
+	}
+
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		thisActivity = this;
+		insertDataIntoFieldsIfIntent();
 	}
 }
