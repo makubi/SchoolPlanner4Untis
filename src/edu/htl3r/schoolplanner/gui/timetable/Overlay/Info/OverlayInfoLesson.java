@@ -264,7 +264,7 @@ public class OverlayInfoLesson extends ViewGroup {
 		marginleft = (width-lines.get(0))/2;
 		int count = 1;
 		for(ViewTypeBox vtb : vtbs){
-			if(marginleft+vtb.getDesiredWidth() > width){
+			if(marginleft+vtb.getDesiredWidth() > width && count < lines.size()){
 				marginleft = (width-lines.get(count))/2;
 				margintop += vtb.getDesiredHeight(); 
 				count++;
