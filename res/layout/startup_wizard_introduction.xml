@@ -59,27 +59,8 @@
                 android:text="@string/startup_wizard_introduction_expert"
                 android:textColor="@color/text" />
 
-            <RadioButton
-                android:id="@+id/swi_radio_qrcode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/startup_wizard_introduction_qrcode"
-                android:textColor="@color/text" />
-
-
         </RadioGroup>
         
-            <TextView
-                android:id="@+id/swi_qrcode_help"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/startup_wizard_introduction_qrcode_help"
-                android:textColor="#0000ff"
-                android:textSize="15sp"
-                android:textStyle="bold" 
-                android:layout_below="@id/swi_radiogroup"
-                android:layout_margin="10dip"
-                android:paddingBottom="10dip"/>
     </RelativeLayout>
 
     <LinearLayout

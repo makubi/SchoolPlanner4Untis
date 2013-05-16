@@ -47,9 +47,7 @@ public class StartupWizardIntroduction extends SchoolPlannerActivity {
 
 	private RadioButton expert;
 	private RadioButton easy;
-	private RadioButton qrcode;
 	
-	private TextView helpQrCode;
 
 	private Activity thisActivity;
 
@@ -61,18 +59,8 @@ public class StartupWizardIntroduction extends SchoolPlannerActivity {
 
 		expert = (RadioButton) findViewById(R.id.swi_radio_expert);
 		easy = (RadioButton) findViewById(R.id.swi_radio_easy);
-		qrcode = (RadioButton) findViewById(R.id.swi_radio_qrcode);
-		helpQrCode = (TextView) findViewById(R.id.swi_qrcode_help);
 		
-		helpQrCode.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				 Intent browse = new Intent( Intent.ACTION_VIEW , Uri.parse( "http://www.schoolplanner.at/qr-code" ) );
-				 startActivity( browse );
-			}
-		});
-
+	
 		nextButton = (Button) findViewById(R.id.startup_wizard_introduction_next_button);
 		nextButton.setOnClickListener(new Button.OnClickListener() {
 
@@ -82,8 +70,6 @@ public class StartupWizardIntroduction extends SchoolPlannerActivity {
 					startActivity(new Intent(thisActivity, StartupWizardLoginInformationExpert.class));
 				if (easy.isChecked())
 					startActivity(new Intent(thisActivity, StartupWizardLoginInformationEasyServerUrl.class));
-				if (qrcode.isChecked())
-					startQRCodeReader();
 			}
 		});
 
