@@ -5,14 +5,13 @@
     <string name="info_dialog_version">Version 2.6.2 (barry kripke)</string>
     
     <string name="info_dialog_names">Sebastian Chlan &amp; Mathias Kub</string>
-    <string name="info_dialog_thanks">Thanks to everyone supporting and helping us develope this app.</string>
+    <string name="info_dialog_thanks">Thanks to everyone supporting and helping us develop this app.</string>
     <string name="info_dialog_development">Developed to the best of one\'s knowledge and belief. As regards to risks and side-effects ask us.</string>
     <string name="info_dialog_license">This app is licensed under the GPLv3</string>
     <string name="info_dialog_web">
     You can find further information at the following addresses:
     \n\nteam@schoolplanner.at
     \n\nhttp://www.schoolplanner.at
-    \n\nhttp://www.facebook.com/SchoolPlanner4Untis
     \n\nhttps://github.com/makubi/SchoolPlanner4Untis
     </string>
 </resources>
