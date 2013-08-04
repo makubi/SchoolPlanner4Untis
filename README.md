@@ -98,8 +98,8 @@ WEITERE INFORMATIONEN ZUM PROJEKT
 
 CONTACT
 -------
-Mathias Kub (Project leader) - mail[at]makubi.at
-Sebastian Chlan (Developer) - schoolplanner[at]droelf.at
+* Mathias Kub (Project leader) - mail[at]makubi.at
+* Sebastian Chlan (Developer) - schoolplanner[at]droelf.at
 
 RELEASE VORBEREITEN
 -------------------
