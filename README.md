@@ -1,4 +1,4 @@
-![Logo](http://www.schoolplanner.at/assets/templates/schoolplanner/images/header_logo.png)&nbsp;&nbsp;&nbsp;[SchoolPlanner4Untis](http://www.schoolplanner.at/)
+![Logo](http://schoolplanner.makubi.at/images/header_logo.png)&nbsp;&nbsp;&nbsp;[SchoolPlanner4Untis](https://github.com/makubi/SchoolPlanner4Untis/)
 ==================================================
 
 ANDROID PROJEKT IN ECLIPSE EINBINDEN
@@ -92,9 +92,14 @@ Wird Maven verwendet, kann die Datei '~/.m2/repository/android-extras/compatibil
 
 WEITERE INFORMATIONEN ZUM PROJEKT
 ---------------------------------
-* Android Market: https://market.android.com/details?id=edu.htl3r.schoolplanner
-* Bugtracker: http://jira.schoolplanner.at/
+* Android Market: https://play.google.com/store/apps/details?id=edu.htl3r.schoolplanner
+* Bugtracker: https://github.com/makubi/SchoolPlanner4Untis/issues
 * Continuous Integration System: http://jenkins.coding4coffee.org/job/SchoolPlanner4Untis/
+
+CONTACT
+-------
+Mathias Kub (Project leader) - mail[at]makubi.at
+Sebastian Chlan (Developer) - schoolplanner[at]droelf.at
 
 RELEASE VORBEREITEN
 -------------------
