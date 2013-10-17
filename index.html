@@ -11,6 +11,24 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    
+    <script type="text/javascript">
+      function email_mathias() {
+	      adresse = new Array('m', 'mak', 'ail', 'ub', 'i', '.at');
+	      var name = adresse[0]+adresse[2];
+	      var domain = adresse[1]+adresse[3]+adresse[4]+adresse[5];
+	      document.write('<a href=\"mailto:' + name + '@' + domain + '\">');
+	      document.write(name + '@' + domain + '</a>');
+      }
+      
+      function email_sebastian() {
+	      adresse = new Array('scho', 'dr', 'olplanner', 'oe', 'lf', '.at');
+	      var name = adresse[0]+adresse[2];
+	      var domain = adresse[1]+adresse[3]+adresse[4]+adresse[5];
+	      document.write('<a href=\"mailto:' + name + '@' + domain + '\">');
+	      document.write(name + '@' + domain + '</a>');
+      }
+    </script>
   </head>
   <body>
     <div class="wrapper">
@@ -19,6 +37,8 @@
         <p>Manage your WebUntis timetable on Android OS</p>
 
         <p class"view">Find help in the <a href="https://github.com/makubi/SchoolPlanner4Untis/wiki">wiki</a> or mail us.</p>
+        <p class="view">Mathias Kub (Project leader) - <script type="text/javascript">email_mathias()</script><noscript><u>mail[at]makubi.at</u></noscript><br />
+        Sebastian Chlan (Developer) - <script type="text/javascript">email_sebastian()</script></p>
 
         <p class="view"><a href="https://github.com/makubi/SchoolPlanner4Untis">View the Project on GitHub <small>makubi/SchoolPlanner4Untis</small></a></p>
 
