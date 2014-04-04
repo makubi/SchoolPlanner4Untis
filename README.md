@@ -31,7 +31,7 @@ ADDITIONAL INFORMATION
 
 CONTACT
 -------
-* Mathias Kub (Project leader) - mail[at]makubi.at
+* Mathias Kub (Project leader) - schoolplanner[at]makubi.at
 * Sebastian Chlan (Developer) - schoolplanner[at]droelf.at
 
 LICENSE
