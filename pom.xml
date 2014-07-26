@@ -12,7 +12,7 @@
 		<android.version>2.1.2</android.version>
 		<androidsdk.version>7</androidsdk.version>
 		<jackson.version>1.9.7</jackson.version>
-		<androidmavenplugin.version>3.1.1</androidmavenplugin.version>
+		<androidmavenplugin.version>3.8.2</androidmavenplugin.version>
 		<compatibilitylibrary.version>r9</compatibilitylibrary.version>
 		
 		<version.name>barry kripke</version.name>
