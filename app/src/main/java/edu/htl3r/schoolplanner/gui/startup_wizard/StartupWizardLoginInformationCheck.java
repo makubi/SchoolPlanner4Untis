@@ -135,7 +135,7 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		loginListener.addListener(this);
 		
 		
-		loginText.setTextColor(getColor(R.color.text));
+		loginText.setTextColor(getColorById(R.color.text));
 	}
 	
 	@Override
@@ -164,25 +164,25 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		loginImage.setChecked(true);
 		loginImage.setStatus(edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox.Status.CHECKED);
 		loginListener.skipLogin();
-		classListText.setTextColor(getColor(R.color.text));
+		classListText.setTextColor(getColorById(R.color.text));
 	}
 	
 	private void setClassListSuccess() {
 		classListImage.setChecked(true);
 		loginListener.skipClassListLoading();
-		teacherListText.setTextColor(getColor(R.color.text));
+		teacherListText.setTextColor(getColorById(R.color.text));
 	}
 	
 	private void setTeacherListSuccess() {
 		teacherListImage.setChecked(true);
 		loginListener.skipTeacherListLoading();
-		roomListText.setTextColor(getColor(R.color.text));
+		roomListText.setTextColor(getColorById(R.color.text));
 	}
 	
 	private void setRoomListSuccess() {
 		roomListImage.setChecked(true);
 		loginListener.skipRoomListLoading();
-		subjectListText.setTextColor(getColor(R.color.text));
+		subjectListText.setTextColor(getColorById(R.color.text));
 	}
 	
 	private void setSubjectListSuccess() {
@@ -222,7 +222,7 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 	
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		progressWheel.setVisibility(savedInstanceState.getInt(SAVED_INSTANCE_KEY_PROGRESS_VISIBILITY));
+		setVisibility(progressWheel, savedInstanceState.getInt(SAVED_INSTANCE_KEY_PROGRESS_VISIBILITY));
 		
 		edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox.Status loginImageStatus = (edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox.Status) savedInstanceState.getSerializable(SAVED_INSTANCE_KEY_LOGIN_CHECKED);
 		if(loginImageStatus == edu.htl3r.schoolplanner.gui.startup_wizard.DrawableCheckBox.Status.CHECKED) setLoginSuccess();
@@ -235,10 +235,24 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		infoText.setText(savedInstanceState.getString(SAVED_INSTANCE_KEY_INFO_TEXT));
 		
 		loginTaskFinished = savedInstanceState.getBoolean(SAVED_INSTANCE_KEY_LOGIN_TASK_FINISHED);
-		
-		finishButton.setVisibility(savedInstanceState.getInt(SAVED_INSTANCE_KEY_FINISH_BUTTON_VISIBILITY));
-		
+
+		setVisibility(finishButton, savedInstanceState.getInt(SAVED_INSTANCE_KEY_FINISH_BUTTON_VISIBILITY));
+
 		super.onRestoreInstanceState(savedInstanceState);
+	}
+
+	private void setVisibility(View view, int visibility){
+		switch (visibility){
+			case View.GONE:
+				view.setVisibility(View.GONE);
+				break;
+			case View.VISIBLE:
+				view.setVisibility(View.VISIBLE);
+				break;
+			case View.INVISIBLE:
+				view.setVisibility(View.INVISIBLE);
+				break;
+		}
 	}
 	
 	@Override
@@ -250,7 +264,7 @@ public class StartupWizardLoginInformationCheck extends SchoolPlannerActivity im
 		super.onDestroy();
 	}
 	
-	private int getColor(int resId) {
+	private int getColorById(int resId) {
 		return getResources().getColor(resId);
 	}
 
