@@ -13,6 +13,9 @@ android:
     - extra-google-m2repository
   licenses:
     - android-sdk-license-[0-9a-f]{8}
+env:
+  global:
+    - ANDROID_DAILY_OVERRIDE: "c05ba36ed758920ec227b76e6c1f25468d5cfdc4"
 branches:
   only:
     - master
