@@ -1,7 +1,18 @@
 sudo: false
+jdk:
+  - oraclejdk8
 language: android
 android:
   components:
-    - build-tools-18.1.1
-    - android-18
-    - extra
+    - tools
+    - platform-tools
+    - sys-img-armeabi-v7a-android-15
+    - android-23
+    - build-tools-23.0.2
+    - extra-android-m2repository
+    - extra-google-m2repository
+  licenses:
+    - android-sdk-license-[0-9a-f]{8}
+branches:
+  only:
+    - master
