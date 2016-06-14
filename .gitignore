@@ -8,3 +8,9 @@ bin/
 doc/
 gen/
 target/
+
+.idea/
+build/
+.gradle/
+local.properties
+*iml

@@ -79,6 +79,7 @@ public class WeekTimeGrid extends GUIWeekView implements OnTouchListener{
 		if(highlight)
 			highlight(canvas);
 		canvas.restore();
+		canvas.save();
 		zeichenInfos(canvas);
 		canvas.restore();
 		zeichenGatter(canvas);
