@@ -1,4 +1,4 @@
-![Logo](http://schoolplanner.makubi.at/images/header_logo.png)&nbsp;&nbsp;&nbsp;[SchoolPlanner4Untis](https://github.com/makubi/SchoolPlanner4Untis/)
+![Logo](http://schoolplanner.makubi.at/images/header_logo.png)&nbsp;&nbsp;&nbsp;[SchoolPlanner4Untis](https://github.com/makubi/SchoolPlanner4Untis/) [![Build Status](https://travis-ci.org/makubi/SchoolPlanner4Untis.svg?branch=master)](https://travis-ci.org/makubi/SchoolPlanner4Untis)
 ==================================================
 
 IMPORT ANDROID PROJECT IN ECLIPSE
