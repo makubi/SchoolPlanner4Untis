@@ -6,15 +6,12 @@ android:
   components:
     - tools
     - platform-tools
-    - android-23
-    - build-tools-22.0.1
+    - android-24
+    - build-tools-24.0.2
     - extra-android-m2repository
     - extra-google-m2repository
   licenses:
     - android-sdk-license-[0-9a-f]{8}
-env:
-  global:
-    - ANDROID_DAILY_OVERRIDE: "f44f1677367e04f227489fe24d7195996989a70c"
 branches:
   only:
     - master
