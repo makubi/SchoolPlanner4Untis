@@ -18,10 +18,11 @@
 
 package edu.htl3r.schoolplanner.backend.schoolObjects.timegrid;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonProperty;
 
 
 public class TimegridDay {

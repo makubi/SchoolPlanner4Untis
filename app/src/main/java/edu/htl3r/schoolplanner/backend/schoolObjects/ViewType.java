@@ -18,9 +18,10 @@
 
 package edu.htl3r.schoolplanner.backend.schoolObjects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 /**
  * 
  * Diese abstrakte Klasse ist ein Ansichts-Typ wie z.B. Klasse, Raum, Lehrer oder Fach.

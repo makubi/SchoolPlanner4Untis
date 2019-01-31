@@ -25,13 +25,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.http.conn.HttpHostConnectException;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.DataFacade;

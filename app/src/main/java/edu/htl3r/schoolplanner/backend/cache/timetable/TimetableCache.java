@@ -17,6 +17,14 @@
 
 package edu.htl3r.schoolplanner.backend.cache.timetable;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -25,13 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-
-import android.content.Context;
-import android.util.Log;
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.SchoolplannerContext;
@@ -51,7 +52,7 @@ public class TimetableCache implements UnsaveDataSourceTimetableDataProvider, Ti
 	private String currentLoginSetCacheFolder;
 	
 	public TimetableCache() {
-		  objectMapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_NULL);
+		  objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 	}
 	
 	@Override

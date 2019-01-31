@@ -18,7 +18,8 @@
 
 package edu.htl3r.schoolplanner.backend.schoolObjects.timegrid;
 
-import org.codehaus.jackson.annotate.JsonProperty;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import edu.htl3r.schoolplanner.DateTime;
 

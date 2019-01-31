@@ -19,7 +19,7 @@ package edu.htl3r.schoolplanner.gui.timetable;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
