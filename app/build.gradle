@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "edu.htl3r.schoolplanner"
-        minSdkVersion 7
-        targetSdkVersion 23
+        minSdkVersion 14
+        targetSdkVersion 28
         versionCode 38
         versionName "2.6.2"
         useLibrary 'org.apache.http.legacy'
@@ -33,7 +32,7 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:support-v4:23.1.1"
-    compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.7'
-    provided 'commons-logging:commons-logging:1.2'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'org.codehaus.jackson:jackson-mapper-asl:1.9.7'
+    compileOnly 'commons-logging:commons-logging:1.2'
 }
