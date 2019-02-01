@@ -3,7 +3,7 @@ package edu.htl3r.schoolplanner.gui.timetable;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.support.v4.view.ViewPager.OnPageChangeListener;
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 
 public class ViewPagerEventDistributer implements OnPageChangeListener {
 

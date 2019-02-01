@@ -18,9 +18,10 @@
 
 package edu.htl3r.schoolplanner.backend.schoolObjects.lesson;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.io.Serializable;
 
-import org.codehaus.jackson.annotate.JsonTypeInfo;
 
 @JsonTypeInfo(use=JsonTypeInfo.Id.CLASS, include=JsonTypeInfo.As.PROPERTY, property="@class")
 public abstract class LessonType implements Serializable,Cloneable {

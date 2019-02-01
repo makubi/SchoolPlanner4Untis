@@ -5,11 +5,10 @@ language: android
 android:
   components:
     - tools
+    - android-28
     - platform-tools
-    - android-24
-    - build-tools-24.0.3
+    - build-tools-28.0.3
     - extra-android-m2repository
-    - extra-google-m2repository
   licenses:
     - android-sdk-license-[0-9a-f]{8}
 branches:

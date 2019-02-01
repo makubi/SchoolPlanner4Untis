@@ -23,9 +23,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.codehaus.jackson.annotate.JsonProperty;
 
 import android.text.format.Time;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import edu.htl3r.schoolplanner.DateTime;
 import edu.htl3r.schoolplanner.DateTimeUtils;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;

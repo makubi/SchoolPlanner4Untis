@@ -17,7 +17,7 @@
 package edu.htl3r.schoolplanner.gui.timetable.Overlay.Info;
 
 import android.os.AsyncTask;
-import android.support.v4.view.ViewPager;
+import androidx.viewpager.widget.ViewPager;
 import android.widget.ScrollView;
 import android.widget.Toast;
 import edu.htl3r.schoolplanner.backend.schoolObjects.ViewType;
