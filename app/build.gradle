@@ -16,6 +16,7 @@ android {
         release {
             minifyEnabled false
         }
+
     }
 
     packagingOptions {
